@@ -6,8 +6,8 @@ import inf112.skeleton.app.Screen.PlayScreen;
 
 public class RoboRally extends Game {
     public SpriteBatch batch;
-    public final static int width = 800;
-    public final static int height = 480;
+    public final static int width = 385;
+    public final static int height = 385;
 
     @Override
     public void create() {
