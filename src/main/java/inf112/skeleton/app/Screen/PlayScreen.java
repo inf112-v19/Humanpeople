@@ -75,6 +75,7 @@ public class PlayScreen implements Screen {
         if(Gdx.input.isTouched()){
            if(newTile!=null){
                cell.setTile(newTile);
+               game.setScreen(new MenuScreen(game,this));
            }
         }
     }
