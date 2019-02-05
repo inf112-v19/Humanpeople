@@ -1,6 +1,7 @@
 package inf112.skeleton.app.Screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -12,14 +13,14 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import inf112.skeleton.app.GameMap;
+import inf112.skeleton.app.GameObjects.Directions.Direction;
+import inf112.skeleton.app.GameObjects.Directions.Position;
 import inf112.skeleton.app.RoboRally;
 import inf112.skeleton.app.Scenes.Hud;
 
-import java.util.Iterator;
-
 public class PlayScreen implements Screen {
     private RoboRally game;
-    private OrthographicCamera gamecam;
+    private OrthographicCamera gameCam;
     private Viewport gamePort;
     private Hud hud;
     private TmxMapLoader mapLoader;
@@ -31,17 +32,17 @@ public class PlayScreen implements Screen {
     public PlayScreen(RoboRally game){
         this.game = game;
 
-        gamecam = new OrthographicCamera();
-        gamePort = new FitViewport(RoboRally.width,RoboRally.height,gamecam);
+        gameCam = new OrthographicCamera();
+        gamePort = new FitViewport(RoboRally.width,RoboRally.height, gameCam);
         hud = new Hud(game.batch);
 
 
-        gameMap = new GameMap("map1.tmx");
+        gameMap = new GameMap("map2.tmx");
         map = gameMap.getMap();
 
 
         renderer = new OrthogonalTiledMapRenderer(map);
-        gamecam.position.set(gamePort.getWorldWidth()/2,(gamePort.getWorldHeight()/2),0);
+        gameCam.position.set(gamePort.getWorldWidth()/2,(gamePort.getWorldHeight()/2),0);
 
     }
 
@@ -52,37 +53,57 @@ public class PlayScreen implements Screen {
     }
 
     public void handleInput(){
-        TiledMapTileLayer layer = (TiledMapTileLayer)map.getLayers().get("wallS");
-        TiledMapTileLayer.Cell cell = layer.getCell(9,0);
-        TiledMapTile newTile = map.getTileSets().getTileSet("magecity").getTile(10);
-        //System.out.println(layer.getCell(9,0).getTile().getId());
+        TiledMapTileLayer layer = (TiledMapTileLayer)map.getLayers().get(1);
 
-        Iterator iterator = map.getLayers().iterator();
-/*
-        for(int x = 0;x<1000;x++){
-            for(int y = 0; y<1000;y++){
-                cell = null;
-                cell = layer.getCell(x,y);
 
-                if(cell!=null){
-                    System.out.println(x+" , "+y);
-                }
+        TiledMapTileLayer.Cell playerCell = new TiledMapTileLayer.Cell();
+
+        //henter grafikk
+        TiledMapTile newTile = map.getTileSets().getTileSet("testTileset").getTile(gameMap.getPlayer().getId());
+
+        //legger til grafikk i player cell
+        playerCell.setTile(newTile);
+
+        //setter celle til playercell
+        layer.setCell(gameMap.getPlayer().getPosition().getX(),gameMap.getPlayer().getPosition().getY(),playerCell);
+
+        if(Gdx.input.isKeyPressed(Input.Keys.W)){
+
+            if(gameMap.AllowedToMove(Direction.NORTH)){
+                layer.setCell(gameMap.getPlayer().getPosition().getX(),gameMap.getPlayer().getPosition().getY()+1,playerCell);
+                layer.setCell(gameMap.getPlayer().getPosition().getX(),gameMap.getPlayer().getPosition().getY(),null);
+                gameMap.getPlayer().setPosition(new Position(gameMap.getPlayer().getPosition().getX(),gameMap.getPlayer().getPosition().getY()+1));
+            }
+
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+            if(gameMap.AllowedToMove(Direction.SOUTH)){
+                layer.setCell(gameMap.getPlayer().getPosition().getX(),gameMap.getPlayer().getPosition().getY()-1,playerCell);
+                layer.setCell(gameMap.getPlayer().getPosition().getX(),gameMap.getPlayer().getPosition().getY(),null);
+                gameMap.getPlayer().setPosition(new Position(gameMap.getPlayer().getPosition().getX(),gameMap.getPlayer().getPosition().getY()-1));
             }
         }
-*/
-        //cell.setTile(map.getTileSets().getTileSet("0x72_16x16DungeonTilesetv1").getTile(4));
-                                                    //change with actual tileset name should work ?
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+            if (gameMap.AllowedToMove(Direction.WEST)) {
+                layer.setCell(gameMap.getPlayer().getPosition().getX() + 1, gameMap.getPlayer().getPosition().getY(), playerCell);
+                layer.setCell(gameMap.getPlayer().getPosition().getX(), gameMap.getPlayer().getPosition().getY(), null);
+                gameMap.getPlayer().setPosition(new Position(gameMap.getPlayer().getPosition().getX() + 1, gameMap.getPlayer().getPosition().getY()));
+            }
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+            if (gameMap.AllowedToMove(Direction.EAST)) {
+                layer.setCell(gameMap.getPlayer().getPosition().getX() -1, gameMap.getPlayer().getPosition().getY(), playerCell);
+                layer.setCell(gameMap.getPlayer().getPosition().getX(), gameMap.getPlayer().getPosition().getY(), null);
+                gameMap.getPlayer().setPosition(new Position(gameMap.getPlayer().getPosition().getX() -1, gameMap.getPlayer().getPosition().getY()));
+            }
+        }
         if(Gdx.input.isTouched()){
-           if(newTile!=null){
-               cell.setTile(newTile);
-               System.out.println(cell.getRotation());
-               //System.out.println(cell.getTile().getId());
-               //cell.setRotation(180);
+
 
                game.setScreen(new MenuScreen(game,this));
            }
         }
-    }
+
 
     @Override
     public void show() {
@@ -95,7 +116,8 @@ public class PlayScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         update();
-        renderer.setView(gamecam);
+
+        renderer.setView(gameCam);
         renderer.render();
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);

@@ -2,13 +2,13 @@ package inf112.skeleton.app.GameObjects;
 
 public interface GameObjects {
 
-    boolean moveToFromSouthAllowed();
+    boolean moveNorthFromAllowed();
 
-    boolean moveToFromNorthAllowed();
+    boolean moveSouthFromAllowed();
 
-    boolean moveToFromEastAllowed();
+    boolean moveEastFromAllowed();
 
-    boolean moveToFromWestAllowed();
+    boolean moveWestFromAllowed();
 
     int getId();
 

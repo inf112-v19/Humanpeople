@@ -8,23 +8,23 @@ public class WestWall implements GameObjects{
         id = 4;
     }
     @Override
-    public boolean moveToFromSouthAllowed() {
+    public boolean moveNorthFromAllowed() {
         return true;
     }
 
     @Override
-    public boolean moveToFromNorthAllowed() {
+    public boolean moveSouthFromAllowed() {
+        return true;
+    }
+
+    @Override
+    public boolean moveEastFromAllowed() {
+        return true;
+    }
+
+    @Override
+    public boolean moveWestFromAllowed() {
         return false;
-    }
-
-    @Override
-    public boolean moveToFromEastAllowed() {
-        return true;
-    }
-
-    @Override
-    public boolean moveToFromWestAllowed() {
-        return true;
     }
 
     @Override

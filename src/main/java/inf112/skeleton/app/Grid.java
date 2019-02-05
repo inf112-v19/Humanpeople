@@ -1,9 +1,10 @@
 package inf112.skeleton.app;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import inf112.skeleton.app.GameObjects.*;
+import inf112.skeleton.app.GameObjects.Directions.Direction;
+import inf112.skeleton.app.GameObjects.Directions.Position;
 
 public class Grid {
     private SouthWall southWall;
@@ -54,13 +55,28 @@ public class Grid {
                     xy[x][y] = eastWall;
 
                 }
-
             }
         }
-
-
-
-
-
+        if(xy[1][1].getId() == southWall.getId()){
+            System.out.println("SW");
+        }
     }
+
+    public boolean AllowedToMoveInDirection(Direction direction, Position position){
+
+        GameObjects objects = xy[position.getX()][position.getY()];
+
+        switch (direction){
+            case NORTH: return objects.moveNorthFromAllowed();
+
+            case SOUTH: return objects.moveSouthFromAllowed();
+
+            case WEST: return  objects.moveEastFromAllowed();
+
+            case EAST: return objects.moveWestFromAllowed();
+
+        }
+        return false;
+    }
+
 }

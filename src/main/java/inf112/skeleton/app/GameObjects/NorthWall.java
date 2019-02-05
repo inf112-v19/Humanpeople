@@ -9,22 +9,22 @@ public class NorthWall implements GameObjects{
         id = 1;
     }
     @Override
-    public boolean moveToFromSouthAllowed() {
-        return true;
-    }
-
-    @Override
-    public boolean moveToFromNorthAllowed() {
+    public boolean moveNorthFromAllowed() {
         return false;
     }
 
     @Override
-    public boolean moveToFromEastAllowed() {
+    public boolean moveSouthFromAllowed() {
         return true;
     }
 
     @Override
-    public boolean moveToFromWestAllowed() {
+    public boolean moveEastFromAllowed() {
+        return true;
+    }
+
+    @Override
+    public boolean moveWestFromAllowed() {
         return true;
     }
 

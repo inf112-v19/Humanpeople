@@ -10,22 +10,20 @@ public class SouthWall implements GameObjects{
     }
 
     @Override
-    public boolean moveToFromSouthAllowed() {
-        return false;
-    }
-
-    @Override
-    public boolean moveToFromNorthAllowed() {
+    public boolean moveNorthFromAllowed() {
         return true;
     }
 
     @Override
-    public boolean moveToFromEastAllowed() {
+    public boolean moveSouthFromAllowed() { return false; }
+
+    @Override
+    public boolean moveEastFromAllowed() {
         return true;
     }
 
     @Override
-    public boolean moveToFromWestAllowed() {
+    public boolean moveWestFromAllowed() {
         return true;
     }
 
