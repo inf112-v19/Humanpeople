@@ -75,6 +75,10 @@ public class PlayScreen implements Screen {
         if(Gdx.input.isTouched()){
            if(newTile!=null){
                cell.setTile(newTile);
+               System.out.println(cell.getRotation());
+               //System.out.println(cell.getTile().getId());
+               //cell.setRotation(180);
+
                game.setScreen(new MenuScreen(game,this));
            }
         }
