@@ -27,6 +27,7 @@ public class PlayScreen implements Screen {
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private GameMap gameMap;
+    float time = 0;
 
 
     public PlayScreen(RoboRally game){
@@ -47,12 +48,12 @@ public class PlayScreen implements Screen {
     }
 
     //experimenting with update and handleInput :-D
-    public void update(){
-        handleInput();
+    public void update(float deltaTime){
+        handleInput(deltaTime);
 
     }
 
-    public void handleInput(){
+    public void handleInput(float deltaTime){
         TiledMapTileLayer layer = (TiledMapTileLayer)map.getLayers().get(1);
 
 
@@ -66,9 +67,9 @@ public class PlayScreen implements Screen {
 
         //setter celle til playercell
         layer.setCell(gameMap.getPlayer().getPosition().getX(),gameMap.getPlayer().getPosition().getY(),playerCell);
-
-        if(Gdx.input.isKeyPressed(Input.Keys.W)){
-
+        time += deltaTime;
+        if(Gdx.input.isKeyPressed(Input.Keys.W) && time > 0.3){
+            time = 0;
             if(gameMap.AllowedToMove(Direction.NORTH)){
                 layer.setCell(gameMap.getPlayer().getPosition().getX(),gameMap.getPlayer().getPosition().getY()+1,playerCell);
                 layer.setCell(gameMap.getPlayer().getPosition().getX(),gameMap.getPlayer().getPosition().getY(),null);
@@ -76,21 +77,24 @@ public class PlayScreen implements Screen {
             }
 
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.S)&& time > 0.3) {
+            time = 0;
             if(gameMap.AllowedToMove(Direction.SOUTH)){
                 layer.setCell(gameMap.getPlayer().getPosition().getX(),gameMap.getPlayer().getPosition().getY()-1,playerCell);
                 layer.setCell(gameMap.getPlayer().getPosition().getX(),gameMap.getPlayer().getPosition().getY(),null);
                 gameMap.getPlayer().setPosition(new Position(gameMap.getPlayer().getPosition().getX(),gameMap.getPlayer().getPosition().getY()-1));
             }
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.D)&& time > 0.3) {
+            time = 0;
             if (gameMap.AllowedToMove(Direction.WEST)) {
                 layer.setCell(gameMap.getPlayer().getPosition().getX() + 1, gameMap.getPlayer().getPosition().getY(), playerCell);
                 layer.setCell(gameMap.getPlayer().getPosition().getX(), gameMap.getPlayer().getPosition().getY(), null);
                 gameMap.getPlayer().setPosition(new Position(gameMap.getPlayer().getPosition().getX() + 1, gameMap.getPlayer().getPosition().getY()));
             }
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.A)&& time > 0.3) {
+            time = 0;
             if (gameMap.AllowedToMove(Direction.EAST)) {
                 layer.setCell(gameMap.getPlayer().getPosition().getX() -1, gameMap.getPlayer().getPosition().getY(), playerCell);
                 layer.setCell(gameMap.getPlayer().getPosition().getX(), gameMap.getPlayer().getPosition().getY(), null);
@@ -115,7 +119,7 @@ public class PlayScreen implements Screen {
         Gdx.gl.glClearColor(0,0,0,0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        update();
+        update(Gdx.graphics.getDeltaTime());
 
         renderer.setView(gameCam);
         renderer.render();
