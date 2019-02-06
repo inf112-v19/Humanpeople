@@ -1,19 +1,19 @@
-#Obligatorisk oppgave 2
+# Obligatorisk oppgave 2
 
-#Deloppgave 1:
-###Gruppemedlemmer: Sjur Finne, Sondre Bolland, Matias Vidnes, Stian Haugland, Eirik Rygnestad.
+# Deloppgave 1:
+### Gruppemedlemmer: Sjur Finne, Sondre Bolland, Matias Vidnes, Stian Haugland, Eirik Rygnestad.
 
-###Gruppenavn: HumanPeople
+### Gruppenavn: HumanPeople
 
-###Teamlead: Sondre Bolland				###Kundekontakt: Eirik Rygnestad
+### Teamlead: Sondre Bolland				Kundekontakt: Eirik Rygnestad
 
 Kompetansen på gruppa er rimelig lik. Vi har alle god erfaring med programmering og java fra fagene INF100, INF101, INF102. 
 Vi bestemte oss for å bruke Tiled, Photoshop, draw.io og GitHub project board. Slack brukes til hovedkommunikasjon, mens skriftlig informasjon legges inn på google docs, hvor linken dens er pinned på Slack. Uformell kommunikasjon går over messenger.
 
-#Deloppgave 2
-###Overordnet mål for applikasjonen
+# Deloppgave 2
+### Overordnet mål for applikasjonen
 Lage RoboRally med en twist.
-###Høynivå krav til systemet
+### Høynivå krav til systemet
 ha et spillebrett
 vise en brikke
 kunne flytte en brikke
@@ -40,7 +40,7 @@ kunne ta powerdown for å reparere skade
 for mye skade brenner fast programkort fra runde til runde
 
 
-Prioriteringsliste av krav for første iterasjon
+## Prioriteringsliste av krav for første iterasjon
 1. Legg plan for arbeid
 Sette opp møter
 Fordele arbeidsoppgaver
@@ -48,7 +48,7 @@ Planlegge implementering
 2. Implementere brett, 1 brikke, basic GUI og noen input
 
 
-Deloppgave 3
+# Deloppgave 3
 Prosjektmetodikk (Elementer fra XP og Kanban)
 Felles forståelse av koden. Gjennomgang av hver implementasjon (gjøres ved starten av hvert møte).
 Tillpasse fart. Begynner sakte og tar vurdering etterhvert som vi kommer mer inn i prosjektet om arbeidsmengden kan økes eller må senkes.
