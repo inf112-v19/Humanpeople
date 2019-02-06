@@ -12,6 +12,10 @@ public class Grid {
     private EastWall eastWall;
     private NorthWall northWall;
     private Ground ground;
+    private swWall swWall;
+    private seWall seWall;
+    private nwWall nwWall;
+    private neWall neWall;
 
     private int width, height;
 
@@ -19,7 +23,10 @@ public class Grid {
 
 
     public Grid(TiledMap map){
-
+        swWall = new swWall();
+        seWall = new seWall();
+        nwWall = new nwWall();
+        neWall = new neWall();
         southWall = new SouthWall();
         westWall = new WestWall();
         northWall = new NorthWall();
@@ -53,6 +60,22 @@ public class Grid {
                 }
                 else if(id == eastWall.getId()){
                     xy[x][y] = eastWall;
+
+                }
+                else if(id == neWall.getId()){
+                    xy[x][y] = neWall;
+
+                }
+                else if(id == nwWall.getId()){
+                    xy[x][y] = nwWall;
+
+                }
+                else if(id == swWall.getId()){
+                    xy[x][y] = swWall;
+
+                }
+                else if(id == seWall.getId()){
+                    xy[x][y] = seWall;
 
                 }
             }
