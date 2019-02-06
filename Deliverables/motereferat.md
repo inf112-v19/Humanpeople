@@ -1,26 +1,28 @@
-Referat fra møte 29.01.2019
-Oppmøte: alle
+## MÃ¸tereferat
+
+### Referat fra mÃ¸te 29.01.2019
+OppmÃ¸te: alle
 Bli kjent med gruppen
-Gjøre oss kjent med egenskaper og tidligere erfaring
-Diskutert hvordan vi vil at spillet skal være. Vår egen tvist av RoboRally
-Enige om at samtlige skal gjøre seg (relativt) kjent med LibGdx til neste uke.
-Nytt møte avtalt 01.02.2019
+GjÃ¸re oss kjent med egenskaper og tidligere erfaring
+Diskutert hvordan vi vil at spillet skal vÃ¦re. VÃ¥r egen tvist av RoboRally
+Enige om at samtlige skal gjÃ¸re seg (relativt) kjent med LibGdx til neste uke.
+Nytt mÃ¸te avtalt 01.02.2019
 
-Referat fra møte 01.02.2019
-Oppmøte: alle
-Påbegynt oppgave 2 og 3.
-Laga en grov klasseoversikt til første iterasjon
+### Referat fra mÃ¸te 01.02.2019
+OppmÃ¸te: alle
+PÃ¥begynt oppgave 2 og 3.
+Laga en grov klasseoversikt til fÃ¸rste iterasjon
 
-Referat møte 05.02.2019:
-Oppmøte: alle
+### Referat mÃ¸te 05.02.2019:
+OppmÃ¸te: alle
 Gjennomgang av kode
 Oppklaring i forhold til implementasjon av brettet
 Fikse GameMap-klassen slik denne styrer player movement.
 Implementere flyttbar brikke til neste gang.
-Draft til skriftlig innlevering påbegynt
+Draft til skriftlig innlevering pÃ¥begynt
 
-Refeat møte 06.02.2019
-Oppmøte: alle
-Gjennomgang av kode (all implementasjon til første iterasjon fullført).
-Fullført skriftlig del av innlevering.
-Lagt planer for neste ukes møter  
+### Refeat mÃ¸te 06.02.2019
+OppmÃ¸te: alle
+Gjennomgang av kode (all implementasjon til fÃ¸rste iterasjon fullfÃ¸rt).
+FullfÃ¸rt skriftlig del av innlevering.
+Lagt planer for neste ukes mÃ¸ter  
