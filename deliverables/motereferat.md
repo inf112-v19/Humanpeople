@@ -23,4 +23,4 @@ Refeat møte 06.02.2019
 Oppmøte: alle
 Gjennomgang av kode (all implementasjon til første iterasjon fullført).
 Fullført skriftlig del av innlevering.
-Lagt planer for neste ukes møter
+Lagt planer for neste ukes møter 
