@@ -71,7 +71,7 @@ public class PlayScreen implements Screen {
         //setter celle til playercell
         //layer.setCell(gameMap.getPlayer().getPosition().getX(),gameMap.getPlayer().getPosition().getY(),playerCell);
         time += deltaTime;
-        if(Gdx.input.isKeyPressed(Input.Keys.W) && time > 0.3){
+        if(Gdx.input.isKeyPressed(Input.Keys.W) && time > 0.2){
             time = 0;
             if(gameMap.AllowedToMove(Direction.NORTH)){
                 playerCell.setTile(northTile);
@@ -81,7 +81,7 @@ public class PlayScreen implements Screen {
             }
 
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.S)&& time > 0.3) {
+        if (Gdx.input.isKeyPressed(Input.Keys.S)&& time > 0.2) {
             time = 0;
             if(gameMap.AllowedToMove(Direction.SOUTH)){
                 playerCell.setTile(southTile);
@@ -90,7 +90,7 @@ public class PlayScreen implements Screen {
                 gameMap.getPlayer().setPosition(new Position(gameMap.getPlayer().getPosition().getX(),gameMap.getPlayer().getPosition().getY()-1));
             }
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.D)&& time > 0.3) {
+        if (Gdx.input.isKeyPressed(Input.Keys.D)&& time > 0.2) {
             time = 0;
             if (gameMap.AllowedToMove(Direction.WEST)) {
                 playerCell.setTile(westTile);
@@ -99,7 +99,7 @@ public class PlayScreen implements Screen {
                 gameMap.getPlayer().setPosition(new Position(gameMap.getPlayer().getPosition().getX() + 1, gameMap.getPlayer().getPosition().getY()));
             }
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.A)&& time > 0.3) {
+        if (Gdx.input.isKeyPressed(Input.Keys.A)&& time > 0.2) {
             time = 0;
             if (gameMap.AllowedToMove(Direction.EAST)) {
                 playerCell.setTile(eastTile);
