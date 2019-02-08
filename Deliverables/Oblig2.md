@@ -1,5 +1,8 @@
 # Obligatorisk oppgave 2
 
+# Programmets funksjonalitet
+Bruk WASD-taster for å styre brikken på banen
+
 # Deloppgave 1:
 ### Gruppemedlemmer: Sjur Finne, Sondre Bolland, Matias Vidnes, Stian Haugland, Eirik Rygnestad.
 
