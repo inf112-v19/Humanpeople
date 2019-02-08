@@ -1,7 +1,13 @@
 package inf112.skeleton.app.GameObjects;
 
-public class nwWall implements GameObjects{
-    int id;
+/**
+ * North West wall object
+ * @author Stian
+ *
+ */
+public class nwWall implements GameObjects {
+	
+    private final int id;
 
     public nwWall() {
         this.id = 11;

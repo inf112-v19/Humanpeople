@@ -7,6 +7,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import inf112.skeleton.app.RoboRally;
 
+/**
+ * Menu screen for RoboRally (Not done, rough draft)
+ * @author Stian
+ *
+ */
 public class MenuScreen implements Screen {
     private  PlayScreen playScreen;
     private RoboRally game;
@@ -17,11 +22,8 @@ public class MenuScreen implements Screen {
     public MenuScreen(RoboRally game,PlayScreen playScreen){
         this.game = game;
         batch = new SpriteBatch();
-        texture = new Texture("magecity.png");
+        texture = new Texture("assets/magecity.png");
         this.playScreen = playScreen;
-
-
-
     }
 
     @Override

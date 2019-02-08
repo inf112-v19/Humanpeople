@@ -1,7 +1,14 @@
 package inf112.skeleton.app.GameObjects;
 
+/**
+ * North East wall object
+ * @author Stian
+ *
+ */
 public class neWall implements GameObjects{
-    int id;
+	
+	private final int id;
+	
     public neWall() {
         id = 12;
     }

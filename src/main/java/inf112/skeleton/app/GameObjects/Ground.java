@@ -1,7 +1,12 @@
 package inf112.skeleton.app.GameObjects;
 
+/**
+ * Ground object
+ * @author Stian
+ *
+ */
 public class Ground implements GameObjects{
-    //TODO
+	
     private final int id;
 
     public Ground(){

@@ -3,11 +3,14 @@ package inf112.skeleton.app.GameObjects;
 import inf112.skeleton.app.GameObjects.Directions.Position;
 import inf112.skeleton.app.Screen.PlayScreen;
 
+/**
+ * Player object
+ * @author Stian
+ *
+ */
 public class Player implements GameObjects {
 
-    //TODO
-
-    private int id;
+    private final int id;
     private Position position;
 
     public Player(){

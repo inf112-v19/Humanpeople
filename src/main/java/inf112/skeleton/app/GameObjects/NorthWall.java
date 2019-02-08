@@ -1,9 +1,13 @@
 package inf112.skeleton.app.GameObjects;
 
+/**
+ * North wall object
+ * @author Stian
+ *
+ */
 public class NorthWall implements GameObjects{
-    //TODO
 
-    private int id;
+    private final int id;
 
     public NorthWall(){
         id = 1;

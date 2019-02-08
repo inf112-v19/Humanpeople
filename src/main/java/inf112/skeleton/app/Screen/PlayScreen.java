@@ -18,6 +18,11 @@ import inf112.skeleton.app.GameObjects.Directions.Position;
 import inf112.skeleton.app.RoboRally;
 import inf112.skeleton.app.Scenes.Hud;
 
+/**
+ * Play screen of RoboRally
+ * @author Sondre Bolland
+ *
+ */
 public class PlayScreen implements Screen {
     private RoboRally game;
     private OrthographicCamera gameCam;
@@ -37,25 +42,32 @@ public class PlayScreen implements Screen {
         gamePort = new FitViewport(RoboRally.width,RoboRally.height, gameCam);
         hud = new Hud(game.batch);
 
-
-        gameMap = new GameMap("map3.tmx");
+        gameMap = new GameMap("assets/map3.tmx");
         map = gameMap.getMap();
-
 
         renderer = new OrthogonalTiledMapRenderer(map);
         gameCam.position.set(gamePort.getWorldWidth()/2,(gamePort.getWorldHeight()/2),0);
-
+           
+        initPlayer();
+    }
+    
+    /**
+     * Set player to board
+     */
+    public void initPlayer() {
+    	 TiledMapTileLayer layer = (TiledMapTileLayer)map.getLayers().get(2);
+         TiledMapTileLayer.Cell playerCell = new TiledMapTileLayer.Cell();
+         TiledMapTile northTile = map.getTileSets().getTileSet("testTileset").getTile(31);
+         playerCell.setTile(northTile);
+         layer.setCell(gameMap.getPlayer().getPosition().getX(),gameMap.getPlayer().getPosition().getY(),playerCell);
     }
 
-    //experimenting with update and handleInput :-D
     public void update(float deltaTime){
         handleInput(deltaTime);
-
     }
 
     public void handleInput(float deltaTime){
         TiledMapTileLayer layer = (TiledMapTileLayer)map.getLayers().get(2);
-
 
         TiledMapTileLayer.Cell playerCell = new TiledMapTileLayer.Cell();
 
@@ -65,55 +77,49 @@ public class PlayScreen implements Screen {
         TiledMapTile eastTile = map.getTileSets().getTileSet("testTileset").getTile(33);
         TiledMapTile westTile = map.getTileSets().getTileSet("testTileset").getTile(32);
 
-        //legger til grafikk i player cell
-        //playerCell.setTile(northTile);
-
-        //setter celle til playercell
-        //layer.setCell(gameMap.getPlayer().getPosition().getX(),gameMap.getPlayer().getPosition().getY(),playerCell);
+        // Gå nord
         time += deltaTime;
         if(Gdx.input.isKeyPressed(Input.Keys.W) && time > 0.2){
             time = 0;
             if(gameMap.AllowedToMove(Direction.NORTH)){
                 playerCell.setTile(northTile);
-                layer.setCell(gameMap.getPlayer().getPosition().getX(),gameMap.getPlayer().getPosition().getY()+1,playerCell);
                 layer.setCell(gameMap.getPlayer().getPosition().getX(),gameMap.getPlayer().getPosition().getY(),null);
+                layer.setCell(gameMap.getPlayer().getPosition().getX(),gameMap.getPlayer().getPosition().getY()+1,playerCell);
                 gameMap.getPlayer().setPosition(new Position(gameMap.getPlayer().getPosition().getX(),gameMap.getPlayer().getPosition().getY()+1));
             }
 
         }
+        // Gå sør
         if (Gdx.input.isKeyPressed(Input.Keys.S)&& time > 0.2) {
             time = 0;
             if(gameMap.AllowedToMove(Direction.SOUTH)){
                 playerCell.setTile(southTile);
-                layer.setCell(gameMap.getPlayer().getPosition().getX(),gameMap.getPlayer().getPosition().getY()-1,playerCell);
                 layer.setCell(gameMap.getPlayer().getPosition().getX(),gameMap.getPlayer().getPosition().getY(),null);
+                layer.setCell(gameMap.getPlayer().getPosition().getX(),gameMap.getPlayer().getPosition().getY()-1,playerCell);
                 gameMap.getPlayer().setPosition(new Position(gameMap.getPlayer().getPosition().getX(),gameMap.getPlayer().getPosition().getY()-1));
             }
         }
+        // Gå vest
         if (Gdx.input.isKeyPressed(Input.Keys.D)&& time > 0.2) {
             time = 0;
             if (gameMap.AllowedToMove(Direction.WEST)) {
                 playerCell.setTile(westTile);
-                layer.setCell(gameMap.getPlayer().getPosition().getX() + 1, gameMap.getPlayer().getPosition().getY(), playerCell);
                 layer.setCell(gameMap.getPlayer().getPosition().getX(), gameMap.getPlayer().getPosition().getY(), null);
+                layer.setCell(gameMap.getPlayer().getPosition().getX() + 1, gameMap.getPlayer().getPosition().getY(), playerCell);
                 gameMap.getPlayer().setPosition(new Position(gameMap.getPlayer().getPosition().getX() + 1, gameMap.getPlayer().getPosition().getY()));
             }
         }
+        // Gå øst
         if (Gdx.input.isKeyPressed(Input.Keys.A)&& time > 0.2) {
             time = 0;
             if (gameMap.AllowedToMove(Direction.EAST)) {
                 playerCell.setTile(eastTile);
-                layer.setCell(gameMap.getPlayer().getPosition().getX() -1, gameMap.getPlayer().getPosition().getY(), playerCell);
                 layer.setCell(gameMap.getPlayer().getPosition().getX(), gameMap.getPlayer().getPosition().getY(), null);
+                layer.setCell(gameMap.getPlayer().getPosition().getX() -1, gameMap.getPlayer().getPosition().getY(), playerCell);
                 gameMap.getPlayer().setPosition(new Position(gameMap.getPlayer().getPosition().getX() -1, gameMap.getPlayer().getPosition().getY()));
             }
         }
-        if(Gdx.input.isTouched()){
-
-
-               game.setScreen(new MenuScreen(game,this));
-           }
-        }
+    }
 
 
     @Override

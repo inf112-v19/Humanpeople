@@ -1,8 +1,16 @@
 package inf112.skeleton.app.GameObjects;
 
+/**
+ * South West wall object
+ * @author Stian
+ *
+ */
+
 public class swWall implements GameObjects {
-    int id;
-    public swWall() {
+    
+	private final int id;
+    
+	public swWall() {
         id = 13;
     }
 

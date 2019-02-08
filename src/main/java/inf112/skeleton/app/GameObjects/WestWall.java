@@ -1,8 +1,13 @@
 package inf112.skeleton.app.GameObjects;
 
+/**
+ * West wall object
+ * @author Stian
+ *
+ */
 public class WestWall implements GameObjects{
-    //TODO
-    private int id;
+
+	private final int id;
 
     public WestWall(){
         id = 4;

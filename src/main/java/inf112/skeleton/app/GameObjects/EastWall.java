@@ -1,9 +1,14 @@
 package inf112.skeleton.app.GameObjects;
 
-public class EastWall implements GameObjects{
+/**
+ * East wall object
+ * @author Stian
+ *
+ */
+public class EastWall implements GameObjects {
+	
     private final int id;
 
-    //TODO
     public EastWall(){
         id = 3;
     }

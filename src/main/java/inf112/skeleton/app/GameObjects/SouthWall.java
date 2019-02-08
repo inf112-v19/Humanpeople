@@ -1,9 +1,14 @@
 package inf112.skeleton.app.GameObjects;
 
-public class SouthWall implements GameObjects{
-    //TODO
 
-    private int id;
+/**
+ * South wall object
+ * @author Stian
+ *
+ */
+public class SouthWall implements GameObjects{
+
+    private final int id;
 
     public SouthWall(){
         id = 2;
@@ -15,7 +20,9 @@ public class SouthWall implements GameObjects{
     }
 
     @Override
-    public boolean moveSouthFromAllowed() { return false; }
+    public boolean moveSouthFromAllowed() {
+    	return false;
+    }
 
     @Override
     public boolean moveEastFromAllowed() {

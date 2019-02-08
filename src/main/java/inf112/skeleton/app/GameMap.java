@@ -16,9 +16,9 @@ public class GameMap {
          mapLoader = new TmxMapLoader();
          map = mapLoader.load(name);
          grid = new Grid(map);
-
          player = new Player();
     }
+    
     public boolean AllowedToMove(Direction direction){
         return grid.AllowedToMoveInDirection(direction,player.getPosition());
     }
