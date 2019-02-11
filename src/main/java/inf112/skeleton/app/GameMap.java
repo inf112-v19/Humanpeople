@@ -3,6 +3,7 @@ package inf112.skeleton.app;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import inf112.skeleton.app.GameObjects.Directions.Direction;
+import inf112.skeleton.app.GameObjects.Directions.Position;
 import inf112.skeleton.app.GameObjects.Player;
 
 public class GameMap {
@@ -16,11 +17,21 @@ public class GameMap {
          mapLoader = new TmxMapLoader();
          map = mapLoader.load(name);
          grid = new Grid(map);
-         player = new Player();
+         player = new Player(map);
     }
-    
+    public void initPlayer(Player player){
+        Position position = player.getPosition();
+
+    }
+
     public boolean AllowedToMove(Direction direction){
         return grid.AllowedToMoveInDirection(direction,player.getPosition());
+    }
+    public void movePlayer(Direction direction){
+        if(grid.AllowedToMoveInDirection(direction,player.getPosition())){
+
+        }
+
     }
 
 
