@@ -48,25 +48,19 @@ public class PlayScreen implements Screen {
         renderer = new OrthogonalTiledMapRenderer(map);
         gameCam.position.set(gamePort.getWorldWidth()/2,(gamePort.getWorldHeight()/2),0);
            
-        initPlayer();
-    }
-    
-    /**
-     * Set player to board
-     */
-    public void initPlayer() {
-    	 TiledMapTileLayer layer = (TiledMapTileLayer)map.getLayers().get(2);
-         TiledMapTileLayer.Cell playerCell = new TiledMapTileLayer.Cell();
-         TiledMapTile northTile = map.getTileSets().getTileSet("testTileset").getTile(31);
-         playerCell.setTile(northTile);
-         layer.setCell(gameMap.getPlayer().getPosition().getX(),gameMap.getPlayer().getPosition().getY(),playerCell);
+
     }
 
     public void update(float deltaTime){
         handleInput(deltaTime);
+        updateMap();
     }
 
+
+
     public void handleInput(float deltaTime){
+        //moving to other classes************
+        /*
         TiledMapTileLayer layer = (TiledMapTileLayer)map.getLayers().get(2);
 
         TiledMapTileLayer.Cell playerCell = new TiledMapTileLayer.Cell();
@@ -119,8 +113,29 @@ public class PlayScreen implements Screen {
                 gameMap.getPlayer().setPosition(new Position(gameMap.getPlayer().getPosition().getX() -1, gameMap.getPlayer().getPosition().getY()));
             }
         }
-    }
+        */
+        time += deltaTime;
+        if(Gdx.input.isKeyPressed(Input.Keys.D) && time > 0.2) {
+            time = 0;
+            gameMap.movePlayer(Direction.EAST);
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.W) && time > 0.2) {
+            time = 0;
+            gameMap.movePlayer(Direction.NORTH);
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.S) && time > 0.2) {
+            time = 0;
+            gameMap.movePlayer(Direction.SOUTH);
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.A) && time > 0.2) {
+            time = 0;
+            gameMap.movePlayer(Direction.WEST);
+        }
 
+    }
+    private void updateMap() {
+        map = gameMap.getMap();
+    }
 
     @Override
     public void show() {

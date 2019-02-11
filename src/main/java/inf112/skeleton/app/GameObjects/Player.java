@@ -26,8 +26,8 @@ public class Player implements GameObjects {
         position = new Position(1,1);
 
         northAvatar = map.getTileSets().getTileSet("testTileset").getTile(31);
-        westAvatar = map.getTileSets().getTileSet("testTileset").getTile(32);
-        eastAvatar = map.getTileSets().getTileSet("testTileset").getTile(33);
+        westAvatar = map.getTileSets().getTileSet("testTileset").getTile(33);
+        eastAvatar = map.getTileSets().getTileSet("testTileset").getTile(32);
         southAvatar = map.getTileSets().getTileSet("testTileset").getTile(34);
     }
     @Override

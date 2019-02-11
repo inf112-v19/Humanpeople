@@ -16,4 +16,21 @@ public class Position {
     public int getY() {
         return y;
     }
+
+    public Position North(){
+        y = ++y;
+        return this;
+    }
+    public Position South(){
+        y = --y;
+        return this;
+    }
+    public Position East(){
+        x = ++x;
+        return this;
+    }
+    public Position West(){
+        x = --x;
+        return this;
+    }
 }

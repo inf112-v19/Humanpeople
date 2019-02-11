@@ -94,9 +94,9 @@ public class Grid {
 
             case SOUTH: return objects.moveSouthFromAllowed();
 
-            case WEST: return  objects.moveEastFromAllowed();
+            case WEST: return  objects.moveWestFromAllowed();
 
-            case EAST: return objects.moveWestFromAllowed();
+            case EAST: return objects.moveEastFromAllowed();
 
         }
         return false;
