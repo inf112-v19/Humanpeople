@@ -26,3 +26,15 @@
 - Gjennomgang av kode (all implementasjon til første iterasjon fullført).
 - Fullført skriftlig del av innlevering.
 - Lagt planer for neste ukes møter  
+
+###  Referat møte 12.02.2019
+ - Oppmøte: alle
+ - Gjennomgang av kode
+ - Diskuterte endringer av implementert kode. Merged løsning for Tile-objekt
+ - Planlegge iterasjon 2. Har lagt til Card, PlayerDeck, Deck, Overordnet Player (ikke PlayerTile)
+ - Trouble shoot'et feil ved testing
+ - Merget endringer til master
+ - Begynt presentasjon til 19.02.19
+ - Arbeidsfordeling
+ - Satt opp "workshop" på fredag
+ - Neste møte 19.02.19
