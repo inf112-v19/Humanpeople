@@ -1,5 +1,7 @@
 package inf112.skeleton.app.GameObjects;
 
+import inf112.skeleton.app.GameObjects.Directions.Direction;
+
 /**
  * Interface for all Game Objects
  * @author Stian
@@ -7,15 +9,9 @@ package inf112.skeleton.app.GameObjects;
  */
 public interface GameObjects {
 
-    boolean moveNorthFromAllowed();
+   boolean canGo(Direction dir);
 
-    boolean moveSouthFromAllowed();
-
-    boolean moveEastFromAllowed();
-
-    boolean moveWestFromAllowed();
-
-    int getId();
+   int getId();
 
 }
 
