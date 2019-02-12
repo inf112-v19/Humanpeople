@@ -29,11 +29,13 @@ public class GameMap {
          playerLayer = (TiledMapTileLayer)map.getLayers().get(2);
 
          initPlayer(player);
+
     }
     public void initPlayer(Player player){
         playerCell.setTile(player.getNorthAvatar());
         playerLayer.setCell(getPlayer().getPosition().getX(),getPlayer().getPosition().getY(),playerCell);
     }
+
 
 
     /*public boolean AllowedToMove(Direction direction){
