@@ -19,11 +19,11 @@ public class MenuScreen implements Screen {
     private Texture texture;
 
 
-    public MenuScreen(RoboRally game,PlayScreen playScreen){
+    public MenuScreen(RoboRally game){
         this.game = game;
         batch = new SpriteBatch();
         texture = new Texture("assets/magecity.png");
-        this.playScreen = playScreen;
+        this.playScreen = new PlayScreen(game);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class MenuScreen implements Screen {
 
     @Override
     public void render(float v) {
-        handleInput();
+        handleInput(Gdx.graphics.getDeltaTime());
         Gdx.gl.glClearColor(0,0,0,0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
@@ -41,7 +41,7 @@ public class MenuScreen implements Screen {
         batch.end();
     }
 
-    private void handleInput() {
+    private void handleInput(float deltaTime) {
         if(Gdx.input.isTouched()){
             game.setScreen(playScreen);
         }
