@@ -2,6 +2,7 @@ package inf112.skeleton.app.GameObjects;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
+import inf112.skeleton.app.GameObjects.Directions.Direction;
 import inf112.skeleton.app.GameObjects.Directions.Position;
 import inf112.skeleton.app.Screen.PlayScreen;
 
@@ -30,24 +31,10 @@ public class Player implements GameObjects {
         eastAvatar = map.getTileSets().getTileSet("testTileset").getTile(32);
         southAvatar = map.getTileSets().getTileSet("testTileset").getTile(34);
     }
-    @Override
-    public boolean moveNorthFromAllowed() {
-        return false;
-    }
 
     @Override
-    public boolean moveSouthFromAllowed() {
-        return false;
-    }
-
-    @Override
-    public boolean moveEastFromAllowed() {
-        return false;
-    }
-
-    @Override
-    public boolean moveWestFromAllowed() {
-        return false;
+    public boolean canGo(Direction dir) {
+        return true;
     }
 
     @Override

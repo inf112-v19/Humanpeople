@@ -9,130 +9,48 @@ import inf112.skeleton.app.GameObjects.Directions.Position;
 import java.util.ArrayList;
 
 public class Grid {
-    private SouthWall southWall;
-    private WestWall westWall;
-    private EastWall eastWall;
-    private NorthWall northWall;
-    private Ground ground;
-    private swWall swWall;
-    private seWall seWall;
-    private nwWall nwWall;
-    private neWall neWall;
 
     private int width, height;
-    
     private ArrayList gameLogicGrid[][];
-
-
     private TiledMapTileLayer groundLayer;
     private TiledMapTileLayer specialLayer;
     private TiledMapTileLayer playerLayer;
 
 
-    public Grid(TiledMap map){
-        swWall = new swWall();
-        seWall = new seWall();
-        nwWall = new nwWall();
-        neWall = new neWall();
-        southWall = new SouthWall();
-        westWall = new WestWall();
-        northWall = new NorthWall();
-        eastWall = new EastWall();
-        ground = new Ground();
-
-        width = (Integer)map.getProperties().get("width");
-        height = (Integer)map.getProperties().get("height");
-
+    public Grid(TiledMap map) {
+        width = (Integer) map.getProperties().get("width");
+        height = (Integer) map.getProperties().get("height");
 
         gameLogicGrid = new ArrayList[width][height];
 
+        groundLayer = (TiledMapTileLayer) map.getLayers().get(0);
+        specialLayer = (TiledMapTileLayer) map.getLayers().get(1);
+        playerLayer = (TiledMapTileLayer) map.getLayers().get(2);
 
-        groundLayer = (TiledMapTileLayer)map.getLayers().get(0);
-        specialLayer = (TiledMapTileLayer)map.getLayers().get(1);
-        playerLayer = (TiledMapTileLayer)map.getLayers().get(2);
-
-
-        fillGridWithArrayLists();
-        fillGridWithGroundObjectsFromGroundLayer();
-
-
-    }
-
-    private void fillGridWithGroundObjectsFromGroundLayer() {
-        for(int y = 0; y<height ; y++){
-            for(int x = 0; x<width ; x++){
-                int id = groundLayer.getCell(x,y).getTile().getId();
-                if(id == ground.getId()){
-                    gameLogicGrid[x][y].add(ground);
-
-
-                } else if(id == westWall.getId()){
-
-                    gameLogicGrid[x][y].add(westWall);
-
-                }
-                else if(id == southWall.getId()){
-
-                    gameLogicGrid[x][y].add(southWall);
-
-                }
-                else if(id == northWall.getId()){
-
-                    gameLogicGrid[x][y].add(northWall);
-
-                }
-                else if(id == eastWall.getId()){
-
-                    gameLogicGrid[x][y].add(eastWall);
-
-                }
-                else if(id == neWall.getId()){
-
-                    gameLogicGrid[x][y].add(neWall);
-
-                }
-                else if(id == nwWall.getId()){
-
-                    gameLogicGrid[x][y].add(nwWall);
-
-                }
-                else if(id == swWall.getId()){
-
-                    gameLogicGrid[x][y].add(swWall);
-
-                }
-                else if(id == seWall.getId()){
-
-                    gameLogicGrid[x][y].add(seWall);
-
-                }
-            }
-        }
+        fillGridWithArrayListsAndGameObjects();
     }
 
 
-
-    private void fillGridWithArrayLists(){
-        for(int y = 0; y<height ; y++){
-            for(int x = 0; x<width ; x++){
+    private void fillGridWithArrayListsAndGameObjects() {
+        int id;
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                //ArrayLists
                 gameLogicGrid[x][y] = new ArrayList<GameObjects>();
+
+                //Game objects on ground layer
+                id = groundLayer.getCell(x, y).getTile().getId();
+                gameLogicGrid[x][y].add(new GroundLayerObjects(id));
+
+                //Game objects on special layer **(idè)**
+                //id = specialLayer.getCell(x, y).getTile().getId();
+                //gameLogicGrid[x][y].add(new SpecialObject(id));
             }
         }
     }
-    public boolean AllowedToMoveInDirection(Direction direction, Position position){
-        GameObjects objects = (GameObjects) gameLogicGrid[position.getX()][position.getY()].get(0);
 
-        switch (direction){
-            case NORTH: return objects.moveNorthFromAllowed();
-
-            case SOUTH: return objects.moveSouthFromAllowed();
-
-            case WEST: return  objects.moveWestFromAllowed();
-
-            case EAST: return objects.moveEastFromAllowed();
-
-        }
-        return false;
+    public boolean AllowedToMoveInDirection(Direction dir, Position pos){
+        GameObjects groundLayerObject = (GameObjects) gameLogicGrid[pos.getX()][pos.getY()].get(0);
+        return groundLayerObject.canGo(dir);
     }
-
 }
