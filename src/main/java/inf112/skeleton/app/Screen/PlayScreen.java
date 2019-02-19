@@ -153,6 +153,7 @@ public class PlayScreen implements Screen {
         renderer.render();
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+
         //hud.stage.draw();
     }
 
