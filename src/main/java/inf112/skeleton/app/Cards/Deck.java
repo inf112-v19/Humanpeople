@@ -81,7 +81,7 @@ public class Deck {
 
 
     //Returns a list with multiple smaller decks of 9 cards
-    public ArrayList<ArrayList<Card>> dealCardsToPlayers(int numberOfPlayers) {
+    public ArrayList<ArrayList<Card>> dealCardsToPlayers(int numberOfPlayers, int NUMBER_OF_CARDS_TO_DEAL) {
         if(numberOfPlayers < 1) {
             throw new IllegalArgumentException("Must be one player");
         }

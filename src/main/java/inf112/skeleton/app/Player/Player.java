@@ -11,35 +11,45 @@ public class Player {
     private boolean isAlive;
     private boolean isDead;
     private ArrayList<ProgramCard> programCardHand;
+    private ArrayList<ProgramCard> programSet;
 
     public Player(String name) {
+        this.isAlive = true;
+        this.isDead = false;
         this.name = name;
         this.damageTaken = 0;
         this.health = 10;
         this.programCardHand = new ArrayList<ProgramCard>();
+        programSet = new ArrayList<ProgramCard>();
+
 
     }
 
     public void killPlayer() {
-        while (this.health>0) {
+        while (this.isAlive()) {
             this.reduceHealthBy1();
         }
     }
     public void reduceHealthBy1() {
+        if (isAlive()) {
         this.health--;
         this.damageTaken++;
-        this.isPlayerDead();
-    }
-
-    private void isPlayerDead() {
-        if(health<=0) {
-            this.isAlive = false;
-            this.isDead = true;
         }
     }
 
+    private boolean isDead() {
+        return (this.health < 1);
+    }
+
+    private boolean isAlive() {
+        return (this.health > 0);
+    }
+
+    public int getHealth() {
+        return this.health;
+    }
     
     public int getProgramCardHandSize() {
-        return programCardHand.size();
+        return this.programCardHand.size();
     }
 }
