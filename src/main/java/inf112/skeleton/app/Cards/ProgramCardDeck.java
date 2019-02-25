@@ -31,15 +31,15 @@ public class ProgramCardDeck {
 		}
 		//Add rotate right cards (18) p(80-420)
 		for (int m=0; m<18; m++) {
-			programCardDeck.add(new ProgramCard(ProgramType.BACKUP, (80+(20*m))));
+			programCardDeck.add(new ProgramCard(ProgramType.ROTATERIGHT, (80+(20*m))));
 		}
 		//Add rotate left cards (18) p(70-410)
 		for (int n=0; n<18; n++) {
-			programCardDeck.add(new ProgramCard(ProgramType.BACKUP, (70+(20*n))));
+			programCardDeck.add(new ProgramCard(ProgramType.ROTATELEFT, (70+(20*n))));
 		}
 		//Add u turn cards (6) p(10-60)
 		for (int o=0; o<6; o++) {
-			programCardDeck.add(new ProgramCard(ProgramType.BACKUP, (10+(10*o))));
+			programCardDeck.add(new ProgramCard(ProgramType.UTURN, (10+(10*o))));
 		}
 	}
 	
