@@ -28,13 +28,18 @@ public class Player {
     public void reduceHealthBy1() {
         this.health--;
         this.damageTaken++;
-        this.isDead();
+        this.isPlayerDead();
     }
 
-    private void isDead() {
+    private void isPlayerDead() {
         if(health<=0) {
             this.isAlive = false;
             this.isDead = true;
         }
+    }
+
+    
+    public int getProgramCardHandSize() {
+        return programCardHand.size();
     }
 }
