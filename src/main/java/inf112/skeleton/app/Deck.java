@@ -11,7 +11,6 @@ public class Deck {
 
     public Deck() {
         this.cards =  new ArrayList<Card>();
-
     }
 
     //Returns a list with multiple smaller decks of 9 cards
