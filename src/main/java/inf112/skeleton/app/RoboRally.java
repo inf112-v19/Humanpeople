@@ -2,6 +2,7 @@ package inf112.skeleton.app;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import inf112.skeleton.app.Screen.MenuScreen;
 import inf112.skeleton.app.Screen.PlayScreen;
 
 public class RoboRally extends Game {
@@ -12,7 +13,7 @@ public class RoboRally extends Game {
     @Override
     public void create() {
         batch = new SpriteBatch();
-        setScreen(new PlayScreen(this));
+        setScreen(new MenuScreen(this));
     }
 
     @Override

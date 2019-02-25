@@ -20,8 +20,8 @@ import inf112.skeleton.app.Scenes.Hud;
 
 /**
  * Play screen of RoboRally
- * @author Sondre Bolland
  *
+ * @author Sondre Bolland
  */
 public class PlayScreen implements Screen {
     private RoboRally game;
@@ -35,30 +35,29 @@ public class PlayScreen implements Screen {
     float time = 0;
 
 
-    public PlayScreen(RoboRally game){
+    public PlayScreen(RoboRally game) {
         this.game = game;
 
         gameCam = new OrthographicCamera();
-        gamePort = new FitViewport(RoboRally.width,RoboRally.height, gameCam);
+        gamePort = new FitViewport(RoboRally.width, RoboRally.height, gameCam);
         hud = new Hud(game.batch);
 
         gameMap = new GameMap("assets/map3.tmx");
         map = gameMap.getMap();
 
         renderer = new OrthogonalTiledMapRenderer(map);
-        gameCam.position.set(gamePort.getWorldWidth()/2,(gamePort.getWorldHeight()/2),0);
-           
+        gameCam.position.set(gamePort.getWorldWidth() / 2, (gamePort.getWorldHeight() / 2), 0);
+
 
     }
 
-    public void update(float deltaTime){
+    public void update(float deltaTime) {
         handleInput(deltaTime);
         updateMap();
     }
 
 
-
-    public void handleInput(float deltaTime){
+    public void handleInput(float deltaTime) {
         //moving to other classes************
         /*
         TiledMapTileLayer layer = (TiledMapTileLayer)map.getLayers().get(2);
@@ -115,24 +114,25 @@ public class PlayScreen implements Screen {
         }
         */
         time += deltaTime;
-        if(Gdx.input.isKeyPressed(Input.Keys.D) && time > 0.2) {
+        if (Gdx.input.isKeyPressed(Input.Keys.D) && time > 0.2) {
             time = 0;
             gameMap.movePlayer(Direction.EAST);
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.W) && time > 0.2) {
+        if (Gdx.input.isKeyPressed(Input.Keys.W) && time > 0.2) {
             time = 0;
             gameMap.movePlayer(Direction.NORTH);
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.S) && time > 0.2) {
+        if (Gdx.input.isKeyPressed(Input.Keys.S) && time > 0.2) {
             time = 0;
             gameMap.movePlayer(Direction.SOUTH);
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.A) && time > 0.2) {
+        if (Gdx.input.isKeyPressed(Input.Keys.A) && time > 0.2) {
             time = 0;
             gameMap.movePlayer(Direction.WEST);
         }
 
     }
+
     private void updateMap() {
         map = gameMap.getMap();
     }
@@ -144,7 +144,7 @@ public class PlayScreen implements Screen {
 
     @Override
     public void render(float v) {
-        Gdx.gl.glClearColor(0,0,0,0);
+        Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         update(Gdx.graphics.getDeltaTime());
@@ -153,12 +153,13 @@ public class PlayScreen implements Screen {
         renderer.render();
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+
         //hud.stage.draw();
     }
 
     @Override
     public void resize(int width, int height) {
-        gamePort.update(width,height);
+        gamePort.update(width, height);
     }
 
     @Override
