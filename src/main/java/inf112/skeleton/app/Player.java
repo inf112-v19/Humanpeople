@@ -87,6 +87,4 @@ private ArrayList<Direction> chosen;
     public TiledMapTile getAvatar() {
         return playerTile.getAvatar();
     }
-
-
 }

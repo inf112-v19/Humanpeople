@@ -3,27 +3,33 @@ package inf112.skeleton.app.Screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import inf112.skeleton.app.RoboRally;
 
 /**
- * Menu screen for RoboRally (Not done, rough draft)
+ * Menu screen for RoboRally
  * @author Stian
  *
  */
 public class MenuScreen implements Screen {
-    private  PlayScreen playScreen;
+    private PlayScreen playScreen;
     private RoboRally game;
     private SpriteBatch batch;
-    private Texture texture;
-
+    private Texture menuBackground;
+    private Button playButton;
+    private Texture playButtonTexture;
 
     public MenuScreen(RoboRally game){
         this.game = game;
         batch = new SpriteBatch();
-        texture = new Texture("assets/mainMenu/MRRCG.jpg");
+        menuBackground = new Texture("assets/mainMenu/MRRCG.jpg");
+
+        playButtonTexture = new Texture("assets/mainMenu/playBtn.png");
+        int playButtonPosX = (Gdx.graphics.getWidth()/2) - (int)(playButtonTexture.getWidth()/2);
+        int playButtonPosY = (Gdx.graphics.getHeight()/2) - (int)(playButtonTexture.getHeight()/2);
+        playButton = new Button(playButtonTexture, playButtonPosX, playButtonPosY, 160, 110);
+
         this.playScreen = new PlayScreen(game);
     }
 
@@ -38,13 +44,18 @@ public class MenuScreen implements Screen {
         Gdx.gl.glClearColor(0,0,0,0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        batch.draw(texture,0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.draw(menuBackground,0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        playButton.draw(batch);
         batch.end();
     }
 
     private void handleInput(float deltaTime) {
-        if(Gdx.input.isTouched()){
-            game.setScreen(playScreen);
+        if (Gdx.input.isTouched()) {
+            int inputX = Gdx.input.getX();
+            int inputY = Gdx.input.getY();
+            if (playButton.checkIfClicked(inputX, inputY)) {
+                game.setScreen(playScreen);
+            }
         }
     }
 
@@ -72,4 +83,5 @@ public class MenuScreen implements Screen {
     public void dispose() {
 
     }
+
 }

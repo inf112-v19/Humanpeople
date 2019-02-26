@@ -6,7 +6,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import inf112.skeleton.app.GameObjects.Directions.Direction;
 import inf112.skeleton.app.GameObjects.Directions.Position;
-import inf112.skeleton.app.GameObjects.PlayerLayerObject;
+import inf112.skeleton.app.GameObjects.PlayerTile;
 
 import java.util.ArrayList;
 import java.util.Stack;
@@ -48,6 +48,7 @@ public class GameMap {
             players.add(player);
         }
         drawPlayers();
+
     }
 
     //Draws players
@@ -80,8 +81,8 @@ public class GameMap {
         return grid.AllowedToMoveInDirection(dir, pos);
     }
 
-    public TiledMap getMap() {
-        return map;
+    public TiledMapTileLayer getPlayerLayer() {
+        return playerLayer;
     }
 
     public ArrayList<Player> getPlayers() {
