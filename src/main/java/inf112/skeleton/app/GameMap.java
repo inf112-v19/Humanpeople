@@ -6,7 +6,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import inf112.skeleton.app.GameObjects.Directions.Direction;
 import inf112.skeleton.app.GameObjects.Directions.Position;
-import inf112.skeleton.app.GameObjects.PlayerTile;
+
 
 import java.util.ArrayList;
 import java.util.Stack;
@@ -22,7 +22,8 @@ public class GameMap {
 
     //List of players and list of their cells on the map
     private ArrayList<Player> players;
-    private ArrayList<TiledMapTileLayer.Cell> cells;
+
+
 
     //Takes String (filename for tileset), int (number of players)
     public GameMap(String name, int nPlayers) {
@@ -32,7 +33,7 @@ public class GameMap {
         this.tiles = map.getTileSets().getTileSet("testTileset");
         this.players = new ArrayList<>();
         this.nPlayers = nPlayers;
-        this.cells = new ArrayList<>();
+
         this.playerLayer = (TiledMapTileLayer) map.getLayers().get(2);
 
         initializePlayers();
@@ -43,8 +44,8 @@ public class GameMap {
         //Arrays 'players' and 'cells' have corresponding player/cell indices
         for (int id = 0; id < nPlayers; id++) {
             Player player = new Player(tiles, id);
-            TiledMapTileLayer.Cell pCell = new TiledMapTileLayer.Cell();
-            cells.add(pCell);
+
+
             players.add(player);
         }
         drawPlayers();
@@ -55,7 +56,10 @@ public class GameMap {
     public void drawPlayers() {
         for (Player player : players) {
             Position pos = player.getPosition();
-            TiledMapTileLayer.Cell avatar = cells.get(player.getId()).setTile(player.getAvatar());
+
+            TiledMapTileLayer.Cell avatar = new TiledMapTileLayer.Cell();
+            avatar.setTile(player.getAvatar());
+
             playerLayer.setCell(pos.getX(), pos.getY(), avatar);
         }
     }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import inf112.skeleton.app.RoboRally;
 
@@ -19,11 +20,14 @@ public class MenuScreen implements Screen {
     private Texture menuBackground;
     private Button playButton;
     private Texture playButtonTexture;
+    Sprite sprite;
 
     public MenuScreen(RoboRally game){
         this.game = game;
         batch = new SpriteBatch();
         menuBackground = new Texture("assets/mainMenu/MRRCG.jpg");
+        sprite = new Sprite(menuBackground);
+        sprite.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
         playButtonTexture = new Texture("assets/mainMenu/playBtn.png");
         int playButtonPosX = (Gdx.graphics.getWidth()/2) - (int)(playButtonTexture.getWidth()/2);
@@ -44,7 +48,8 @@ public class MenuScreen implements Screen {
         Gdx.gl.glClearColor(0,0,0,0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        batch.draw(menuBackground,0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        sprite.draw(batch);
         playButton.draw(batch);
         batch.end();
     }
