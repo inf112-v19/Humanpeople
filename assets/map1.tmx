@@ -225,7 +225,7 @@
 0,3221225632,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="17" name="player" width="12" height="12">
+ <layer id="17" name="playerLayerObject" width="12" height="12">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,

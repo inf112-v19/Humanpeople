@@ -17,7 +17,7 @@
 - Oppmøte: alle
 - Gjennomgang av kode
 - Oppklaring i forhold til implementasjon av brettet
-- Fikse GameMap-klassen slik denne styrer player movement.
+- Fikse GameMap-klassen slik denne styrer playerLayerObject movement.
 - Implementere flyttbar brikke til neste gang.
 - Draft til skriftlig innlevering påbegynt
 
