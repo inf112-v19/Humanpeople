@@ -4,7 +4,6 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import inf112.skeleton.app.GameObjects.Directions.Direction;
 import inf112.skeleton.app.GameObjects.Directions.Position;
-import inf112.skeleton.app.Screen.PlayScreen;
 
 /**
  * Player object
@@ -20,6 +19,8 @@ public class Player implements GameObjects {
     private final TiledMapTile eastAvatar;
     private final TiledMapTile westAvatar;
 
+    private TiledMapTile currentAvatar;
+
     private Position position;
 
     public Player(TiledMap map){
@@ -30,6 +31,8 @@ public class Player implements GameObjects {
         westAvatar = map.getTileSets().getTileSet("testTileset").getTile(33);
         eastAvatar = map.getTileSets().getTileSet("testTileset").getTile(32);
         southAvatar = map.getTileSets().getTileSet("testTileset").getTile(34);
+
+        currentAvatar = northAvatar;
     }
 
     @Override
@@ -51,19 +54,35 @@ public class Player implements GameObjects {
     }
 
 
-    public TiledMapTile getNorthAvatar() {
-        return northAvatar;
+    public void move(Direction direction) {
+        switch (direction) {
+            case NORTH: {
+                currentAvatar = northAvatar;
+                position = position.North();
+                break;
+            }
+
+            case SOUTH: {
+                currentAvatar = southAvatar;
+                position = position.South();
+                break;
+            }
+            case WEST: {
+                currentAvatar = westAvatar;
+                position = position.West();
+                break;
+            }
+            case EAST: {
+                currentAvatar = eastAvatar;
+                position = position.East();
+                break;
+            }
+
+        }
     }
 
-    public TiledMapTile getSouthAvatar() {
-        return southAvatar;
-    }
 
-    public TiledMapTile getEastAvatar() {
-        return eastAvatar;
-    }
-
-    public TiledMapTile getWestAvatar() {
-        return westAvatar;
+    public TiledMapTile getCurrentAvatar() {
+        return currentAvatar;
     }
 }

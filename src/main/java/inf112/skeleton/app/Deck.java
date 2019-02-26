@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Deck {
-
+/*
     private ArrayList<Card> cards;
 
     private final int NUMBER_OF_CARDS_TO_DEAL = 9;
@@ -40,6 +40,6 @@ public class Deck {
 
     private void shuffle() {
         Collections.shuffle(cards);
-    }
+    }*/
 }
 

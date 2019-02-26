@@ -28,69 +28,30 @@ public class GameMap {
         playerCell = new TiledMapTileLayer.Cell();
         playerLayer = (TiledMapTileLayer) map.getLayers().get(2);
 
-        initPlayer(player);
+        drawPlayer(player);
 
     }
 
-    public void initPlayer(Player player) {
-        playerCell.setTile(player.getNorthAvatar());
-        playerLayer.setCell(getPlayer().getPosition().getX(), getPlayer().getPosition().getY(), playerCell);
+    public void drawPlayer(Player player) {
+        playerCell.setTile(player.getCurrentAvatar());
+        playerLayer.setCell(player.getPosition().getX(), player.getPosition().getY(), playerCell);
     }
 
 
-
-    /*public boolean AllowedToMove(Direction direction){
-        return grid.AllowedToMoveInDirection(direction,player.getPosition());
-    }*/
 
     public void movePlayer(Direction direction) {
         if (grid.AllowedToMoveInDirection(direction, player.getPosition())) {
+
+            //removes player from map
             Position playerPosition = player.getPosition();
-            switch (direction) {
-                case NORTH: {
+            playerLayer.setCell(playerPosition.getX(), playerPosition.getY(), null);
 
-                    playerCell.setTile(player.getNorthAvatar());
+            player.move(direction);
 
-                    playerLayer.setCell(playerPosition.getX(), playerPosition.getY(), null);
-                    playerLayer.setCell(playerPosition.getX(), playerPosition.getY() + 1, playerCell);
+            drawPlayer(player);
 
-                    player.setPosition(playerPosition.North());
-                    break;
-                }
-
-                case SOUTH: {
-
-                    playerCell.setTile(player.getSouthAvatar());
-
-                    playerLayer.setCell(playerPosition.getX(),playerPosition.getY(),null);
-                    playerLayer.setCell(playerPosition.getX(), playerPosition.getY() - 1, playerCell);
-
-                    player.setPosition(playerPosition.South());
-                    break;
-                }
-                case WEST: {
-
-                    playerCell.setTile(player.getWestAvatar());
-
-                    playerLayer.setCell(playerPosition.getX(), playerPosition.getY(), null);
-                    playerLayer.setCell(playerPosition.getX() - 1, playerPosition.getY(), playerCell);
-
-                    player.setPosition(playerPosition.West());
-                    break;
-                }
-                case EAST: {
-
-                    playerCell.setTile(player.getEastAvatar());
-
-                    playerLayer.setCell(playerPosition.getX(), playerPosition.getY(), null);
-                    playerLayer.setCell(playerPosition.getX() + 1, playerPosition.getY(), playerCell);
-
-                    player.setPosition(playerPosition.East());
-                    break;
-                }
-
-            }
         }
+        //for testing
         System.out.println(player.getPosition().getX() + "  " + player.getPosition().getY());
 
     }
@@ -100,7 +61,4 @@ public class GameMap {
         return map;
     }
 
-    public Player getPlayer() {
-        return player;
-    }
 }
