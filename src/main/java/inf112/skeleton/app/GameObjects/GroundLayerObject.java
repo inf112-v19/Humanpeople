@@ -2,7 +2,7 @@ package inf112.skeleton.app.GameObjects;
 
 import inf112.skeleton.app.GameObjects.Directions.Direction;
 
-public class GroundLayerObjects implements GameObjects {
+public class GroundLayerObject implements GameObject {
 
     protected boolean north = true;
     protected boolean south = true;
@@ -10,7 +10,7 @@ public class GroundLayerObjects implements GameObjects {
     protected boolean west = true;
     private final int id;
 
-    public GroundLayerObjects(int id) {
+    public GroundLayerObject(int id) {
         this.id = id;
 
         switch (id) {

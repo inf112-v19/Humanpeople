@@ -36,11 +36,11 @@ public class Grid {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 //ArrayLists
-                gameLogicGrid[x][y] = new ArrayList<GameObjects>();
+                gameLogicGrid[x][y] = new ArrayList<GameObject>();
 
                 //Game objects on ground layer
                 id = groundLayer.getCell(x, y).getTile().getId();
-                gameLogicGrid[x][y].add(new GroundLayerObjects(id));
+                gameLogicGrid[x][y].add(new GroundLayerObject(id));
 
                 //Game objects on special layer **(idè)**
                 //id = specialLayer.getCell(x, y).getTile().getId();
@@ -50,7 +50,7 @@ public class Grid {
     }
 
     public boolean AllowedToMoveInDirection(Direction dir, Position pos){
-        GameObjects groundLayerObject = (GameObjects) gameLogicGrid[pos.getX()][pos.getY()].get(0);
+        GameObject groundLayerObject = (GameObject) gameLogicGrid[pos.getX()][pos.getY()].get(0);
         return groundLayerObject.canGo(dir);
     }
 }
