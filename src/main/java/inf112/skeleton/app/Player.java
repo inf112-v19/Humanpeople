@@ -1,112 +1,90 @@
 package inf112.skeleton.app;
 
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TiledMapTile;
+import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import inf112.skeleton.app.GameObjects.Directions.Direction;
 import inf112.skeleton.app.GameObjects.Directions.Position;
-import inf112.skeleton.app.GameObjects.GameObjects;
-import inf112.skeleton.app.GameObjects.PlayerTile;
+import inf112.skeleton.app.GameObjects.PlayerLayerObject;
 
-/**
- * Player class
- */
+import java.util.ArrayList;
+import java.util.Random;
+
 public class Player {
 
-    private final int FULL_HEALTH = 9;
-    private final int MAX_LIFE = 3;
+    private Position backup;
+    private PlayerLayerObject playerTile;
+    private int lifeTokens = 3;
+    private int damageTokens = 9;
+    private int id;
+    private Direction dir;
 
-    private String name;
-    private int health;
-    private int lives;
-    private PlayerDeck playerDeck;
-    private PlayerTile playerTile;
+//    public ArrayList<Cards> cardsDealt;
+//    private ArrayList<Cards> cardsChosen;
 
-    public Player(String name, PlayerTile playerTile) {
-        this.name = name;
-        health = FULL_HEALTH;
-        lives = MAX_LIFE;
-        playerDeck = new PlayerDeck();
-        this.playerTile = playerTile;
+    //Temporary for cards
+private ArrayList<Direction> chosen;
+
+    public Player(TiledMapTileSet tiles, int id) {
+        this.id = id;
+        this.playerTile = new PlayerLayerObject(tiles, id);
+        this.chosen = new ArrayList<>();
+
+        //Temporary
+        chosen.add(Direction.NORTH);
+        chosen.add(Direction.SOUTH);
+        chosen.add(Direction.EAST);
+        chosen.add(Direction.WEST);
     }
 
-    public void takeDamage() {
-        health--;
-        if (health == 0) {
-            lives--;
-            health = FULL_HEALTH;
-            if (lives == 0)
-                System.out.println(name + " fucking died");
-            else
-                System.out.println(name + " returned to respawn point");
+    public int getId(){
+        return id;
+    }
+
+    //Supposed to return next move from current cards
+    public Direction getMove() {
+        //Temporary random directions
+        Random r = new Random();
+        Direction dir = chosen.get(r.nextInt(4));
+        System.out.println(dir);
+        this.dir = dir;
+        return dir;
+    }
+
+    //Updates the playerTile if move was legal
+    public void update() {
+        playerTile.setDirection(dir);
+        switch (dir) {
+            case NORTH:
+                playerTile.setPosition(playerTile.getPosition().North());
+                break;
+            case SOUTH:
+                playerTile.setPosition(playerTile.getPosition().South());
+                break;
+            case WEST:
+                playerTile.setPosition(playerTile.getPosition().West());
+                break;
+            case EAST:
+                playerTile.setPosition(playerTile.getPosition().East());
         }
+    }
+
+    public Position getPosition() {
+        return playerTile.getPosition();
+    }
+
+    public Direction getDirection() {
+        return playerTile.getDirection();
+    }
+
+    public void powerDown() {
 
     }
 
-    public void move(Direction direction, GameMap gameMap) {
-        // Get the required variables for moving the player on the gameMap
-        TiledMapTileLayer playerLayer = gameMap.getPlayerLayer();
-        TiledMapTileLayer.Cell playerCell = gameMap.getPlayerCell();
-        Grid grid = gameMap.getGrid();
-
-        if (grid.AllowedToMoveInDirection(direction, playerTile.getPosition())) {
-            Position playerPosition = playerTile.getPosition();
-            switch (direction) {
-                case NORTH: {
-
-                    playerCell.setTile(playerTile.getNorthAvatar());
-
-                    playerLayer.setCell(playerPosition.getX(), playerPosition.getY(), null);
-                    playerLayer.setCell(playerPosition.getX(), playerPosition.getY() + 1, playerCell);
-
-                    playerTile.setPosition(playerPosition.North());
-                    break;
-                }
-
-                case SOUTH: {
-
-                    playerCell.setTile(playerTile.getSouthAvatar());
-
-                    playerLayer.setCell(playerPosition.getX(),playerPosition.getY(),null);
-                    playerLayer.setCell(playerPosition.getX(), playerPosition.getY() - 1, playerCell);
-
-                    playerTile.setPosition(playerPosition.South());
-                    break;
-                }
-                case WEST: {
-
-                    playerCell.setTile(playerTile.getWestAvatar());
-
-                    playerLayer.setCell(playerPosition.getX(), playerPosition.getY(), null);
-                    playerLayer.setCell(playerPosition.getX() - 1, playerPosition.getY(), playerCell);
-
-                    playerTile.setPosition(playerPosition.West());
-                    break;
-                }
-                case EAST: {
-
-                    playerCell.setTile(playerTile.getEastAvatar());
-
-                    playerLayer.setCell(playerPosition.getX(), playerPosition.getY(), null);
-                    playerLayer.setCell(playerPosition.getX() + 1, playerPosition.getY(), playerCell);
-
-                    playerTile.setPosition(playerPosition.East());
-                    break;
-                }
-
-            }
-        }
-        System.out.println(playerTile.getPosition().getX() + "  " + playerTile.getPosition().getY());
+    public void setBackup(Position pos) {
+        backup = pos;
     }
 
-    public PlayerTile getPlayerTile() {
-        return playerTile;
+    public TiledMapTile getAvatar() {
+        return playerTile.getAvatar();
     }
-
-    public int getHealth() {
-        return health;
-    }
-
-    public int getLives() {
-        return lives;
-    }
-
 }
