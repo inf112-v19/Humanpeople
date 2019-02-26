@@ -5,18 +5,20 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import inf112.skeleton.app.RoboRally;
 
 /**
  * Menu screen for RoboRally (Not done, rough draft)
- * @author Stian
+ * @author Stian H
  *
  */
 public class MenuScreen implements Screen {
-    private  PlayScreen playScreen;
+    private PlayScreen playScreen;
     private RoboRally game;
     private SpriteBatch batch;
+    private Sprite sprite;
     private Texture texture;
 
 
@@ -24,6 +26,8 @@ public class MenuScreen implements Screen {
         this.game = game;
         batch = new SpriteBatch();
         texture = new Texture("assets/mainMenu/MRRCG.jpg");
+        sprite = new Sprite(texture);
+        sprite.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         this.playScreen = new PlayScreen(game);
     }
 
@@ -38,7 +42,7 @@ public class MenuScreen implements Screen {
         Gdx.gl.glClearColor(0,0,0,0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        batch.draw(texture,0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        sprite.draw(batch);
         batch.end();
     }
 
@@ -49,7 +53,7 @@ public class MenuScreen implements Screen {
     }
 
     @Override
-    public void resize(int i, int i1) {
+    public void resize(int width, int height) {
 
     }
 

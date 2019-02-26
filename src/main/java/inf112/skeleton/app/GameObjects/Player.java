@@ -7,7 +7,7 @@ import inf112.skeleton.app.GameObjects.Directions.Position;
 
 /**
  * Player object
- * @author Stian
+ * @author Stian H
  *
  */
 public class Player implements GameObjects {

@@ -7,6 +7,7 @@ import inf112.skeleton.app.GameObjects.Directions.Direction;
 import inf112.skeleton.app.GameObjects.Directions.Position;
 import inf112.skeleton.app.GameObjects.Player;
 
+
 public class GameMap {
 
 

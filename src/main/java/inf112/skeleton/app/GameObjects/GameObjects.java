@@ -4,7 +4,7 @@ import inf112.skeleton.app.GameObjects.Directions.Direction;
 
 /**
  * Interface for all Game Objects
- * @author Stian
+ * @author Stian H
  *
  */
 public interface GameObjects {
