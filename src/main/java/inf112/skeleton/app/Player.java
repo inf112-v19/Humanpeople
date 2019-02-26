@@ -22,7 +22,7 @@ public class Player {
 //    private ArrayList<Cards> cardsChosen;
 
     //Temporary for cards
-private ArrayList<Direction> chosen;
+    private ArrayList<Direction> chosen;
 
     public Player(TiledMapTileSet tiles, int id) {
         this.id = id;

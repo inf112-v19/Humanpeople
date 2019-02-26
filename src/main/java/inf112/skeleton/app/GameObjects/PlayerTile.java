@@ -11,7 +11,7 @@ import inf112.skeleton.app.Screen.PlayScreen;
  * @author Stian
  *
  */
-public class PlayerTile implements GameObjects {
+public class PlayerTile implements GameObject {
 
     private final int id;
 

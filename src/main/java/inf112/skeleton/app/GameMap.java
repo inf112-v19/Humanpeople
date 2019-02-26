@@ -88,4 +88,8 @@ public class GameMap {
     public ArrayList<Player> getPlayers() {
         return players;
     }
+
+    public TiledMap getMap() {
+        return map;
+    }
 }
