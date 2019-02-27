@@ -30,9 +30,9 @@ public class MenuScreen implements Screen {
         sprite.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
         playButtonTexture = new Texture("assets/mainMenu/playBtn.png");
-        int playButtonPosX = (Gdx.graphics.getWidth()/2) - (int)(playButtonTexture.getWidth()/2);
-        int playButtonPosY = (Gdx.graphics.getHeight()/2) - (int)(playButtonTexture.getHeight()/2);
-        playButton = new Button(playButtonTexture, playButtonPosX, playButtonPosY, 160, 110);
+        int playButtonPosX = (Gdx.graphics.getWidth()/2) - (playButtonTexture.getWidth()/2);
+        int playButtonPosY = (Gdx.graphics.getHeight()/2) - (playButtonTexture.getHeight()/2);
+        playButton = new Button(playButtonTexture, playButtonPosX, playButtonPosY, playButtonTexture.getWidth(), playButtonTexture.getHeight());
 
         this.playScreen = new PlayScreen(game);
     }
@@ -55,6 +55,7 @@ public class MenuScreen implements Screen {
     }
 
     private void handleInput(float deltaTime) {
+
         if (Gdx.input.isTouched()) {
             int inputX = Gdx.input.getX();
             int inputY = Gdx.input.getY();
