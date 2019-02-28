@@ -31,7 +31,7 @@ public class PlayerDeck {
      * @param cardInDeckNumber
      */
     public void selectCardForHand(int cardInDeckNumber) {
-        if (cardInDeckNumber < 0 || cardInDeckNumber > MAX_NUMBER_CARDS_IN_DECK-1)
+        if (cardInDeckNumber < 0 || cardInDeckNumber > deckSize())
             throw new IndexOutOfBoundsException("You only have " + MAX_NUMBER_CARDS_IN_DECK +" cards to choose from. No such " + cardInDeckNumber + "th programCard");
         if (handSize() >= MAX_NUMBER_CARDS_ON_HAND)
             throw new IndexOutOfBoundsException("The players hand is already full (size: " + MAX_NUMBER_CARDS_ON_HAND+ ")");
@@ -47,7 +47,8 @@ public class PlayerDeck {
     public ProgramCard getCardFromHand() {
         if (handSize() < 1)
             throw new NoSuchElementException("No cards in the deck");
-        ProgramCard programCard = hand.get(handSize()-1);
+        ProgramCard programCard = hand.get(0);
+        hand.remove(0);
         return programCard;
     }
 
