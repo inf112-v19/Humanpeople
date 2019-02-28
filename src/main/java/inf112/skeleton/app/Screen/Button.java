@@ -28,12 +28,14 @@ public class Button {
         return (skin.getX()+skin.getWidth())*(float)Gdx.graphics.getWidth()/ RoboRally.cfgWidth;
     }
     public float getButtonStartY(){
-        return (float)((skin.getY()+skin.getHeight())*(double)Gdx.graphics.getHeight()/ RoboRally.cfgHeight);
+
+        float yPos = Gdx.graphics.getHeight()-(skin.getY()*(float)Gdx.graphics.getHeight()/ RoboRally.cfgHeight);
+        return yPos -(skin.getHeight()*(float)Gdx.graphics.getHeight()/ RoboRally.cfgHeight);
     }
 
     public float getButtonEndY() {
+        return Gdx.graphics.getHeight()-(skin.getY()*(float)Gdx.graphics.getHeight()/ RoboRally.cfgHeight);
 
-        return (float)(skin.getY()*(double)Gdx.graphics.getHeight()/ RoboRally.cfgHeight);
     }
 
 
@@ -42,9 +44,11 @@ public class Button {
     }
 
     public boolean checkIfClicked(float inputX, float inputY){
-
+        System.out.println(inputY);
+        System.out.println(getButtonStartY());
+        System.out.println(getButtonEndY()+"\n");
         if(inputX>getButtonStartX()&&inputX<getButtonEndX()){
-            if(inputY<getButtonStartY()&&inputY>getButtonEndY()){
+            if(inputY>getButtonStartY()&&inputY<getButtonEndY()){
                 return true;
             }
 

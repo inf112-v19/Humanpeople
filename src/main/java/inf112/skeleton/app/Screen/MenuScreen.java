@@ -17,14 +17,21 @@ public class MenuScreen implements Screen {
     private PlayScreen playScreen;
     private RoboRally game;
     private SpriteBatch batch;
-    private Texture menuBackground;
+
     private Button playButton;
     private Texture playButtonTexture;
-    Sprite sprite;
+
+    private Sprite sprite;
+    private Texture menuBackground;
+
+    private Button testButton;
+    private Texture testButtonTexture;
 
     public MenuScreen(RoboRally game){
         this.game = game;
+        this.playScreen = new PlayScreen(game);
         batch = new SpriteBatch();
+
         menuBackground = new Texture("assets/mainMenu/MRRCG.jpg");
         sprite = new Sprite(menuBackground);
         sprite.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
@@ -34,7 +41,9 @@ public class MenuScreen implements Screen {
         int playButtonPosY = (Gdx.graphics.getHeight()/2) - (playButtonTexture.getHeight()/2);
         playButton = new Button(playButtonTexture, playButtonPosX, playButtonPosY, playButtonTexture.getWidth(), playButtonTexture.getHeight());
 
-        this.playScreen = new PlayScreen(game);
+        testButtonTexture = new Texture("assets/mainMenu/testBtn.png");
+        testButton = new Button(testButtonTexture,2,2,testButtonTexture.getWidth(),testButtonTexture.getHeight());
+
     }
 
     @Override
@@ -51,6 +60,7 @@ public class MenuScreen implements Screen {
 
         sprite.draw(batch);
         playButton.draw(batch);
+        testButton.draw(batch);
         batch.end();
     }
 
@@ -59,8 +69,12 @@ public class MenuScreen implements Screen {
         if (Gdx.input.isTouched()) {
             int inputX = Gdx.input.getX();
             int inputY = Gdx.input.getY();
+
             if (playButton.checkIfClicked(inputX, inputY)) {
                 game.setScreen(playScreen);
+            }
+            else if(testButton.checkIfClicked(inputX,inputY)){
+                System.out.println("pog");
             }
         }
     }
