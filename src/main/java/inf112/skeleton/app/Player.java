@@ -76,6 +76,10 @@ public class Player {
         return playerTile.getDirection();
     }
 
+    public void setDir(Direction dir){
+        this.dir = dir;
+    }
+
     public void powerDown() {
 
     }

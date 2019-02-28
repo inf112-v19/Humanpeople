@@ -80,12 +80,18 @@ public class GameMap {
         drawPlayers();
     }
 
+    //for testing
     public void movePlayers(Direction direction){
         Player player = players.get(0);
         if(canGo(direction,player.getPosition())){
-
+            System.out.println("hei");
+            Position playerPosition = player.getPosition();
+            playerLayer.setCell(playerPosition.getX(), playerPosition.getY(), null);
+            player.setDir(direction);
+            player.update();
         }
-       
+        drawPlayers();
+
     }
 
     //Check if valid position
