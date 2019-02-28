@@ -21,7 +21,6 @@ import inf112.skeleton.app.Scenes.Hud;
 /**
  * Play screen of RoboRally
  *
- * @author Sondre Bolland
  */
 public class PlayScreen implements Screen {
     private RoboRally game;
@@ -43,7 +42,6 @@ public class PlayScreen implements Screen {
         this.gameMap = new GameMap("assets/map3.tmx", 3);
         this.map = gameMap.getMap();
         this.renderer = new OrthogonalTiledMapRenderer(map);
-
         gameCam.position.set(gamePort.getWorldWidth() / 2, (gamePort.getWorldHeight() / 2), 0);
 
 
