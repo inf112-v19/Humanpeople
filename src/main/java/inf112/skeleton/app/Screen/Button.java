@@ -44,9 +44,7 @@ public class Button {
     }
 
     public boolean checkIfClicked(float inputX, float inputY){
-        System.out.println(inputY);
-        System.out.println(getButtonStartY());
-        System.out.println(getButtonEndY()+"\n");
+
         if(inputX>getButtonStartX()&&inputX<getButtonEndX()){
             if(inputY>getButtonStartY()&&inputY<getButtonEndY()){
                 return true;
