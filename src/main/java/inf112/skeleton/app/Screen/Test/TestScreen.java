@@ -1,4 +1,4 @@
-package inf112.skeleton.app.Screen;
+package inf112.skeleton.app.Screen.Test;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -6,24 +6,16 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTile;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import inf112.skeleton.app.GameMap;
 import inf112.skeleton.app.GameObjects.Directions.Direction;
-import inf112.skeleton.app.GameObjects.Directions.Position;
 import inf112.skeleton.app.RoboRally;
 import inf112.skeleton.app.Scenes.Hud;
 
-/**
- * Play screen of RoboRally
- *
- * @author Sondre Bolland
- */
-public class PlayScreen implements Screen {
+public class TestScreen implements Screen {
+
     private RoboRally game;
     private OrthographicCamera gameCam;
     private Viewport gamePort;
@@ -32,10 +24,10 @@ public class PlayScreen implements Screen {
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private GameMap gameMap;
-    float time = 0;
+    private float time = 0;
 
 
-    public PlayScreen(RoboRally game) {
+    public TestScreen(RoboRally game) {
         this.game = game;
         this.gameCam = new OrthographicCamera();
         this.gamePort = new FitViewport(RoboRally.width, RoboRally.height, gameCam);
@@ -59,7 +51,7 @@ public class PlayScreen implements Screen {
         time += deltaTime;
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && time > 0.2) {
             time = 0;
-            gameMap.movePlayers();
+            gameMap.movePlayers(Direction.NORTH);
         }
 
 //        if (Gdx.input.isKeyPressed(Input.Keys.W) && time > 0.2) {
@@ -125,3 +117,4 @@ public class PlayScreen implements Screen {
 
     }
 }
+

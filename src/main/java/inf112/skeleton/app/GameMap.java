@@ -80,6 +80,14 @@ public class GameMap {
         drawPlayers();
     }
 
+    public void movePlayers(Direction direction){
+        Player player = players.get(0);
+        if(canGo(direction,player.getPosition())){
+
+        }
+       
+    }
+
     //Check if valid position
     public boolean canGo(Direction dir, Position pos) {
         return grid.AllowedToMoveInDirection(dir, pos);
