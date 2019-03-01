@@ -81,16 +81,17 @@ public class GameMap {
     }
 
     //for testing
-    public void movePlayers(Direction direction){
-        Player player = players.get(0);
+    public void movePlayer(Direction direction, int playerId){
+        Player player = players.get(playerId);
         if(canGo(direction,player.getPosition())){
-            System.out.println("hei");
+
             Position playerPosition = player.getPosition();
             playerLayer.setCell(playerPosition.getX(), playerPosition.getY(), null);
-            player.setDir(direction);
-            player.update();
+            player.update(direction);
+
         }
         drawPlayers();
+
 
     }
 

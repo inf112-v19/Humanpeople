@@ -53,7 +53,15 @@ public class Player {
     //Updates the playerTile if move was legal
     public void update() {
         playerTile.setDirection(dir);
-        switch (dir) {
+        movePlayerInDirection(dir);
+
+    }
+    public void update(Direction direction){
+        playerTile.setDirection(direction);
+        movePlayerInDirection(direction);
+    }
+    public void movePlayerInDirection(Direction direction){
+        switch (direction) {
             case NORTH:
                 playerTile.setPosition(playerTile.getPosition().North());
                 break;
@@ -76,9 +84,6 @@ public class Player {
         return playerTile.getDirection();
     }
 
-    public void setDir(Direction dir){
-        this.dir = dir;
-    }
 
     public void powerDown() {
 

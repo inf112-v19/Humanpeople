@@ -49,23 +49,25 @@ public class TestScreen implements Screen {
 
     public void handleInput(float deltaTime) {
         time += deltaTime;
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && time > 0.2) {
+
+        if (Gdx.input.isKeyPressed(Input.Keys.W) && time > 0.2) {
             time = 0;
-            gameMap.movePlayers(Direction.NORTH);
+            gameMap.movePlayer(Direction.NORTH,0);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.D) && time > 0.2) {
+            time = 0;
+            gameMap.movePlayer(Direction.EAST,0);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.S) && time > 0.2) {
+            time = 0;
+            gameMap.movePlayer(Direction.SOUTH,0);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.A) && time > 0.2) {
+            time = 0;
+            gameMap.movePlayer(Direction.WEST,0);
         }
 
-//        if (Gdx.input.isKeyPressed(Input.Keys.W) && time > 0.2) {
-//            time = 0;
-//            gameMap.movePlayer(Direction.NORTH, gameMap.getPlayer());
-//        }
-//        if (Gdx.input.isKeyPressed(Input.Keys.S) && time > 0.2) {
-//            time = 0;
-//            gameMap.movePlayer(Direction.SOUTH, gameMap.getPlayer());
-//        }
-//        if (Gdx.input.isKeyPressed(Input.Keys.A) && time > 0.2) {
-//            time = 0;
-//            gameMap.movePlayer(Direction.WEST, gameMap.getPlayer());
-//        }
+
     }
 
     private void updateMap() {
