@@ -43,7 +43,6 @@ public class MenuScreen implements Screen {
 
         testButtonTexture = new Texture("assets/mainMenu/testBtn.png");
         testButton = new Button(testButtonTexture,2,2,testButtonTexture.getWidth(),testButtonTexture.getHeight());
-
     }
 
     @Override

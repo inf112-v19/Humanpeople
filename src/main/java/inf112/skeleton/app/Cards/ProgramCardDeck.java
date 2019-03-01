@@ -1,7 +1,11 @@
 package inf112.skeleton.app.Cards;
 
+import inf112.skeleton.app.Player;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.NoSuchElementException;
+import java.util.Random;
 
 public class ProgramCardDeck {
 	private ArrayList<ProgramCard> programCardDeck;
@@ -53,11 +57,68 @@ public class ProgramCardDeck {
 	public void shuffleDeck() {
 		Collections.shuffle(this.programCardDeck);
 	}
-	
+
+	public ProgramCard takeCard(int index) {
+		if (getSizeOfDeck() < 1) {
+			throw new NoSuchElementException("There are no more cards to take.");
+		}
+		if (index >= getSizeOfDeck()) {
+			throw new IndexOutOfBoundsException("The index is too high.");
+		}
+		ProgramCard card = programCardDeck.get(index);
+		programCardDeck.remove(index);
+		return card;
+	}
+
 	public ProgramCard takeTopCard() {
-		ProgramCard topCard = this.programCardDeck.get(0);
-		this.programCardDeck.remove(0);
+		if (getSizeOfDeck() < 1) {
+			throw new NoSuchElementException("There are no more cards to take.");
+		}
+		ProgramCard topCard = programCardDeck.get(0);
+		programCardDeck.remove(0);
 		return topCard;
+	}
+
+
+	public ProgramCard takeRandomCard() {
+		if (getSizeOfDeck() < 1) {
+			throw new NoSuchElementException("There are no more cards to take.");
+		}
+		Random r = new Random();
+		int index = r.nextInt(getSizeOfDeck());
+		ProgramCard randomCard = takeCard(index);
+		return randomCard;
+	}
+
+	/**
+	 * Give out 9 cards to each player
+	 * @param players
+	 */
+	public void giveOutCardsToAllPlayers(ArrayList<Player> players) {
+		if (getSizeOfDeck() < 50)
+			newProgramCardDeck();
+		for (int i = 0; i < players.size(); i++) {
+			Player player = players.get(i);
+			ArrayList<ProgramCard> playerDeck = new ArrayList<>();
+			for (int j = 0; j < PlayerDeck.MAX_NUMBER_CARDS_IN_DECK; j++) {
+				playerDeck.add(takeRandomCard());
+			}
+			player.getPlayerDeck().setDeck(playerDeck);
+		}
+	}
+
+	/**
+	 * Give out 9 cards (fill the playerDeck) to a player
+	 * @param player
+	 */
+	public void giveOutCardsToPlayer(Player player) {
+		if (getSizeOfDeck() < 50)
+			newProgramCardDeck();
+		ArrayList<ProgramCard> playerDeck = new ArrayList<>();
+		for (int i = 0; i < PlayerDeck.MAX_NUMBER_CARDS_IN_DECK; i++) {
+			playerDeck.add(takeRandomCard());
+		}
+		player.getPlayerDeck().setDeck(playerDeck);
 	}
 	
 	public int getSizeOfDeck() {
