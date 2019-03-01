@@ -21,14 +21,13 @@ import inf112.skeleton.app.Scenes.Hud;
 /**
  * Play screen of RoboRally
  *
- * @author Sondre Bolland
  */
 public class PlayScreen implements Screen {
     private RoboRally game;
     private OrthographicCamera gameCam;
     private Viewport gamePort;
     private Hud hud;
-    private TmxMapLoader mapLoader;
+
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private GameMap gameMap;
@@ -43,7 +42,6 @@ public class PlayScreen implements Screen {
         this.gameMap = new GameMap("assets/map3.tmx", 3);
         this.map = gameMap.getMap();
         this.renderer = new OrthogonalTiledMapRenderer(map);
-
         gameCam.position.set(gamePort.getWorldWidth() / 2, (gamePort.getWorldHeight() / 2), 0);
 
 
@@ -95,9 +93,9 @@ public class PlayScreen implements Screen {
         renderer.setView(gameCam);
         renderer.render();
 
-        game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
 
-        //hud.stage.draw();
+        game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+        hud.stage.draw();
     }
 
     @Override

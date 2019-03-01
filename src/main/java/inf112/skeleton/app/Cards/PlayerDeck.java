@@ -1,4 +1,4 @@
-package inf112.skeleton.app;
+package inf112.skeleton.app.Cards;
 
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
@@ -8,8 +8,8 @@ import java.util.NoSuchElementException;
  */
 public class PlayerDeck {
 
-    public final int MAX_NUMBER_CARDS_ON_HAND = 5;
-    public final int MAX_NUMBER_CARDS_IN_DECK = 9;
+    public static final int MAX_NUMBER_CARDS_ON_HAND = 5;
+    public static final int MAX_NUMBER_CARDS_IN_DECK = 9;
 
     /**
      * Deck of cards for the player to choose from
@@ -31,7 +31,7 @@ public class PlayerDeck {
      * @param cardInDeckNumber
      */
     public void selectCardForHand(int cardInDeckNumber) {
-        if (cardInDeckNumber > 0 || cardInDeckNumber < MAX_NUMBER_CARDS_IN_DECK-1)
+        if (cardInDeckNumber < 0 || cardInDeckNumber > deckSize())
             throw new IndexOutOfBoundsException("You only have " + MAX_NUMBER_CARDS_IN_DECK +" cards to choose from. No such " + cardInDeckNumber + "th programCard");
         if (handSize() >= MAX_NUMBER_CARDS_ON_HAND)
             throw new IndexOutOfBoundsException("The players hand is already full (size: " + MAX_NUMBER_CARDS_ON_HAND+ ")");
@@ -47,7 +47,8 @@ public class PlayerDeck {
     public ProgramCard getCardFromHand() {
         if (handSize() < 1)
             throw new NoSuchElementException("No cards in the deck");
-        ProgramCard programCard = hand.get(handSize()-1);
+        ProgramCard programCard = hand.get(0);
+        hand.remove(0);
         return programCard;
     }
 
@@ -56,9 +57,25 @@ public class PlayerDeck {
      * @param newDeck
      */
     public void setDeck(ArrayList<ProgramCard> newDeck) {
-        if (newDeck.size() != MAX_NUMBER_CARDS_IN_DECK)
+        if (newDeck.size() > MAX_NUMBER_CARDS_IN_DECK)
             throw new IllegalArgumentException("The deck needs to be size 9. Size was: " + newDeck.size());
         this.deck = newDeck;
+    }
+
+    /**
+     * Check if player deck is empty
+     * @return
+     */
+    public boolean deckIsEmpty() {
+        return deckSize() == 0;
+    }
+
+    /**
+     * Check if hand of player is empty
+     * @return
+     */
+    public boolean handIsEmpty() {
+        return handSize() == 0;
     }
 
     /**
