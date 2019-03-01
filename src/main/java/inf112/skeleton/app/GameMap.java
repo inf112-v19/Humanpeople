@@ -5,6 +5,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import inf112.skeleton.app.Cards.ProgramCardDeck;
+import inf112.skeleton.app.Cards.ProgramType;
 import inf112.skeleton.app.GameObjects.Directions.Direction;
 import inf112.skeleton.app.GameObjects.Directions.Position;
 
@@ -23,7 +24,6 @@ public class GameMap {
     private ProgramCardDeck programCardDeck;
     //List of players and list of their cells on the map
     private ArrayList<Player> players;
-
 
 
     //Takes String (filename for tileset), int (number of players)
@@ -83,22 +83,29 @@ public class GameMap {
             if (player.getPlayerDeck().handIsEmpty()) {
                 giveOutCardsToPlayer(player);
             }
-            Direction dir = player.getMove();
+            Direction dir = player.getDirection();
             Position pos = player.getPosition();
+            ProgramType programType = player.getMove();
 
-            if (canGo(dir, pos)) {
-                player.setDirection(dir);
-                Position playerPosition = player.getPosition();
-                playerLayer.setCell(playerPosition.getX(), playerPosition.getY(), null);
-                player.update();
+            // If the player has drawn a move card then update player nSteps-time if legal move
+            if (programType.isMoveCard()) {
+                int nSteps = programType.nSteps();
+                for (int i = 0; i < nSteps; i++) {
+                    if (canGo(dir, pos)) {
+                        playerLayer.setCell(pos.getX(), pos.getY(), null);
+                        player.update();
+                    }
+                    System.out.println(player.getPosition().getX() + "  " + player.getPosition().getY());
+                }
             }
-            System.out.println(player.getPosition().getX() + "  " + player.getPosition().getY());
+            playerLayer.setCell(pos.getX(), pos.getY(), null);
         }
         drawPlayers();
     }
 
     /**
      * Give out cards to player deck and player selects 5 cards
+     *
      * @param player
      */
     public void giveOutCardsToPlayer(Player player) {

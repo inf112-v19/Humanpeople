@@ -48,12 +48,12 @@ public class Player {
         this.dir = Direction.randomDirection();
     }
 
-    public int getId(){
+    public int getId() {
         return id;
     }
 
     //Supposed to return next move from current cards
-    public Direction getMove() {
+    public ProgramType getMove() {
         //Temporary random directions
         /*Random r = new Random();
         Direction dir = chosen.get(r.nextInt(4));
@@ -61,12 +61,16 @@ public class Player {
         this.dir = dir;
         */
         ProgramCard card = playerDeck.getCardFromHand();
+        ProgramType programType = card.getProgramType();
         Direction newDir = getDirectionFromCard(card);
-        return newDir;
+        dir = newDir;
+        playerTile.setDirection(newDir);
+        return programType;
     }
 
     /**
      * Get the direction from program card based on the players current direction
+     *
      * @return dir
      */
     private Direction getDirectionFromCard(ProgramCard card) {
@@ -126,7 +130,6 @@ public class Player {
 
     //Updates the playerTile if move was legal
     public void update() {
-        playerTile.setDirection(dir);
         switch (dir) {
             case NORTH:
                 playerTile.setPosition(playerTile.getPosition().North());

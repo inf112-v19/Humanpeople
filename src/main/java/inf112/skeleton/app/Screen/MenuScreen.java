@@ -30,8 +30,8 @@ public class MenuScreen implements Screen {
         sprite.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
         playButtonTexture = new Texture("assets/mainMenu/playBtn.png");
-        int playButtonPosX = (Gdx.graphics.getWidth()/2) - (int)(playButtonTexture.getWidth()/2);
-        int playButtonPosY = (Gdx.graphics.getHeight()/2) - (int)(playButtonTexture.getHeight()/2);
+        int playButtonPosX = (Gdx.graphics.getWidth()/2) - (playButtonTexture.getWidth()/2);
+        int playButtonPosY = (Gdx.graphics.getHeight()/2) - (playButtonTexture.getHeight()/2);
         playButton = new Button(playButtonTexture, playButtonPosX, playButtonPosY, 160, 110);
 
         this.playScreen = new PlayScreen(game);
