@@ -20,12 +20,15 @@ public class PlayerLayerObject implements GameObject {
     private final TiledMapTile eastAvatar;
     private final TiledMapTile westAvatar;
 
+
     private Position pos;
     private Direction dir;
+
 
     public PlayerLayerObject(TiledMapTileSet tiles, int id) {
         this.id = id;
         pos = new Position(id, id);
+
         dir = Direction.NORTH;
 
         northAvatar = tiles.getTile(31);
@@ -60,6 +63,8 @@ public class PlayerLayerObject implements GameObject {
     public void setDirection(Direction dir) {
         this.dir = dir;
     }
+
+
 
     public TiledMapTile getAvatar() {
         switch (dir) {

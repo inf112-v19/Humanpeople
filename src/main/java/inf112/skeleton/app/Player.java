@@ -61,6 +61,7 @@ public class Player {
         movePlayerInDirection(direction);
     }
     public void movePlayerInDirection(Direction direction){
+
         switch (direction) {
             case NORTH:
                 playerTile.setPosition(playerTile.getPosition().North());
@@ -87,6 +88,9 @@ public class Player {
 
     public void powerDown() {
 
+    }
+    public PlayerLayerObject getPlayerTile(){
+        return playerTile;
     }
 
     public void setBackup(Position pos) {

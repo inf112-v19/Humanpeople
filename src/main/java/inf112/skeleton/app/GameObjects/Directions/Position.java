@@ -18,19 +18,19 @@ public class Position {
     }
 
     public Position North(){
-        y = ++y;
-        return this;
+        //y = ++y;
+        return new Position(x,y+1);
     }
     public Position South(){
-        y = --y;
-        return this;
+        //y = --y;
+        return new Position(x,y-1);
     }
     public Position East(){
-        x = ++x;
-        return this;
+       // x = ++x;
+        return new Position(x+1,y);
     }
     public Position West(){
-        x = --x;
-        return this;
+       // x = --x;
+        return new Position(x-1,y);
     }
 }

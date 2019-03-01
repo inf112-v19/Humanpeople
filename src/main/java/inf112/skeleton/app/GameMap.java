@@ -47,6 +47,7 @@ public class GameMap {
 
 
             players.add(player);
+            grid.setPlayerPosition(player.getPlayerTile());
         }
         drawPlayers();
 
@@ -83,11 +84,17 @@ public class GameMap {
     //for testing
     public void movePlayer(Direction direction, int playerId){
         Player player = players.get(playerId);
+
         if(canGo(direction,player.getPosition())){
 
             Position playerPosition = player.getPosition();
+            grid.removePlayerPosition(playerPosition);
+
             playerLayer.setCell(playerPosition.getX(), playerPosition.getY(), null);
+            System.out.println("old"+player.getPosition().getX() +" "+player.getPosition().getY());
             player.update(direction);
+            System.out.println("ny"+player.getPosition().getX() +" "+player.getPosition().getY());
+            grid.setPlayerPosition(player.getPlayerTile());
 
         }
         drawPlayers();

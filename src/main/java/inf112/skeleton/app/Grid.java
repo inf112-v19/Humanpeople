@@ -48,9 +48,33 @@ public class Grid {
             }
         }
     }
-
+    public void setPlayerPosition(PlayerLayerObject playerLayerObject){
+        gameLogicGrid[playerLayerObject.getPosition().getX()][playerLayerObject.getPosition().getY()].add(playerLayerObject);
+    }
+    public void removePlayerPosition(Position position){
+        gameLogicGrid[position.getX()][position.getY()].remove(1);
+    }
     public boolean AllowedToMoveInDirection(Direction dir, Position pos){
         GameObject groundLayerObject = (GameObject) gameLogicGrid[pos.getX()][pos.getY()].get(0);
+        switch (dir){
+            case NORTH:
+                Position temp = pos.North();
+                if (gameLogicGrid[temp.getX()][temp.getY()].size()>1)
+                    return AllowedToMoveInDirection(dir,temp);
+                break;
+            case EAST:
+                break;
+            case WEST:
+                break;
+            case SOUTH:
+                break;
+        }
         return groundLayerObject.canGo(dir);
+    }
+    public boolean containsPlayer(Position position){
+        if(gameLogicGrid[position.getX()][position.getY()].size()>1){
+            return true;
+        }
+        return false;
     }
 }
