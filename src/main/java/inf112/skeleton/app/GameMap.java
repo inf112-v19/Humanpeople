@@ -76,6 +76,19 @@ public class GameMap {
         }
     }
 
+    /**
+     * Draw single player
+     * @param player
+     */
+    public void drawPlayer(Player player) {
+        Position pos = player.getPosition();
+
+        TiledMapTileLayer.Cell avatar = new TiledMapTileLayer.Cell();
+        avatar.setTile(player.getAvatar());
+
+        playerLayer.setCell(pos.getX(), pos.getY(), avatar);
+    }
+
     //Moves players one by one
     public void movePlayers() {
         for (Player player : players) {
@@ -105,7 +118,6 @@ public class GameMap {
 
     /**
      * Give out cards to player deck and player selects 5 cards
-     *
      * @param player
      */
     public void giveOutCardsToPlayer(Player player) {
