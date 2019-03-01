@@ -27,7 +27,7 @@ public class PlayScreen implements Screen {
     private OrthographicCamera gameCam;
     private Viewport gamePort;
     private Hud hud;
-    private TmxMapLoader mapLoader;
+
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private GameMap gameMap;
@@ -93,9 +93,9 @@ public class PlayScreen implements Screen {
         renderer.setView(gameCam);
         renderer.render();
 
-        game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
 
-        //hud.stage.draw();
+        game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+        hud.stage.draw();
     }
 
     @Override
