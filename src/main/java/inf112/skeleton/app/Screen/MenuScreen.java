@@ -27,6 +27,8 @@ public class MenuScreen implements Screen {
     private Button testButton;
     private Texture testButtonTexture;
 
+
+
     public MenuScreen(RoboRally game){
         this.game = game;
         this.playScreen = new PlayScreen(game);
@@ -39,10 +41,12 @@ public class MenuScreen implements Screen {
         playButtonTexture = new Texture("assets/mainMenu/playBtn.png");
         int playButtonPosX = (Gdx.graphics.getWidth()/2) - (playButtonTexture.getWidth()/2);
         int playButtonPosY = (Gdx.graphics.getHeight()/2) - (playButtonTexture.getHeight()/2);
+
         playButton = new Button(playButtonTexture, playButtonPosX, playButtonPosY, playButtonTexture.getWidth(), playButtonTexture.getHeight());
 
         testButtonTexture = new Texture("assets/mainMenu/testBtn.png");
         testButton = new Button(testButtonTexture,2,2,testButtonTexture.getWidth(),testButtonTexture.getHeight());
+
     }
 
     @Override

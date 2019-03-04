@@ -32,6 +32,7 @@ public class PlayScreen implements Screen {
     private OrthogonalTiledMapRenderer renderer;
     private GameMap gameMap;
     float time = 0;
+    private CardPickingScreen cardPickingScreen;
 
 
     public PlayScreen(RoboRally game) {
@@ -39,11 +40,11 @@ public class PlayScreen implements Screen {
         this.gameCam = new OrthographicCamera();
         this.gamePort = new FitViewport(RoboRally.width, RoboRally.height, gameCam);
         this.hud = new Hud(game.batch);
-        this.gameMap = new GameMap("assets/map3.tmx", 3);
+        this.gameMap = new GameMap("assets/map3.tmx", 1);
         this.map = gameMap.getMap();
         this.renderer = new OrthogonalTiledMapRenderer(map);
         gameCam.position.set(gamePort.getWorldWidth() / 2, (gamePort.getWorldHeight() / 2), 0);
-
+        cardPickingScreen = new CardPickingScreen(game, gameMap, this);
 
     }
 
@@ -58,6 +59,9 @@ public class PlayScreen implements Screen {
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && time > 0.2) {
             time = 0;
             gameMap.movePlayers();
+        }
+        else if(Gdx.input.isKeyPressed(Input.Keys.S)) {
+            game.setScreen(cardPickingScreen);
         }
 
 //        if (Gdx.input.isKeyPressed(Input.Keys.W) && time > 0.2) {

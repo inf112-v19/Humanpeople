@@ -93,4 +93,17 @@ public class PlayerDeck {
     public int handSize() {
         return hand.size();
     }
+
+    /**
+     *
+     * @param index
+     * @return the card in the deck at given index
+     */
+    public ProgramCard get(int index) {
+        return deck.get(index);
+    }
+
+    public ArrayList<ProgramCard> getHand() {
+        return hand;
+    }
 }
