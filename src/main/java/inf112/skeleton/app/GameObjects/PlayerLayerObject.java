@@ -83,4 +83,27 @@ public class PlayerLayerObject implements GameObject {
         }
         return northAvatar;
     }
+
+    public void update(Direction direction){
+        setDirection(direction);
+        moveTileInDirection(direction);
+    }
+    public void moveTileInDirection(Direction direction){
+
+        switch (direction) {
+            case NORTH:
+                setPosition(getPosition().North());
+                break;
+            case SOUTH:
+                setPosition(getPosition().South());
+                break;
+            case WEST:
+                setPosition(getPosition().West());
+                break;
+            case EAST:
+                setPosition(getPosition().East());
+        }
+    }
 }
+
+

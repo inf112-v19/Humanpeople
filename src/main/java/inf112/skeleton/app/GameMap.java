@@ -6,6 +6,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import inf112.skeleton.app.GameObjects.Directions.Direction;
 import inf112.skeleton.app.GameObjects.Directions.Position;
+import inf112.skeleton.app.GameObjects.PlayerLayerObject;
 
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class GameMap {
     private TiledMapTileSet tiles;
     private final int nPlayers;
 
+    private ArrayList<PlayerLayerObject> playerTiles;
     //List of players and list of their cells on the map
     private ArrayList<Player> players;
 
@@ -35,8 +37,9 @@ public class GameMap {
         this.nPlayers = nPlayers;
 
         this.playerLayer = (TiledMapTileLayer) map.getLayers().get(2);
-
+        playerTiles = new ArrayList<PlayerLayerObject>();
         initializePlayers();
+
     }
 
     private void initializePlayers() {
@@ -86,15 +89,25 @@ public class GameMap {
         Player player = players.get(playerId);
 
         if(canGo(direction,player.getPosition())){
+                for(int i = playerTiles.size()-1;i>=0;i--){
+                    PlayerLayerObject playerLayerObject= playerTiles.get(i);
+                    Position playerPosition = playerLayerObject.getPosition();
+                    grid.removePlayerPosition(playerPosition);
+                    playerLayer.setCell(playerPosition.getX(), playerPosition.getY(), null);
+                    playerLayerObject.update(direction);
+                    grid.setPlayerPosition(playerLayerObject);
+                }
 
-            Position playerPosition = player.getPosition();
-            grid.removePlayerPosition(playerPosition);
+               // System.out.println(player.getPosition().getX()+" "+player.getPosition().getY());
 
-            playerLayer.setCell(playerPosition.getX(), playerPosition.getY(), null);
-            System.out.println("old"+player.getPosition().getX() +" "+player.getPosition().getY());
-            player.update(direction);
-            System.out.println("ny"+player.getPosition().getX() +" "+player.getPosition().getY());
-            grid.setPlayerPosition(player.getPlayerTile());
+//            Position playerPosition = player.getPosition();
+//            grid.removePlayerPosition(playerPosition);
+
+//            playerLayer.setCell(playerPosition.getX(), playerPosition.getY(), null);
+//            System.out.println("old"+player.getPosition().getX() +" "+player.getPosition().getY());
+//            player.update(direction);
+//            System.out.println("ny"+player.getPosition().getX() +" "+player.getPosition().getY());
+//            grid.setPlayerPosition(player.getPlayerTile());
 
         }
         drawPlayers();
@@ -104,7 +117,16 @@ public class GameMap {
 
     //Check if valid position
     public boolean canGo(Direction dir, Position pos) {
-        return grid.AllowedToMoveInDirection(dir, pos);
+        playerTiles.clear();
+        playerTiles = grid.numberOfPlayersToMove(dir,pos);
+        System.out.println(playerTiles.size());
+        if(playerTiles.size()>0){
+
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     public TiledMapTileLayer getPlayerLayer() {
