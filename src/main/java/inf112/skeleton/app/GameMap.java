@@ -75,45 +75,45 @@ public class GameMap {
             Position pos = player.getPosition();
 
             if (canGo(dir, pos)) {
-                Position playerPosition = player.getPosition();
-                playerLayer.setCell(playerPosition.getX(), playerPosition.getY(), null);
-                player.update();
+                movePlayerTilesInList(dir);
             }
             System.out.println(player.getPosition().getX() + "  " + player.getPosition().getY());
         }
         drawPlayers();
     }
 
-    //for testing
+    //moves player with playerId in direction if allowed
     public void movePlayer(Direction direction, int playerId){
         Player player = players.get(playerId);
 
-        if(canGo(direction,player.getPosition())){
-                for(int i = playerTiles.size()-1;i>=0;i--){
-                    PlayerLayerObject playerLayerObject= playerTiles.get(i);
-                    Position playerPosition = playerLayerObject.getPosition();
-                    grid.removePlayerPosition(playerPosition);
-                    playerLayer.setCell(playerPosition.getX(), playerPosition.getY(), null);
-                    playerLayerObject.update(direction);
-                    grid.setPlayerPosition(playerLayerObject);
-                }
-
-               // System.out.println(player.getPosition().getX()+" "+player.getPosition().getY());
-
-//            Position playerPosition = player.getPosition();
-//            grid.removePlayerPosition(playerPosition);
-
-//            playerLayer.setCell(playerPosition.getX(), playerPosition.getY(), null);
-//            System.out.println("old"+player.getPosition().getX() +" "+player.getPosition().getY());
-//            player.update(direction);
-//            System.out.println("ny"+player.getPosition().getX() +" "+player.getPosition().getY());
-//            grid.setPlayerPosition(player.getPlayerTile());
-
+        if(canGo(direction,player.getPosition())) {
+            movePlayerTilesInList(direction);
         }
         drawPlayers();
 
 
     }
+
+    /**
+     * Flytter alle spillere som koliderer i direction og oppdaterer grid
+     * @param direction
+     */
+    public void movePlayerTilesInList(Direction direction){
+        int numberOfPlayersToMove = playerTiles.size()-1;
+        //flytter siste spiller først for å ikke ødlegge grid.set og grid.remove logikken
+        for(int i = numberOfPlayersToMove;i>=0;i--){
+            PlayerLayerObject playerLayerObject= playerTiles.get(i);
+            Position playerPosition = playerLayerObject.getPosition();
+            grid.removePlayerPosition(playerPosition);
+            playerLayer.setCell(playerPosition.getX(), playerPosition.getY(), null);
+            if(i==0){
+                playerLayerObject.update(direction);
+            }
+            else playerLayerObject.moveTileInDirection(direction);
+            grid.setPlayerPosition(playerLayerObject);
+        }
+    }
+
 
     //Check if valid position
     public boolean canGo(Direction dir, Position pos) {

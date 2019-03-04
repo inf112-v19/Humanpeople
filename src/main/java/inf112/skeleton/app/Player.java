@@ -50,31 +50,23 @@ public class Player {
         return dir;
     }
 
+    /**
+     * fjern denne utkommenterte koden?
+     * @param direction
+     */
     //Updates the playerTile if move was legal
-    public void update() {
-        playerTile.setDirection(dir);
-        movePlayerInDirection(dir);
+//    public void update() {
+//        playerTile.setDirection(dir);
+//        movePlayerInDirection(dir);
+//
+//    }
+//    public void update(Direction direction){
+//        playerTile.setDirection(direction);
+//        movePlayerInDirection(direction);
+//    }
 
-    }
-    public void update(Direction direction){
-        playerTile.setDirection(direction);
-        movePlayerInDirection(direction);
-    }
     public void movePlayerInDirection(Direction direction){
-
-        switch (direction) {
-            case NORTH:
-                playerTile.setPosition(playerTile.getPosition().North());
-                break;
-            case SOUTH:
-                playerTile.setPosition(playerTile.getPosition().South());
-                break;
-            case WEST:
-                playerTile.setPosition(playerTile.getPosition().West());
-                break;
-            case EAST:
-                playerTile.setPosition(playerTile.getPosition().East());
-        }
+        playerTile.moveTileInDirection(direction);
     }
 
     public Position getPosition() {
