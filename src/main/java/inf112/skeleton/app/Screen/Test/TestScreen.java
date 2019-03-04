@@ -32,7 +32,7 @@ public class TestScreen implements Screen {
         this.gameCam = new OrthographicCamera();
         this.gamePort = new FitViewport(RoboRally.width, RoboRally.height, gameCam);
         this.hud = new Hud(game.batch);
-        this.gameMap = new GameMap("assets/map3.tmx", 3);
+        this.gameMap = new GameMap("assets/map3.tmx", 4);
         this.map = gameMap.getMap();
         this.renderer = new OrthogonalTiledMapRenderer(map);
 

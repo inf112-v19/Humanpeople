@@ -31,10 +31,11 @@ public class PlayerLayerObject implements GameObject {
 
         dir = Direction.NORTH;
 
-        northAvatar = tiles.getTile(31);
-        westAvatar = tiles.getTile(33);
-        eastAvatar = tiles.getTile(32);
-        southAvatar = tiles.getTile(34);
+        int tileId = (id*10)+30;
+        northAvatar = tiles.getTile(tileId+1);
+        eastAvatar = tiles.getTile(tileId+2);
+        westAvatar = tiles.getTile(tileId+3);
+        southAvatar = tiles.getTile(tileId+4);
     }
 
 
