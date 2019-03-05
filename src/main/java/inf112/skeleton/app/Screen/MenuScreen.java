@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import inf112.skeleton.app.RoboRally;
+import inf112.skeleton.app.Screen.Test.TestScreen;
 
 /**
  * Menu screen for RoboRally
@@ -17,14 +18,21 @@ public class MenuScreen implements Screen {
     private PlayScreen playScreen;
     private RoboRally game;
     private SpriteBatch batch;
-    private Texture menuBackground;
+
     private Button playButton;
     private Texture playButtonTexture;
-    Sprite sprite;
+
+    private Sprite sprite;
+    private Texture menuBackground;
+
+    private Button testButton;
+    private Texture testButtonTexture;
 
     public MenuScreen(RoboRally game){
         this.game = game;
+        this.playScreen = new PlayScreen(game);
         batch = new SpriteBatch();
+
         menuBackground = new Texture("assets/mainMenu/MRRCG.jpg");
         sprite = new Sprite(menuBackground);
         sprite.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
@@ -32,9 +40,10 @@ public class MenuScreen implements Screen {
         playButtonTexture = new Texture("assets/mainMenu/playBtn.png");
         int playButtonPosX = (Gdx.graphics.getWidth()/2) - (playButtonTexture.getWidth()/2);
         int playButtonPosY = (Gdx.graphics.getHeight()/2) - (playButtonTexture.getHeight()/2);
-        playButton = new Button(playButtonTexture, playButtonPosX, playButtonPosY, 160, 110);
+        playButton = new Button(playButtonTexture, playButtonPosX, playButtonPosY, playButtonTexture.getWidth(), playButtonTexture.getHeight());
 
-        this.playScreen = new PlayScreen(game);
+        testButtonTexture = new Texture("assets/mainMenu/testBtn.png");
+        testButton = new Button(testButtonTexture,2,2,testButtonTexture.getWidth(),testButtonTexture.getHeight());
     }
 
     @Override
@@ -51,15 +60,21 @@ public class MenuScreen implements Screen {
 
         sprite.draw(batch);
         playButton.draw(batch);
+        testButton.draw(batch);
         batch.end();
     }
 
     private void handleInput(float deltaTime) {
+
         if (Gdx.input.isTouched()) {
             int inputX = Gdx.input.getX();
             int inputY = Gdx.input.getY();
+
             if (playButton.checkIfClicked(inputX, inputY)) {
                 game.setScreen(playScreen);
+            }
+            else if(testButton.checkIfClicked(inputX,inputY)){
+                game.setScreen(new TestScreen(game));
             }
         }
     }

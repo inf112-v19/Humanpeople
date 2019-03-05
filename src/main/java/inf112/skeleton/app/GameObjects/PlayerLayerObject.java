@@ -20,18 +20,21 @@ public class PlayerLayerObject implements GameObject {
     private final TiledMapTile eastAvatar;
     private final TiledMapTile westAvatar;
 
+
     private Position pos;
     private Direction dir;
+
 
     public PlayerLayerObject(TiledMapTileSet tiles, int id) {
         this.id = id;
         pos = new Position(id, id);
         dir = Direction.randomDirection();
 
-        northAvatar = tiles.getTile(31);
-        westAvatar = tiles.getTile(33);
-        eastAvatar = tiles.getTile(32);
-        southAvatar = tiles.getTile(34);
+        int tileId = (id*10)+30;
+        northAvatar = tiles.getTile(tileId+1);
+        eastAvatar = tiles.getTile(tileId+2);
+        westAvatar = tiles.getTile(tileId+3);
+        southAvatar = tiles.getTile(tileId+4);
     }
 
 
@@ -61,6 +64,8 @@ public class PlayerLayerObject implements GameObject {
         this.dir = dir;
     }
 
+
+
     public TiledMapTile getAvatar() {
         switch (dir) {
             case NORTH:
@@ -78,4 +83,27 @@ public class PlayerLayerObject implements GameObject {
         }
         return northAvatar;
     }
+
+    public void update(Direction direction){
+        setDirection(direction);
+        moveTileInDirection(direction);
+    }
+    public void moveTileInDirection(Direction direction){
+
+        switch (direction) {
+            case NORTH:
+                setPosition(getPosition().North());
+                break;
+            case SOUTH:
+                setPosition(getPosition().South());
+                break;
+            case WEST:
+                setPosition(getPosition().West());
+                break;
+            case EAST:
+                setPosition(getPosition().East());
+        }
+    }
 }
+
+

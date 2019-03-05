@@ -124,4 +124,8 @@ public class ProgramCardDeck {
 	public int getSizeOfDeck() {
 		return programCardDeck.size();
 	}
+
+	public ArrayList<ProgramCard> getDeck() {
+		return programCardDeck;
+	}
 }
