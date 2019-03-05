@@ -87,8 +87,6 @@ public class GameMap {
             if (player.getPlayerDeck().handIsEmpty()) {
                 giveOutCardsToPlayer(player);
             }
-            Direction dir = player.getDirection();
-            Position pos = player.getPosition();
             ProgramType programType = player.getMove();
 
             // If the player has drawn a move card then update player nSteps-time if legal move
@@ -96,13 +94,13 @@ public class GameMap {
                 int nSteps = programType.nSteps();
                 for (int i = 0; i < nSteps; i++) {
                     Position newPos = player.getPosition();
+                    Direction dir = player.getDirection();
                     if (canGo(dir, newPos)) {
                             movePlayerTilesInList(dir);
                     }
                     System.out.println(player.getPosition().getX() + "  " + player.getPosition().getY());
                 }
             }
-            playerLayer.setCell(pos.getX(), pos.getY(), null);
         }
         drawPlayers();
     }

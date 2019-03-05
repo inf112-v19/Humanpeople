@@ -19,11 +19,33 @@ public class ProgramCardTests {
         deck = new ProgramCardDeck();
         card1 = new ProgramCard(ProgramType.MOVE1, 420, "filename420");
         card2 = new ProgramCard(ProgramType.MOVE1, 69, "filename2");
+        card3 = new ProgramCard(ProgramType.UTURN, 52, "filename42");
 
     }
 
     @Test
     public void simpleTest() {
         assertNotEquals(card1, card2);
+    }
+
+    @Test
+    public void priorityGetTest() {
+        assertNotEquals(card1.getPriority(), card2.getPriority());
+        assertEquals(card2.getPriority(), 69);
+        assertEquals(card3.getPriority(), 52);
+
+    }
+
+    @Test
+    public void programTypeGetTest() {
+        assertNotEquals(card3.getProgramType(), card2.getProgramType());
+        assertEquals(card1.getProgramType(), card2.getProgramType());
+        assertEquals(card1.getProgramType(), ProgramType.MOVE1);
+    }
+
+    @Test
+    public void filenameGetTest() {
+        assertNotEquals(card1.getFilename(), card2.getFilename());
+        assertEquals(card1.getFilename(), "filename420");
     }
 }
