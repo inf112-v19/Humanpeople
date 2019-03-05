@@ -10,13 +10,16 @@ import inf112.skeleton.app.RoboRally;
 public class Button {
 
     private Sprite skin;
-
+    private Boolean haveBeenClicked = false;
+    private float x;
+    private float y;
 
 
     public Button(Texture texture, float x, float y, float width, float height) {
-
+        this.x = x;
+        this.y = y;
         skin = new Sprite(texture);
-        skin.setPosition(x,y);
+        skin.setPosition(this.x,this.y);
         skin.setSize(width, height);
     }
 
@@ -47,10 +50,22 @@ public class Button {
 
         if(inputX>getButtonStartX()&&inputX<getButtonEndX()){
             if(inputY>getButtonStartY()&&inputY<getButtonEndY()){
+                clickedAgain();
                 return true;
             }
 
         }
         return false;
+    }
+    public void clickedAgain() {
+        haveBeenClicked = !haveBeenClicked;
+    }
+
+    public Boolean getHaveBeenClicked() {
+        return haveBeenClicked;
+    }
+    public void setCoordinates(float x, float y){
+        this.x = x;
+        this.y = y;
     }
 }
