@@ -8,6 +8,7 @@ import inf112.skeleton.app.Cards.ProgramCardDeck;
 import inf112.skeleton.app.Cards.ProgramType;
 import inf112.skeleton.app.GameObjects.Directions.Direction;
 import inf112.skeleton.app.GameObjects.Directions.Position;
+import inf112.skeleton.app.GameObjects.PlayerLayerObject;
 
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class GameMap {
     private final int nPlayers;
 
     private ProgramCardDeck programCardDeck;
+    private ArrayList<PlayerLayerObject> playerTiles;
     //List of players and list of their cells on the map
     private ArrayList<Player> players;
 
@@ -36,8 +38,9 @@ public class GameMap {
         this.nPlayers = nPlayers;
         this.programCardDeck = new ProgramCardDeck();
         this.playerLayer = (TiledMapTileLayer) map.getLayers().get(2);
-
+        playerTiles = new ArrayList<PlayerLayerObject>();
         initializePlayers();
+
     }
 
     private void initializePlayers() {
@@ -46,6 +49,7 @@ public class GameMap {
         for (int id = 0; id < nPlayers; id++) {
             Player player = new Player(tiles, id);
             players.add(player);
+            grid.setPlayerPosition(player.getPlayerTile());
         }
         // Give out cards to players
         programCardDeck.giveOutCardsToAllPlayers(players);
@@ -104,9 +108,9 @@ public class GameMap {
             if (programType.isMoveCard()) {
                 int nSteps = programType.nSteps();
                 for (int i = 0; i < nSteps; i++) {
-                    if (canGo(dir, pos)) {
-                        playerLayer.setCell(pos.getX(), pos.getY(), null);
-                        player.update();
+                    Position newPos = player.getPosition();
+                    if (canGo(dir, newPos)) {
+                            movePlayerTilesInList(dir);
                     }
                     System.out.println(player.getPosition().getX() + "  " + player.getPosition().getY());
                 }
@@ -125,9 +129,50 @@ public class GameMap {
         player.select5FirstCards();
     }
 
+    //moves player with playerId in direction if allowed
+    public void movePlayer(Direction direction, int playerId){
+        Player player = players.get(playerId);
+
+        if(canGo(direction,player.getPosition())) {
+            movePlayerTilesInList(direction);
+        }
+        drawPlayers();
+
+
+    }
+
+    /**
+     * Flytter alle spillere som koliderer i direction og oppdaterer grid
+     * @param direction
+     */
+    public void movePlayerTilesInList(Direction direction){
+        int numberOfPlayersToMove = playerTiles.size()-1;
+        //flytter siste spiller først for å ikke ødlegge grid.set og grid.remove logikken
+        for(int i = numberOfPlayersToMove;i>=0;i--){
+            PlayerLayerObject playerLayerObject= playerTiles.get(i);
+            Position playerPosition = playerLayerObject.getPosition();
+            grid.removePlayerPosition(playerPosition);
+            playerLayer.setCell(playerPosition.getX(), playerPosition.getY(), null);
+            if(i==0){
+                playerLayerObject.update(direction);
+            }
+            else playerLayerObject.moveTileInDirection(direction);
+            grid.setPlayerPosition(playerLayerObject);
+        }
+    }
+
     //Check if valid position
     public boolean canGo(Direction dir, Position pos) {
-        return grid.AllowedToMoveInDirection(dir, pos);
+        playerTiles.clear();
+        playerTiles = grid.numberOfPlayersToMove(dir,pos);
+        System.out.println(playerTiles.size());
+        if(playerTiles.size()>0){
+
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     public TiledMapTileLayer getPlayerLayer() {
