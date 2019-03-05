@@ -1,8 +1,6 @@
 package inf112.skeleton.app.Cards;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
-
-public class ProgramCard {
+public class ProgramCard implements ICard {
 	private ProgramType programType;
 	private int priority;
 	private String filename;
