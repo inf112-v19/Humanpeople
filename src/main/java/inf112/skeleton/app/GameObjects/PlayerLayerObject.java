@@ -28,7 +28,8 @@ public class PlayerLayerObject implements GameObject {
     public PlayerLayerObject(TiledMapTileSet tiles, int id) {
         this.id = id;
         pos = new Position(id, id);
-        dir = Direction.randomDirection();
+
+        dir = Direction.NORTH  ;
 
         int tileId = (id*10)+30;
         northAvatar = tiles.getTile(tileId+1);
