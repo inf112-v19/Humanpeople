@@ -28,6 +28,7 @@ public class Button {
     public float getButtonStartX() {
         return skin.getX()*(float)Gdx.graphics.getWidth()/ RoboRally.cfgWidth;
     }
+
     public float getButtonEndX(){
         return (skin.getX()+skin.getWidth())*(float)Gdx.graphics.getWidth()/ RoboRally.cfgWidth;
     }

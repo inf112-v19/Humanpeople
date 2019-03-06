@@ -128,21 +128,8 @@ public class Player {
         this.dir = dir;
     }
 
-    //Updates the playerTile if move was legal
-    public void update() {
-        switch (dir) {
-            case NORTH:
-                playerTile.setPosition(playerTile.getPosition().North());
-                break;
-            case SOUTH:
-                playerTile.setPosition(playerTile.getPosition().South());
-                break;
-            case WEST:
-                playerTile.setPosition(playerTile.getPosition().West());
-                break;
-            case EAST:
-                playerTile.setPosition(playerTile.getPosition().East());
-        }
+    public void movePlayerInDirection(Direction direction){
+        playerTile.moveTileInDirection(direction);
     }
 
     /**
@@ -162,8 +149,12 @@ public class Player {
         return playerTile.getDirection();
     }
 
+
     public void powerDown() {
 
+    }
+    public PlayerLayerObject getPlayerTile(){
+        return playerTile;
     }
 
     public void setBackup(Position pos) {
