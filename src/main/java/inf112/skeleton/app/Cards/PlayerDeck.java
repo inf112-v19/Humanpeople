@@ -39,6 +39,14 @@ public class PlayerDeck {
         deck.remove(cardInDeckNumber);
         hand.add(programCard);
     }
+
+    public void removeCardFromHand(int cardInHandNumber) {
+        if(cardInHandNumber < 0  || cardInHandNumber > handSize())
+            throw new IndexOutOfBoundsException();
+        ProgramCard programCard = hand.get(cardInHandNumber);
+        hand.remove(cardInHandNumber);
+        deck.add(programCard);
+    }
     /**
      * Get the next card form hand
      * If no cards left on hand then throw NoSuchElementException
@@ -92,5 +100,18 @@ public class PlayerDeck {
      */
     public int handSize() {
         return hand.size();
+    }
+
+    /**
+     *
+     * @param index
+     * @return the card in the deck at given index
+     */
+    public ProgramCard get(int index) {
+        return deck.get(index);
+    }
+
+    public ArrayList<ProgramCard> getHand() {
+        return hand;
     }
 }
