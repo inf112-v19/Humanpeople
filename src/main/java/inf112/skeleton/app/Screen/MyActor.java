@@ -5,18 +5,18 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import inf112.skeleton.app.RoboRally;
 
-public class Button {
+public class MyActor extends Actor {
 
     private Sprite skin;
     private Boolean haveBeenClicked = false;
     private float x;
     private float y;
-    private int index;
 
-    public Button(Texture texture, float x, float y, float width, float height, int index) {
-        this.index = index;
+
+    public MyActor(Texture texture, float x, float y, float width, float height) {
         this.x = x;
         this.y = y;
         skin = new Sprite(texture);
@@ -68,9 +68,5 @@ public class Button {
     public void setCoordinates(float x, float y){
         this.x = x;
         this.y = y;
-        skin.setPosition(this.x,this.y);
-    }
-    public int getIndex() {
-        return index;
     }
 }

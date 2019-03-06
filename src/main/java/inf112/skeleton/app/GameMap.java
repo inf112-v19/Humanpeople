@@ -91,7 +91,8 @@ public class GameMap {
             if (programType.isMoveCard()) {
                 int nSteps = programType.nSteps();
                 for (int i = 0; i < nSteps; i++) {
-                    if (canGo(dir, pos)) {
+                    Position newPos = player.getPosition();
+                    if (canGo(dir, newPos)) {
                         playerLayer.setCell(pos.getX(), pos.getY(), null);
                         player.update();
                     }

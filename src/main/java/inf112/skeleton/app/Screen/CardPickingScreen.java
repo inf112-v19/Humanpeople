@@ -6,6 +6,10 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import inf112.skeleton.app.Cards.PlayerDeck;
@@ -16,6 +20,9 @@ import inf112.skeleton.app.RoboRally;
 import com.badlogic.gdx.Screen;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class CardPickingScreen implements Screen {
@@ -34,6 +41,8 @@ public class CardPickingScreen implements Screen {
     private ArrayList<ProgramCard> programCardArrayList;
     private ArrayList<Button> visualHand;
     private Button confirmedDeck;
+    private ArrayList<Integer> indexArray;
+    private Map<Integer, Integer> hashMap = new HashMap<>();
 
     public CardPickingScreen(RoboRally game, GameMap gameMap, PlayScreen playScreen) {
         this.game = game;
@@ -45,6 +54,8 @@ public class CardPickingScreen implements Screen {
         programCardArrayList = new ArrayList<>();
         visualHand = new ArrayList<>();
         testPlayer = players.get(0);
+        indexArray = new ArrayList<>();
+
 
         gameMap.giveOutCardsToPlayer(testPlayer);
 
@@ -57,17 +68,17 @@ public class CardPickingScreen implements Screen {
         buttonTexture = new Texture(playerDeck.get(0).getFilename());
         float firstCardPosX = 0;
         float firstCardPosY = Gdx.graphics.getHeight()/2 - buttonTexture.getHeight()/8;
-
         for(int i = 0; i < playerDeck.deckSize(); i++) {
             buttonTexture = new Texture(playerDeck.get(i).getFilename());
             float buttonPosX = firstCardPosX;
             float buttonPosY = firstCardPosY;
-            Button button = new Button(buttonTexture, buttonPosX, buttonPosY,buttonTexture.getWidth()/8, buttonTexture.getHeight()/8);
+            Button button = new Button(buttonTexture, buttonPosX, buttonPosY,buttonTexture.getWidth()/8, buttonTexture.getHeight()/8, i);
             firstCardPosX += buttonTexture.getWidth()/8;
             listOfCards.add(button);
         }
+
         confirmedDeck = new Button(buttonTexture, 800-buttonTexture.getWidth()/16, 0+buttonTexture.getHeight()/16,
-                buttonTexture.getWidth()/16, buttonTexture.getHeight()/16);
+                buttonTexture.getWidth()/16, buttonTexture.getHeight()/16, 0);
 
     }
 
@@ -76,63 +87,60 @@ public class CardPickingScreen implements Screen {
     public void update(float deltaTime) {
 
         handleInput(deltaTime);
-//        cardCoordinateReplacer();
+        cardCoordinateReplacer();
     }
 
     public void handleInput(float deltaTime) {
         time += deltaTime;
-
         if(Gdx.input.justTouched()) {
-
             float xCoordinate = Gdx.input.getX();
             float yCoordinate = Gdx.input.getY();
 
             //gotta change to playerDeck.decksize
-            int j = 0;
-            System.out.println("forloop");
-            int counter = 0;
-            for(int i = 0; i < listOfCards.size(); i++) {
+            for(int i = 0; i < 9; i++) {
                 Button currentCard = null;
                 if(i < listOfCards.size()) {
                     currentCard = listOfCards.get(i);
                 }
-//                else if (j < visualHand.size()) {
-//                    currentCard = visualHand.get(j);
-//                    j++;
-//                }
 
                 if (currentCard.checkIfClicked(xCoordinate, yCoordinate)) {
-                    System.out.println(i);
 
-//                System.out.println(currentCard.getButtonStartX());
-
-//                    System.out.println(currentCard.getHaveBeenClicked());
+                        int index = currentCard.getIndex();
                     if(visualHand.size() < 5 && currentCard.getHaveBeenClicked()) {
-                        System.out.println(currentCard.getButtonStartX());
-                        programCardArrayList.add(playerDeck.get(i+j));
+                        System.out.println("i: " + i + " index: " + index);
+                        playerDeck.selectCardForHand(index);
                         visualHand.add(currentCard);
                         listOfCards.remove(currentCard);
-                        System.out.println("vHsize: " + visualHand.size());
+                        System.out.println("Added: " + playerDeck.getHand().get(playerDeck.handSize()-1).getFilename());
+                        hashMap.put(index, playerDeck.handSize()-1);
 
                     }
-                    System.out.println(currentCard.getButtonStartX() );
+
                     if(!(currentCard.getHaveBeenClicked())) {
-
-                        visualHand.remove(currentCard);
                         listOfCards.add(currentCard);
-                        programCardArrayList.remove(currentCard);
-                        System.out.println("vhSize2: " + visualHand.size());
+                        visualHand.remove(currentCard);
+
+                        System.out.println("Removed: " + playerDeck.getHand().get(playerDeck.handSize()-1).getFilename());
+                        playerDeck.removeCardFromHand(hashMap.get(index));
+                        System.out.println(playerDeck.handSize());
+                        hashMap.remove(index);
+
+
                     }
+                    break;
                 }
             }
             if(confirmedDeck.checkIfClicked(xCoordinate,yCoordinate) && visualHand.size() == 5) {
                 for(int i = 0; i < visualHand.size(); i++) {
-                    playerDeck.
+                    playerDeck.selectCardForHand(i);
                 }
                 game.setScreen(playScreen);
             }
         }
         else if(Gdx.input.isKeyPressed(Input.Keys.P)){
+            for(int i = 0; i < 5; i++) {
+                System.out.println(i + " : " + playerDeck.getHand().get(i).getFilename());
+            }
             game.setScreen(playScreen);
         }
 
@@ -145,20 +153,19 @@ public class CardPickingScreen implements Screen {
         for (int i = 0; i < listOfCards.size(); i++) {
             listOfCards.get(i).setCoordinates(startXcoordinate, upperYCoordinate);
             startXcoordinate += buttonTexture.getWidth()/8;
-
+        System.out.println(i + " DeckStartX: " +listOfCards.get(i).getButtonStartX());
         }
+
         float lowerYCoordinate = Gdx.graphics.getHeight() - buttonTexture.getHeight()/8;
 
-//        System.out.println("upperYCoordinate: " + upperYCoordinate);
-//        System.out.println("lowerYCoordinate: " + lowerYCoordinate);
-
         startXcoordinate = 0;
+
         for(int j = 0; j < visualHand.size(); j++) {
             visualHand.get(j).setCoordinates(startXcoordinate, lowerYCoordinate);
+            System.out.println(j + " HandX: " + visualHand.get(j).getButtonStartX());
             startXcoordinate += buttonTexture.getWidth()/8;
-
-
         }
+
     }
 
 
@@ -178,16 +185,10 @@ public class CardPickingScreen implements Screen {
 
         batch.begin();
         for(int i = 0; i < listOfCards.size(); i++) {
-//            System.out.println("startX: " + listOfCards.get(i).getButtonStartX());
-//            System.out.println("startY: " +listOfCards.get(i).getButtonStartY());
-//            System.out.println("LOC size: " + listOfCards.size());
             listOfCards.get(i).draw(batch);
 
         }
-        for(int j = 0 ; j < visualHand.size(); j++) {
-//            System.out.println("vH startX: " + visualHand.get(j).getButtonStartX());
-//            System.out.println("vh startY: " + visualHand.get(j).getButtonStartY());
-//            System.out.println("vh size: " + visualHand.size());
+        for(int j = 0; j < visualHand.size(); j++) {
             visualHand.get(j).draw(batch);
         }
         confirmedDeck.draw(batch);

@@ -39,6 +39,14 @@ public class PlayerDeck {
         deck.remove(cardInDeckNumber);
         hand.add(programCard);
     }
+
+    public void removeCardFromHand(int cardInHandNumber) {
+        if(cardInHandNumber < 0  || cardInHandNumber > handSize())
+            throw new IndexOutOfBoundsException();
+        ProgramCard programCard = hand.get(cardInHandNumber);
+        hand.remove(cardInHandNumber);
+        deck.add(programCard);
+    }
     /**
      * Get the next card form hand
      * If no cards left on hand then throw NoSuchElementException
