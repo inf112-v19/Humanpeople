@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import inf112.skeleton.app.RoboRally;
 
-public class Button {
+public class VisualCard {
 
     private Sprite skin;
     private Boolean haveBeenClicked = false;
@@ -15,7 +15,7 @@ public class Button {
     private float y;
     private int index;
 
-    public Button(Texture texture, float x, float y, float width, float height) {
+    public VisualCard(Texture texture, float x, float y, float width, float height) {
         this.x = x;
         this.y = y;
         skin = new Sprite(texture);
@@ -51,13 +51,24 @@ public class Button {
 
         if(inputX>getButtonStartX()&&inputX<getButtonEndX()){
             if(inputY>getButtonStartY()&&inputY<getButtonEndY()){
+                clickedAgain();
                 return true;
             }
+
         }
         return false;
     }
+    public void clickedAgain() {
+        haveBeenClicked = !haveBeenClicked;
+    }
 
-
-
+    public Boolean getHaveBeenClicked() {
+        return haveBeenClicked;
+    }
+    public void setCoordinates(float x, float y){
+        this.x = x;
+        this.y = y;
+        skin.setPosition(this.x,this.y);
+    }
 
 }
