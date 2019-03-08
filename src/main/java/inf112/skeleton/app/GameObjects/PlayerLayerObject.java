@@ -31,6 +31,7 @@ public class PlayerLayerObject implements GameObject {
         pos = new Position(id, id);
         dir = Direction.NORTH;
 
+
         int tileId = (id*10)+30;
         northAvatar = tiles.getTile(tileId+1);
         eastAvatar = tiles.getTile(tileId+2);

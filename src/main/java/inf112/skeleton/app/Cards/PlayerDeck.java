@@ -26,7 +26,7 @@ public class PlayerDeck {
     }
 
     /**
-     * Takes card from deck at given index and puts it in players hand.
+     * Takes card from deck at given index and puts it in players hand. Removes it from a players Deck
      * Throws exception if cardIndex is out of bounds or hand is already full (size: 5)
      * @param cardInDeckNumber
      */
@@ -38,6 +38,18 @@ public class PlayerDeck {
         ProgramCard programCard = deck.get(cardInDeckNumber);
         deck.remove(cardInDeckNumber);
         hand.add(programCard);
+    }
+
+    /**'
+     * Takes a card from the hand at index, and puts it back in deck. Removes from hand
+     * @param cardInHandNumber
+     */
+    public void removeCardFromHand(int cardInHandNumber) {
+        if(cardInHandNumber < 0  || cardInHandNumber > handSize())
+            throw new IndexOutOfBoundsException("You can only have 5 cards in your hand! You cannot remove a cardindex larger than 5");
+        ProgramCard programCard = hand.get(cardInHandNumber);
+        hand.remove(cardInHandNumber);
+        deck.add(programCard);
     }
     /**
      * Get the next card form hand
@@ -92,5 +104,18 @@ public class PlayerDeck {
      */
     public int handSize() {
         return hand.size();
+    }
+
+    /**
+     *
+     * @param index
+     * @return the card in the deck at given index
+     */
+    public ProgramCard get(int index) {
+        return deck.get(index);
+    }
+
+    public ArrayList<ProgramCard> getHand() {
+        return hand;
     }
 }

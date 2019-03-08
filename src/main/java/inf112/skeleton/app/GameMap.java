@@ -54,7 +54,7 @@ public class GameMap {
         }
         // Give out cards to players
         programCardDeck.giveOutCardsToAllPlayers(players);
-        chooseRandomCardsForAllPlayersHand();
+//        chooseRandomCardsForAllPlayersHand();
 
         drawPlayers();
     }
@@ -62,11 +62,11 @@ public class GameMap {
     /**
      * Pick random cards for all players
      */
-    public void chooseRandomCardsForAllPlayersHand() {
-        for (Player player : players) {
-            player.select5FirstCards();
-        }
-    }
+//    public void chooseRandomCardsForAllPlayersHand() {
+//        for (Player player : players) {
+//            player.select5FirstCards();
+//        }
+//    }
 
     //Draws players
     public void drawPlayers() {
@@ -111,7 +111,9 @@ public class GameMap {
                 for (int i = 0; i < nSteps; i++) {
                     Position newPos = player.getPosition();
                     if (canGo(dir, newPos)) {
+
                         movePlayerTilesInList(dir);
+
                     }
                 }
             }
@@ -127,7 +129,7 @@ public class GameMap {
      */
     public void giveOutCardsToPlayer(Player player) {
         programCardDeck.giveOutCardsToPlayer(player);
-        player.select5FirstCards();
+   //     player.select5FirstCards();
     }
 
     /**
