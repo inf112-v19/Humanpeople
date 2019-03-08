@@ -21,6 +21,7 @@ public class PlayerLayerObject implements GameObject {
     private final TiledMapTile westAvatar;
 
 
+    private String color;
     private Position pos;
     private Direction dir;
 
@@ -28,14 +29,22 @@ public class PlayerLayerObject implements GameObject {
     public PlayerLayerObject(TiledMapTileSet tiles, int id) {
         this.id = id;
         pos = new Position(id, id);
+        dir = Direction.NORTH;
 
-        dir = Direction.NORTH  ;
 
         int tileId = (id*10)+30;
         northAvatar = tiles.getTile(tileId+1);
         eastAvatar = tiles.getTile(tileId+2);
         westAvatar = tiles.getTile(tileId+3);
         southAvatar = tiles.getTile(tileId+4);
+
+        switch(id){
+            case 0 : color = "Green"; break;
+            case 1: color = "Dark blue"; break;
+            case 2: color = "Light blue"; break;
+            case 3: color = "Yellow"; break;
+            default: color = "none"; break;
+        }
     }
 
 
@@ -104,6 +113,10 @@ public class PlayerLayerObject implements GameObject {
             case EAST:
                 setPosition(getPosition().East());
         }
+    }
+
+    public String getColor(){
+        return color;
     }
 }
 
