@@ -1,7 +1,6 @@
 # Obligatorisk oppgave 3
 
 
-
 ## Part 1
 ### How do the roles of the team work? Do you need to update who is teamlead or customer contact? Do you need other roles? Write down some points about what the different roles actually mean to you.
  - No more roles are needed
