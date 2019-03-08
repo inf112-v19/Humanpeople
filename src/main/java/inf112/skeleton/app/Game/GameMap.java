@@ -1,4 +1,4 @@
-package inf112.skeleton.app;
+package inf112.skeleton.app.Game;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -10,6 +10,7 @@ import inf112.skeleton.app.Cards.ProgramType;
 import inf112.skeleton.app.Directions.Direction;
 import inf112.skeleton.app.Directions.Position;
 import inf112.skeleton.app.GameObjects.PlayerLayerObject;
+import inf112.skeleton.app.Player.Player;
 
 
 import java.util.ArrayList;

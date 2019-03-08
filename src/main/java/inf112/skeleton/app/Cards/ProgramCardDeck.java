@@ -1,6 +1,6 @@
 package inf112.skeleton.app.Cards;
 
-import inf112.skeleton.app.Player;
+import inf112.skeleton.app.Player.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -9,19 +9,17 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import inf112.skeleton.app.GameMap;
-import inf112.skeleton.app.RoboRally;
-import inf112.skeleton.app.Scenes.Hud;
+import inf112.skeleton.app.Game.GameMap;
+import inf112.skeleton.app.Game.RoboRally;
+
 
 /**
  * Play screen of RoboRally
- *
  */
 public class PlayScreen implements Screen {
     private RoboRally game;
     private OrthographicCamera gameCam;
     private Viewport gamePort;
-    private Hud hud;
 
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
@@ -33,7 +31,6 @@ public class PlayScreen implements Screen {
         this.game = game;
         this.gameCam = new OrthographicCamera();
         this.gamePort = new FitViewport(RoboRally.width, RoboRally.height, gameCam);
-        this.hud = new Hud(game.batch);
         this.gameMap = new GameMap("assets/map3.tmx", 3);
         this.map = gameMap.getMap();
         this.renderer = new OrthogonalTiledMapRenderer(map);
@@ -48,23 +45,11 @@ public class PlayScreen implements Screen {
 
     public void handleInput(float deltaTime) {
         time += deltaTime;
+        //Does a full phase for all players
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && time > 0.2) {
             time = 0;
             gameMap.movePlayers();
         }
-
-//        if (Gdx.input.isKeyPressed(Input.Keys.W) && time > 0.2) {
-//            time = 0;
-//            gameMap.movePlayer(Direction.NORTH, gameMap.getPlayer());
-//        }
-//        if (Gdx.input.isKeyPressed(Input.Keys.S) && time > 0.2) {
-//            time = 0;
-//            gameMap.movePlayer(Direction.SOUTH, gameMap.getPlayer());
-//        }
-//        if (Gdx.input.isKeyPressed(Input.Keys.A) && time > 0.2) {
-//            time = 0;
-//            gameMap.movePlayer(Direction.WEST, gameMap.getPlayer());
-//        }
     }
 
     private void updateMap() {
@@ -80,15 +65,9 @@ public class PlayScreen implements Screen {
     public void render(float v) {
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         update(Gdx.graphics.getDeltaTime());
-
         renderer.setView(gameCam);
         renderer.render();
-
-
-//        game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
-//        hud.stage.draw();
     }
 
     @Override
@@ -98,21 +77,17 @@ public class PlayScreen implements Screen {
 
     @Override
     public void pause() {
-
     }
 
     @Override
     public void resume() {
-
     }
 
     @Override
     public void hide() {
-
     }
 
     @Override
     public void dispose() {
-
     }
 }

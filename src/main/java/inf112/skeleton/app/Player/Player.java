@@ -1,4 +1,4 @@
-package inf112.skeleton.app;
+package inf112.skeleton.app.Player;
 
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
@@ -17,7 +17,6 @@ public class Player {
     private int lifeTokens = MAX_LIFE_TOKENS;
     private int damageTokens = MAX_DAMAGE_TOKENS;
     private int id;
-    private Direction dir;
     private PlayerDeck playerDeck;
 
 
@@ -25,7 +24,6 @@ public class Player {
         this.id = id;
         this.playerTile = new PlayerLayerObject(tiles, id);
         this.playerDeck = new PlayerDeck();
-        this.dir = Direction.randomDirection();
         this.backup = new Position(id, id);
     }
 
@@ -33,17 +31,12 @@ public class Player {
         return id;
     }
 
-    public void setDirection(Direction dir) {
-        this.dir = dir;
-    }
-
     /**
      * Select the 5 first cards form player deck
      */
     public void select5FirstCards() {
-        for (int i = 4; i >= 0; i--) {
+        for (int i = 4; i >= 0; i--)
             playerDeck.selectCardForHand(i);
-        }
     }
 
     public Position getPosition() {
@@ -54,7 +47,7 @@ public class Player {
         return playerTile.getDirection();
     }
 
-    public PlayerLayerObject getPlayerTile(){
+    public PlayerLayerObject getPlayerTile() {
         return playerTile;
     }
 
