@@ -7,10 +7,9 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import inf112.skeleton.app.Cards.ProgramCard;
 import inf112.skeleton.app.Cards.ProgramCardDeck;
 import inf112.skeleton.app.Cards.ProgramType;
-import inf112.skeleton.app.GameObjects.Directions.Direction;
-import inf112.skeleton.app.GameObjects.Directions.Position;
+import inf112.skeleton.app.Directions.Direction;
+import inf112.skeleton.app.Directions.Position;
 import inf112.skeleton.app.GameObjects.PlayerLayerObject;
-import org.junit.runners.Parameterized;
 
 
 import java.util.ArrayList;
@@ -102,7 +101,7 @@ public class GameMap {
 
         if (programType.isMoveCard()) {
 
-            if(programType == ProgramType.BACKUP)
+            if (programType == ProgramType.BACKUP)
                 moveDir = rotate(ProgramType.UTURN, playerDir);
 
             int nSteps = programType.nSteps();
@@ -112,7 +111,7 @@ public class GameMap {
                 if (canGo(moveDir, newPos))
                     movePlayerTilesInList(moveDir);
             }
-            if(programType == ProgramType.BACKUP)
+            if (programType == ProgramType.BACKUP)
                 player.getPlayerTile().setDirection(playerDir);
         }
         //If rotation card
@@ -156,6 +155,7 @@ public class GameMap {
 
     /**
      * Check if valid position
+     *
      * @param dir
      * @param pos
      * @return true if valid position
@@ -178,8 +178,8 @@ public class GameMap {
         return map;
     }
 
-    public Direction rotate(ProgramType rotate, Direction currentDir){
-        switch(rotate) {
+    public Direction rotate(ProgramType rotate, Direction currentDir) {
+        switch (rotate) {
             case ROTATELEFT:
                 return Direction.rotate(currentDir, -1);
             case ROTATERIGHT:

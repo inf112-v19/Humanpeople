@@ -1,10 +1,9 @@
 package inf112.skeleton.app.GameObjects;
 
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
-import inf112.skeleton.app.GameObjects.Directions.Direction;
-import inf112.skeleton.app.GameObjects.Directions.Position;
+import inf112.skeleton.app.Directions.Direction;
+import inf112.skeleton.app.Directions.Position;
 
 /**
  * PlayerLayerObject object
@@ -19,7 +18,6 @@ public class PlayerLayerObject implements GameObject {
     private final TiledMapTile southAvatar;
     private final TiledMapTile eastAvatar;
     private final TiledMapTile westAvatar;
-
 
     private String color;
     private Position pos;
@@ -101,16 +99,16 @@ public class PlayerLayerObject implements GameObject {
 
         switch (direction) {
             case NORTH:
-                setPosition(getPosition().North());
+                setPosition(getPosition().north());
                 break;
             case SOUTH:
-                setPosition(getPosition().South());
+                setPosition(getPosition().south());
                 break;
             case WEST:
-                setPosition(getPosition().West());
+                setPosition(getPosition().west());
                 break;
             case EAST:
-                setPosition(getPosition().East());
+                setPosition(getPosition().east());
         }
     }
 

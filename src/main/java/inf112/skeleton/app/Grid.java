@@ -3,8 +3,8 @@ package inf112.skeleton.app;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import inf112.skeleton.app.GameObjects.*;
-import inf112.skeleton.app.GameObjects.Directions.Direction;
-import inf112.skeleton.app.GameObjects.Directions.Position;
+import inf112.skeleton.app.Directions.Direction;
+import inf112.skeleton.app.Directions.Position;
 
 import java.util.ArrayList;
 
@@ -85,25 +85,25 @@ public class Grid {
             Position positionInDir;
             switch (dir){
                 case NORTH:
-                    positionInDir = pos.North();
+                    positionInDir = pos.north();
                     if(gameLogicGrid[positionInDir.getX()][positionInDir.getY()].get(playerIndex) instanceof PlayerLayerObject){
                         AllowedToMoveInDirection(Direction.NORTH,positionInDir);
                     }
                     break;
                 case EAST:
-                    positionInDir = pos.East();
+                    positionInDir = pos.east();
                     if(gameLogicGrid[positionInDir.getX()][positionInDir.getY()].get(playerIndex) instanceof PlayerLayerObject){
                         AllowedToMoveInDirection(Direction.EAST,positionInDir);
                     }
                     break;
                 case WEST:
-                    positionInDir = pos.West();
+                    positionInDir = pos.west();
                     if(gameLogicGrid[positionInDir.getX()][positionInDir.getY()].get(playerIndex) instanceof PlayerLayerObject){
                         AllowedToMoveInDirection(Direction.WEST,positionInDir);
                     }
                     break;
                 case SOUTH:
-                    positionInDir = pos.South();
+                    positionInDir = pos.south();
                     if(gameLogicGrid[positionInDir.getX()][positionInDir.getY()].get(playerIndex) instanceof PlayerLayerObject){
                         AllowedToMoveInDirection(Direction.SOUTH,positionInDir);
                     }

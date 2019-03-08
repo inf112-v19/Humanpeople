@@ -1,15 +1,19 @@
 package inf112.skeleton.app.GameObjects;
 
-import inf112.skeleton.app.GameObjects.Directions.Direction;
+import inf112.skeleton.app.Directions.Direction;
 
 public class GroundLayerObject implements GameObject {
 
-    protected boolean north = true;
-    protected boolean south = true;
-    protected boolean east = true;
-    protected boolean west = true;
+    private boolean north = true;
+    private boolean south = true;
+    private boolean east = true;
+    private boolean west = true;
     private final int id;
 
+    /**
+     * Creates objects based on their id
+     * @param id
+     */
     public GroundLayerObject(int id) {
         this.id = id;
 

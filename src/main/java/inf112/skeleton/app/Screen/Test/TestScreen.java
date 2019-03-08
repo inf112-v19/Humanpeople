@@ -12,12 +12,10 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import inf112.skeleton.app.Cards.ProgramCard;
 import inf112.skeleton.app.Cards.ProgramType;
 import inf112.skeleton.app.GameMap;
-import inf112.skeleton.app.GameObjects.Directions.Direction;
+import inf112.skeleton.app.Directions.Direction;
 import inf112.skeleton.app.Player;
 import inf112.skeleton.app.RoboRally;
 import inf112.skeleton.app.Scenes.Hud;
-
-import java.sql.SQLOutput;
 
 public class TestScreen implements Screen {
 

@@ -1,6 +1,6 @@
 package inf112.skeleton.app.GameObjects;
 
-import inf112.skeleton.app.GameObjects.Directions.Direction;
+import inf112.skeleton.app.Directions.Direction;
 
 /**
  * Interface for all Game Objects

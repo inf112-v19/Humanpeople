@@ -3,16 +3,9 @@ package inf112.skeleton.app;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import inf112.skeleton.app.Cards.PlayerDeck;
-import inf112.skeleton.app.Cards.ProgramCard;
-import inf112.skeleton.app.Cards.ProgramType;
-import inf112.skeleton.app.GameObjects.Directions.Direction;
-import inf112.skeleton.app.GameObjects.Directions.Position;
+import inf112.skeleton.app.Directions.Direction;
+import inf112.skeleton.app.Directions.Position;
 import inf112.skeleton.app.GameObjects.PlayerLayerObject;
-
-import java.util.ArrayList;
-import java.util.Random;
-
-import static inf112.skeleton.app.GameObjects.Directions.Direction.NORTH;
 
 public class Player {
 
