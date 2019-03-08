@@ -13,6 +13,7 @@ import static org.junit.Assert.*;
 public class ProgramCardDeckTests {
     private ProgramCardDeck deck1;
     private ProgramCardDeck deck2;
+
     @Before
     public void setUp() {
         deck1 = new ProgramCardDeck();
@@ -27,22 +28,22 @@ public class ProgramCardDeckTests {
     }
 
     @Test
-    public void standardDeckSizeTest () {
+    public void standardDeckSizeTest() {
         assertEquals(deck1.getSizeOfDeck(), 84);
     }
 
     @Test
     public void someCardsNotEqualTest() {
-        for (int i = 1; i<84; i++) {
+        for (int i = 1; i < 84; i++) {
             assertNotEquals(deck1.getDeck().get(0), deck1.getDeck().get(i));
         }
-        for (int j = 2; j<84; j++) {
+        for (int j = 2; j < 84; j++) {
             assertNotEquals(deck1.getDeck().get(1), deck1.getDeck().get(j));
         }
-        for (int k = 0; k<50; k++) {
+        for (int k = 0; k < 50; k++) {
             assertNotEquals(deck1.getDeck().get(50), deck1.getDeck().get(k));
         }
-        for (int l = 51; l<84; l++) {
+        for (int l = 51; l < 84; l++) {
             assertNotEquals(deck1.getDeck().get(50), deck1.getDeck().get(l));
         }
     }
@@ -68,7 +69,7 @@ public class ProgramCardDeckTests {
     public void uniquePrioritiesTest() {
         ArrayList<Integer> priorities = new ArrayList<Integer>();
         int pri;
-        for (int i = 0; i<deck1.getSizeOfDeck(); i++) {
+        for (int i = 0; i < deck1.getSizeOfDeck(); i++) {
             pri = deck1.getDeck().get(i).getPriority();
             if (!(priorities.contains(pri))) {
                 priorities.add(pri);
@@ -81,7 +82,7 @@ public class ProgramCardDeckTests {
     public void uniqueFilenameTest() {
         ArrayList<String> filenames = new ArrayList<String>();
         String name;
-        for (int i = 0; i<deck1.getSizeOfDeck(); i++) {
+        for (int i = 0; i < deck1.getSizeOfDeck(); i++) {
             name = deck1.getDeck().get(i).getFilename();
             if (!(filenames.contains(name))) {
                 filenames.add(name);
@@ -104,7 +105,7 @@ public class ProgramCardDeckTests {
         int uTurn = 0;
         int errors = 0;
 
-        for (int i = 0; i<deck1.getSizeOfDeck(); i++) {
+        for (int i = 0; i < deck1.getSizeOfDeck(); i++) {
             type = deck1.getDeck().get(i).getProgramType();
             if (!(types.contains(type))) {
                 types.add(type);
@@ -128,7 +129,7 @@ public class ProgramCardDeckTests {
             }
         }
         assertEquals(types.size(), 7);
-        assertEquals(move1,  18);
+        assertEquals(move1, 18);
         assertEquals(move2, 12);
         assertEquals(move3, 6);
         assertEquals(backUp, 6);

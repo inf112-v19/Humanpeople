@@ -1,4 +1,4 @@
-package inf112.skeleton.app;
+package inf112.skeleton.app.CardTests;
 
 import static junit.framework.TestCase.assertEquals;
 

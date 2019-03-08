@@ -1,10 +1,9 @@
 package inf112.skeleton.app.GameObjects;
 
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
-import inf112.skeleton.app.GameObjects.Directions.Direction;
-import inf112.skeleton.app.GameObjects.Directions.Position;
+import inf112.skeleton.app.Directions.Direction;
+import inf112.skeleton.app.Directions.Position;
 
 /**
  * PlayerLayerObject object
@@ -20,18 +19,29 @@ public class PlayerLayerObject implements GameObject {
     private final TiledMapTile eastAvatar;
     private final TiledMapTile westAvatar;
 
+    private String color;
     private Position pos;
     private Direction dir;
+
 
     public PlayerLayerObject(TiledMapTileSet tiles, int id) {
         this.id = id;
         pos = new Position(id, id);
-        dir = Direction.randomDirection();
+        dir = Direction.NORTH;
 
-        northAvatar = tiles.getTile(31);
-        westAvatar = tiles.getTile(33);
-        eastAvatar = tiles.getTile(32);
-        southAvatar = tiles.getTile(34);
+        int tileId = (id*10)+30;
+        northAvatar = tiles.getTile(tileId+1);
+        eastAvatar = tiles.getTile(tileId+2);
+        westAvatar = tiles.getTile(tileId+3);
+        southAvatar = tiles.getTile(tileId+4);
+
+        switch(id){
+            case 0 : color = "Green"; break;
+            case 1: color = "Dark blue"; break;
+            case 2: color = "Light blue"; break;
+            case 3: color = "Yellow"; break;
+            default: color = "none"; break;
+        }
     }
 
 
@@ -61,6 +71,8 @@ public class PlayerLayerObject implements GameObject {
         this.dir = dir;
     }
 
+
+
     public TiledMapTile getAvatar() {
         switch (dir) {
             case NORTH:
@@ -78,4 +90,31 @@ public class PlayerLayerObject implements GameObject {
         }
         return northAvatar;
     }
+
+    public void update(Direction direction){
+        setDirection(direction);
+        moveTileInDirection(direction);
+    }
+    public void moveTileInDirection(Direction direction){
+
+        switch (direction) {
+            case NORTH:
+                setPosition(getPosition().north());
+                break;
+            case SOUTH:
+                setPosition(getPosition().south());
+                break;
+            case WEST:
+                setPosition(getPosition().west());
+                break;
+            case EAST:
+                setPosition(getPosition().east());
+        }
+    }
+
+    public String getColor(){
+        return color;
+    }
 }
+
+

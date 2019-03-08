@@ -6,7 +6,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import inf112.skeleton.app.RoboRally;
+import inf112.skeleton.app.Game.RoboRally;
+import inf112.skeleton.app.Screen.Test.TestScreen;
 
 /**
  * Menu screen for RoboRally
@@ -30,19 +31,19 @@ public class MenuScreen implements Screen {
     public MenuScreen(RoboRally game){
         this.game = game;
         this.playScreen = new PlayScreen(game);
-        batch = new SpriteBatch();
+        this.batch = new SpriteBatch();
 
-        menuBackground = new Texture("assets/mainMenu/MRRCG.jpg");
-        sprite = new Sprite(menuBackground);
-        sprite.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        this.menuBackground = new Texture("assets/mainMenu/MRRCG.jpg");
+        this.sprite = new Sprite(menuBackground);
+        this.sprite.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
-        playButtonTexture = new Texture("assets/mainMenu/playBtn.png");
+        this.playButtonTexture = new Texture("assets/mainMenu/playBtn.png");
         int playButtonPosX = (Gdx.graphics.getWidth()/2) - (playButtonTexture.getWidth()/2);
         int playButtonPosY = (Gdx.graphics.getHeight()/2) - (playButtonTexture.getHeight()/2);
-        playButton = new Button(playButtonTexture, playButtonPosX, playButtonPosY, playButtonTexture.getWidth(), playButtonTexture.getHeight());
+        this.playButton = new Button(playButtonTexture, playButtonPosX, playButtonPosY, playButtonTexture.getWidth(), playButtonTexture.getHeight());
 
-        testButtonTexture = new Texture("assets/mainMenu/testBtn.png");
-        testButton = new Button(testButtonTexture,2,2,testButtonTexture.getWidth(),testButtonTexture.getHeight());
+        this.testButtonTexture = new Texture("assets/mainMenu/testBtn.png");
+        this.testButton = new Button(testButtonTexture,2,2,testButtonTexture.getWidth(),testButtonTexture.getHeight());
     }
 
     @Override
@@ -52,7 +53,7 @@ public class MenuScreen implements Screen {
 
     @Override
     public void render(float v) {
-        handleInput(Gdx.graphics.getDeltaTime());
+        handleInput();
         Gdx.gl.glClearColor(0,0,0,0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
@@ -63,18 +64,16 @@ public class MenuScreen implements Screen {
         batch.end();
     }
 
-    private void handleInput(float deltaTime) {
-
+    private void handleInput() {
         if (Gdx.input.isTouched()) {
             int inputX = Gdx.input.getX();
             int inputY = Gdx.input.getY();
 
-            if (playButton.checkIfClicked(inputX, inputY)) {
+            if (playButton.checkIfClicked(inputX, inputY))
                 game.setScreen(playScreen);
-            }
-            else if(testButton.checkIfClicked(inputX,inputY)){
-                System.out.println("pog");
-            }
+
+            else if(testButton.checkIfClicked(inputX,inputY))
+                game.setScreen(new TestScreen(game));
         }
     }
 
