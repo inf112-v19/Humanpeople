@@ -13,7 +13,7 @@ public class VisualCard {
     private Boolean haveBeenClicked = false;
     private float x;
     private float y;
-    private int index;
+
 
     public VisualCard(Texture texture, float x, float y, float width, float height) {
         this.x = x;
