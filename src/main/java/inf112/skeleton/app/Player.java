@@ -27,11 +27,24 @@ public class Player {
     private Direction dir;
     private PlayerDeck playerDeck;
 
+//    public ArrayList<Cards> cardsDealt;
+//    private ArrayList<Cards> cardsChosen;
+
+    //Temporary for cards
+    private ArrayList<Direction> chosen;
 
     public Player(TiledMapTileSet tiles, int id) {
         this.id = id;
         this.playerTile = new PlayerLayerObject(tiles, id);
         this.playerDeck = new PlayerDeck();
+        this.chosen = new ArrayList<>();
+
+        //Temporary
+        chosen.add(NORTH);
+        chosen.add(Direction.SOUTH);
+        chosen.add(Direction.EAST);
+        chosen.add(Direction.WEST);
+
         this.dir = Direction.randomDirection();
     }
 
@@ -41,6 +54,12 @@ public class Player {
 
     //Supposed to return next move from current cards
     public ProgramType getMove() {
+        //Temporary random directions
+        /*Random r = new Random();
+        Direction dir = chosen.get(r.nextInt(4));
+        System.out.println(dir);
+        this.dir = dir;
+        */
         ProgramCard card = playerDeck.getCardFromHand();
         ProgramType programType = card.getProgramType();
         Direction newDir = getDirectionFromCard(card);
@@ -56,7 +75,6 @@ public class Player {
      */
     private Direction getDirectionFromCard(ProgramCard card) {
         ProgramType programType = card.getProgramType();
-
         switch (dir) {
             case NORTH:
                 switch (programType) {
@@ -150,5 +168,4 @@ public class Player {
     public PlayerDeck getPlayerDeck() {
         return playerDeck;
     }
-
 }
