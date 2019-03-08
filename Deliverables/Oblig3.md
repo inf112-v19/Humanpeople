@@ -18,16 +18,18 @@
 ### How does communication work for you?
  - Had an incident where three group members had worked on the same implementation. This was due to faulty use of project board, which we have gotten better at towards the end of the iteration and will continue to do heading forward.
 ### Make a brief retrospective in which you consider what you have done so far and what can be improved. This is about project structure, not code. You can of course discuss code, but this is not about error correction, but about how to work and communicate. 
- - At the start of the iteration, first meeting after oblig 1, we started creating a plan for what to implement this iteration. After having agreed upon the different implementations we added tasks to the project board as we saw fit. The tasks were for the individual team members to choose from, but we also discussed in the meetings who could take what task to some degree. 
+ - At the start of the iteration, first meeting after oblig 2, we started creating a plan for what to implement this iteration. After having agreed upon the different implementations we added tasks to the project board as we saw fit. The tasks were for the individual team members to choose from, but we also discussed in the meetings who could take what task to some degree. 
    After the agreed upon tasks were completed we had no more to do, and therefore  team members added their own tasks without much group discussion, only based on what has been talked about on meetings, but not properly agreed upon how to do. This led to some conflicting implementation and one instance where 3 members finished the same task.
  - Later in the iteration we got better at using the project board to the agreed plans made at meetings.
  - The group are happy with the roles given at the start of the project and we feel that no changes needs to be made to the group structure.
  - Testing has also been a struggle. Often tests have been an afterthought and not been done as we had planned. Optimally we would have written all tests after the respective implementation had been completed, and not closer to the end of the iteration. 
 ### During evaluation, every member's contribution to the code base will be emphasized. If there is a big difference in who commits, you must enclose a brief explanation as to why it is like that. Remember to commit everything. Including design files. 
- - Some of the members have done more than others.
- - Teamlead wrote the mandatory assignment while it was discussed during a meeting. Hence a lot more lines have been commited by him.
+ - Mandatory assignemts have been done by discussion with all team members, but only written and commited by teamlead.
+ - Work done in meetings are done together but usually only commited by one person (usually teamlead).
+ - One team member has created almost all graphics, which amounted to only a few commits.
+ - Another team member has created an extensive system for card choosing, but due to certain bugs we decided to not add it to master for Oblig 3.
 ### Report from meetings since the previous delivery must also be delivered. 
-
+ - All reports from meetings are located in the motereferat.md file in deliverables
 
 ### From the retrospective agree and write down three things (max), that the team will follow up during the next sprint
  - Project board
@@ -82,6 +84,7 @@
  - Manual tests are done by selecting the Test screen button on the main menu. Instructions on how to run these tests are found in the projects test folder.
  - Code tests are found in the projects test folder and run without any pre-requirements
 ### Document how the tests should be run, as well. 
+ - See test folder in src. Manuelle tester.md for instructions for manual tests. JUnit test are located in the test folder.
 ### Code quality and test coverage are emphasized. Note that the tests you write must be used in the product.
 ### Completed tasks must be finished.
 ### Deliver class diagrams. (If there are many classes, make class diagrams for the most important ones.) 
