@@ -5,10 +5,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import inf112.skeleton.app.RoboRally;
 
-public class MyActor extends Actor {
+public class VisualCard {
 
     private Sprite skin;
     private Boolean haveBeenClicked = false;
@@ -16,7 +15,7 @@ public class MyActor extends Actor {
     private float y;
 
 
-    public MyActor(Texture texture, float x, float y, float width, float height) {
+    public VisualCard(Texture texture, float x, float y, float width, float height) {
         this.x = x;
         this.y = y;
         skin = new Sprite(texture);
@@ -28,6 +27,7 @@ public class MyActor extends Actor {
     public float getButtonStartX() {
         return skin.getX()*(float)Gdx.graphics.getWidth()/ RoboRally.cfgWidth;
     }
+
     public float getButtonEndX(){
         return (skin.getX()+skin.getWidth())*(float)Gdx.graphics.getWidth()/ RoboRally.cfgWidth;
     }
@@ -68,5 +68,7 @@ public class MyActor extends Actor {
     public void setCoordinates(float x, float y){
         this.x = x;
         this.y = y;
+        skin.setPosition(this.x,this.y);
     }
+
 }

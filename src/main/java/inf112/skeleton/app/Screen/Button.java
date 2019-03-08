@@ -15,8 +15,7 @@ public class Button {
     private float y;
     private int index;
 
-    public Button(Texture texture, float x, float y, float width, float height, int index) {
-        this.index = index;
+    public Button(Texture texture, float x, float y, float width, float height) {
         this.x = x;
         this.y = y;
         skin = new Sprite(texture);
@@ -52,26 +51,13 @@ public class Button {
 
         if(inputX>getButtonStartX()&&inputX<getButtonEndX()){
             if(inputY>getButtonStartY()&&inputY<getButtonEndY()){
-                clickedAgain();
                 return true;
             }
-
         }
         return false;
     }
-    public void clickedAgain() {
-        haveBeenClicked = !haveBeenClicked;
-    }
 
-    public Boolean getHaveBeenClicked() {
-        return haveBeenClicked;
-    }
-    public void setCoordinates(float x, float y){
-        this.x = x;
-        this.y = y;
-        skin.setPosition(this.x,this.y);
-    }
-    public int getIndex() {
-        return index;
-    }
+
+
+
 }

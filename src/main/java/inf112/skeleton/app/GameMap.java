@@ -4,6 +4,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import inf112.skeleton.app.Cards.ProgramCard;
 import inf112.skeleton.app.Cards.ProgramCardDeck;
 import inf112.skeleton.app.Cards.ProgramType;
 import inf112.skeleton.app.GameObjects.Directions.Direction;
@@ -56,7 +57,6 @@ public class GameMap {
 //        chooseRandomCardsForAllPlayersHand();
 
         drawPlayers();
-
     }
 
     /**
@@ -82,6 +82,7 @@ public class GameMap {
 
     /**
      * Draw single player
+     *
      * @param player
      */
     public void drawPlayer(Player player) {
@@ -111,11 +112,9 @@ public class GameMap {
                     Position newPos = player.getPosition();
                     if (canGo(dir, newPos)) {
 
-                            movePlayerTilesInList(dir);
-
+                        movePlayerTilesInList(dir);
 
                     }
-                    System.out.println(player.getPosition().getX() + "  " + player.getPosition().getY());
                 }
             }
             playerLayer.setCell(pos.getX(), pos.getY(), null);
@@ -125,6 +124,7 @@ public class GameMap {
 
     /**
      * Give out cards to player deck and player selects 5 cards
+     *
      * @param player
      */
     public void giveOutCardsToPlayer(Player player) {
@@ -132,34 +132,23 @@ public class GameMap {
    //     player.select5FirstCards();
     }
 
-    //moves player with playerId in direction if allowed
-    public void movePlayer(Direction direction, int playerId){
-        Player player = players.get(playerId);
-
-        if(canGo(direction,player.getPosition())) {
-            movePlayerTilesInList(direction);
-        }
-        drawPlayers();
-
-
-    }
-
     /**
      * Flytter alle spillere som koliderer i direction og oppdaterer grid
+     *
      * @param direction
      */
-    public void movePlayerTilesInList(Direction direction){
-        int numberOfPlayersToMove = playerTiles.size()-1;
-        //flytter siste spiller først for å ikke ødlegge grid.set og grid.remove logikken
-        for(int i = numberOfPlayersToMove;i>=0;i--){
-            PlayerLayerObject playerLayerObject= playerTiles.get(i);
+    public void movePlayerTilesInList(Direction direction) {
+        int numberOfPlayersToMove = playerTiles.size() - 1;
+        //Flytter siste spiller først for å ikke ødelegge grid.set og grid.remove logikken
+
+        for (int i = numberOfPlayersToMove; i >= 0; i--) {
+            PlayerLayerObject playerLayerObject = playerTiles.get(i);
             Position playerPosition = playerLayerObject.getPosition();
+
             grid.removePlayerPosition(playerPosition);
             playerLayer.setCell(playerPosition.getX(), playerPosition.getY(), null);
-            if(i==0){
-                playerLayerObject.update(direction);
-            }
-            else playerLayerObject.moveTileInDirection(direction);
+
+            playerLayerObject.moveTileInDirection(direction);
             grid.setPlayerPosition(playerLayerObject);
         }
     }
@@ -167,13 +156,12 @@ public class GameMap {
     //Check if valid position
     public boolean canGo(Direction dir, Position pos) {
         playerTiles.clear();
-        playerTiles = grid.numberOfPlayersToMove(dir,pos);
-        System.out.println(playerTiles.size());
-        if(playerTiles.size()>0){
+        playerTiles = grid.numberOfPlayersToMove(dir, pos);
+
+        if (playerTiles.size() > 0) {
 
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
@@ -189,4 +177,54 @@ public class GameMap {
     public TiledMap getMap() {
         return map;
     }
+
+    //TEST ZONE:
+
+    //For testing purposes only
+    public void movePlayer(int playerId, ProgramCard card) {
+        ProgramType programType = card.getProgramType();
+
+        Player player = players.get(playerId);
+        Direction playerDir = player.getDirection();
+        Direction moveDir = playerDir;
+        Position pos = player.getPosition();
+
+        //If movement card
+        if (programType.isMoveCard()) {
+
+            if(programType == ProgramType.BACKUP)
+                moveDir = rotate(ProgramType.UTURN, playerDir);
+
+            int nSteps = programType.nSteps();
+            for (int i = 0; i < nSteps; i++) {
+                Position newPos = player.getPosition();
+
+                if (canGo(moveDir, newPos))
+                    movePlayerTilesInList(moveDir);
+
+            }
+            if(programType == ProgramType.BACKUP)
+                player.getPlayerTile().setDirection(playerDir);
+        }
+        //If rotation card
+        else {
+            Direction rotated = rotate(card.getProgramType(), playerDir);
+            player.getPlayerTile().setDirection(rotated);
+        }
+        playerLayer.setCell(pos.getX(), pos.getY(), null);
+        drawPlayers();
+    }
+    //For testing purposes only
+    public Direction rotate(ProgramType rotate, Direction currentDir){
+        switch(rotate) {
+            case ROTATELEFT:
+                return Direction.rotate(currentDir, -1);
+            case ROTATERIGHT:
+                return Direction.rotate(currentDir, 1);
+            case UTURN:
+                return Direction.rotate(Direction.rotate(currentDir, 1), 1);
+        }
+        return currentDir;
+    }
+
 }
