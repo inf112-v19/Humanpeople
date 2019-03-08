@@ -43,8 +43,6 @@ public class PlayScreen implements Screen {
         this.map = gameMap.getMap();
         this.renderer = new OrthogonalTiledMapRenderer(map);
         gameCam.position.set(gamePort.getWorldWidth() / 2, (gamePort.getWorldHeight() / 2), 0);
-
-
     }
 
     public void update(float deltaTime) {
