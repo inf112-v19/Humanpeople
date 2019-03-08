@@ -10,6 +10,7 @@ import inf112.skeleton.app.Cards.ProgramType;
 import inf112.skeleton.app.GameObjects.Directions.Direction;
 import inf112.skeleton.app.GameObjects.Directions.Position;
 import inf112.skeleton.app.GameObjects.PlayerLayerObject;
+import org.junit.runners.Parameterized;
 
 
 import java.util.ArrayList;
@@ -22,31 +23,30 @@ public class GameMap {
     private final TiledMapTileLayer playerLayer;
     private TiledMapTileSet tiles;
     private final int nPlayers;
-
     private ProgramCardDeck programCardDeck;
     private ArrayList<PlayerLayerObject> playerTiles;
-    //List of players and list of their cells on the map
     private ArrayList<Player> players;
 
 
-    //Takes String (filename for tileset), int (number of players)
-    public GameMap(String name, int nPlayers) {
+    public GameMap(String filename, int nPlayers) {
         this.mapLoader = new TmxMapLoader();
-        this.map = mapLoader.load(name);
+        this.map = mapLoader.load(filename);
         this.grid = new Grid(map);
         this.tiles = map.getTileSets().getTileSet("testTileset");
         this.players = new ArrayList<>();
         this.nPlayers = nPlayers;
         this.programCardDeck = new ProgramCardDeck();
         this.playerLayer = (TiledMapTileLayer) map.getLayers().get(2);
-        playerTiles = new ArrayList<PlayerLayerObject>();
+        this.playerTiles = new ArrayList<>();
         initializePlayers();
 
     }
 
+    /**
+     * Creates all players and gives out cards
+     */
     private void initializePlayers() {
-        //Initializes each player and gives them a unique ID and cell
-        //Arrays 'players' and 'cells' have corresponding player/cell indices
+        //Initializes each player and gives them a unique ID
         for (int id = 0; id < nPlayers; id++) {
             Player player = new Player(tiles, id);
             players.add(player);
@@ -59,32 +59,18 @@ public class GameMap {
         drawPlayers();
     }
 
-    /**
-     * Pick random cards for all players
-     */
     public void chooseRandomCardsForAllPlayersHand() {
         for (Player player : players) {
             player.select5FirstCards();
         }
     }
 
-    //Draws players
     public void drawPlayers() {
         for (Player player : players) {
-            Position pos = player.getPosition();
-
-            TiledMapTileLayer.Cell avatar = new TiledMapTileLayer.Cell();
-            avatar.setTile(player.getAvatar());
-
-            playerLayer.setCell(pos.getX(), pos.getY(), avatar);
+            drawPlayer(player);
         }
     }
 
-    /**
-     * Draw single player
-     *
-     * @param player
-     */
     public void drawPlayer(Player player) {
         Position pos = player.getPosition();
 
@@ -94,28 +80,45 @@ public class GameMap {
         playerLayer.setCell(pos.getX(), pos.getY(), avatar);
     }
 
-    //Moves players one by one
+
     public void movePlayers() {
         for (Player player : players) {
+
             // If the players hand is empty then give out 9 new cards and select 5 cards for hand
+            // Temporary solution. Card selection system is coming.
             if (player.getPlayerDeck().handIsEmpty()) {
                 giveOutCardsToPlayer(player);
             }
-            Direction dir = player.getDirection();
-            Position pos = player.getPosition();
-            ProgramType programType = player.getMove();
+            movePlayer(player.getId(), player.getPlayerDeck().getCardFromHand());
+        }
+    }
 
-            // If the player has drawn a move card then update player nSteps-time if legal move
-            if (programType.isMoveCard()) {
-                int nSteps = programType.nSteps();
-                for (int i = 0; i < nSteps; i++) {
-                    Position newPos = player.getPosition();
-                    if (canGo(dir, newPos)) {
-                        movePlayerTilesInList(dir);
-                    }
-                }
+    public void movePlayer(int playerId, ProgramCard card) {
+        ProgramType programType = card.getProgramType();
+        Player player = players.get(playerId);
+
+        Direction playerDir = player.getDirection();
+        Direction moveDir = playerDir;
+
+        if (programType.isMoveCard()) {
+
+            if(programType == ProgramType.BACKUP)
+                moveDir = rotate(ProgramType.UTURN, playerDir);
+
+            int nSteps = programType.nSteps();
+            for (int i = 0; i < nSteps; i++) {
+                Position newPos = player.getPosition();
+
+                if (canGo(moveDir, newPos))
+                    movePlayerTilesInList(moveDir);
             }
-            playerLayer.setCell(pos.getX(), pos.getY(), null);
+            if(programType == ProgramType.BACKUP)
+                player.getPlayerTile().setDirection(playerDir);
+        }
+        //If rotation card
+        else {
+            Direction rotated = rotate(card.getProgramType(), playerDir);
+            player.getPlayerTile().setDirection(rotated);
         }
         drawPlayers();
     }
@@ -137,8 +140,8 @@ public class GameMap {
      */
     public void movePlayerTilesInList(Direction direction) {
         int numberOfPlayersToMove = playerTiles.size() - 1;
-        //Flytter siste spiller først for å ikke ødelegge grid.set og grid.remove logikken
 
+        //Flytter siste spiller først for å ikke ødelegge grid.set og grid.remove logikken
         for (int i = numberOfPlayersToMove; i >= 0; i--) {
             PlayerLayerObject playerLayerObject = playerTiles.get(i);
             Position playerPosition = playerLayerObject.getPosition();
@@ -151,21 +154,20 @@ public class GameMap {
         }
     }
 
-    //Check if valid position
+    /**
+     * Check if valid position
+     * @param dir
+     * @param pos
+     * @return true if valid position
+     */
     public boolean canGo(Direction dir, Position pos) {
         playerTiles.clear();
         playerTiles = grid.numberOfPlayersToMove(dir, pos);
 
-        if (playerTiles.size() > 0) {
-
+        if (playerTiles.size() > 0)
             return true;
-        } else {
-            return false;
-        }
-    }
 
-    public TiledMapTileLayer getPlayerLayer() {
-        return playerLayer;
+        return false;
     }
 
     public ArrayList<Player> getPlayers() {
@@ -176,43 +178,6 @@ public class GameMap {
         return map;
     }
 
-    //TEST ZONE:
-
-    //For testing purposes only
-    public void movePlayer(int playerId, ProgramCard card) {
-        ProgramType programType = card.getProgramType();
-
-        Player player = players.get(playerId);
-        Direction playerDir = player.getDirection();
-        Direction moveDir = playerDir;
-        Position pos = player.getPosition();
-
-        //If movement card
-        if (programType.isMoveCard()) {
-
-            if(programType == ProgramType.BACKUP)
-                moveDir = rotate(ProgramType.UTURN, playerDir);
-
-            int nSteps = programType.nSteps();
-            for (int i = 0; i < nSteps; i++) {
-                Position newPos = player.getPosition();
-
-                if (canGo(moveDir, newPos))
-                    movePlayerTilesInList(moveDir);
-
-            }
-            if(programType == ProgramType.BACKUP)
-                player.getPlayerTile().setDirection(playerDir);
-        }
-        //If rotation card
-        else {
-            Direction rotated = rotate(card.getProgramType(), playerDir);
-            player.getPlayerTile().setDirection(rotated);
-        }
-        playerLayer.setCell(pos.getX(), pos.getY(), null);
-        drawPlayers();
-    }
-    //For testing purposes only
     public Direction rotate(ProgramType rotate, Direction currentDir){
         switch(rotate) {
             case ROTATELEFT:
@@ -224,5 +189,4 @@ public class GameMap {
         }
         return currentDir;
     }
-
 }

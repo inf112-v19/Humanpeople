@@ -33,85 +33,15 @@ public class Player {
         this.playerTile = new PlayerLayerObject(tiles, id);
         this.playerDeck = new PlayerDeck();
         this.dir = Direction.randomDirection();
+        this.backup = new Position(id, id);
     }
 
     public int getId() {
         return id;
     }
 
-    //Supposed to return next move from current cards
-    public ProgramType getMove() {
-        ProgramCard card = playerDeck.getCardFromHand();
-        ProgramType programType = card.getProgramType();
-        Direction newDir = getDirectionFromCard(card);
-        dir = newDir;
-        playerTile.setDirection(newDir);
-        return programType;
-    }
-
-    /**
-     * Get the direction from program card based on the players current direction
-     *
-     * @return dir
-     */
-    private Direction getDirectionFromCard(ProgramCard card) {
-        ProgramType programType = card.getProgramType();
-
-        switch (dir) {
-            case NORTH:
-                switch (programType) {
-                    case ROTATERIGHT:
-                        return Direction.EAST;
-                    case ROTATELEFT:
-                        return Direction.WEST;
-                    case UTURN:
-                        return Direction.SOUTH;
-                    default:
-                        return dir;
-                }
-            case EAST:
-                switch (programType) {
-                    case ROTATERIGHT:
-                        return Direction.SOUTH;
-                    case ROTATELEFT:
-                        return NORTH;
-                    case UTURN:
-                        return Direction.WEST;
-                    default:
-                        return dir;
-                }
-            case SOUTH:
-                switch (programType) {
-                    case ROTATERIGHT:
-                        return Direction.WEST;
-                    case ROTATELEFT:
-                        return Direction.EAST;
-                    case UTURN:
-                        return NORTH;
-                    default:
-                        return dir;
-                }
-            case WEST:
-                switch (programType) {
-                    case ROTATERIGHT:
-                        return NORTH;
-                    case ROTATELEFT:
-                        return Direction.SOUTH;
-                    case UTURN:
-                        return Direction.EAST;
-                    default:
-                        return dir;
-                }
-        }
-        return dir;
-    }
-
     public void setDirection(Direction dir) {
         this.dir = dir;
-    }
-
-    public void movePlayerInDirection(Direction direction){
-        playerTile.moveTileInDirection(direction);
     }
 
     /**
@@ -131,10 +61,6 @@ public class Player {
         return playerTile.getDirection();
     }
 
-
-    public void powerDown() {
-
-    }
     public PlayerLayerObject getPlayerTile(){
         return playerTile;
     }
