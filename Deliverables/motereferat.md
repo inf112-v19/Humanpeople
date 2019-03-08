@@ -68,4 +68,10 @@
   - Merget alt så langt inn i development
   - Svarte på spørsmål til obliggen
   - Neste møte: 06.03.2019
+  
+ ### Referat møte 06.03.2019
+  - Oppmøte: alle
+  - Felles jobbing med implementering av diverse funkjoner og tester
+  - Skrev oblig 3 nesten helt ferding
+  - Neste møte 08.03.2019
 
