@@ -80,4 +80,19 @@
  - Felles refaktorering av hele prosjektet
  - Siste finpuss av Oblig 3
  - Neste møte 12.03.2019
+ 
+### Referat møte 12.03.2019
+ - Oppmøte: alle
+ - Ingen ny kode (matteoblig)
+ - Planlegging av neste iterasjon
+  * Implementere faser
+  * Implementere runder
+  * Drag and drop- funksjonalitet for valg av kort
+  * Rendre spiller-bevegelser mellom vært trekk
+  * Implementere hull tiles
+  * Implemetere flag-objekt
+  * Implementere backup-funksjonalitet
+ - Diskuterte løsninger for alle punkt i den nye iterasjonen
+ - Enige om at alle skal fjerne brancher de har opprettet men ikke bruker lengre
+ - Neste møte 19.03.2019
 
