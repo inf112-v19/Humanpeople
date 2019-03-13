@@ -26,6 +26,8 @@ public class GameMap {
     private ProgramCardDeck programCardDeck;
     private ArrayList<PlayerLayerObject> playerTiles;
     private ArrayList<Player> players;
+    private ArrayList<ProgramCard> nextMovement;
+    private int movesLeftOfCurrentCard;
 
 
     public GameMap(String filename, int nPlayers) {
@@ -39,6 +41,10 @@ public class GameMap {
         this.playerLayer = (TiledMapTileLayer) map.getLayers().get(2);
         this.playerTiles = new ArrayList<>();
         initializePlayers();
+
+        nextMovement = new ArrayList<>();
+        movesLeftOfCurrentCard = -1;
+
 
     }
 
@@ -105,13 +111,13 @@ public class GameMap {
             if (programType == ProgramType.BACKUP)
                 moveDir = rotate(ProgramType.UTURN, playerDir);
 
-            int nSteps = programType.nSteps();
-            for (int i = 0; i < nSteps; i++) {
+
+
                 Position newPos = player.getPosition();
 
                 if (canGo(moveDir, newPos))
                     movePlayerTilesInList(moveDir);
-            }
+
             if (programType == ProgramType.BACKUP)
                 player.getPlayerTile().setDirection(playerDir);
         }
@@ -121,6 +127,29 @@ public class GameMap {
             player.getPlayerTile().setDirection(rotated);
         }
         drawPlayers();
+    }
+    public  void addMovment(ProgramCard card){
+        nextMovement.add(card);
+    }
+    public void preformNextMovement(){
+        if(!nextMovement.isEmpty()){
+            ProgramCard currentCard = nextMovement.get(0);
+            if (currentCard.getProgramType().isMoveCard()){
+                if(movesLeftOfCurrentCard == -1){
+                    movesLeftOfCurrentCard = currentCard.getProgramType().nSteps();
+                }
+                movesLeftOfCurrentCard--;
+                if(movesLeftOfCurrentCard == 0){
+                    nextMovement.remove(0);
+                    movesLeftOfCurrentCard =-1;
+                }
+            }
+            else {
+                nextMovement.remove(0);
+            }
+            movePlayer(currentCard.getPlayerThatPlayedTheCard(),currentCard);
+
+        }
     }
 
     /**

@@ -26,6 +26,7 @@ public class TestScreen implements Screen {
     private OrthogonalTiledMapRenderer renderer;
     private GameMap gameMap;
     private float time = 0;
+    private float tickTime = 0;
 
     ProgramCard move1;
     ProgramCard move2;
@@ -34,6 +35,7 @@ public class TestScreen implements Screen {
     ProgramCard left;
     ProgramCard backUp;
     ProgramCard uTurn;
+
 
     public TestScreen(RoboRally game) {
         this.game = game;
@@ -44,14 +46,28 @@ public class TestScreen implements Screen {
         this.renderer = new OrthogonalTiledMapRenderer(map);
         gameCam.position.set(gamePort.getWorldWidth() / 2, (gamePort.getWorldHeight() / 2), 0);
 
+
+
         //Every program card type
         move1 = new ProgramCard(ProgramType.MOVE1, 0, "");
         move2 = new ProgramCard(ProgramType.MOVE2, 0, "");
         move3 = new ProgramCard(ProgramType.MOVE3, 0, "");
+
+
+
         right = new ProgramCard(ProgramType.ROTATERIGHT, 0, "");
         left = new ProgramCard(ProgramType.ROTATELEFT, 0, "");
         backUp = new ProgramCard(ProgramType.BACKUP, 0, "");
         uTurn = new ProgramCard(ProgramType.UTURN, 0, "");
+
+        //setter iden til 0 for å flytte spilleren med id 0
+        move1.setPlayerThatPlayedTheCard(0);
+        move2.setPlayerThatPlayedTheCard(0);
+        move3.setPlayerThatPlayedTheCard(0);
+        right.setPlayerThatPlayedTheCard(0);
+        left.setPlayerThatPlayedTheCard(0);
+        backUp.setPlayerThatPlayedTheCard(0);
+        uTurn.setPlayerThatPlayedTheCard(0);
     }
 
     public void update(float deltaTime) {
@@ -62,47 +78,62 @@ public class TestScreen implements Screen {
 
     public void handleInput(float deltaTime) {
         time += deltaTime;
+        tickTime += deltaTime;
 
         //Test of movement according to program cards (using movePlayer() for testing)
         if (Gdx.input.isKeyPressed(Input.Keys.NUM_1) && time > 0.2) {
             time = 0;
-            gameMap.movePlayer(0, move1);
-            getInfo(move1);
+
+            gameMap.addMovment(move1);
+//            getInfo(move1);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.NUM_2) && time > 0.2) {
             time = 0;
-            gameMap.movePlayer(0, move2);
-            getInfo(move2);
+
+            gameMap.addMovment(move2);
+//            getInfo(move2);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.NUM_3) && time > 0.2) {
             time = 0;
-            gameMap.movePlayer(0, move3);
-            getInfo(move3);
+
+            gameMap.addMovment(move3);
+//            getInfo(move3);
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.R) && time > 0.2) {
             time = 0;
-            gameMap.movePlayer(0, right);
-            getInfo(right);
+
+            gameMap.addMovment(right);
+//            getInfo(right);
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.L) && time > 0.2) {
             time = 0;
-            gameMap.movePlayer(0, left);
-            getInfo(left);
+
+            gameMap.addMovment(left);
+//            getInfo(left);
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.U) && time > 0.2) {
             time = 0;
-            gameMap.movePlayer(0, uTurn);
-            getInfo(uTurn);
+
+            gameMap.addMovment(uTurn);
+//            getInfo(uTurn);
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.B) && time > 0.2) {
             time = 0;
-            gameMap.movePlayer(0, backUp);
+            gameMap.addMovment(backUp);
+
+//            getInfo(backUp);
+        }
+
+        if(tickTime>0.6){
+            tickTime=0;
+            gameMap.preformNextMovement();
             getInfo(backUp);
         }
+
     }
 
     private void getInfo(ProgramCard card) {
