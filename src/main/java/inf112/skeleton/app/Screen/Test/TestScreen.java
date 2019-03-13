@@ -73,12 +73,19 @@ public class TestScreen implements Screen {
     public void update(float deltaTime) {
         handleInput(deltaTime);
         updateMap();
+        if(tickTime>0.6){
+            tickTime=0;
+            gameMap.preformNextMovement();
+            //TODO få getInfo til å virke på en fornuftig måte
+            getInfo(backUp);
+        }
     }
 
 
     public void handleInput(float deltaTime) {
         time += deltaTime;
         tickTime += deltaTime;
+
 
         //Test of movement according to program cards (using movePlayer() for testing)
         if (Gdx.input.isKeyPressed(Input.Keys.NUM_1) && time > 0.2) {
@@ -128,12 +135,6 @@ public class TestScreen implements Screen {
 //            getInfo(backUp);
         }
 
-        if(tickTime>0.6){
-            tickTime=0;
-            gameMap.preformNextMovement();
-            //TODO få getInfo til å virke på en fornuftig måte
-            getInfo(backUp);
-        }
 
     }
 
