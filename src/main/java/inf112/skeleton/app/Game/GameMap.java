@@ -87,7 +87,7 @@ public class GameMap {
     }
 
 
-    public void movePlayers() {
+    public void addMovementFromAllPlayers() {
         for (Player player : players) {
 
             // If the players hand is empty then give out 9 new cards and select 5 cards for hand
@@ -95,7 +95,15 @@ public class GameMap {
             if (player.getPlayerDeck().handIsEmpty()) {
                 giveOutCardsToPlayer(player);
             }
-            movePlayer(player.getId(), player.getPlayerDeck().getCardFromHand());
+//            movePlayer(player.getId(), player.getPlayerDeck().getCardFromHand());
+
+            //TODO flytt id adding til fornuftig sted(for at man skal vite hvem som spilte kortet)
+            ProgramCard tempCard = player.getPlayerDeck().getCardFromHand();
+            tempCard.setPlayerThatPlayedTheCard(player.getId());
+
+
+            addMovement(tempCard);
+
         }
     }
 
@@ -128,7 +136,7 @@ public class GameMap {
         }
         drawPlayers();
     }
-    public  void addMovment(ProgramCard card){
+    public  void addMovement(ProgramCard card){
         nextMovement.add(card);
     }
     public void preformNextMovement(){

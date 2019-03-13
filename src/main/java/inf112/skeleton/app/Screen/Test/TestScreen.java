@@ -84,46 +84,46 @@ public class TestScreen implements Screen {
         if (Gdx.input.isKeyPressed(Input.Keys.NUM_1) && time > 0.2) {
             time = 0;
 
-            gameMap.addMovment(move1);
+            gameMap.addMovement(move1);
 //            getInfo(move1);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.NUM_2) && time > 0.2) {
             time = 0;
 
-            gameMap.addMovment(move2);
+            gameMap.addMovement(move2);
 //            getInfo(move2);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.NUM_3) && time > 0.2) {
             time = 0;
 
-            gameMap.addMovment(move3);
+            gameMap.addMovement(move3);
 //            getInfo(move3);
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.R) && time > 0.2) {
             time = 0;
 
-            gameMap.addMovment(right);
+            gameMap.addMovement(right);
 //            getInfo(right);
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.L) && time > 0.2) {
             time = 0;
 
-            gameMap.addMovment(left);
+            gameMap.addMovement(left);
 //            getInfo(left);
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.U) && time > 0.2) {
             time = 0;
 
-            gameMap.addMovment(uTurn);
+            gameMap.addMovement(uTurn);
 //            getInfo(uTurn);
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.B) && time > 0.2) {
             time = 0;
-            gameMap.addMovment(backUp);
+            gameMap.addMovement(backUp);
 
 //            getInfo(backUp);
         }
@@ -131,6 +131,7 @@ public class TestScreen implements Screen {
         if(tickTime>0.6){
             tickTime=0;
             gameMap.preformNextMovement();
+            //TODO få getInfo til å virke på en fornuftig måte
             getInfo(backUp);
         }
 

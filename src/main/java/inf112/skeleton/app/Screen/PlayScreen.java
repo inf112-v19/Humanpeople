@@ -25,6 +25,7 @@ public class PlayScreen implements Screen {
     private OrthogonalTiledMapRenderer renderer;
     private GameMap gameMap;
     float time = 0;
+    float tickTime = 0;
 
 
     public PlayScreen(RoboRally game) {
@@ -38,8 +39,13 @@ public class PlayScreen implements Screen {
     }
 
     public void update(float deltaTime) {
+        tickTime += deltaTime;
         handleInput(deltaTime);
         updateMap();
+        if(tickTime>0.4){
+            tickTime=0;
+            gameMap.preformNextMovement();
+        }
     }
 
 
@@ -48,7 +54,7 @@ public class PlayScreen implements Screen {
         //Does a full phase for all players
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && time > 0.2) {
             time = 0;
-            gameMap.movePlayers();
+            gameMap.addMovementFromAllPlayers();
         }
     }
 
