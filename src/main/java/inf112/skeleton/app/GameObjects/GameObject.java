@@ -13,5 +13,6 @@ public interface GameObject {
 
    int getId();
 
+   boolean equals(GameObject obj);
 }
 

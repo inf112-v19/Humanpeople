@@ -116,7 +116,7 @@ public class ProgramCardDeckTests {
                 move2++;
             } else if (type == ProgramType.MOVE3) {
                 move3++;
-            } else if (type == ProgramType.BACKUP) {
+            } else if (type == ProgramType.BACKWARD) {
                 backUp++;
             } else if (type == ProgramType.ROTATELEFT) {
                 rotateLeft++;

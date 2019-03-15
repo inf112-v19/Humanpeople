@@ -121,4 +121,22 @@ public class Grid {
 
         return listOfPlayerTilesToMove;
     }
+
+    public boolean isHole(Position position) {
+        int x = position.getX();
+        int y = position.getY();
+        GameObject object = (GameObject) gameLogicGrid[x][y].get(groundIndex);
+        int holeId = 6;
+        if (object.equals(new GroundLayerObject(holeId)))
+            return false;
+        return false;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
 }

@@ -57,7 +57,7 @@ public class TestScreen implements Screen {
 
         right = new ProgramCard(ProgramType.ROTATERIGHT, 0, "");
         left = new ProgramCard(ProgramType.ROTATELEFT, 0, "");
-        backUp = new ProgramCard(ProgramType.BACKUP, 0, "");
+        backUp = new ProgramCard(ProgramType.BACKWARD, 0, "");
         uTurn = new ProgramCard(ProgramType.UTURN, 0, "");
 
         //setter iden til 0 for å flytte spilleren med id 0

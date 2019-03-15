@@ -34,7 +34,7 @@ public class ProgramCardDeck {
         }
         //Add backup cards (6) p(430-480)
         for (int l = 0; l < 6; l++) {
-            programCardDeck.add(new ProgramCard(ProgramType.BACKUP, (430 + (10 * l)),
+            programCardDeck.add(new ProgramCard(ProgramType.BACKWARD, (430 + (10 * l)),
                     "assets/cards/ProgramCards/backUp/backUp1p" + (430 + (10 * l)) + ".png"));
         }
         //Add rotate left cards (18) p(70-410)

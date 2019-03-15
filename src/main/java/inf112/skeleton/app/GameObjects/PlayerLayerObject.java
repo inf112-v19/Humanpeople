@@ -55,6 +55,11 @@ public class PlayerLayerObject implements GameObject {
         return id;
     }
 
+    @Override
+    public boolean equals(GameObject obj) {
+        return this.id == obj.getId();
+    }
+
     public Position getPosition() {
         return pos;
     }

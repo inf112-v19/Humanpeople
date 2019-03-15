@@ -23,6 +23,7 @@ public class GameMap {
     private final TiledMapTileLayer playerLayer;
     private TiledMapTileSet tiles;
     private final int nPlayers;
+    private StartingPositions startingPositions;
     private ProgramCardDeck programCardDeck;
     private ArrayList<PlayerLayerObject> playerTiles;
     private ArrayList<Player> players;
@@ -37,6 +38,7 @@ public class GameMap {
         this.tiles = map.getTileSets().getTileSet("testTileset");
         this.players = new ArrayList<>();
         this.nPlayers = nPlayers;
+        this.startingPositions = new StartingPositions(grid.getWidth(), grid.getHeight());
         this.programCardDeck = new ProgramCardDeck();
         this.playerLayer = (TiledMapTileLayer) map.getLayers().get(2);
         this.playerTiles = new ArrayList<>();
@@ -56,6 +58,9 @@ public class GameMap {
         for (int id = 0; id < nPlayers; id++) {
             Player player = new Player(tiles, id);
             players.add(player);
+            Position startingPosition = startingPositions.getStartingPosition(id);
+            player.setPosition(startingPosition);
+            player.setBackup(startingPosition);
             grid.setPlayerPosition(player.getPlayerTile());
         }
         // Give out cards to players
@@ -103,20 +108,27 @@ public class GameMap {
 
 
             addMovement(tempCard);
-
         }
     }
 
-    public void movePlayer(int playerId, ProgramCard card) {
-        ProgramType programType = card.getProgramType();
-        Player player = players.get(playerId);
+    public  void addMovement(ProgramCard card){
+        nextMovement.add(card);
+    }
 
+    public void movePlayer(int playerId, ProgramCard card) {
+        Player player = players.get(playerId);
+        // Checks if player is in a state where he/she has to return to backup
+        if (hasToReturnToBackup(player)) {
+            returnToBackup(player);
+            return;
+        }
+        ProgramType programType = card.getProgramType();
         Direction playerDir = player.getDirection();
         Direction moveDir = playerDir;
 
         if (programType.isMoveCard()) {
 
-            if (programType == ProgramType.BACKUP)
+            if (programType == ProgramType.BACKWARD)
                 moveDir = rotate(ProgramType.UTURN, playerDir);
 
 
@@ -126,7 +138,7 @@ public class GameMap {
                 if (canGo(moveDir, newPos))
                     movePlayerTilesInList(moveDir);
 
-            if (programType == ProgramType.BACKUP)
+            if (programType == ProgramType.BACKWARD)
                 player.getPlayerTile().setDirection(playerDir);
         }
         //If rotation card
@@ -136,9 +148,50 @@ public class GameMap {
         }
         drawPlayers();
     }
-    public  void addMovement(ProgramCard card){
-        nextMovement.add(card);
+
+    /**
+     * Sets players position to backup and draws players
+     * @param player
+     */
+    public void returnToBackup(Player player) {
+        playerLayer.setCell(player.getPosition().getX(), player.getPosition().getY(), null);
+        Position backup = player.getBackup();
+        player.setPosition(backup);
+        drawPlayers();
     }
+
+    /**
+     * Checks if player is in a state where he/she has to return to backup
+     * @param player
+     * @return
+     */
+    public boolean hasToReturnToBackup(Player player) {
+        if (steppedOnHole(player) || player.lostAllDamageTokens() || walkedOffMap(player))
+            return true;
+        return false;
+    }
+
+    /**
+     * Checks if player has walked off the game map
+     * @param player
+     * @return true if player is off map
+     */
+    public boolean walkedOffMap(Player player) {
+        return false;
+    }
+
+    /**
+     * Checks if player is stepping on a hole
+     * @param player
+     * @return true if player is in hole
+     */
+    public boolean steppedOnHole(Player player) {
+        Position currentPosition = player.getPosition();
+        if (grid.isHole(currentPosition))
+            return true;
+        return false;
+    }
+
     public void preformNextMovement(){
         if(!nextMovement.isEmpty()){
             ProgramCard currentCard = nextMovement.get(0);

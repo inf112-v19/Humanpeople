@@ -16,6 +16,7 @@ public class Player {
     private PlayerLayerObject playerTile;
     private int lifeTokens = MAX_LIFE_TOKENS;
     private int damageTokens = MAX_DAMAGE_TOKENS;
+    private int currentMaxDamageTokens = MAX_DAMAGE_TOKENS;
     private int id;
     private PlayerDeck playerDeck;
 
@@ -39,8 +40,40 @@ public class Player {
             playerDeck.selectCardForHand(i);
     }
 
+    /**
+     * Sets the max amount of damage tokens a player can have at this point in the game
+     * @param maxDamageTokens
+     */
+    public void setCurrentMaxDamageTokens(int maxDamageTokens) {
+        currentMaxDamageTokens = maxDamageTokens;
+    }
+
+    /**
+     * Restores the amount of damageTokens to be the current amount of max damage tokens a player can have
+     */
+    public void restoreDamageTokens() {
+        damageTokens = currentMaxDamageTokens;
+    }
+
+    /**
+     * If all damageTokens are lost then reduce lifeTokens with 1 and restore damageTokens
+     * @return
+     */
+    public boolean lostAllDamageTokens() {
+        if (damageTokens < 1) {
+           lifeTokens--; // TODO Check if lifeTokes == 0 before doing anyting
+           restoreDamageTokens();
+           return true;
+        }
+        return false;
+    }
+
     public Position getPosition() {
         return playerTile.getPosition();
+    }
+
+    public void setPosition(Position position) {
+        playerTile.setPosition(position);
     }
 
     public Direction getDirection() {
@@ -49,6 +82,10 @@ public class Player {
 
     public PlayerLayerObject getPlayerTile() {
         return playerTile;
+    }
+
+    public Position getBackup() {
+        return backup;
     }
 
     public void setBackup(Position pos) {
