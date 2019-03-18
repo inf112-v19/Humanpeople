@@ -28,13 +28,13 @@ public class Phase {
             if(movesLeftOnCurrentCard == 0){
                 movesToPreform.remove(0);
                 movesLeftOnCurrentCard = -1;
-                if(movesToPreform.size() == 0){
-                    phaseComplete = true;
-                }
             }
         }
         else {
             movesToPreform.remove(0);
+        }
+        if(movesToPreform.size() == 0){
+            phaseComplete = true;
         }
         return currentCard;
 

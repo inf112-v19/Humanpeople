@@ -11,6 +11,7 @@ import inf112.skeleton.app.Directions.Direction;
 import inf112.skeleton.app.Directions.Position;
 import inf112.skeleton.app.GameObjects.PlayerLayerObject;
 import inf112.skeleton.app.Player.Player;
+import inf112.skeleton.app.Round.Phase;
 import inf112.skeleton.app.Round.Round;
 
 
@@ -47,6 +48,7 @@ public class GameMap {
         nextMovement = new ArrayList<>();
         movesLeftOfCurrentCard = -1;
         round = new Round();
+
 
 
     }
@@ -90,23 +92,30 @@ public class GameMap {
     }
 
 
-    public void addMovementFromAllPlayers() {
-        for (Player player : players) {
+    public void addPlayerHandToNewRound() {
+        if(!round.isSet()){
+            round = new Round();
 
-            // If the players hand is empty then give out 9 new cards and select 5 cards for hand
-            // Temporary solution. Card selection system is coming.
-            if (player.getPlayerDeck().handIsEmpty()) {
-                giveOutCardsToPlayer(player);
-            }
+            int amountOfPhases = 5;
+            for(int i = 0; i< amountOfPhases; i++){
+                ArrayList<ProgramCard> cardsToAddInPhaseI = new ArrayList<>();
+                for (Player player : players) {
+
+                    // If the players hand is empty then give out 9 new cards and select 5 cards for hand
+                    // Temporary solution. Card selection system is coming.
+                    if (player.getPlayerDeck().handIsEmpty()) {
+                        giveOutCardsToPlayer(player);
+                    }
 //            movePlayer(player.getId(), player.getPlayerDeck().getCardFromHand());
 
-            //TODO flytt id adding til fornuftig sted(for at man skal vite hvem som spilte kortet)
-            ProgramCard tempCard = player.getPlayerDeck().getCardFromHand();
-            tempCard.setPlayerThatPlayedTheCard(player.getId());
-
-
-            addMovement(tempCard);
-
+                    //TODO flytt id adding til fornuftig sted(for at man skal vite hvem som spilte kortet)
+                    ProgramCard tempCard = player.getPlayerDeck().getCardFromHand();
+                    tempCard.setPlayerThatPlayedTheCard(player.getId());
+                    
+                    cardsToAddInPhaseI.add(tempCard);
+                }
+                round.addPhases(new Phase(cardsToAddInPhaseI));
+            }
         }
     }
 
@@ -149,25 +158,6 @@ public class GameMap {
                 movePlayer(currentCard.getPlayerThatPlayedTheCard(),currentCard);
             }
         }
-//        if(!nextMovement.isEmpty()){
-//            ProgramCard currentCard = nextMovement.get(0);
-//            if (currentCard.getProgramType().isMoveCard()){
-//                if(movesLeftOfCurrentCard == -1){
-//                    movesLeftOfCurrentCard = currentCard.getProgramType().nSteps();
-//                }
-//                movesLeftOfCurrentCard--;
-//                if(movesLeftOfCurrentCard == 0){
-//                    nextMovement.remove(0);
-//                    movesLeftOfCurrentCard =-1;
-//                }
-//            }
-//            else {
-//                nextMovement.remove(0);
-//            }
-//            movePlayer(currentCard.getPlayerThatPlayedTheCard(),currentCard);
-//
-//
-//        }
     }
 
     /**

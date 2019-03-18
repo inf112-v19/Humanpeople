@@ -54,7 +54,7 @@ public class PlayScreen implements Screen {
         //Does a full phase for all players
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && time > 0.2) {
             time = 0;
-            gameMap.addMovementFromAllPlayers();
+            gameMap.addPlayerHandToNewRound();
         }
     }
 
