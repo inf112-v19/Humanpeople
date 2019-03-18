@@ -11,6 +11,8 @@ import inf112.skeleton.app.Directions.Direction;
 import inf112.skeleton.app.Directions.Position;
 import inf112.skeleton.app.GameObjects.PlayerLayerObject;
 import inf112.skeleton.app.Player.Player;
+import inf112.skeleton.app.Round.Phase;
+import inf112.skeleton.app.Round.Round;
 
 
 import java.util.ArrayList;
@@ -156,6 +158,7 @@ public class GameMap {
                 nextMovement.remove(0);
             }
             movePlayer(currentCard.getPlayerThatPlayedTheCard(),currentCard);
+
 
         }
     }
