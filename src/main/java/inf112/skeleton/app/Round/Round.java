@@ -1,5 +1,6 @@
 package inf112.skeleton.app.Round;
 
+import inf112.skeleton.app.Cards.ProgramCard;
 import inf112.skeleton.app.Exception.TooManyPhasesException;
 
 import java.util.ArrayList;
@@ -9,9 +10,8 @@ public class Round {
 
     private ArrayList<Phase> phasesInTheRound;
     private Boolean roundComplete;
-
-
     private int currentPhase;
+
     public Round() {
         this.phasesInTheRound = new ArrayList<>();
 
@@ -27,12 +27,32 @@ public class Round {
             //            throw new TooManyPhasesException("Trying to add more than 5 phases");
         }
     }
-    public Boolean roundSet(){
-        if(phasesInTheRound.size() == 5){
+    public boolean isSet(){
+        if(phasesInTheRound.size() == 5)
+            return  true;
+        else return false;
+    }
+    public Boolean isCompleted(){
+        if(roundComplete){
             return true;
         }
-        return false;
+        if(getCurrentPhase().getPhaseComplete()){
+            currentPhase++;
+            if(currentPhase >= maxPhasesInOneRound){
+                roundComplete = true;
+            }
+        }
+        return roundComplete;
     }
+
+    public Phase getCurrentPhase(){
+        return phasesInTheRound.get(currentPhase);
+    }
+
+    public ProgramCard getNextMovementCard(){
+        return getCurrentPhase().nextMovement();
+    }
+
 
 }
 

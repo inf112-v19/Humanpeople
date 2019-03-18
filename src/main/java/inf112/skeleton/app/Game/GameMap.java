@@ -11,7 +11,6 @@ import inf112.skeleton.app.Directions.Direction;
 import inf112.skeleton.app.Directions.Position;
 import inf112.skeleton.app.GameObjects.PlayerLayerObject;
 import inf112.skeleton.app.Player.Player;
-import inf112.skeleton.app.Round.Phase;
 import inf112.skeleton.app.Round.Round;
 
 
@@ -30,6 +29,7 @@ public class GameMap {
     private ArrayList<Player> players;
     private ArrayList<ProgramCard> nextMovement;
     private int movesLeftOfCurrentCard;
+    private Round round;
 
 
     public GameMap(String filename, int nPlayers) {
@@ -46,6 +46,7 @@ public class GameMap {
 
         nextMovement = new ArrayList<>();
         movesLeftOfCurrentCard = -1;
+        round = new Round();
 
 
     }
@@ -142,25 +143,31 @@ public class GameMap {
         nextMovement.add(card);
     }
     public void preformNextMovement(){
-        if(!nextMovement.isEmpty()){
-            ProgramCard currentCard = nextMovement.get(0);
-            if (currentCard.getProgramType().isMoveCard()){
-                if(movesLeftOfCurrentCard == -1){
-                    movesLeftOfCurrentCard = currentCard.getProgramType().nSteps();
-                }
-                movesLeftOfCurrentCard--;
-                if(movesLeftOfCurrentCard == 0){
-                    nextMovement.remove(0);
-                    movesLeftOfCurrentCard =-1;
-                }
+        if(round.isSet()){
+            if(!round.isCompleted()){
+                ProgramCard currentCard = round.getNextMovementCard();
+                movePlayer(currentCard.getPlayerThatPlayedTheCard(),currentCard);
             }
-            else {
-                nextMovement.remove(0);
-            }
-            movePlayer(currentCard.getPlayerThatPlayedTheCard(),currentCard);
-
-
         }
+//        if(!nextMovement.isEmpty()){
+//            ProgramCard currentCard = nextMovement.get(0);
+//            if (currentCard.getProgramType().isMoveCard()){
+//                if(movesLeftOfCurrentCard == -1){
+//                    movesLeftOfCurrentCard = currentCard.getProgramType().nSteps();
+//                }
+//                movesLeftOfCurrentCard--;
+//                if(movesLeftOfCurrentCard == 0){
+//                    nextMovement.remove(0);
+//                    movesLeftOfCurrentCard =-1;
+//                }
+//            }
+//            else {
+//                nextMovement.remove(0);
+//            }
+//            movePlayer(currentCard.getPlayerThatPlayedTheCard(),currentCard);
+//
+//
+//        }
     }
 
     /**
