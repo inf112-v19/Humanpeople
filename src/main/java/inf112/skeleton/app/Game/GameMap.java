@@ -111,7 +111,7 @@ public class GameMap {
                     //TODO flytt id adding til fornuftig sted(for at man skal vite hvem som spilte kortet)
                     ProgramCard tempCard = player.getPlayerDeck().getCardFromHand();
                     tempCard.setPlayerThatPlayedTheCard(player.getId());
-                    
+
                     cardsToAddInPhaseI.add(tempCard);
                 }
                 round.addPhases(new Phase(cardsToAddInPhaseI));
