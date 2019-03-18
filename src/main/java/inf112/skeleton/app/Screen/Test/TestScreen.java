@@ -101,7 +101,7 @@ public class TestScreen implements Screen {
         time += deltaTime;
         if(!infoShowed){
             infoShowed = true;
-            System.out.println("Select 5:\n1 = move1\n2 = move2\n3 = move3\nr = rotateRight\nl = rotateLeft\nu = uTurn\nb = backup\n\nSpace = Confirm");
+            System.out.println("\nSelect 5:\n1 = move1\n2 = move2\n3 = move3\nr = rotateRight\nl = rotateLeft\nu = uTurn\nb = backup\n\nSpace = Confirm");
         }
         if(time >0.1){
 

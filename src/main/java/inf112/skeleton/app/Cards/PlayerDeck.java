@@ -105,7 +105,5 @@ public class PlayerDeck {
     public void setPlayerHand(ArrayList<ProgramCard> hand){
         this.hand = hand;
     }
-    public void emptyPlayerHand(){
-        hand.clear();
-    }
+
 }

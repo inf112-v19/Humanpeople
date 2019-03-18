@@ -28,8 +28,7 @@ public class GameMap {
     private ProgramCardDeck programCardDeck;
     private ArrayList<PlayerLayerObject> playerTiles;
     private ArrayList<Player> players;
-    private ArrayList<ProgramCard> nextMovement;
-    private int movesLeftOfCurrentCard;
+
     private Round round;
 
 
@@ -45,8 +44,7 @@ public class GameMap {
         this.playerTiles = new ArrayList<>();
         initializePlayers();
 
-        nextMovement = new ArrayList<>();
-        movesLeftOfCurrentCard = -1;
+
         round = new Round();
 
 
@@ -106,8 +104,6 @@ public class GameMap {
                     if (player.getPlayerDeck().handIsEmpty()) {
                         giveOutCardsToPlayer(player);
                     }
-//            movePlayer(player.getId(), player.getPlayerDeck().getCardFromHand());
-
                     //TODO flytt id adding til fornuftig sted(for at man skal vite hvem som spilte kortet)
                     ProgramCard tempCard = player.getPlayerDeck().getCardFromHand();
                     tempCard.setPlayerThatPlayedTheCard(player.getId());
@@ -148,9 +144,7 @@ public class GameMap {
         }
         drawPlayers();
     }
-    public  void addMovement(ProgramCard card){
-        nextMovement.add(card);
-    }
+
     public void preformNextMovement(){
         if(round.isSet()){
             if(!round.isCompleted()){

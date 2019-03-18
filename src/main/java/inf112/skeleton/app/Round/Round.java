@@ -38,13 +38,14 @@ public class Round {
 
     public Boolean isCompleted(){
         if(roundComplete){
-            phasesInTheRound.clear();
+
             return true;
         }
         if(getCurrentPhase().getPhaseComplete()){
             currentPhase++;
             if(currentPhase >= maxPhasesInOneRound){
                 roundComplete = true;
+                phasesInTheRound.clear();
             }
         }
         return roundComplete;
