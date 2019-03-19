@@ -1,6 +1,7 @@
 package inf112.skeleton.app.Game;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import inf112.skeleton.app.GameObjects.*;
 import inf112.skeleton.app.Directions.Direction;
@@ -125,10 +126,11 @@ public class Grid {
     public boolean isHole(Position position) {
         int x = position.getX();
         int y = position.getY();
-        GameObject object = (GameObject) gameLogicGrid[x][y].get(groundIndex);
+        TiledMapTile ground = groundLayer.getCell(x,y).getTile();
+        //GameObject object = (GameObject) gameLogicGrid[x][y].get(groundIndex);
         int holeId = 6;
-        if (object.equals(new GroundLayerObject(holeId)))
-            return false;
+        if (ground.equals(new GroundLayerObject(holeId)) || ground.getId() == 6)
+            return true;
         return false;
     }
 

@@ -146,6 +146,7 @@ public class GameMap {
             Direction rotated = rotate(card.getProgramType(), playerDir);
             player.getPlayerTile().setDirection(rotated);
         }
+
         drawPlayers();
     }
 
@@ -155,8 +156,10 @@ public class GameMap {
      */
     public void returnToBackup(Player player) {
         playerLayer.setCell(player.getPosition().getX(), player.getPosition().getY(), null);
+        grid.removePlayerPosition(player.getPosition());
         Position backup = player.getBackup();
         player.setPosition(backup);
+        grid.setPlayerPosition(player.getPlayerTile());
         drawPlayers();
     }
 
