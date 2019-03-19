@@ -25,6 +25,7 @@ public class Player {
         this.playerTile = new PlayerLayerObject(tiles, id);
         this.playerDeck = new PlayerDeck();
         this.backup = new Position(id, id);
+
     }
 
     public int getId() {

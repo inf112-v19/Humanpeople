@@ -18,6 +18,7 @@ public class PlayerLayerObject implements GameObject {
     private final TiledMapTile southAvatar;
     private final TiledMapTile eastAvatar;
     private final TiledMapTile westAvatar;
+    private Position backup;
 
     private String color;
     private Position pos;
@@ -28,6 +29,7 @@ public class PlayerLayerObject implements GameObject {
         this.id = id;
         pos = new Position(id, id);
         dir = Direction.NORTH;
+        backup = pos;
 
         int tileId = (id*10)+30;
         northAvatar = tiles.getTile(tileId+1);
@@ -54,6 +56,15 @@ public class PlayerLayerObject implements GameObject {
     public int getId() {
         return id;
     }
+
+    public void goToBackup(){
+        this.setPosition(backup);
+    }
+
+    public Position getBackup(){
+        return backup;
+    }
+
 
     public Position getPosition() {
         return pos;
