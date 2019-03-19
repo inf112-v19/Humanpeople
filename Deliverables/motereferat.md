@@ -95,4 +95,12 @@
  - Diskuterte løsninger for alle punkt i den nye iterasjonen
  - Enige om at alle skal fjerne brancher de har opprettet men ikke bruker lengre
  - Neste møte 19.03.2019
+ 
+ ### Referat møte 19.03.2019
+  - Oppmøte: Sjur, Stian, Eirik, Sondre
+  - Gjennomgang av tick i PlayScreen, fase og runder, Backup
+  - Noen småfikser av det som ble gjennomgått av kode
+  - Merget sammen stian4 og sondre
+  - Planlegging av neste iterasjon
+  - Neste møte: 22.03.2019
 
