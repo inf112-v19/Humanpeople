@@ -16,6 +16,8 @@ import inf112.skeleton.app.Directions.Direction;
 import inf112.skeleton.app.Player.Player;
 import inf112.skeleton.app.Game.RoboRally;
 
+import java.util.ArrayList;
+
 public class TestScreen implements Screen {
 
     private RoboRally game;
@@ -36,12 +38,19 @@ public class TestScreen implements Screen {
     ProgramCard backUp;
     ProgramCard uTurn;
 
+    ArrayList<ProgramCard> cardsForPlayer;
+
+    private int numberOfPlayers;
+    private boolean infoShowed;
+
 
     public TestScreen(RoboRally game) {
+        cardsForPlayer = new ArrayList<>();
+        numberOfPlayers = 4;
         this.game = game;
         this.gameCam = new OrthographicCamera();
         this.gamePort = new FitViewport(RoboRally.width, RoboRally.height, gameCam);
-        this.gameMap = new GameMap("assets/map3.tmx", 4);
+        this.gameMap = new GameMap("assets/map3.tmx", numberOfPlayers);
         this.map = gameMap.getMap();
         this.renderer = new OrthogonalTiledMapRenderer(map);
         gameCam.position.set(gamePort.getWorldWidth() / 2, (gamePort.getWorldHeight() / 2), 0);
@@ -60,6 +69,7 @@ public class TestScreen implements Screen {
         backUp = new ProgramCard(ProgramType.BACKWARD, 0, "");
         uTurn = new ProgramCard(ProgramType.UTURN, 0, "");
 
+
         //setter iden til 0 for å flytte spilleren med id 0
         move1.setPlayerThatPlayedTheCard(0);
         move2.setPlayerThatPlayedTheCard(0);
@@ -68,74 +78,116 @@ public class TestScreen implements Screen {
         left.setPlayerThatPlayedTheCard(0);
         backUp.setPlayerThatPlayedTheCard(0);
         uTurn.setPlayerThatPlayedTheCard(0);
+
+        infoShowed = false;
+
     }
 
     public void update(float deltaTime) {
         handleInput(deltaTime);
         updateMap();
-        if(tickTime>0.6){
+
+        tickTime += deltaTime;
+        if(tickTime>0.2){
             tickTime=0;
             gameMap.preformNextMovement();
             //TODO få getInfo til å virke på en fornuftig måte
-            getInfo(backUp);
+            //getInfo(backUp);
         }
     }
 
 
     public void handleInput(float deltaTime) {
         time += deltaTime;
-        tickTime += deltaTime;
+        if(!infoShowed){
+            infoShowed = true;
+            System.out.println("\nSelect 5:\n1 = move1\n2 = move2\n3 = move3\nr = rotateRight\nl = rotateLeft\nu = uTurn\nb = backup\n\nSpace = Confirm");
+        }
+        if(time >0.1){
 
-
-        //Test of movement according to program cards (using movePlayer() for testing)
-        if (Gdx.input.isKeyPressed(Input.Keys.NUM_1) && time > 0.2) {
-            time = 0;
-
-            gameMap.addMovement(move1);
+            if(cardsForPlayer.size()!=5){
+                if (Gdx.input.isKeyPressed(Input.Keys.NUM_1)) {
+                    time = 0;
+                    cardsForPlayer.add(move1);
+                    System.out.println("selected: "+cardsForPlayer.size()+"/"+5);
 //            getInfo(move1);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.NUM_2) && time > 0.2) {
-            time = 0;
-
-            gameMap.addMovement(move2);
+                }
+                if (Gdx.input.isKeyPressed(Input.Keys.NUM_2)) {
+                    time = 0;
+                    cardsForPlayer.add(move2);
+                    System.out.println("selected: "+cardsForPlayer.size()+"/"+5);
 //            getInfo(move2);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.NUM_3) && time > 0.2) {
-            time = 0;
+                }
+                if (Gdx.input.isKeyPressed(Input.Keys.NUM_3)) {
+                    time = 0;
 
-            gameMap.addMovement(move3);
+                    cardsForPlayer.add(move3);
+                    System.out.println("selected: "+cardsForPlayer.size()+"/"+5);
 //            getInfo(move3);
-        }
+                }
+                if (Gdx.input.isKeyPressed(Input.Keys.R)) {
+                    time = 0;
 
-        if (Gdx.input.isKeyPressed(Input.Keys.R) && time > 0.2) {
-            time = 0;
-
-            gameMap.addMovement(right);
+                    cardsForPlayer.add(right);
+                    System.out.println("selected: "+cardsForPlayer.size()+"/"+5);
 //            getInfo(right);
-        }
+                }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.L) && time > 0.2) {
-            time = 0;
+                if (Gdx.input.isKeyPressed(Input.Keys.L)) {
+                    time = 0;
 
-            gameMap.addMovement(left);
+                    cardsForPlayer.add(left);
+                    System.out.println("selected: "+cardsForPlayer.size()+"/"+5);
 //            getInfo(left);
-        }
+                }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.U) && time > 0.2) {
-            time = 0;
+                if (Gdx.input.isKeyPressed(Input.Keys.U)) {
+                    time = 0;
 
-            gameMap.addMovement(uTurn);
+                    cardsForPlayer.add(uTurn);
+                    System.out.println("selected: "+cardsForPlayer.size()+"/"+5);
 //            getInfo(uTurn);
-        }
+                }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.B) && time > 0.2) {
-            time = 0;
-            gameMap.addMovement(backUp);
+                if (Gdx.input.isKeyPressed(Input.Keys.B)) {
+                    time = 0;
+                    cardsForPlayer.add(backUp);
+                    System.out.println("selected: "+cardsForPlayer.size()+"/"+5);
 
 //            getInfo(backUp);
+                }
+            }
+            //Test of movement according to program cards (using movePlayer() for testing)
+            else{
+                if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+                    time = 0;
+
+                    gameMap.getPlayers().get(0).getPlayerDeck().setPlayerHand(cardsForPlayer);
+                    givePlayersRotateHand();
+                    gameMap.addPlayerHandToNewRound();
+                    cardsForPlayer.clear();
+                    infoShowed = false;
+
+                }
+            }
+
+
+
+
+
+
         }
-
-
+    }
+    public void givePlayersRotateHand(){
+        for(int i = 1;i<numberOfPlayers; i++){
+            ArrayList<ProgramCard> temp = new ArrayList<>();
+            ProgramCard card = new ProgramCard(ProgramType.ROTATERIGHT,i,"");
+            card.setPlayerThatPlayedTheCard(i);
+            for(int z = 0; z<5;z++){
+                temp.add(card);
+            }
+            gameMap.getPlayers().get(i).getPlayerDeck().setPlayerHand(temp);
+        }
     }
 
     private void getInfo(ProgramCard card) {

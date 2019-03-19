@@ -99,4 +99,11 @@ public class PlayerDeck {
     public int handSize() {
         return hand.size();
     }
+
+
+    //forTesting
+    public void setPlayerHand(ArrayList<ProgramCard> hand){
+        this.hand = hand;
+    }
+
 }
