@@ -26,4 +26,9 @@ public class NothingSpecial implements GameObject{
     public boolean equals(GameObject obj) {
         return this.id == obj.getId();
     }
+
+    @Override
+    public int compareTo(Object o) {
+        return 0;
+    }
 }

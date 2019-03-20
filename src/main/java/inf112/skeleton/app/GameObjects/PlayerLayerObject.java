@@ -14,10 +14,13 @@ public class PlayerLayerObject implements GameObject {
 
     private int id;
 
+    private TiledMapTileSet tiles;
     private final TiledMapTile northAvatar;
     private final TiledMapTile southAvatar;
     private final TiledMapTile eastAvatar;
     private final TiledMapTile westAvatar;
+
+    private SpecialLayerObject backup;
 
     private String color;
     private Position pos;
@@ -29,11 +32,13 @@ public class PlayerLayerObject implements GameObject {
         pos = new Position(id, id);
         dir = Direction.NORTH;
 
+        this.tiles = tiles;
         int tileId = (id*10)+30;
         northAvatar = tiles.getTile(tileId+1);
         eastAvatar = tiles.getTile(tileId+2);
         westAvatar = tiles.getTile(tileId+3);
         southAvatar = tiles.getTile(tileId+4);
+        backup = new SpecialLayerObject(tiles, tileId+5);
 
         switch(id){
             case 0 : color = "Green"; break;
@@ -76,8 +81,6 @@ public class PlayerLayerObject implements GameObject {
         this.dir = dir;
     }
 
-
-
     public TiledMapTile getAvatar() {
         switch (dir) {
             case NORTH:
@@ -94,6 +97,10 @@ public class PlayerLayerObject implements GameObject {
 
         }
         return northAvatar;
+    }
+
+    public SpecialLayerObject getBackup() {
+        return backup;
     }
 
     public void update(Direction direction){
@@ -119,6 +126,11 @@ public class PlayerLayerObject implements GameObject {
 
     public String getColor(){
         return color;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return 0;
     }
 }
 

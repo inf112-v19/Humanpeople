@@ -1,9 +1,6 @@
 package inf112.skeleton.app.Game;
 
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.*;
 import inf112.skeleton.app.Cards.ProgramCard;
 import inf112.skeleton.app.Cards.ProgramCardDeck;
 import inf112.skeleton.app.Cards.ProgramType;
@@ -23,6 +20,7 @@ public class GameMap {
     private TiledMap map;
     private Grid grid;
     private final TiledMapTileLayer playerLayer;
+    private final TiledMapTileLayer specialLayer;
     private TiledMapTileSet tiles;
     private final int nPlayers;
     private StartingPositions startingPositions;
@@ -43,14 +41,11 @@ public class GameMap {
         this.startingPositions = new StartingPositions(grid.getWidth(), grid.getHeight());
         this.programCardDeck = new ProgramCardDeck();
         this.playerLayer = (TiledMapTileLayer) map.getLayers().get(2);
+        this.specialLayer = (TiledMapTileLayer) map.getLayers().get(1);
         this.playerTiles = new ArrayList<>();
         initializePlayers();
 
-
         round = new Round();
-
-
-
     }
 
     /**
@@ -64,13 +59,16 @@ public class GameMap {
             Position startingPosition = startingPositions.getStartingPosition(id);
             player.setPosition(startingPosition);
             player.setBackup(startingPosition);
-            grid.setPlayerPosition(player.getPlayerTile());
+            PlayerLayerObject playerTile = player.getPlayerTile();
+            grid.setPlayerPosition(playerTile);
+            grid.setBackupPosition(playerTile);
         }
         // Give out cards to players
         programCardDeck.giveOutCardsToAllPlayers(players);
         chooseRandomCardsForAllPlayersHand();
 
         drawPlayers();
+        drawAllBackups();
     }
 
     public void chooseRandomCardsForAllPlayersHand() {
@@ -92,6 +90,21 @@ public class GameMap {
         avatar.setTile(player.getAvatar());
 
         playerLayer.setCell(pos.getX(), pos.getY(), avatar);
+    }
+
+    public void drawAllBackups() {
+        for (Player player : players) {
+            drawBackup(player);
+        }
+    }
+
+    public void drawBackup(Player player) {
+        Position pos = player.getBackup();
+
+        TiledMapTileLayer.Cell avatar = new TiledMapTileLayer.Cell();
+        avatar.setTile(player.getBackupAvatar());
+
+        specialLayer.setCell(pos.getX(), pos.getY(), avatar);
     }
 
 
@@ -150,8 +163,27 @@ public class GameMap {
             Direction rotated = rotate(card.getProgramType(), playerDir);
             player.getPlayerTile().setDirection(rotated);
         }
+        
+        // If player has stepped in a flag then set current position as backup
+        if (steppedOnFlag(player))
+            setBackup(player);
 
         drawPlayers();
+    }
+
+    /**
+     * Removes the given player's backup point and sets it to the given position
+     * @param player
+     */
+    public void setBackup(Player player) {
+        Position previousBackupPosition = player.getBackup();
+        grid.removeBackupPosition(previousBackupPosition);
+        specialLayer.setCell(previousBackupPosition.getX(), previousBackupPosition.getY(), null);
+
+        grid.setBackupPosition(player.getPlayerTile());
+        Position currentPosition = player.getPosition();
+        player.setBackup(currentPosition);
+        drawBackup(player);
     }
 
     /**
@@ -184,11 +216,6 @@ public class GameMap {
      * @return true if player is off map
      */
     public boolean walkedOffMap(Player player) {
-        try {
-
-        } catch (IndexOutOfBoundsException e) {
-            return true;
-        }
         return false;
     }
 
@@ -199,9 +226,17 @@ public class GameMap {
      */
     public boolean steppedOnHole(Player player) {
         Position currentPosition = player.getPosition();
-        if (grid.isHole(currentPosition))
-            return true;
-        return false;
+        return grid.isHole(currentPosition);
+    }
+
+    /**
+     * Checks if player is stepping on a flag
+     * @param player
+     * @return true if player is in hole
+     */
+    public boolean steppedOnFlag(Player player) {
+        Position currentPosition = player.getPosition();
+        return grid.isFlag(currentPosition);
     }
 
     public void preformNextMovement(){

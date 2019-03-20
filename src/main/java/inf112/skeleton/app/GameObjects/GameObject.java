@@ -7,7 +7,7 @@ import inf112.skeleton.app.Directions.Direction;
  * @author Stian
  *
  */
-public interface GameObject {
+public interface GameObject extends Comparable {
 
    boolean canGo(Direction dir);
 

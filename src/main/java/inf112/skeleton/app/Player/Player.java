@@ -16,7 +16,6 @@ public class Player {
     private PlayerLayerObject playerTile;
     private int lifeTokens = MAX_LIFE_TOKENS;
     private int damageTokens = MAX_DAMAGE_TOKENS;
-    private int currentMaxDamageTokens = MAX_DAMAGE_TOKENS;
     private int id;
     private PlayerDeck playerDeck;
 
@@ -41,18 +40,10 @@ public class Player {
     }
 
     /**
-     * Sets the max amount of damage tokens a player can have at this point in the game
-     * @param maxDamageTokens
-     */
-    public void setCurrentMaxDamageTokens(int maxDamageTokens) {
-        currentMaxDamageTokens = maxDamageTokens;
-    }
-
-    /**
-     * Restores the amount of damageTokens to be the current amount of max damage tokens a player can have
+     * Restores the amount of damageTokens to be the max amount of damage tokens
      */
     public void restoreDamageTokens() {
-        damageTokens = currentMaxDamageTokens;
+        damageTokens = MAX_DAMAGE_TOKENS;
     }
 
     /**
@@ -94,6 +85,10 @@ public class Player {
 
     public TiledMapTile getAvatar() {
         return playerTile.getAvatar();
+    }
+
+    public TiledMapTile getBackupAvatar() {
+        return playerTile.getBackup().getAvatar();
     }
 
     public PlayerDeck getPlayerDeck() {
