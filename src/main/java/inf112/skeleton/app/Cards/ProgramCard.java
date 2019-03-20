@@ -34,4 +34,20 @@ public class ProgramCard implements ICard {
 		}
 		throw new IllegalArgumentException("PlayerThatPlayedTheCard not set");
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return programType == ((ProgramCard) obj).getProgramType();
+	}
+
+	@Override
+	public int compareTo(Object obj) {
+		if (priority > ((ProgramCard) obj).getPriority()) {
+			return 1;
+		}
+		if (priority < ((ProgramCard) obj).getPriority()) {
+			return -1;
+		}
+		return 0;
+	}
 }

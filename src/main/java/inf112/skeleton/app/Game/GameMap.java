@@ -163,7 +163,7 @@ public class GameMap {
             Direction rotated = rotate(card.getProgramType(), playerDir);
             player.getPlayerTile().setDirection(rotated);
         }
-        
+
         // If player has stepped in a flag then set current position as backup
         if (steppedOnFlag(player))
             setBackup(player);
@@ -172,7 +172,7 @@ public class GameMap {
     }
 
     /**
-     * Removes the given player's backup point and sets it to the given position
+     * Removes the given player's backup point and sets it to the player's current position
      * @param player
      */
     public void setBackup(Player player) {
