@@ -4,11 +4,13 @@ public class ProgramCard implements ICard {
 	private ProgramType programType;
 	private int priority;
 	private String filename;
+	private boolean marked;
 
 	public ProgramCard(ProgramType programType, int priority, String filename) {
 		this.programType = programType;
 		this.priority = priority;
 		this.filename = filename;
+		this.marked = false;
 	}
 
 	public ProgramType getProgramType() {
@@ -23,5 +25,18 @@ public class ProgramCard implements ICard {
 		return this.filename;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		return priority == ((ProgramCard) obj).priority;
+	}
 
+
+	//Helpers for graphical card selection:
+
+	public boolean isMarked(){
+		return marked;
+	}
+	public void setMarked(boolean b){
+		marked = b;
+	}
 }

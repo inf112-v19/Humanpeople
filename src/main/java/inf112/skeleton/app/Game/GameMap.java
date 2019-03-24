@@ -133,6 +133,10 @@ public class GameMap {
         player.select5FirstCards();
     }
 
+    public ProgramCardDeck getDeck(){
+        return programCardDeck;
+    }
+
     /**
      * Flytter alle spillere som koliderer i direction og oppdaterer grid
      *

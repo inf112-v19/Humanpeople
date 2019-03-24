@@ -99,4 +99,8 @@ public class PlayerDeck {
     public int handSize() {
         return hand.size();
     }
+
+    public ProgramCard getCard(int i){
+        return deck.get(i);
+    }
 }
