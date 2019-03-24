@@ -117,7 +117,6 @@ public class TestScreen implements Screen {
         System.out.println("Color: " + testPlayer.getPlayerTile().getColor());
         System.out.println("Direction: " + dir);
         System.out.println("Position: (" + posX + "," + posY + ")" + "\n");
-        System.out.println("Backup-pos: " + testPlayer.getPlayerTile().getBackup().getX() + "," + testPlayer.getPlayerTile().getBackup().getX());
         System.out.println("-------------------");
 
         //Get information from the other tiles:

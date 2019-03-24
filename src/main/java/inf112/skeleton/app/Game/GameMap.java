@@ -155,13 +155,6 @@ public class GameMap {
 
             playerLayerObject.moveTileInDirection(direction);
 
-
-            //If there is a hole in the ground or the player has gone off the board
-            if(grid.hasHole(playerLayerObject.getPosition()) || grid.offBoard(playerLayerObject.getPosition())) {
-                playerLayerObject.goToBackup();
-                grid.setPlayerPosition(playerLayerObject);
-                return;
-            }
             grid.setPlayerPosition(playerLayerObject);
         }
     }
