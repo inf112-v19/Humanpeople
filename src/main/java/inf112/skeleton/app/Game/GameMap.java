@@ -148,8 +148,16 @@ public class GameMap {
     public void preformNextMovement(){
         if(round.isSet()){
             if(!round.isCompleted()){
-                ProgramCard currentCard = round.getNextMovementCard();
-                movePlayer(currentCard.getPlayerThatPlayedTheCard(),currentCard);
+                if(round.getCurrentPhase().getPhaseComplete()){
+                    //Todo do special movment (rullebånd og slikt)
+                    System.out.println("phase "+ (round.getCurrentPhaseNumber()+1) +" er ferdig");
+                    round.nextPhase();
+                }else
+                {
+                    ProgramCard currentCard = round.getNextMovementCard();
+                    movePlayer(currentCard.getPlayerThatPlayedTheCard(),currentCard);
+                }
+
             }
         }
     }
