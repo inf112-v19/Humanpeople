@@ -48,4 +48,9 @@ public class ProgramCardTests {
         assertNotEquals(card1.getFilename(), card2.getFilename());
         assertEquals(card1.getFilename(), "filename420");
     }
+
+    @Test
+    public void compareToTest() {
+        assertEquals(1, card1.compareTo(card2));
+    }
 }
