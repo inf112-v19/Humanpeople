@@ -104,3 +104,14 @@
   - Planlegging av neste iterasjon
   - Neste møte: 22.03.2019
 
+### Referat møte 26.03.2019
+  - Oppmøte: Eirik, Stian, Sondre, Matias
+  - Gjennomgang av kode; Backup, drag and drop av kort,
+      hull, flagg, oppdatering av backup til flagg ved besøk.
+  - Funnet rar interaksjon med spescial layer, flag og backups,
+      diskuterte løsninger.
+  - Ingen merging
+  - Planlegge avslutning av iterasjon.
+  - Neste møte: 27.03.2019
+  
+  
