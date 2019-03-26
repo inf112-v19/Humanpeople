@@ -102,7 +102,7 @@
   - Noen småfikser av det som ble gjennomgått av kode
   - Merget sammen stian4 og sondre
   - Planlegging av neste iterasjon
-  - Neste møte: 22.03.2019
+  - Neste møte: 26.03.2019
 
 ### Referat møte 26.03.2019
   - Oppmøte: Eirik, Stian, Sondre, Matias
