@@ -1,4 +1,4 @@
-Manuelle tester for backupinteraksjoner og destruksjon:
+Manuelle tester for backupinteraksjoner, hull og destruksjon:
 
 Hensikt: 
 - Sjekke at spiller blir destruert ved å gå på hull
@@ -16,13 +16,14 @@ Hensikt:
 - Sjekke at annen spiller ikke fortsetter å runden etter destruksjon
 
 ---
-###Test
 Test av destruksjon bevegelse på hull, returnering til backup og slutt av fase.
 
 Hensikt:
 - Sjekke at spiller blir destruert ved å gå på hull
 - Sjekke at spilleren ikke fortsetter å bevege seg etter å ha blitt destruert
 - Sjekke at spiller returnerer til backup punkt etter å ha blitt destruert
+
+###Test
 
 1. Kjør programmet og klikk på "Test" knappen.
 
