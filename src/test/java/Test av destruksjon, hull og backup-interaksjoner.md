@@ -170,3 +170,6 @@ Resultat:
 	flyttet til backup og stopper bevegelse i runden.
 	
 ---
+
+
+Tester av: Eirik
