@@ -23,7 +23,7 @@ Hensikt:
 - Sjekke at spilleren ikke fortsetter å bevege seg etter å ha blitt destruert
 - Sjekke at spiller returnerer til backup punkt etter å ha blitt destruert
 
-###Test
+Test
 
 1. Kjør programmet og klikk på "Test" knappen.
 
@@ -54,15 +54,16 @@ Resultat:
 	Spilleren blir destruert da den går på hullet etter å ha fulgt
 	instruksjonene "3" "R" og 1 trinn av instuksjonen "3".
 	Blir flyttet til backup. Utfører ikke resten av instruksjonene.
+	
 ---
 
-
----
-###Test
 Test av oppdatering av backup ved endt fase på backup
 
 Hensikt:
 - Sjekke at spiller legger igjen backup etter å ha endt en fase på ett flagg
+
+
+Test
 
 1. Kjør programmet og klikk på "Test" knappen.
 
@@ -72,16 +73,16 @@ Resultat:
 	Spilleren går på flagg nr.1 og ender fasen her, etter instruksjon "R " "1".
 	Her blir backup oppdatert. Spilleren faller i hullet etter instruksjon "3".
 	Spilleren blir flyttet til oppdatert backup.
+	
 ---
 
-
----
-###Test
 Test av oppdatering av backup ved flytting over flagg
 
 Hensikt:
 - Sjekke at spiller ikke legger igjen backup hvis spiller går over flagget 
 men ikke avslutter fasen på flagget.
+
+Test
 
 1. Kjør programmet og klikk på "Test" knappen.
 
@@ -90,16 +91,17 @@ men ikke avslutter fasen på flagget.
 Resultat:
 	Spilleren går over flagg nr.1 og faller i hullet etter instruksjon "R" "3".
 	Backup blir ikke flyttet/oppdatert. Spilleren blir flyttet til backup.
+	
 ---
 
 
----
-###Test
 Test av oppdatering av backup av annen spiller
 
 Hensikt:
 - Sjekke at annen spiller kan legge igjen backup gitt at den ender fasen på flagg
 - Sjekke at annen spiller blir destruert ved bevegelse over hull
+
+Test
 
 1. Kjør programmet og klikk på "Test" knappen.
 
@@ -122,11 +124,9 @@ Resultat:
 	Spiller(Grønn) dytter spiller(Mørkeblå) til flagg nr.2. Backup for spiller(Mørkeblå)
 	blir oppdatert. Spiller(Grønn) dytter spiller(Mørkelå) ned i hull. Begge spillere
 	returneres til backup.
+	
 ---
 
-
----
-###Test
 Test av ikke legge igjen backup
 
 Hensikt:
@@ -134,6 +134,8 @@ Hensikt:
 	flagget men ikke avslutter fasen på flagget
 - Sjekke at annen spiller returnerer til backup etter at den er blitt destruert
 - Sjekke at annen spiller ikke fortsetter å runden etter destruksjon
+
+Test
 
 1. Kjør programmet og klikk på "Test" knappen.
 
@@ -159,4 +161,5 @@ Resultat:
 	Spiller(Grønn) dytter spiller(Mørkeblå) over flagg nr.2. Backup blir ikke oppdatert.
 	Spiller(Grønn) dytter spiller(Mørkeblå) i hull. Spiller(Mørkeblå) blir
 	flyttet til backup og stopper bevegelse i runden.
+	
 ---
