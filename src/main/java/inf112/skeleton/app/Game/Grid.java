@@ -1,6 +1,7 @@
 package inf112.skeleton.app.Game;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import inf112.skeleton.app.GameObjects.*;
 import inf112.skeleton.app.Directions.Direction;
@@ -13,6 +14,7 @@ public class Grid {
     private int width, height;
     private ArrayList gameLogicGrid[][];
     private TiledMapTileLayer groundLayer;
+    private TiledMapTileLayer specialLayer;
 
     private ArrayList<PlayerLayerObject> listOfPlayerTilesToMove;
     private final int groundIndex;
@@ -26,6 +28,7 @@ public class Grid {
         gameLogicGrid = new ArrayList[width][height];
 
         groundLayer = (TiledMapTileLayer) map.getLayers().get(0);
+        specialLayer = (TiledMapTileLayer) map.getLayers().get(1);
         listOfPlayerTilesToMove = new ArrayList<>();
         fillGridWithArrayListsAndGameObjects();
 
@@ -46,6 +49,7 @@ public class Grid {
                 gameLogicGrid[x][y].add(new GroundLayerObject(id));
 
                 gameLogicGrid[x][y].add(new NothingSpecial());
+                //gameLogicGrid[x][y].add(new NothingSpecial());
                 gameLogicGrid[x][y].add(new NotAPlayer());
             }
         }
@@ -53,13 +57,30 @@ public class Grid {
 
     public void setPlayerPosition(PlayerLayerObject playerLayerObject) {
         gameLogicGrid[playerLayerObject.getPosition().getX()][playerLayerObject.getPosition().getY()].remove(playerIndex);
-        gameLogicGrid[playerLayerObject.getPosition().getX()][playerLayerObject.getPosition().getY()].add(playerLayerObject);
+        gameLogicGrid[playerLayerObject.getPosition().getX()][playerLayerObject.getPosition().getY()].add(playerIndex, playerLayerObject);
     }
 
     public void removePlayerPosition(Position position) {
         gameLogicGrid[position.getX()][position.getY()].remove(playerIndex);
-        gameLogicGrid[position.getX()][position.getY()].add(new NotAPlayer());
+        gameLogicGrid[position.getX()][position.getY()].add(playerIndex, new NotAPlayer());
     }
+
+    public void setBackupPosition(PlayerLayerObject playerLayerObject) {
+        Position currentPosition = playerLayerObject.getPosition();
+        int x = currentPosition.getX();
+        int y = currentPosition.getY();
+        TiledMapTile backupTile = playerLayerObject.getBackup().getAvatar();
+        gameLogicGrid[x][y].remove(specialIndex);
+        gameLogicGrid[x][y].add(specialIndex, backupTile);
+    }
+
+    public void removeBackupPosition(Position position) {
+        int x = position.getX();
+        int y = position.getY();
+        gameLogicGrid[x][y].remove(specialIndex);
+        gameLogicGrid[x][y].add(specialIndex, new NothingSpecial());
+    }
+
 
     /**
      * Skjekker om det er lov å flytte i Direction fra Position, og legger
@@ -73,7 +94,6 @@ public class Grid {
      * @param pos
      */
     public void AllowedToMoveInDirection(Direction dir, Position pos) {
-
         GameObject groundLayerObject = (GameObject) gameLogicGrid[pos.getX()][pos.getY()].get(groundIndex);
         if (groundLayerObject.canGo(dir)) {
             listOfPlayerTilesToMove.add((PlayerLayerObject) gameLogicGrid[pos.getX()][pos.getY()].get(playerIndex));
@@ -120,5 +140,45 @@ public class Grid {
         AllowedToMoveInDirection(direction, position);
 
         return listOfPlayerTilesToMove;
+    }
+
+    /**
+     * Checks if tile at given position is a hole
+     * @param position
+     * @return
+     */
+    public boolean isHole(Position position) {
+        int holeId = 6;
+        return isSpecialItem(position, holeId);
+    }
+
+    /**
+     * Checks if tile at given position is a flag
+     * @param position
+     * @return
+     */
+    public boolean isFlag(Position position) {
+        int flag1Id = 15;
+        int flag2Id = 16;
+        int flag3Id = 17;
+        return isSpecialItem(position, flag1Id) || isSpecialItem(position, flag2Id) || isSpecialItem(position, flag3Id);
+    }
+
+    private boolean isSpecialItem(Position position, int specialItemId) {
+        int x = position.getX();
+        int y = position.getY();
+        if (specialLayer.getCell(x,y) != null) {
+            TiledMapTile tileAtPosition = specialLayer.getCell(x, y).getTile();
+            return tileAtPosition.getId() == specialItemId;
+        }
+        return false;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 }

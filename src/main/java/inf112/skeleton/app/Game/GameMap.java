@@ -1,9 +1,6 @@
 package inf112.skeleton.app.Game;
 
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.*;
 import inf112.skeleton.app.Cards.ProgramCard;
 import inf112.skeleton.app.Cards.ProgramCardDeck;
 import inf112.skeleton.app.Cards.ProgramType;
@@ -23,8 +20,10 @@ public class GameMap {
     private TiledMap map;
     private Grid grid;
     private final TiledMapTileLayer playerLayer;
+    private final TiledMapTileLayer specialLayer;
     private TiledMapTileSet tiles;
     private final int nPlayers;
+    private StartingPositions startingPositions;
     private ProgramCardDeck programCardDeck;
     private ArrayList<PlayerLayerObject> playerTiles;
     private ArrayList<Player> players;
@@ -39,16 +38,14 @@ public class GameMap {
         this.tiles = map.getTileSets().getTileSet("testTileset");
         this.players = new ArrayList<>();
         this.nPlayers = nPlayers;
+        this.startingPositions = new StartingPositions(grid.getWidth(), grid.getHeight());
         this.programCardDeck = new ProgramCardDeck();
         this.playerLayer = (TiledMapTileLayer) map.getLayers().get(2);
+        this.specialLayer = (TiledMapTileLayer) map.getLayers().get(1);
         this.playerTiles = new ArrayList<>();
         initializePlayers();
 
-
         round = new Round();
-
-
-
     }
 
     /**
@@ -59,13 +56,19 @@ public class GameMap {
         for (int id = 0; id < nPlayers; id++) {
             Player player = new Player(tiles, id);
             players.add(player);
-            grid.setPlayerPosition(player.getPlayerTile());
+            Position startingPosition = startingPositions.getStartingPosition(id);
+            player.setPosition(startingPosition);
+            player.setBackup(startingPosition);
+            PlayerLayerObject playerTile = player.getPlayerTile();
+            grid.setPlayerPosition(playerTile);
+            grid.setBackupPosition(playerTile);
         }
         // Give out cards to players
         programCardDeck.giveOutCardsToAllPlayers(players);
         chooseRandomCardsForAllPlayersHand();
 
         drawPlayers();
+        drawAllBackups();
     }
 
     public void chooseRandomCardsForAllPlayersHand() {
@@ -89,6 +92,21 @@ public class GameMap {
         playerLayer.setCell(pos.getX(), pos.getY(), avatar);
     }
 
+    public void drawAllBackups() {
+        for (Player player : players) {
+            drawBackup(player);
+        }
+    }
+
+    public void drawBackup(Player player) {
+        Position pos = player.getBackup();
+
+        TiledMapTileLayer.Cell avatar = new TiledMapTileLayer.Cell();
+        avatar.setTile(player.getBackupAvatar());
+
+        specialLayer.setCell(pos.getX(), pos.getY(), avatar);
+    }
+
 
     public void addPlayerHandToNewRound() {
         if(!round.isSet()){
@@ -98,7 +116,6 @@ public class GameMap {
             for(int i = 0; i< amountOfPhases; i++){
                 ArrayList<ProgramCard> cardsToAddInPhaseI = new ArrayList<>();
                 for (Player player : players) {
-
                     // If the players hand is empty then give out 9 new cards and select 5 cards for hand
                     // Temporary solution. Card selection system is coming.
                     if (player.getPlayerDeck().handIsEmpty()) {
@@ -116,15 +133,19 @@ public class GameMap {
     }
 
     public void movePlayer(int playerId, ProgramCard card) {
-        ProgramType programType = card.getProgramType();
         Player player = players.get(playerId);
-
+        // Checks if player is in a state where he/she has to return to backup
+        if (hasToReturnToBackup(player)) {
+            returnToBackup(player);
+            return;
+        }
+        ProgramType programType = card.getProgramType();
         Direction playerDir = player.getDirection();
         Direction moveDir = playerDir;
 
         if (programType.isMoveCard()) {
 
-            if (programType == ProgramType.BACKUP)
+            if (programType == ProgramType.BACKWARD)
                 moveDir = rotate(ProgramType.UTURN, playerDir);
 
 
@@ -134,7 +155,7 @@ public class GameMap {
                 if (canGo(moveDir, newPos))
                     movePlayerTilesInList(moveDir);
 
-            if (programType == ProgramType.BACKUP)
+            if (programType == ProgramType.BACKWARD)
                 player.getPlayerTile().setDirection(playerDir);
         }
         //If rotation card
@@ -142,7 +163,80 @@ public class GameMap {
             Direction rotated = rotate(card.getProgramType(), playerDir);
             player.getPlayerTile().setDirection(rotated);
         }
+
+        // If player has stepped in a flag then set current position as backup
+        if (steppedOnFlag(player))
+            setBackup(player);
+
         drawPlayers();
+    }
+
+    /**
+     * Removes the given player's backup point and sets it to the player's current position
+     * @param player
+     */
+    public void setBackup(Player player) {
+        Position previousBackupPosition = player.getBackup();
+        grid.removeBackupPosition(previousBackupPosition);
+        specialLayer.setCell(previousBackupPosition.getX(), previousBackupPosition.getY(), null);
+
+        grid.setBackupPosition(player.getPlayerTile());
+        Position currentPosition = player.getPosition();
+        player.setBackup(currentPosition);
+        drawBackup(player);
+    }
+
+    /**
+     * Sets players position to backup and draws players
+     * @param player
+     */
+    public void returnToBackup(Player player) {
+        playerLayer.setCell(player.getPosition().getX(), player.getPosition().getY(), null);
+        grid.removePlayerPosition(player.getPosition());
+        Position backup = player.getBackup();
+        player.setPosition(backup);
+        grid.setPlayerPosition(player.getPlayerTile());
+        drawPlayers();
+    }
+
+    /**
+     * Checks if player is in a state where he/she has to return to backup
+     * @param player
+     * @return
+     */
+    public boolean hasToReturnToBackup(Player player) {
+        if (steppedOnHole(player) || player.lostAllDamageTokens() || walkedOffMap(player))
+            return true;
+        return false;
+    }
+
+    /**
+     * Checks if player has walked off the game map
+     * @param player
+     * @return true if player is off map
+     */
+    public boolean walkedOffMap(Player player) {
+        return false;
+    }
+
+    /**
+     * Checks if player is stepping on a hole
+     * @param player
+     * @return true if player is in hole
+     */
+    public boolean steppedOnHole(Player player) {
+        Position currentPosition = player.getPosition();
+        return grid.isHole(currentPosition);
+    }
+
+    /**
+     * Checks if player is stepping on a flag
+     * @param player
+     * @return true if player is in hole
+     */
+    public boolean steppedOnFlag(Player player) {
+        Position currentPosition = player.getPosition();
+        return grid.isFlag(currentPosition);
     }
 
     public void preformNextMovement(){

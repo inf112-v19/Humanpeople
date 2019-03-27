@@ -39,8 +39,32 @@ public class Player {
             playerDeck.selectCardForHand(i);
     }
 
+    /**
+     * Restores the amount of damageTokens to be the max amount of damage tokens
+     */
+    public void restoreDamageTokens() {
+        damageTokens = MAX_DAMAGE_TOKENS;
+    }
+
+    /**
+     * If all damageTokens are lost then reduce lifeTokens with 1 and restore damageTokens
+     * @return
+     */
+    public boolean lostAllDamageTokens() {
+        if (damageTokens < 1) {
+           lifeTokens--; // TODO Check if lifeTokes == 0 before doing anyting
+           restoreDamageTokens();
+           return true;
+        }
+        return false;
+    }
+
     public Position getPosition() {
         return playerTile.getPosition();
+    }
+
+    public void setPosition(Position position) {
+        playerTile.setPosition(position);
     }
 
     public Direction getDirection() {
@@ -51,12 +75,20 @@ public class Player {
         return playerTile;
     }
 
+    public Position getBackup() {
+        return backup;
+    }
+
     public void setBackup(Position pos) {
         backup = pos;
     }
 
     public TiledMapTile getAvatar() {
         return playerTile.getAvatar();
+    }
+
+    public TiledMapTile getBackupAvatar() {
+        return playerTile.getBackup().getAvatar();
     }
 
     public PlayerDeck getPlayerDeck() {
