@@ -37,7 +37,8 @@ public class ProgramCard implements ICard {
 
 	@Override
 	public boolean equals(Object obj) {
-		return programType == ((ProgramCard) obj).getProgramType();
+
+		return programType == ((ProgramCard) obj).getProgramType() && priority == ((ProgramCard) obj).getPriority();
 	}
 
 	@Override
