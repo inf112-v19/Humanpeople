@@ -60,6 +60,10 @@ public class PlayScreen implements Screen {
 
     private ImageButton playButton;
 
+    private Image cardSlotsTop;
+    private Image cardSlotsMid;
+    private Image cardSlotsBottom;
+
     Position pos[] = new Position[5];
     ProgramCard chosenCards[] = new ProgramCard[5];
     HashMap<Image, ProgramCard> cardMap = new HashMap<>();
@@ -128,14 +132,16 @@ public class PlayScreen implements Screen {
 
         stage = new Stage();
         initializePlayButton();
+
+
         Gdx.input.setInputProcessor(stage);
     }
     public void initializePlayButton(){
         Sprite picture = new Sprite(new Texture("assets/mainMenu/playBtn.png"));
         playButton = new ImageButton(new SpriteDrawable(picture));
-        playButton.setWidth(picture.getWidth());
-        playButton.setHeight(picture.getHeight());
-        playButton.setPosition(width/2, height/2-picture.getHeight());
+        playButton.setWidth(width/2);
+        playButton.setHeight((picture.getHeight()-5)/2);
+        playButton.setPosition(width/2, height/2-picture.getHeight()-4);
         playButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -157,6 +163,27 @@ public class PlayScreen implements Screen {
 
             }
         });
+
+        //Creates the slot bars
+        picture = new Sprite(new Texture("assets/hand/hand5v3.png"));
+        cardSlotsBottom = new Image(new SpriteDrawable(picture));
+        cardSlotsBottom.setWidth(width/2);
+        cardSlotsBottom.setHeight(picture.getHeight()+25);
+        cardSlotsBottom.setPosition(width/2, 0);
+        cardSlotsBottom.setColor(Color.LIME);
+
+        picture = new Sprite(new Texture("assets/hand/hand5v3.png"));
+        cardSlotsTop = new Image(new SpriteDrawable(picture));
+        cardSlotsTop.setWidth(width/2);
+        cardSlotsTop.setHeight(picture.getHeight()+25);
+        cardSlotsTop.setPosition(width/2, height-(picture.getHeight()+25));
+
+        picture = new Sprite(new Texture("assets/hand/hand5v3.png"));
+        cardSlotsMid = new Image(new SpriteDrawable(picture));
+        cardSlotsMid.setWidth(width/2);
+        cardSlotsMid.setHeight(picture.getHeight()+25);
+        cardSlotsMid.setPosition(width/2, height-(picture.getHeight()+25)*2);
+
     }
 
     @Override
@@ -223,14 +250,14 @@ public class PlayScreen implements Screen {
 
             //Place 5 first cards in top row
             if(i < 5) {
-                cardImage.setPosition(width / 2 + (i * pWidth), height - pHeight);
-                cardImage.setOrigin(width / 2 + (i * pWidth), height - pHeight);
-                pos[i] = new Position((int) (width / 2 + (i * pWidth)), 0);
+                cardImage.setPosition(width / 2 + (i * pWidth)+5, height - pHeight-10);
+                cardImage.setOrigin(width / 2 + (i * pWidth)+5, height - pHeight-10);
+                pos[i] = new Position((int) (width / 2 + (i * pWidth)+5), 0+7);
             }
             //Place remaining 4 cards in row beneath
             else {
-                cardImage.setPosition(width / 2 + (i * pWidth) - 5 * pWidth, height - pHeight * 2);
-                cardImage.setOrigin(width / 2 + (i * pWidth)- 5 * pWidth, height - pHeight*2);
+                cardImage.setPosition(width / 2 + (i * pWidth) - 5 * pWidth +5, height - pHeight * 2 -27);
+                cardImage.setOrigin(width / 2 + (i * pWidth)- 5 * pWidth+5, height - pHeight*2 -27);
             }
 
             //Adds dragging functionality to each image
@@ -254,6 +281,9 @@ public class PlayScreen implements Screen {
         chosenCards=new ProgramCard[5];
         cardMap.clear();
         stage.clear();
+        stage.addActor(cardSlotsTop);
+        stage.addActor(cardSlotsMid);
+        stage.addActor(cardSlotsBottom);
         stage.addActor(playButton);
     }
 
