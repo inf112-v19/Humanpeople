@@ -21,6 +21,7 @@ public class GameMap {
     private Grid grid;
     private final TiledMapTileLayer playerLayer;
     private final TiledMapTileLayer specialLayer;
+    private final TiledMapTileLayer backupLayer;
     private TiledMapTileSet tiles;
     private final int nPlayers;
     private StartingPositions startingPositions;
@@ -42,6 +43,7 @@ public class GameMap {
         this.programCardDeck = new ProgramCardDeck();
         this.playerLayer = (TiledMapTileLayer) map.getLayers().get(5);
         this.specialLayer = (TiledMapTileLayer) map.getLayers().get(1);
+        this.backupLayer = (TiledMapTileLayer) map.getLayers().get(4);
         this.playerTiles = new ArrayList<>();
         initializePlayers();
 
@@ -60,15 +62,14 @@ public class GameMap {
             player.setPosition(startingPosition);
             player.setBackup(startingPosition);
             PlayerLayerObject playerTile = player.getPlayerTile();
-            grid.setPlayerPosition(playerTile);
-            grid.setBackupPosition(playerTile);
+            grid.setPlayerPosition(playerTile, player.getPosition());
+            setBackup(player);
         }
         // Give out cards to players
         programCardDeck.giveOutCardsToAllPlayers(players);
         chooseRandomCardsForAllPlayersHand();
 
         drawPlayers();
-        drawAllBackups();
     }
 
     public void chooseRandomCardsForAllPlayersHand() {
@@ -104,7 +105,7 @@ public class GameMap {
         TiledMapTileLayer.Cell avatar = new TiledMapTileLayer.Cell();
         avatar.setTile(player.getBackupAvatar());
 
-        specialLayer.setCell(pos.getX(), pos.getY(), avatar);
+        backupLayer.setCell(pos.getX(), pos.getY(), avatar);
     }
 
 
@@ -134,18 +135,18 @@ public class GameMap {
 
     public void movePlayer(int playerId, ProgramCard card) {
         Player player = players.get(playerId);
-        // A player which is dead cannot move
-        if (!player.isAlive()) {
-            System.out.println("Madafakin dead");
-            return;
-        }
 
-        // Checks if player is in a state where he/she has to return to backup
         if (hasToReturnToBackup(player)) {
             returnToBackup(player);
             return;
         }
 
+        // A player which is dead cannot move
+        if (!player.isAlive()) {
+            return;
+        }
+
+        // Checks if player is in a state where he/she has to return to backup
         ProgramType programType = card.getProgramType();
         Direction playerDir = player.getDirection();
         Direction moveDir = playerDir;
@@ -181,7 +182,7 @@ public class GameMap {
     public void setBackup(Player player) {
         Position previousBackupPosition = player.getBackup();
         grid.removeBackupPosition(previousBackupPosition);
-        specialLayer.setCell(previousBackupPosition.getX(), previousBackupPosition.getY(), null);
+        backupLayer.setCell(previousBackupPosition.getX(), previousBackupPosition.getY(), null);
 
         grid.setBackupPosition(player.getPlayerTile());
         Position currentPosition = player.getPosition();
@@ -197,9 +198,47 @@ public class GameMap {
         playerLayer.setCell(player.getPosition().getX(), player.getPosition().getY(), null);
         grid.removePlayerPosition(player.getPosition());
         Position backup = player.getBackup();
-        player.setPosition(backup);
-        grid.setPlayerPosition(player.getPlayerTile());
+
+        if (existsPlayerOnBackup(player)) {
+            movePlayerToNearestField(player);
+        }
+        else {
+            player.setPosition(backup);
+            grid.setPlayerPosition(player.getPlayerTile(), player.getPosition());
+        }
         drawPlayers();
+    }
+
+    public boolean existsPlayerOnBackup(Player player) {
+        Position backup = player.getBackup();
+        TiledMapTileLayer.Cell currentPlayerLayerCell = playerLayer.getCell(backup.getX(), backup.getY());
+        if (currentPlayerLayerCell == null)
+            return false;
+        return true;
+    }
+
+    public void movePlayerToNearestField(Player player) {
+        Position backup = player.getBackup();
+        if (canGo(Direction.NORTH, backup)) {
+            Position newPosition = backup.north();
+            player.setPosition(newPosition);
+            grid.setPlayerPosition(player.getPlayerTile(), newPosition);
+        }
+        else if (canGo(Direction.EAST, backup)) {
+            Position newPosition = backup.east();
+            player.setPosition(newPosition);
+            grid.setPlayerPosition(player.getPlayerTile(), newPosition);
+        }
+        else if (canGo(Direction.SOUTH, backup)) {
+            Position newPosition = backup.south();
+            player.setPosition(newPosition);
+            grid.setPlayerPosition(player.getPlayerTile(), newPosition);
+        }
+        else if (canGo(Direction.WEST, backup)) {
+            Position newPosition = backup.west();
+            player.setPosition(newPosition);
+            grid.setPlayerPosition(player.getPlayerTile(), newPosition);
+        }
     }
 
     /**
@@ -230,7 +269,7 @@ public class GameMap {
     public boolean steppedOnHole(Player player) {
         Position currentPosition = player.getPosition();
         if (grid.isHole(currentPosition)) {
-            player.kill();
+            player.destroy();
             return true;
         }
         return false;
@@ -275,8 +314,15 @@ public class GameMap {
                 }
             }
             // If round is complete, revive all players for further play
-            else
+            else {
+                // Returns players to backup if needed
+                for (Player player : players) {
+                    if (hasToReturnToBackup(player)) {
+                        returnToBackup(player);
+                    }
+                }
                 reviveAllPlayers();
+            }
         }
     }
 
@@ -306,6 +352,7 @@ public class GameMap {
 
         //Flytter siste spiller først for å ikke ødelegge grid.set og grid.remove logikken
         for (int i = numberOfPlayersToMove; i >= 0; i--) {
+            Player player = players.get(i);
             PlayerLayerObject playerLayerObject = playerTiles.get(i);
             Position playerPosition = playerLayerObject.getPosition();
 
@@ -313,7 +360,7 @@ public class GameMap {
             playerLayer.setCell(playerPosition.getX(), playerPosition.getY(), null);
 
             playerLayerObject.moveTileInDirection(direction);
-            grid.setPlayerPosition(playerLayerObject);
+            grid.setPlayerPosition(playerLayerObject, player.getPosition());
         }
     }
 

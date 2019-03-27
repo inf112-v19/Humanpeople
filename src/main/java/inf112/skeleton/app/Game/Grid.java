@@ -33,21 +33,21 @@ public class Grid {
         tiles = map.getTileSets().getTileSet("testTileset");
         gameLogicGrid = new ArrayList[width][height];
 
-        groundLayer = (TiledMapTileLayer) map.getLayers().get(0);
-        specialLayer = (TiledMapTileLayer) map.getLayers().get(1);
-        flagLayer = (TiledMapTileLayer) map.getLayers().get(2);
-        holeLayer = (TiledMapTileLayer) map.getLayers().get(3);
-        backupLayer = (TiledMapTileLayer) map.getLayers().get(4);
-
-        listOfPlayerTilesToMove = new ArrayList<>();
-        fillGridWithArrayListsAndGameObjects();
-
         groundIndex = 0;
         specialIndex = 1;
         flagIndex = 2;
         holeIndex = 3;
         backupIndex = 4;
         playerIndex = 5;
+
+        groundLayer = (TiledMapTileLayer) map.getLayers().get(groundIndex);
+        specialLayer = (TiledMapTileLayer) map.getLayers().get(specialIndex);
+        flagLayer = (TiledMapTileLayer) map.getLayers().get(flagIndex);
+        holeLayer = (TiledMapTileLayer) map.getLayers().get(holeIndex);
+        backupLayer = (TiledMapTileLayer) map.getLayers().get(backupIndex);
+
+        listOfPlayerTilesToMove = new ArrayList<>();
+        fillGridWithArrayListsAndGameObjects();
     }
 
 
@@ -59,41 +59,43 @@ public class Grid {
 
                 //Game objects on ground layer
                 id = groundLayer.getCell(x, y).getTile().getId();
-                gameLogicGrid[x][y].add(new GroundLayerObject(id));
+                gameLogicGrid[x][y].add(groundIndex, new GroundLayerObject(id));
 
                 // SpecialLayer
-                gameLogicGrid[x][y].add(new NothingSpecial());
+                gameLogicGrid[x][y].add(specialIndex, new NothingSpecial());
 
                 // Flag layer
                 TiledMapTileLayer.Cell flagCell = flagLayer.getCell(x,y);
                 if (flagCell == null)
-                    gameLogicGrid[x][y].add(new NothingSpecial());
+                    gameLogicGrid[x][y].add(flagIndex, new NothingSpecial());
                 else {
                     int flagLayerId = flagCell.getTile().getId();
-                    gameLogicGrid[x][y].add(new FlagLayerObject(tiles, flagLayerId));
+                    gameLogicGrid[x][y].add(flagIndex, new FlagLayerObject(tiles, flagLayerId));
                 }
 
                 // Hole layer
                 TiledMapTileLayer.Cell holeCell = holeLayer.getCell(x,y);
                 if (holeCell == null)
-                    gameLogicGrid[x][y].add(new NothingSpecial());
+                    gameLogicGrid[x][y].add(holeIndex, new NothingSpecial());
                 else {
                     int holeLayerId = holeCell.getTile().getId();
-                    gameLogicGrid[x][y].add(new HoleLayerObject(tiles, holeLayerId));
+                    gameLogicGrid[x][y].add(holeIndex, new HoleLayerObject(tiles, holeLayerId));
                 }
 
                 // BackupLayer
-                gameLogicGrid[x][y].add(new NothingSpecial());
+                gameLogicGrid[x][y].add(backupIndex, new NothingSpecial());
 
                 // PlayerLayer
-                gameLogicGrid[x][y].add(new NotAPlayer());
+                gameLogicGrid[x][y].add(playerIndex, new NotAPlayer());
             }
         }
     }
 
-    public void setPlayerPosition(PlayerLayerObject playerLayerObject) {
-        gameLogicGrid[playerLayerObject.getPosition().getX()][playerLayerObject.getPosition().getY()].remove(playerIndex);
-        gameLogicGrid[playerLayerObject.getPosition().getX()][playerLayerObject.getPosition().getY()].add(playerIndex, playerLayerObject);
+    public void setPlayerPosition(PlayerLayerObject playerLayerObject, Position position) {
+        int x = position.getX();
+        int y = position.getY();
+        gameLogicGrid[x][y].remove(playerIndex);
+        gameLogicGrid[x][y].add(playerIndex, playerLayerObject);
     }
 
     public void removePlayerPosition(Position position) {
@@ -203,7 +205,7 @@ public class Grid {
         int x = position.getX();
         int y = position.getY();
         if (backupLayer.getCell(x,y) != null) {
-            TiledMapTile tileAtPosition = backupLayer.getCell(x, y).getTile();
+            TiledMapTile tileAtPosition = backupLayer.getCell(x,y).getTile();
             return tileAtPosition.getId() == backupObjectId;
         }
         return false;

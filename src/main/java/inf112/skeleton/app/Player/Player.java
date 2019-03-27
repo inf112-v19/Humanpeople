@@ -66,7 +66,7 @@ public class Player {
         isAlive = true;
     }
 
-    public void kill() {
+    public void destroy() {
         lifeTokens--;
         isAlive = false;
     }
