@@ -54,12 +54,13 @@ public class GameMap {
     private void initializePlayers() {
         //Initializes each player and gives them a unique ID
         for (int id = 0; id < nPlayers; id++) {
-            Player player = new Player(tiles, id);
+            Player player = new Player(id);
             players.add(player);
             Position startingPosition = startingPositions.getStartingPosition(id);
             player.setPosition(startingPosition);
             player.setBackup(startingPosition);
             PlayerLayerObject playerTile = player.getPlayerTile();
+            playerTile.setSprite(tiles);
             grid.setPlayerPosition(playerTile);
             grid.setBackupPosition(playerTile);
         }

@@ -2,6 +2,7 @@ package inf112.skeleton.app.Cards;
 
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 /**
  * Player deck for programming cards
@@ -91,6 +92,12 @@ public class PlayerDeck {
      */
     public int deckSize() {
         return deck.size();
+    }
+
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(deck, hand);
     }
 
     /**

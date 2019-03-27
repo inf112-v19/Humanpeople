@@ -20,12 +20,13 @@ public class Player {
     private PlayerDeck playerDeck;
 
 
-    public Player(TiledMapTileSet tiles, int id) {
+    public Player(int id) {
         this.id = id;
-        this.playerTile = new PlayerLayerObject(tiles, id);
+        this.playerTile = new PlayerLayerObject(id);
         this.playerDeck = new PlayerDeck();
         this.backup = new Position(id, id);
     }
+
 
     public int getId() {
         return id;
