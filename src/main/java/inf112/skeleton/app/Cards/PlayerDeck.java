@@ -108,9 +108,15 @@ public class PlayerDeck {
     }
 
 
+
     //forTesting
     public void setPlayerHand(ArrayList<ProgramCard> hand){
         this.hand = hand;
+    }
+
+
+    public ProgramCard getCard(int i){
+        return deck.get(i);
     }
 
 }

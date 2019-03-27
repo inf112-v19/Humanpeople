@@ -32,7 +32,11 @@ public class GroundLayerObject implements GameObject {
                 break;
             case 5: // GROUND
                 break;
+
+          
+
             case 6: // HOLE
+
                 break;
 
             case 11:

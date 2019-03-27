@@ -8,16 +8,13 @@ public class Round {
     private final int maxPhasesInOneRound = 5;
 
     private ArrayList<Phase> phasesInTheRound;
-    private Boolean roundComplete;
     private int currentPhase;
 
     public Round() {
         this.phasesInTheRound = new ArrayList<>();
-        roundComplete = false;
         currentPhase = 0;
     }
-
-
+    
     public void addPhases(Phase phase){
         if(phasesInTheRound.size() < maxPhasesInOneRound){
             phasesInTheRound.add(phase);
@@ -35,20 +32,16 @@ public class Round {
         else return false;
     }
 
-
     public Boolean isCompleted(){
-        if(roundComplete){
-
+        if(currentPhase >= maxPhasesInOneRound){
+            phasesInTheRound.clear();
             return true;
         }
-        if(getCurrentPhase().getPhaseComplete()){
-            currentPhase++;
-            if(currentPhase >= maxPhasesInOneRound){
-                roundComplete = true;
-                phasesInTheRound.clear();
-            }
-        }
-        return roundComplete;
+        return false;
+    }
+
+    public void nextPhase(){
+        currentPhase++;
     }
 
     public void nextPhase() { currentPhase++;}
@@ -56,6 +49,10 @@ public class Round {
 
     public Phase getCurrentPhase(){
         return phasesInTheRound.get(currentPhase);
+    }
+
+    public int getCurrentPhaseNumber(){
+        return currentPhase;
     }
 
     public ProgramCard getNextMovementCard(){

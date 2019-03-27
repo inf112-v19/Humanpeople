@@ -4,13 +4,21 @@ public class ProgramCard implements ICard {
 	private ProgramType programType;
 	private int priority;
 	private String filename;
+
 	private int playerThatPlayedTheCard;
+
+	private boolean marked;
+
 
 	public ProgramCard(ProgramType programType, int priority, String filename) {
 		this.programType = programType;
 		this.priority = priority;
 		this.filename = filename;
+
 		playerThatPlayedTheCard = -1;
+
+		this.marked = false;
+
 	}
 
 	public ProgramType getProgramType() {
@@ -25,15 +33,24 @@ public class ProgramCard implements ICard {
 		return this.filename;
 	}
 
+
 	public void setPlayerThatPlayedTheCard(int id){
 		playerThatPlayedTheCard = id;
 	}
-	public int getPlayerThatPlayedTheCard(){
-		if(playerThatPlayedTheCard!=-1){
+	public int getPlayerThatPlayedTheCard() {
+		if (playerThatPlayedTheCard != -1) {
 			return playerThatPlayedTheCard;
 		}
 		throw new IllegalArgumentException("PlayerThatPlayedTheCard not set");
 	}
+
+	//Helpers for graphical card selection:
+
+	public boolean isMarked(){
+		return marked;
+	}
+	public void setMarked(boolean b){
+		marked = b;
 
 	@Override
 	public boolean equals(Object obj) {
@@ -50,5 +67,6 @@ public class ProgramCard implements ICard {
 			return -1;
 		}
 		return 0;
+
 	}
 }

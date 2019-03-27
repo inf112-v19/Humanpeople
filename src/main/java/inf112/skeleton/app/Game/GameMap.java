@@ -29,6 +29,7 @@ public class GameMap {
     private ArrayList<Player> players;
 
     private Round round;
+    private boolean cardsDelt;
 
 
     public GameMap(String filename, int nPlayers) {
@@ -44,6 +45,9 @@ public class GameMap {
         this.specialLayer = (TiledMapTileLayer) map.getLayers().get(1);
         this.playerTiles = new ArrayList<>();
         initializePlayers();
+
+        cardsDelt = true;
+
 
         round = new Round();
     }
@@ -66,12 +70,14 @@ public class GameMap {
         }
         // Give out cards to players
         programCardDeck.giveOutCardsToAllPlayers(players);
-        chooseRandomCardsForAllPlayersHand();
+        //chooseRandomCardsForAllPlayersHand();
 
         drawPlayers();
         drawAllBackups();
     }
-
+    public void dealCards(){
+        getDeck().giveOutCardsToAllPlayers(players);
+    }
     public void chooseRandomCardsForAllPlayersHand() {
         for (Player player : players) {
             player.select5FirstCards();
@@ -112,6 +118,7 @@ public class GameMap {
     public void addPlayerHandToNewRound() {
         if(!round.isSet()){
             round = new Round();
+            cardsDelt = false;
 
             int amountOfPhases = 5;
             for(int i = 0; i< amountOfPhases; i++){
@@ -129,9 +136,16 @@ public class GameMap {
                     cardsToAddInPhaseI.add(tempCard);
                 }
                 round.addPhases(new Phase(cardsToAddInPhaseI));
+
             }
         }
     }
+    public void setAllPlayerHandsChosen(boolean handsChosen){
+        for (Player player:players){
+            player.setHandChosen(handsChosen);
+        }
+    }
+
 
     public void movePlayer(int playerId, ProgramCard card) {
         Player player = players.get(playerId);
@@ -243,8 +257,20 @@ public class GameMap {
     public void preformNextMovement(){
         if(round.isSet()){
             if(!round.isCompleted()){
-                ProgramCard currentCard = round.getNextMovementCard();
-                movePlayer(currentCard.getPlayerThatPlayedTheCard(),currentCard);
+                if(round.getCurrentPhase().getPhaseComplete()){
+                    //Todo do special movment (rullebånd og slikt)
+                    System.out.println("phase "+ (round.getCurrentPhaseNumber()+1) +" er ferdig");
+                    round.nextPhase();
+                }else
+                {
+                    ProgramCard currentCard = round.getNextMovementCard();
+                    movePlayer(currentCard.getPlayerThatPlayedTheCard(),currentCard);
+                }
+
+            }else if(!cardsDelt){
+                dealCards();
+                cardsDelt = true;
+                setAllPlayerHandsChosen(false);
             }
         }
     }
@@ -257,6 +283,10 @@ public class GameMap {
     public void giveOutCardsToPlayer(Player player) {
         programCardDeck.giveOutCardsToPlayer(player);
         player.select5FirstCards();
+    }
+
+    public ProgramCardDeck getDeck(){
+        return programCardDeck;
     }
 
     /**
@@ -276,6 +306,7 @@ public class GameMap {
             playerLayer.setCell(playerPosition.getX(), playerPosition.getY(), null);
 
             playerLayerObject.moveTileInDirection(direction);
+
             grid.setPlayerPosition(playerLayerObject);
         }
     }
@@ -315,5 +346,14 @@ public class GameMap {
                 return Direction.rotate(Direction.rotate(currentDir, 1), 1);
         }
         return currentDir;
+    }
+
+
+    public boolean getCardsDelt() {
+        return cardsDelt;
+    }
+
+    public void setCardsDelt(boolean cardsDelt) {
+        this.cardsDelt = cardsDelt;
     }
 }

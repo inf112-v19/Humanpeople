@@ -95,7 +95,7 @@ public class Grid {
      */
     public void AllowedToMoveInDirection(Direction dir, Position pos) {
         GameObject groundLayerObject = (GameObject) gameLogicGrid[pos.getX()][pos.getY()].get(groundIndex);
-        if (groundLayerObject.canGo(dir)) {
+        if (groundLayerObject.canGo(dir) ) {
             listOfPlayerTilesToMove.add((PlayerLayerObject) gameLogicGrid[pos.getX()][pos.getY()].get(playerIndex));
             Position positionInDir;
             switch (dir) {
@@ -130,6 +130,16 @@ public class Grid {
         }
     }
 
+    public boolean offBoard(Position pos){
+        int x = pos.getX();
+        int y = pos.getY();
+
+        if(x < 0 || x > width-1 || y < 0 || y > height-1)
+            return true;
+
+        return false;
+    }
+
     /**
      * @param direction
      * @param position
@@ -140,6 +150,12 @@ public class Grid {
         AllowedToMoveInDirection(direction, position);
 
         return listOfPlayerTilesToMove;
+    }
+
+    public boolean hasHole(Position pos) {
+        if (groundLayer.getCell(pos.getX(), pos.getY()).getTile().getId() == 6)
+            return true;
+        return false;
     }
 
     /**
