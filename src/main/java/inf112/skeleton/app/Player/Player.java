@@ -71,7 +71,7 @@ public class Player {
     }
 
     public void revive() {
-        isAlive = true;
+        isDestroyed = false;
     }
 
     public void destroy() {
