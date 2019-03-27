@@ -18,6 +18,7 @@ public class Player {
     private int damageTokens = MAX_DAMAGE_TOKENS;
     private int id;
     private PlayerDeck playerDeck;
+    private boolean isAlive;
 
 
     public Player(int id) {
@@ -25,6 +26,7 @@ public class Player {
         this.playerTile = new PlayerLayerObject(id);
         this.playerDeck = new PlayerDeck();
         this.backup = new Position(id, id);
+        isAlive = true;
     }
 
 
@@ -90,6 +92,24 @@ public class Player {
 
     public TiledMapTile getBackupAvatar() {
         return playerTile.getBackup().getAvatar();
+    }
+
+    public void damagePlayer(int howMuchDamage) {
+        if(howMuchDamage < 1) 
+            throw new IllegalArgumentException("Damage much be greater than 0");
+
+        damageTokens = damageTokens - howMuchDamage;
+    }
+
+    public boolean isAlive() {
+        if(lifeTokens > 0 )
+            return false;
+
+        return true;
+    }
+
+    public int getDamageTokens() {
+        return damageTokens;
     }
 
     public PlayerDeck getPlayerDeck() {

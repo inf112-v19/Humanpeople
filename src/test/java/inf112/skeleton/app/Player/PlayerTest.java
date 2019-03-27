@@ -71,12 +71,16 @@ public class PlayerTest {
 
     @Test
     public void restoreDamageTokens() {
-
+        player.damagePlayer(9);
+        player.restoreDamageTokens();
+        assertFalse(player.lostAllDamageTokens());
     }
 
     @Test
     public void lostAllDamageTokens() {
-
+        assertFalse(player.lostAllDamageTokens());
+        player.damagePlayer(9);
+        assertTrue(player.lostAllDamageTokens());
     }
 
     @Test
@@ -110,8 +114,6 @@ public class PlayerTest {
 
     @Test
     public void getPlayerDeck() {
-
-
 
     }
 }
