@@ -19,6 +19,7 @@ public class Player {
     private int id;
     private PlayerDeck playerDeck;
     private boolean isAlive = true;
+    private boolean handChosen;
 
 
     public Player(TiledMapTileSet tiles, int id) {
@@ -26,6 +27,8 @@ public class Player {
         this.playerTile = new PlayerLayerObject(tiles, id);
         this.playerDeck = new PlayerDeck();
         this.backup = new Position(id, id);
+        handChosen = false;
+
     }
 
     public int getId() {
@@ -110,5 +113,13 @@ public class Player {
     public PlayerDeck getPlayerDeck() {
         return playerDeck;
     }
+
+    public void setHandChosen(Boolean handChosen){
+        this.handChosen = handChosen;
+    }
+    public boolean getHandChoosen(){
+        return handChosen;
+    }
+
 
 }
