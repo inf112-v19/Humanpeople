@@ -1,4 +1,4 @@
-Manuelle tester for backupinteraksjoner, hull og destruksjon:
+###Manuelle tester for backupinteraksjoner, hull og destruksjon:
 
 Hensikt: 
 - Sjekke at spiller blir destruert ved å gå på hull
