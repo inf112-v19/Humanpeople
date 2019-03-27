@@ -18,6 +18,7 @@ public class Player {
     private int damageTokens = MAX_DAMAGE_TOKENS;
     private int id;
     private PlayerDeck playerDeck;
+    private boolean isAlive = true;
 
 
     public Player(TiledMapTileSet tiles, int id) {
@@ -43,6 +44,7 @@ public class Player {
      * Restores the amount of damageTokens to be the max amount of damage tokens
      */
     public void restoreDamageTokens() {
+        isAlive = true;
         damageTokens = MAX_DAMAGE_TOKENS;
     }
 
@@ -53,10 +55,24 @@ public class Player {
     public boolean lostAllDamageTokens() {
         if (damageTokens < 1) {
            lifeTokens--; // TODO Check if lifeTokes == 0 before doing anyting
+            isAlive = false;
            restoreDamageTokens();
            return true;
         }
         return false;
+    }
+
+    public void revive() {
+        isAlive = true;
+    }
+
+    public void kill() {
+        lifeTokens--;
+        isAlive = false;
+    }
+
+    public boolean isAlive() {
+        return isAlive;
     }
 
     public Position getPosition() {

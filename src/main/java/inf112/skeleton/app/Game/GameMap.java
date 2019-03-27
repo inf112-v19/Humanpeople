@@ -40,7 +40,7 @@ public class GameMap {
         this.nPlayers = nPlayers;
         this.startingPositions = new StartingPositions(grid.getWidth(), grid.getHeight());
         this.programCardDeck = new ProgramCardDeck();
-        this.playerLayer = (TiledMapTileLayer) map.getLayers().get(2);
+        this.playerLayer = (TiledMapTileLayer) map.getLayers().get(5);
         this.specialLayer = (TiledMapTileLayer) map.getLayers().get(1);
         this.playerTiles = new ArrayList<>();
         initializePlayers();
@@ -134,11 +134,18 @@ public class GameMap {
 
     public void movePlayer(int playerId, ProgramCard card) {
         Player player = players.get(playerId);
+        // A player which is dead cannot move
+        if (!player.isAlive()) {
+            System.out.println("Madafakin dead");
+            return;
+        }
+
         // Checks if player is in a state where he/she has to return to backup
         if (hasToReturnToBackup(player)) {
             returnToBackup(player);
             return;
         }
+
         ProgramType programType = card.getProgramType();
         Direction playerDir = player.getDirection();
         Direction moveDir = playerDir;
@@ -163,10 +170,6 @@ public class GameMap {
             Direction rotated = rotate(card.getProgramType(), playerDir);
             player.getPlayerTile().setDirection(rotated);
         }
-
-        // If player has stepped in a flag then set current position as backup
-        if (steppedOnFlag(player))
-            setBackup(player);
 
         drawPlayers();
     }
@@ -220,13 +223,30 @@ public class GameMap {
     }
 
     /**
-     * Checks if player is stepping on a hole
+     * Checks if player is stepping on a hole. If so, kill player
      * @param player
      * @return true if player is in hole
      */
     public boolean steppedOnHole(Player player) {
         Position currentPosition = player.getPosition();
-        return grid.isHole(currentPosition);
+        if (grid.isHole(currentPosition)) {
+            player.kill();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * If player is standing on flag and another player does not have a backup there already, then set backup
+     */
+    public void steppedOnFlag() {
+        for (Player player : players) {
+            if (playerSteppedOnFlag(player)) {
+                // TODO Save that flag has been visited by current player
+                if (!grid.isBackup(player.getPosition()))
+                    setBackup(player);
+            }
+        }
     }
 
     /**
@@ -234,7 +254,7 @@ public class GameMap {
      * @param player
      * @return true if player is in hole
      */
-    public boolean steppedOnFlag(Player player) {
+    public boolean playerSteppedOnFlag(Player player) {
         Position currentPosition = player.getPosition();
         return grid.isFlag(currentPosition);
     }
@@ -243,16 +263,26 @@ public class GameMap {
         if(round.isSet()){
             if(!round.isCompleted()){
                 if(round.getCurrentPhase().getPhaseComplete()){
+                    // If any player has stepped on a flag then set current position as backup
+                    steppedOnFlag();
+
                     //Todo do special movment (rullebånd og slikt)
-                    System.out.println("phase "+ (round.getCurrentPhaseNumber()+1) +" er ferdig");
+                    System.out.println("Phase "+ (round.getCurrentPhaseNumber()+1) +" er ferdig");
                     round.nextPhase();
-                }else
-                {
+                }else {
                     ProgramCard currentCard = round.getNextMovementCard();
                     movePlayer(currentCard.getPlayerThatPlayedTheCard(),currentCard);
                 }
-
             }
+            // If round is complete, revive all players for further play
+            else
+                reviveAllPlayers();
+        }
+    }
+
+    public void reviveAllPlayers() {
+        for (Player player : players) {
+            player.revive();
         }
     }
 

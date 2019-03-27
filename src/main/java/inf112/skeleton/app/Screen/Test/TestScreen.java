@@ -106,26 +106,26 @@ public class TestScreen implements Screen {
         if(time >0.1){
 
             if(cardsForPlayer.size()!=5){
-                if (Gdx.input.isKeyPressed(Input.Keys.NUM_1)) {
+                if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
                     time = 0;
                     cardsForPlayer.add(move1);
                     System.out.println("selected: "+cardsForPlayer.size()+"/"+5);
 //            getInfo(move1);
                 }
-                if (Gdx.input.isKeyPressed(Input.Keys.NUM_2)) {
+                if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
                     time = 0;
                     cardsForPlayer.add(move2);
                     System.out.println("selected: "+cardsForPlayer.size()+"/"+5);
 //            getInfo(move2);
                 }
-                if (Gdx.input.isKeyPressed(Input.Keys.NUM_3)) {
+                if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)) {
                     time = 0;
 
                     cardsForPlayer.add(move3);
                     System.out.println("selected: "+cardsForPlayer.size()+"/"+5);
 //            getInfo(move3);
                 }
-                if (Gdx.input.isKeyPressed(Input.Keys.R)) {
+                if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
                     time = 0;
 
                     cardsForPlayer.add(right);
@@ -133,7 +133,7 @@ public class TestScreen implements Screen {
 //            getInfo(right);
                 }
 
-                if (Gdx.input.isKeyPressed(Input.Keys.L)) {
+                if (Gdx.input.isKeyJustPressed(Input.Keys.L)) {
                     time = 0;
 
                     cardsForPlayer.add(left);
@@ -141,7 +141,7 @@ public class TestScreen implements Screen {
 //            getInfo(left);
                 }
 
-                if (Gdx.input.isKeyPressed(Input.Keys.U)) {
+                if (Gdx.input.isKeyJustPressed(Input.Keys.U)) {
                     time = 0;
 
                     cardsForPlayer.add(uTurn);
@@ -149,7 +149,7 @@ public class TestScreen implements Screen {
 //            getInfo(uTurn);
                 }
 
-                if (Gdx.input.isKeyPressed(Input.Keys.B)) {
+                if (Gdx.input.isKeyJustPressed(Input.Keys.B)) {
                     time = 0;
                     cardsForPlayer.add(backUp);
                     System.out.println("selected: "+cardsForPlayer.size()+"/"+5);
@@ -159,7 +159,7 @@ public class TestScreen implements Screen {
             }
             //Test of movement according to program cards (using movePlayer() for testing)
             else{
-                if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+                if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
                     time = 0;
 
                     gameMap.getPlayers().get(0).getPlayerDeck().setPlayerHand(cardsForPlayer);
