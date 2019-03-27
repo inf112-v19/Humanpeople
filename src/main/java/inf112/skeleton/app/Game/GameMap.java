@@ -313,15 +313,22 @@ public class GameMap {
                     movePlayer(currentCard.getPlayerThatPlayedTheCard(),currentCard);
                 }
             }
-            // If round is complete, revive all players for further play
             else {
                 // Returns players to backup if needed
-                for (Player player : players) {
-                    if (hasToReturnToBackup(player)) {
-                        returnToBackup(player);
-                    }
-                }
+                returnNeededPlayersToBackup();
+                // If round is complete, revive all players for further play
                 reviveAllPlayers();
+            }
+        }
+    }
+
+    /**
+     * If a player has to return to backup, then they are returned to backup
+     */
+    public void returnNeededPlayersToBackup() {
+        for (Player player : players) {
+            if (hasToReturnToBackup(player)) {
+                returnToBackup(player);
             }
         }
     }
