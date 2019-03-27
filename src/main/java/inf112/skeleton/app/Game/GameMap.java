@@ -230,22 +230,22 @@ public class GameMap {
 
     public void movePlayerToNearestField(Player player) {
         Position backup = player.getBackup();
-        if (canGo(Direction.NORTH, backup)) {
+        if (canGo(Direction.NORTH, backup) && !grid.isHole(backup.north())) {
             Position newPosition = backup.north();
             player.setPosition(newPosition);
             grid.setPlayerPosition(player.getPlayerTile());
         }
-        else if (canGo(Direction.EAST, backup)) {
+        else if (canGo(Direction.EAST, backup) && !grid.isHole(backup.east())) {
             Position newPosition = backup.east();
             player.setPosition(newPosition);
             grid.setPlayerPosition(player.getPlayerTile());
         }
-        else if (canGo(Direction.SOUTH, backup)) {
+        else if (canGo(Direction.SOUTH, backup) && !grid.isHole(backup.south())) {
             Position newPosition = backup.south();
             player.setPosition(newPosition);
             grid.setPlayerPosition(player.getPlayerTile());
         }
-        else if (canGo(Direction.WEST, backup)) {
+        else if (canGo(Direction.WEST, backup) && !grid.isHole(backup.west())) {
             Position newPosition = backup.west();
             player.setPosition(newPosition);
             grid.setPlayerPosition(player.getPlayerTile());
