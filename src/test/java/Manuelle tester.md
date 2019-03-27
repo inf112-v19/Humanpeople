@@ -12,6 +12,12 @@ Hensikt:
 6. Gjenta alt, men velg "PLAY" i stedet for "TEST"
 Ferdig.
 
+### Sjekk at spiller beveger seg ett felt om gangen
+1. Kjør programmet og trykk på "TEST"
+2. Tast inn følgenede kombinasjon: "2", "2", "2", "2", "2", "space"
+3. Se at grønn brikke beveger seg ett felt om gangen
+
+
 ### Bevegelsestest (GameMap, Grid, Player, PlayerLayerObject, GroundLayerObject)
 Hensikt: 
 - Kunne bevege gr�nn brikke fritt rundt p� brettet
