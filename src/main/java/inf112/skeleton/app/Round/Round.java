@@ -44,6 +44,8 @@ public class Round {
         currentPhase++;
     }
 
+    public void nextPhase() { currentPhase++;}
+
 
     public Phase getCurrentPhase(){
         return phasesInTheRound.get(currentPhase);

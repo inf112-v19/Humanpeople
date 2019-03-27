@@ -43,11 +43,6 @@ public class ProgramCard implements ICard {
 		}
 		throw new IllegalArgumentException("PlayerThatPlayedTheCard not set");
 	}
-	@Override
-	public boolean equals(Object obj) {
-		return priority == ((ProgramCard) obj).priority;
-	}
-
 
 	//Helpers for graphical card selection:
 
@@ -56,6 +51,22 @@ public class ProgramCard implements ICard {
 	}
 	public void setMarked(boolean b){
 		marked = b;
+
+	@Override
+	public boolean equals(Object obj) {
+
+		return programType == ((ProgramCard) obj).getProgramType() && priority == ((ProgramCard) obj).getPriority();
+	}
+
+	@Override
+	public int compareTo(Object obj) {
+		if (priority > ((ProgramCard) obj).getPriority()) {
+			return 1;
+		}
+		if (priority < ((ProgramCard) obj).getPriority()) {
+			return -1;
+		}
+		return 0;
 
 	}
 }
