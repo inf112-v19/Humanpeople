@@ -3,14 +3,41 @@ package inf112.skeleton.app.Screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import inf112.skeleton.app.Cards.PlayerDeck;
+import inf112.skeleton.app.Cards.ProgramCard;
+import inf112.skeleton.app.Cards.ProgramCardDeck;
+import inf112.skeleton.app.Directions.Position;
 import inf112.skeleton.app.Game.GameMap;
 import inf112.skeleton.app.Game.RoboRally;
+import inf112.skeleton.app.Player.Player;
+
+import javax.smartcardio.Card;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.concurrent.BlockingDeque;
 
 
 /**
@@ -20,22 +47,34 @@ public class PlayScreen implements Screen {
     private RoboRally game;
     private OrthographicCamera gameCam;
     private Viewport gamePort;
-
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private GameMap gameMap;
     float time = 0;
+
     float tickTime = 0;
+
+    private Stage stage;
+    private float width;
+    private float height;
+
+    Position pos[] = new Position[5];
+    ProgramCard chosenCards[] = new ProgramCard[5];
+    HashMap<Image, ProgramCard> cardMap = new HashMap<>();
+
 
 
     public PlayScreen(RoboRally game) {
         this.game = game;
         this.gameCam = new OrthographicCamera();
-        this.gamePort = new FitViewport(RoboRally.width, RoboRally.height, gameCam);
+        gamePort = new StretchViewport(RoboRally.width*2, RoboRally.height, gameCam);
+        gameCam.translate(RoboRally.width, RoboRally.height/2);
+        width = RoboRally.width*2;
+        height = RoboRally.height;
+
         this.gameMap = new GameMap("assets/map3.tmx", 4);
         this.map = gameMap.getMap();
         this.renderer = new OrthogonalTiledMapRenderer(map);
-        gameCam.position.set(gamePort.getWorldWidth() / 2, (gamePort.getWorldHeight() / 2), 0);
     }
 
     public void update(float deltaTime) {
@@ -56,7 +95,16 @@ public class PlayScreen implements Screen {
             time = 0;
             gameMap.addPlayerHandToNewRound();
         }
+
+        //Access card selection by pressing "O"
+        if(Gdx.input.isKeyPressed(Input.Keys.O)){
+            Player player = gameMap.getPlayers().get(0);
+            ProgramCardDeck deck = gameMap.getDeck();
+            deck.giveOutCardsToPlayer(player);
+            chooseCards(player);
+        }
     }
+
 
     private void updateMap() {
         map = gameMap.getMap();
@@ -65,6 +113,32 @@ public class PlayScreen implements Screen {
     @Override
     public void show() {
 
+        stage = new Stage();
+
+        //Playbutton
+        Sprite picture = new Sprite(new Texture("assets/mainMenu/playBtn.png"));
+        final ImageButton button = new ImageButton(new SpriteDrawable(picture));
+        button.setWidth(picture.getWidth());
+        button.setHeight(picture.getHeight());
+        button.setPosition(width/2, height/2-picture.getHeight());
+        button.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                for(int i = 0; i < chosenCards.length; i++) {
+                    if (chosenCards[i] == null) {
+                        System.out.println("Choose " + (chosenCards.length - i) + " more cards");
+                        return;
+                    }
+                }
+                    System.out.println("Cards selected");
+                ArrayList<ProgramCard> list = new ArrayList<ProgramCard>(Arrays.asList(chosenCards));
+                gameMap.getPlayers().get(0).getPlayerDeck().setPlayerHand(list);
+
+            }
+        });
+        stage.addActor(button);
+
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
@@ -74,12 +148,91 @@ public class PlayScreen implements Screen {
         update(Gdx.graphics.getDeltaTime());
         renderer.setView(gameCam);
         renderer.render();
+
+        stage.draw();
     }
 
     @Override
     public void resize(int width, int height) {
         gamePort.update(width, height);
+        stage.setViewport(gamePort);
     }
+
+    public void cardListener(Image cardImage){
+        float xLim = width/2;
+        float yLim = height/2;
+        ProgramCard programCard = cardMap.get(cardImage);
+        float x = cardImage.getX();
+        float y = cardImage.getTop()-cardImage.getHeight()/2;
+
+        //In the zone and not there already
+        if(x > xLim && y < yLim && !programCard.isMarked()){
+            for(int i = 0; i < chosenCards.length; i++){
+                if(chosenCards[i] == null) {
+                    cardImage.setPosition(pos[i].getX(), pos[i].getY());
+                    programCard.setMarked(true);
+                    chosenCards[i] = programCard;
+                    return;
+                }
+            }
+            //If the zone is full
+            cardImage.setPosition(cardImage.getOriginX(), cardImage.getOriginY());
+
+        }
+        //If moved out of zone
+        else {
+            cardImage.setPosition(cardImage.getOriginX(), cardImage.getOriginY());
+            programCard.setMarked(false);
+            for(int i = 0; i < chosenCards.length; i++){
+                if(chosenCards[i] != null && chosenCards[i].equals(programCard)){
+                    chosenCards[i] = null;
+                    return;
+                }
+            }
+        }
+    }
+
+    public void chooseCards(Player player){
+        PlayerDeck deck = player.getPlayerDeck();
+        for(int i = 0; i < deck.deckSize(); i++) {
+            ProgramCard programCard = deck.getCard(i);
+            Sprite picture = new Sprite(new Texture(programCard.getFilename()));
+            final Image cardImage = new Image(new SpriteDrawable(picture));
+            float pWidth = picture.getWidth()/8;
+            float pHeight = picture.getHeight()/8;
+            cardImage.setWidth(pWidth);
+            cardImage.setHeight(pHeight);
+
+            //Place 5 first cards in top row
+            if(i < 5) {
+                cardImage.setPosition(width / 2 + (i * pWidth), height - pHeight);
+                cardImage.setOrigin(width / 2 + (i * pWidth), height - pHeight);
+                pos[i] = new Position((int) (width / 2 + (i * pWidth)), 0);
+            }
+            //Place remaining 4 cards in row beneath
+            else {
+                cardImage.setPosition(width / 2 + (i * pWidth) - 5 * pWidth, height - pHeight * 2);
+                cardImage.setOrigin(width / 2 + (i * pWidth)- 5 * pWidth, height - pHeight*2);
+            }
+
+            //Adds dragging functionality to each image
+            cardImage.addListener(new DragListener() {
+                public void drag(InputEvent event, float x, float y, int pointer) {
+                    cardImage.moveBy(x - cardImage.getWidth() / 2, y - cardImage.getHeight() / 2);
+                }
+
+                @Override
+                public void dragStop(InputEvent event, float x, float y, int pointer) {
+                    super.dragStop(event, x, y, pointer);
+                    cardListener(cardImage);
+                }
+            });
+
+            stage.addActor(cardImage);
+            cardMap.put(cardImage, programCard);
+        }
+    }
+
 
     @Override
     public void pause() {

@@ -32,6 +32,8 @@ public class GroundLayerObject implements GameObject {
                 break;
             case 5: // GROUND
                 break;
+            case 6: // hole
+                break;
 
             case 11:
                 north = false;
