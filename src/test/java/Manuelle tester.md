@@ -65,6 +65,31 @@ Hensikt:
 "B", "B", "U", "1", "2", "space"
 - Gr�nn brikke dytter nå gul brikke 2 felt med å rygge, tar en uturn og dytter gul brikke 3 felt videre.
 
+6. Trykk på "i", og sjekk at du får følgende informasjon:
+
+-------------------
+CONTROLLED TILE: 
+Color: Green
+Direction: SOUTH
+Position: (10,6)
+
+-------------------
+OTHER TILES: 
+Color: Dark blue
+Direction: NORTH
+Position: (10,1)
+
+Color: Light blue
+Direction: NORTH
+Position: (11,10)
+
+Color: Yellow
+Direction: NORTH
+Position: (10,5)
+-------------------
+
+
+
 
 
 
