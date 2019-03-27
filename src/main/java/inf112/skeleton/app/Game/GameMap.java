@@ -62,7 +62,7 @@ public class GameMap {
             player.setPosition(startingPosition);
             player.setBackup(startingPosition);
             PlayerLayerObject playerTile = player.getPlayerTile();
-            grid.setPlayerPosition(playerTile, player.getPosition());
+            grid.setPlayerPosition(playerTile);
             setBackup(player);
         }
         // Give out cards to players
@@ -204,7 +204,7 @@ public class GameMap {
         }
         else {
             player.setPosition(backup);
-            grid.setPlayerPosition(player.getPlayerTile(), player.getPosition());
+            grid.setPlayerPosition(player.getPlayerTile());
         }
         drawPlayers();
     }
@@ -222,22 +222,22 @@ public class GameMap {
         if (canGo(Direction.NORTH, backup)) {
             Position newPosition = backup.north();
             player.setPosition(newPosition);
-            grid.setPlayerPosition(player.getPlayerTile(), newPosition);
+            grid.setPlayerPosition(player.getPlayerTile());
         }
         else if (canGo(Direction.EAST, backup)) {
             Position newPosition = backup.east();
             player.setPosition(newPosition);
-            grid.setPlayerPosition(player.getPlayerTile(), newPosition);
+            grid.setPlayerPosition(player.getPlayerTile());
         }
         else if (canGo(Direction.SOUTH, backup)) {
             Position newPosition = backup.south();
             player.setPosition(newPosition);
-            grid.setPlayerPosition(player.getPlayerTile(), newPosition);
+            grid.setPlayerPosition(player.getPlayerTile());
         }
         else if (canGo(Direction.WEST, backup)) {
             Position newPosition = backup.west();
             player.setPosition(newPosition);
-            grid.setPlayerPosition(player.getPlayerTile(), newPosition);
+            grid.setPlayerPosition(player.getPlayerTile());
         }
     }
 
@@ -367,7 +367,7 @@ public class GameMap {
             playerLayer.setCell(playerPosition.getX(), playerPosition.getY(), null);
 
             playerLayerObject.moveTileInDirection(direction);
-            grid.setPlayerPosition(playerLayerObject, player.getPosition());
+            grid.setPlayerPosition(playerLayerObject);
         }
     }
 

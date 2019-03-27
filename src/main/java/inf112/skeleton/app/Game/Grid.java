@@ -91,9 +91,10 @@ public class Grid {
         }
     }
 
-    public void setPlayerPosition(PlayerLayerObject playerLayerObject, Position position) {
-        int x = position.getX();
-        int y = position.getY();
+    public void setPlayerPosition(PlayerLayerObject playerLayerObject) {
+        Position currentPosition = playerLayerObject.getPosition();
+        int x = currentPosition.getX();
+        int y = currentPosition.getY();
         gameLogicGrid[x][y].remove(playerIndex);
         gameLogicGrid[x][y].add(playerIndex, playerLayerObject);
     }
