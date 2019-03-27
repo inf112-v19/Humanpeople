@@ -51,6 +51,8 @@ public class Round {
         return roundComplete;
     }
 
+    public void nextPhase() { currentPhase++;}
+
 
     public Phase getCurrentPhase(){
         return phasesInTheRound.get(currentPhase);
