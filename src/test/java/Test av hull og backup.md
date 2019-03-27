@@ -1,4 +1,5 @@
 Manuelle tester for backupinteraksjoner og destruksjon:
+
 Hensikt: 
 - Sjekke at spiller blir destruert ved å gå på hull
 - Sjekke at spilleren ikke fortsetter å bevege seg etter å ha blitt destruert
@@ -17,6 +18,7 @@ Hensikt:
 ---
 ###Test
 Test av destruksjon bevegelse på hull, returnering til backup og slutt av fase.
+
 Hensikt:
 - Sjekke at spiller blir destruert ved å gå på hull
 - Sjekke at spilleren ikke fortsetter å bevege seg etter å ha blitt destruert
@@ -38,6 +40,7 @@ Resultat:
 ---
 ###Test
 Test av destruksjon ved forsøk på å gå over hull
+
 Hensikt:
 - Sjekke at spiller blir destruert selv da den prøver å gå over hullet
 
@@ -56,6 +59,7 @@ Resultat:
 ---
 ###Test
 Test av oppdatering av backup ved endt fase på backup
+
 Hensikt:
 - Sjekke at spiller legger igjen backup etter å ha endt en fase på ett flagg
 
@@ -73,6 +77,7 @@ Resultat:
 ---
 ###Test
 Test av oppdatering av backup ved flytting over flagg
+
 Hensikt:
 - Sjekke at spiller ikke legger igjen backup hvis spiller går over flagget 
 men ikke avslutter fasen på flagget.
@@ -90,6 +95,7 @@ Resultat:
 ---
 ###Test
 Test av oppdatering av backup av annen spiller
+
 Hensikt:
 - Sjekke at annen spiller kan legge igjen backup gitt at den ender fasen på flagg
 - Sjekke at annen spiller blir destruert ved bevegelse over hull
@@ -121,6 +127,7 @@ Resultat:
 ---
 ###Test
 Test av ikke legge igjen backup
+
 Hensikt:
 - Sjekke at annen spiller ikke legger igjen backup hvis den beveger seg over 
 	flagget men ikke avslutter fasen på flagget
