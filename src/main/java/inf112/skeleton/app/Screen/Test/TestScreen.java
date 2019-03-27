@@ -92,7 +92,7 @@ public class TestScreen implements Screen {
             tickTime=0;
             gameMap.preformNextMovement();
             //TODO få getInfo til å virke på en fornuftig måte
-            //getInfo(backUp);
+//            getInfo();
         }
     }
 
@@ -167,15 +167,12 @@ public class TestScreen implements Screen {
                     gameMap.addPlayerHandToNewRound();
                     cardsForPlayer.clear();
                     infoShowed = false;
-
                 }
             }
 
-
-
-
-
-
+            if(Gdx.input.isKeyJustPressed(Input.Keys.I)) {
+                getInfo();
+            }
         }
     }
     public void givePlayersRotateHand(){
@@ -190,15 +187,16 @@ public class TestScreen implements Screen {
         }
     }
 
-    private void getInfo(ProgramCard card) {
+    private void getInfo() {
         //Get information from controlled tile:
         System.out.println("-------------------");
         System.out.println("CONTROLLED TILE: ");
+
         Player testPlayer = gameMap.getPlayers().get(0);
         int posX = testPlayer.getPosition().getX();
         int posY = testPlayer.getPosition().getY();
         Direction dir = testPlayer.getDirection();
-        System.out.println("Card type: " + card.getProgramType());
+
         System.out.println("Color: " + testPlayer.getPlayerTile().getColor());
         System.out.println("Direction: " + dir);
         System.out.println("Position: (" + posX + "," + posY + ")" + "\n");
