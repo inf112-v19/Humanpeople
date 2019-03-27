@@ -70,6 +70,7 @@ Test:
 
 2. Tast inn følgende kombinasjon:
    "R" "1" "3" "3" "3"
+   
 Resultat:
 
 	Spilleren går på flagg nr.1 og ender fasen her, etter instruksjon "R " "1".
