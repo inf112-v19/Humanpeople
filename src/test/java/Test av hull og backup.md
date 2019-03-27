@@ -43,7 +43,7 @@ Test av destruksjon ved forsøk på å gå over hull
 Hensikt:
 - Sjekke at spiller blir destruert selv da den prøver å gå over hullet
 
-Test
+Test:
 
 1. Kjør programmet og klikk på "Test" knappen.
 
@@ -64,7 +64,7 @@ Hensikt:
 - Sjekke at spiller legger igjen backup etter å ha endt en fase på ett flagg
 
 
-Test
+Test:
 
 1. Kjør programmet og klikk på "Test" knappen.
 
@@ -84,12 +84,13 @@ Hensikt:
 - Sjekke at spiller ikke legger igjen backup hvis spiller går over flagget 
 men ikke avslutter fasen på flagget.
 
-Test
+Test:
 
 1. Kjør programmet og klikk på "Test" knappen.
 
 2. Tast inn følgende kombinasjon:
    "R" "3" "3" "3" "3"
+   
 Resultat:
 
 	Spilleren går over flagg nr.1 og faller i hullet etter instruksjon "R" "3".
@@ -104,7 +105,7 @@ Hensikt:
 - Sjekke at annen spiller kan legge igjen backup gitt at den ender fasen på flagg
 - Sjekke at annen spiller blir destruert ved bevegelse over hull
 
-Test
+Test:
 
 1. Kjør programmet og klikk på "Test" knappen.
 
@@ -139,7 +140,7 @@ Hensikt:
 - Sjekke at annen spiller returnerer til backup etter at den er blitt destruert
 - Sjekke at annen spiller ikke fortsetter å runden etter destruksjon
 
-Test
+Test:
 
 1. Kjør programmet og klikk på "Test" knappen.
 
