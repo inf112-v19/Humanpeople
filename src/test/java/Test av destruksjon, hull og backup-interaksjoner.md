@@ -1,4 +1,5 @@
-Manuelle tester for backupinteraksjoner og destruksjon:
+## Manuelle tester for backupinteraksjoner, hull og destruksjon:
+
 Hensikt: 
 - Sjekke at spiller blir destruert ved å gå på hull
 - Sjekke at spilleren ikke fortsetter å bevege seg etter å ha blitt destruert
@@ -15,12 +16,14 @@ Hensikt:
 - Sjekke at annen spiller ikke fortsetter å runden etter destruksjon
 
 ---
-###Test
-Test av destruksjon bevegelse på hull, returnering til backup og slutt av fase.
+### Test av destruksjon bevegelse på hull, returnering til backup og slutt av fase.
+
 Hensikt:
 - Sjekke at spiller blir destruert ved å gå på hull
 - Sjekke at spilleren ikke fortsetter å bevege seg etter å ha blitt destruert
 - Sjekke at spiller returnerer til backup punkt etter å ha blitt destruert
+
+Test:
 
 1. Kjør programmet og klikk på "Test" knappen.
 
@@ -28,18 +31,19 @@ Hensikt:
   "3" "R" "1" "3" "L"
 
 Resultat:
+
 	Spilleren blir destruert da den går på hullet etter å ha fulgt
 	instruksjonene "3" "R" "1". Blir flyttet til backup. Utfører ikke
 	resten av instruksjonene.
 	
 ---
 
+### Test av destruksjon ved forsøk på å gå over hull
 
----
-###Test
-Test av destruksjon ved forsøk på å gå over hull
 Hensikt:
 - Sjekke at spiller blir destruert selv da den prøver å gå over hullet
+
+Test:
 
 1. Kjør programmet og klikk på "Test" knappen.
 
@@ -47,52 +51,62 @@ Hensikt:
   "3" "R" "3" "3" "L"
 
 Resultat:
+
 	Spilleren blir destruert da den går på hullet etter å ha fulgt
 	instruksjonene "3" "R" og 1 trinn av instuksjonen "3".
 	Blir flyttet til backup. Utfører ikke resten av instruksjonene.
+	
 ---
 
+### Test av oppdatering av backup ved endt fase på backup
 
----
-###Test
-Test av oppdatering av backup ved endt fase på backup
 Hensikt:
 - Sjekke at spiller legger igjen backup etter å ha endt en fase på ett flagg
+
+
+Test:
 
 1. Kjør programmet og klikk på "Test" knappen.
 
 2. Tast inn følgende kombinasjon:
    "R" "1" "3" "3" "3"
+   
 Resultat:
+
 	Spilleren går på flagg nr.1 og ender fasen her, etter instruksjon "R " "1".
 	Her blir backup oppdatert. Spilleren faller i hullet etter instruksjon "3".
 	Spilleren blir flyttet til oppdatert backup.
+	
 ---
 
+### Test av oppdatering av backup ved flytting over flagg
 
----
-###Test
-Test av oppdatering av backup ved flytting over flagg
 Hensikt:
 - Sjekke at spiller ikke legger igjen backup hvis spiller går over flagget 
 men ikke avslutter fasen på flagget.
+
+Test:
 
 1. Kjør programmet og klikk på "Test" knappen.
 
 2. Tast inn følgende kombinasjon:
    "R" "3" "3" "3" "3"
+   
 Resultat:
+
 	Spilleren går over flagg nr.1 og faller i hullet etter instruksjon "R" "3".
 	Backup blir ikke flyttet/oppdatert. Spilleren blir flyttet til backup.
+	
 ---
 
 
----
-###Test
-Test av oppdatering av backup av annen spiller
+### Test av oppdatering av backup av annen spiller
+
 Hensikt:
 - Sjekke at annen spiller kan legge igjen backup gitt at den ender fasen på flagg
 - Sjekke at annen spiller blir destruert ved bevegelse over hull
+
+Test:
 
 1. Kjør programmet og klikk på "Test" knappen.
 
@@ -112,20 +126,22 @@ Hensikt:
    "R" "3" "1" "1" "1"
 
 Resultat:
+
 	Spiller(Grønn) dytter spiller(Mørkeblå) til flagg nr.2. Backup for spiller(Mørkeblå)
 	blir oppdatert. Spiller(Grønn) dytter spiller(Mørkelå) ned i hull. Begge spillere
 	returneres til backup.
+	
 ---
 
+### Test for annen spiller ikke legge igjen backup
 
----
-###Test
-Test av ikke legge igjen backup
 Hensikt:
 - Sjekke at annen spiller ikke legger igjen backup hvis den beveger seg over 
 	flagget men ikke avslutter fasen på flagget
 - Sjekke at annen spiller returnerer til backup etter at den er blitt destruert
 - Sjekke at annen spiller ikke fortsetter å runden etter destruksjon
+
+Test:
 
 1. Kjør programmet og klikk på "Test" knappen.
 
@@ -148,7 +164,12 @@ Hensikt:
    "L" "1" "L" "1" "1"
 
 Resultat:
+
 	Spiller(Grønn) dytter spiller(Mørkeblå) over flagg nr.2. Backup blir ikke oppdatert.
 	Spiller(Grønn) dytter spiller(Mørkeblå) i hull. Spiller(Mørkeblå) blir
 	flyttet til backup og stopper bevegelse i runden.
+	
 ---
+
+
+Tester av: Eirik
