@@ -1,69 +1,70 @@
 Manuelle tester for backupinteraksjoner og destruksjon:
 Hensikt: 
-- Sjekke at spiller blir destruert ved å gå på hull
-- Sjekke at spilleren ikke fortsetter å bevege seg etter å ha blitt destruert
-- Sjekke at spiller returnerer til backup punkt etter å ha blitt destruert
-- Sjekke at spiller blir destruert selv da den prøver å gå over hullet
-- Sjekke at spiller legger igjen backup etter å ha endt en fase på ett flagg
-- Sjekke at spiller ikke legger igjen backup hvis den går over flagget men 
-	ikke avslutter fasen på flagget
-- Sjekke at annen spiller kan legge igjen backup gitt at den ender fasen på flagg
+- Sjekke at spiller blir destruert ved Ã¥ gÃ¥ pÃ¥ hull
+- Sjekke at spilleren ikke fortsetter Ã¥ bevege seg etter Ã¥ ha blitt destruert
+- Sjekke at spiller returnerer til backup punkt etter Ã¥ ha blitt destruert
+- Sjekke at spiller blir destruert selv da den prÃ¸ver Ã¥ gÃ¥ over hullet
+- Sjekke at spiller legger igjen backup etter Ã¥ ha endt en fase pÃ¥ ett flagg
+- Sjekke at spiller ikke legger igjen backup hvis den gÃ¥r over flagget men 
+	ikke avslutter fasen pÃ¥ flagget
+- Sjekke at annen spiller kan legge igjen backup gitt at den ender fasen pÃ¥ flagg
 - Sjekke at annen spiller blir destruert ved bevegelse over hull
 - Sjekke at annen spiller ikke legger igjen backup hvis den beveger seg over 
-	flagget men ikke avslutter fasen på flagget
+	flagget men ikke avslutter fasen pÃ¥ flagget
 - Sjekke at annen spiller returnerer til backup etter at den er blitt destruert
-- Sjekke at annen spiller ikke fortsetter å runden etter destruksjon
+- Sjekke at annen spiller ikke fortsetter Ã¥ runden etter destruksjon
 
 ---
 ###Test
-Test av destruksjon bevegelse på hull, returnering til backup og slutt av fase.
+Test av destruksjon bevegelse pÃ¥ hull, returnering til backup og slutt av fase.
 Hensikt:
-- Sjekke at spiller blir destruert ved å gå på hull
-- Sjekke at spilleren ikke fortsetter å bevege seg etter å ha blitt destruert
-- Sjekke at spiller returnerer til backup punkt etter å ha blitt destruert
+- Sjekke at spiller blir destruert ved Ã¥ gÃ¥ pÃ¥ hull
+- Sjekke at spilleren ikke fortsetter Ã¥ bevege seg etter Ã¥ ha blitt destruert
+- Sjekke at spiller returnerer til backup punkt etter Ã¥ ha blitt destruert
 
-1. Kjør programmet og klikk på "Test" knappen.
+1. KjÃ¸r programmet og klikk pÃ¥ "Test" knappen.
 
-2. Tast inn følgende kombinasjon:
+2. Tast inn fÃ¸lgende kombinasjon:
   "3" "R" "1" "3" "L"
 
 Resultat:
-	Spilleren blir destruert da den går på hullet etter å ha fulgt
-	instruksjonene "3" "R" "1". Blir flyttet til backup. Utfører ikke
+	Spilleren blir destruert da den gÃ¥r pÃ¥ hullet etter Ã¥ ha fulgt
+	instruksjonene "3" "R" "1". Blir flyttet til backup. UtfÃ¸rer ikke
 	resten av instruksjonene.
+	
 ---
 
 
 ---
 ###Test
-Test av destruksjon ved forsøk på å gå over hull
+Test av destruksjon ved forsÃ¸k pÃ¥ Ã¥ gÃ¥ over hull
 Hensikt:
-- Sjekke at spiller blir destruert selv da den prøver å gå over hullet
+- Sjekke at spiller blir destruert selv da den prÃ¸ver Ã¥ gÃ¥ over hullet
 
-1. Kjør programmet og klikk på "Test" knappen.
+1. KjÃ¸r programmet og klikk pÃ¥ "Test" knappen.
 
-2. Tast inn følgende kombinasjon:
+2. Tast inn fÃ¸lgende kombinasjon:
   "3" "R" "3" "3" "L"
 
 Resultat:
-	Spilleren blir destruert da den går på hullet etter å ha fulgt
+	Spilleren blir destruert da den gÃ¥r pÃ¥ hullet etter Ã¥ ha fulgt
 	instruksjonene "3" "R" og 1 trinn av instuksjonen "3".
-	Blir flyttet til backup. Utfører ikke resten av instruksjonene.
+	Blir flyttet til backup. UtfÃ¸rer ikke resten av instruksjonene.
 ---
 
 
 ---
 ###Test
-Test av oppdatering av backup ved endt fase på backup
+Test av oppdatering av backup ved endt fase pÃ¥ backup
 Hensikt:
-- Sjekke at spiller legger igjen backup etter å ha endt en fase på ett flagg
+- Sjekke at spiller legger igjen backup etter Ã¥ ha endt en fase pÃ¥ ett flagg
 
-1. Kjør programmet og klikk på "Test" knappen.
+1. KjÃ¸r programmet og klikk pÃ¥ "Test" knappen.
 
-2. Tast inn følgende kombinasjon:
+2. Tast inn fÃ¸lgende kombinasjon:
    "R" "1" "3" "3" "3"
 Resultat:
-	Spilleren går på flagg nr.1 og ender fasen her, etter instruksjon "R " "1".
+	Spilleren gÃ¥r pÃ¥ flagg nr.1 og ender fasen her, etter instruksjon "R " "1".
 	Her blir backup oppdatert. Spilleren faller i hullet etter instruksjon "3".
 	Spilleren blir flyttet til oppdatert backup.
 ---
@@ -73,15 +74,15 @@ Resultat:
 ###Test
 Test av oppdatering av backup ved flytting over flagg
 Hensikt:
-- Sjekke at spiller ikke legger igjen backup hvis spiller går over flagget 
-men ikke avslutter fasen på flagget.
+- Sjekke at spiller ikke legger igjen backup hvis spiller gÃ¥r over flagget 
+men ikke avslutter fasen pÃ¥ flagget.
 
-1. Kjør programmet og klikk på "Test" knappen.
+1. KjÃ¸r programmet og klikk pÃ¥ "Test" knappen.
 
-2. Tast inn følgende kombinasjon:
+2. Tast inn fÃ¸lgende kombinasjon:
    "R" "3" "3" "3" "3"
 Resultat:
-	Spilleren går over flagg nr.1 og faller i hullet etter instruksjon "R" "3".
+	Spilleren gÃ¥r over flagg nr.1 og faller i hullet etter instruksjon "R" "3".
 	Backup blir ikke flyttet/oppdatert. Spilleren blir flyttet til backup.
 ---
 
@@ -90,29 +91,29 @@ Resultat:
 ###Test
 Test av oppdatering av backup av annen spiller
 Hensikt:
-- Sjekke at annen spiller kan legge igjen backup gitt at den ender fasen på flagg
+- Sjekke at annen spiller kan legge igjen backup gitt at den ender fasen pÃ¥ flagg
 - Sjekke at annen spiller blir destruert ved bevegelse over hull
 
-1. Kjør programmet og klikk på "Test" knappen.
+1. KjÃ¸r programmet og klikk pÃ¥ "Test" knappen.
 
-2. Tast inn følgende kombinasjon:
+2. Tast inn fÃ¸lgende kombinasjon:
    "R" "R" "1" "L" "3"
 
-3. Tast inn følgende kombinasjon:
+3. Tast inn fÃ¸lgende kombinasjon:
    "3" "3" "L" "1" "R"
 
-4. Tast inn følgende kombinasjon:
+4. Tast inn fÃ¸lgende kombinasjon:
    "1" "L" "1" "L" "3"
 
-5. Tast inn følgende kombinasjon:
+5. Tast inn fÃ¸lgende kombinasjon:
    "2" "L" "1" "R" "1"
 
-6. Tast inn følgende kombinasjon:
+6. Tast inn fÃ¸lgende kombinasjon:
    "R" "3" "1" "1" "1"
 
 Resultat:
-	Spiller(Grønn) dytter spiller(Mørkeblå) til flagg nr.2. Backup for spiller(Mørkeblå)
-	blir oppdatert. Spiller(Grønn) dytter spiller(Mørkelå) ned i hull. Begge spillere
+	Spiller(GrÃ¸nn) dytter spiller(MÃ¸rkeblÃ¥) til flagg nr.2. Backup for spiller(MÃ¸rkeblÃ¥)
+	blir oppdatert. Spiller(GrÃ¸nn) dytter spiller(MÃ¸rkelÃ¥) ned i hull. Begge spillere
 	returneres til backup.
 ---
 
@@ -122,32 +123,32 @@ Resultat:
 Test av ikke legge igjen backup
 Hensikt:
 - Sjekke at annen spiller ikke legger igjen backup hvis den beveger seg over 
-	flagget men ikke avslutter fasen på flagget
+	flagget men ikke avslutter fasen pÃ¥ flagget
 - Sjekke at annen spiller returnerer til backup etter at den er blitt destruert
-- Sjekke at annen spiller ikke fortsetter å runden etter destruksjon
+- Sjekke at annen spiller ikke fortsetter Ã¥ runden etter destruksjon
 
-1. Kjør programmet og klikk på "Test" knappen.
+1. KjÃ¸r programmet og klikk pÃ¥ "Test" knappen.
 
-2. Tast inn følgende kombinasjon:
+2. Tast inn fÃ¸lgende kombinasjon:
    "R" "R" "1" "L" "3"
 
-3. Tast inn følgende kombinasjon:
+3. Tast inn fÃ¸lgende kombinasjon:
    "3" "3" "L" "1" "R"
 
-4. Tast inn følgende kombinasjon:
+4. Tast inn fÃ¸lgende kombinasjon:
    "1" "L" "1" "L" "3"
 
-5. Tast inn følgende kombinasjon:
+5. Tast inn fÃ¸lgende kombinasjon:
    "1" "3" "R" "1" "L"
 
-6. Tast inn følgende kombinasjon:
+6. Tast inn fÃ¸lgende kombinasjon:
    "1" "L" "1" "R" "1"
 
-7. Tast inn følgende kombinasjon:
+7. Tast inn fÃ¸lgende kombinasjon:
    "L" "1" "L" "1" "1"
 
 Resultat:
-	Spiller(Grønn) dytter spiller(Mørkeblå) over flagg nr.2. Backup blir ikke oppdatert.
-	Spiller(Grønn) dytter spiller(Mørkeblå) i hull. Spiller(Mørkeblå) blir
+	Spiller(GrÃ¸nn) dytter spiller(MÃ¸rkeblÃ¥) over flagg nr.2. Backup blir ikke oppdatert.
+	Spiller(GrÃ¸nn) dytter spiller(MÃ¸rkeblÃ¥) i hull. Spiller(MÃ¸rkeblÃ¥) blir
 	flyttet til backup og stopper bevegelse i runden.
 ---
