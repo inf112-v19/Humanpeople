@@ -58,6 +58,8 @@ public class PlayScreen implements Screen {
     private float width;
     private float height;
 
+    private ImageButton playButton;
+
     Position pos[] = new Position[5];
     ProgramCard chosenCards[] = new ProgramCard[5];
     HashMap<Image, ProgramCard> cardMap = new HashMap<>();
@@ -80,6 +82,16 @@ public class PlayScreen implements Screen {
     public void update(float deltaTime) {
         tickTime += deltaTime;
         handleInput(deltaTime);
+        if(gameMap.getCardsDelt()){
+            gameMap.setCardsDelt(false);
+            prepareNextRound();
+            Player player = gameMap.getPlayers().get(0);
+            //ProgramCardDeck deck = gameMap.getDeck();
+            chooseCards(player);
+        }
+        if(gameMap.getPlayers().get(0).getHandChoosen()){
+            gameMap.addPlayerHandToNewRound();
+        }
         updateMap();
         if(tickTime>0.4){
             tickTime=0;
@@ -98,9 +110,10 @@ public class PlayScreen implements Screen {
 
         //Access card selection by pressing "O"
         if(Gdx.input.isKeyPressed(Input.Keys.O)){
+            prepareNextRound();
             Player player = gameMap.getPlayers().get(0);
             ProgramCardDeck deck = gameMap.getDeck();
-            deck.giveOutCardsToPlayer(player);
+            //deck.giveOutCardsToPlayer(player);
             chooseCards(player);
         }
     }
@@ -114,14 +127,16 @@ public class PlayScreen implements Screen {
     public void show() {
 
         stage = new Stage();
-
-        //Playbutton
+        initializePlayButton();
+        Gdx.input.setInputProcessor(stage);
+    }
+    public void initializePlayButton(){
         Sprite picture = new Sprite(new Texture("assets/mainMenu/playBtn.png"));
-        final ImageButton button = new ImageButton(new SpriteDrawable(picture));
-        button.setWidth(picture.getWidth());
-        button.setHeight(picture.getHeight());
-        button.setPosition(width/2, height/2-picture.getHeight());
-        button.addListener(new ClickListener(){
+        playButton = new ImageButton(new SpriteDrawable(picture));
+        playButton.setWidth(picture.getWidth());
+        playButton.setHeight(picture.getHeight());
+        playButton.setPosition(width/2, height/2-picture.getHeight());
+        playButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 for(int i = 0; i < chosenCards.length; i++) {
@@ -130,15 +145,18 @@ public class PlayScreen implements Screen {
                         return;
                     }
                 }
+                Player player = gameMap.getPlayers().get(0);
+                if(!player.getHandChoosen()){
                     System.out.println("Cards selected");
-                ArrayList<ProgramCard> list = new ArrayList<ProgramCard>(Arrays.asList(chosenCards));
-                gameMap.getPlayers().get(0).getPlayerDeck().setPlayerHand(list);
+                    ArrayList<ProgramCard> list = new ArrayList<ProgramCard>(Arrays.asList(chosenCards));
+
+                    player.getPlayerDeck().setPlayerHand(list);
+                    player.setHandChosen(true);
+                }
+
 
             }
         });
-        stage.addActor(button);
-
-        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
@@ -231,6 +249,12 @@ public class PlayScreen implements Screen {
             stage.addActor(cardImage);
             cardMap.put(cardImage, programCard);
         }
+    }
+    public void prepareNextRound(){
+        chosenCards=new ProgramCard[5];
+        cardMap.clear();
+        stage.clear();
+        stage.addActor(playButton);
     }
 
 

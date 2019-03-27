@@ -30,6 +30,7 @@ public class GameMap {
     private ArrayList<Player> players;
 
     private Round round;
+    private boolean cardsDelt;
 
 
     public GameMap(String filename, int nPlayers) {
@@ -43,7 +44,7 @@ public class GameMap {
         this.playerLayer = (TiledMapTileLayer) map.getLayers().get(2);
         this.playerTiles = new ArrayList<>();
         initializePlayers();
-
+        cardsDelt = true;
 
         round = new Round();
 
@@ -63,11 +64,13 @@ public class GameMap {
         }
         // Give out cards to players
         programCardDeck.giveOutCardsToAllPlayers(players);
-        chooseRandomCardsForAllPlayersHand();
+        //chooseRandomCardsForAllPlayersHand();
 
         drawPlayers();
     }
-
+    public void dealCards(){
+        getDeck().giveOutCardsToAllPlayers(players);
+    }
     public void chooseRandomCardsForAllPlayersHand() {
         for (Player player : players) {
             player.select5FirstCards();
@@ -93,6 +96,7 @@ public class GameMap {
     public void addPlayerHandToNewRound() {
         if(!round.isSet()){
             round = new Round();
+            cardsDelt = false;
 
             int amountOfPhases = 5;
             for(int i = 0; i< amountOfPhases; i++){
@@ -111,9 +115,16 @@ public class GameMap {
                     cardsToAddInPhaseI.add(tempCard);
                 }
                 round.addPhases(new Phase(cardsToAddInPhaseI));
+
             }
         }
     }
+    public void setAllPlayerHandsChosen(boolean handsChosen){
+        for (Player player:players){
+            player.setHandChosen(handsChosen);
+        }
+    }
+
 
     public void movePlayer(int playerId, ProgramCard card) {
         ProgramType programType = card.getProgramType();
@@ -158,6 +169,10 @@ public class GameMap {
                     movePlayer(currentCard.getPlayerThatPlayedTheCard(),currentCard);
                 }
 
+            }else if(!cardsDelt){
+                dealCards();
+                cardsDelt = true;
+                setAllPlayerHandsChosen(false);
             }
         }
     }
@@ -233,5 +248,14 @@ public class GameMap {
                 return Direction.rotate(Direction.rotate(currentDir, 1), 1);
         }
         return currentDir;
+    }
+
+
+    public boolean getCardsDelt() {
+        return cardsDelt;
+    }
+
+    public void setCardsDelt(boolean cardsDelt) {
+        this.cardsDelt = cardsDelt;
     }
 }
