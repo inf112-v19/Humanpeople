@@ -24,16 +24,12 @@ public class PlayerTest {
         Random r = new Random();
         id = r.nextInt();
         player = new Player(id);
-
-
     }
 
     @Test
     public void getId() {
         assertEquals(player.getId(), id);
     }
-
-
 
     @Test
     public void select5FirstCards() {
@@ -71,9 +67,22 @@ public class PlayerTest {
 
     @Test
     public void restoreDamageTokens() {
-        player.damagePlayer(9);
+        assertEquals(player.getDamageTokens(), 9);
+        player.damagePlayer(4);
+        assertEquals(player.getDamageTokens(), 5);
         player.restoreDamageTokens();
-        assertFalse(player.lostAllDamageTokens());
+        assertEquals(player.getDamageTokens(), 9);
+    }
+
+    @Test
+    public void damagePlayerTest() {
+        assertEquals(player.getDamageTokens(), 9);
+        player.damagePlayer(2);
+        assertEquals(player.getDamageTokens(), 7);
+        player.damagePlayer(3);
+        assertEquals(player.getDamageTokens(), 4);
+        player.damagePlayer(4);
+        assertEquals(player.getDamageTokens(), 0);
     }
 
     @Test
@@ -84,15 +93,34 @@ public class PlayerTest {
     }
 
     @Test
+    public void canPlayerDieFromDamaging() {
+        Player player1 = new Player(2);
+        assertTrue(player1.isAlive());
+
+        player1.damagePlayer(9);
+        player1.lostAllDamageTokens();
+
+        player1.damagePlayer(9);
+        player1.lostAllDamageTokens();
+
+        player1.damagePlayer(9);
+        player1.lostAllDamageTokens();
+
+        assertFalse(player1.isAlive());
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void cannotDamagePlayerWithLessThanOneDamage() {
+        player.damagePlayer(-4);
+    }
+
+    @Test
     public void getDirection() {
         assertNotEquals(player.getDirection(), Direction.SOUTH);
         player.getPlayerTile().setDirection(Direction.SOUTH);
         assertEquals(player.getDirection(), Direction.SOUTH);
     }
 
-    @Test
-    public void getPlayerTile() {
-    }
 
     @Test
     public void setAndGetBackup() {
@@ -108,12 +136,4 @@ public class PlayerTest {
         assertEquals(player.getPosition(), p);
     }
 
-    @Test
-    public void getBackupAvatar() {
-    }
-
-    @Test
-    public void getPlayerDeck() {
-
-    }
 }
