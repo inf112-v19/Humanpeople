@@ -214,8 +214,8 @@ public class Grid {
     private boolean isBackupItem(Position position, int backupObjectId) {
         int x = position.getX();
         int y = position.getY();
-        if (backupLayer.getCell(x,y) != null) {
-            TiledMapTile tileAtPosition = backupLayer.getCell(x,y).getTile();
+        if (backupLayer.getCell(x, y) != null) {
+            TiledMapTile tileAtPosition = backupLayer.getCell(x, y).getTile();
             return tileAtPosition.getId() == backupObjectId;
         }
         return false;

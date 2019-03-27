@@ -2,46 +2,54 @@
 
 ### Skjerm og knapptest (menuScreen og testScreen, button)
 Hensikt: 
-- Sjekke at grafikken og vinduet oppfører seg "normalt" ved reskalering
+- Sjekke at grafikken og vinduet oppfï¿½rer seg "normalt" ved reskalering
 - Sjekke at knapper fungerer ved reskalering
-1. Kjør programmet.
-2. Klikk på "TEST". Du skal nå se spillbrettet.
-3. Reskaler vindu på vanlig måte og sjekk at alt på skjermen holder de samme proposjonene.
-4. Avslutt og start på nytt.
+1. Kjï¿½r programmet.
+2. Klikk pï¿½ "TEST". Du skal nï¿½ se spillbrettet.
+3. Reskaler vindu pï¿½ vanlig mï¿½te og sjekk at alt pï¿½ skjermen holder de samme proposjonene.
+4. Avslutt og start pï¿½ nytt.
 5. Gjenta pkt. 3, deretter pkt. 2. 
 6. Gjenta alt, men velg "PLAY" i stedet for "TEST"
 Ferdig.
 
+### Sjekk at spiller beveger seg ett felt om gangen
+1. KjÃ¸r programmet og trykk pÃ¥ "TEST"
+2. Tast inn fÃ¸lgenede kombinasjon: "2", "2", "2", "2", "2", "space"
+3. Se at grÃ¸nn brikke beveger seg ett felt om gangen
+
+
 ### Bevegelsestest (GameMap, Grid, Player, PlayerLayerObject, GroundLayerObject)
 Hensikt: 
-- Kunne bevege grønn brikke fritt rundt på brettet
-- Sjekke at rikitg kort gir riktig bevegelse
+- Kunne bevege grï¿½nn brikke fritt rundt pï¿½ brettet
+- Sjekke at riktig kort gir riktig bevegelse
 - Sjekke at kollisjon med vegger fungerer
 
-1. Kjør programmet og trykk "TEST". Du skal nå kunne bevege den grønne brikken med følgende tastetrykk:
-"1": Beveg ett felt i nåverende retning (MOVE1)
-"2": Beveg to felt i nåverende retning (MOVE2)
-"3": Beveg tre felt i nåverende retning (MOVE3)
-"R": Roter mot høyre (ROTATERIGHT)
+1. Kjï¿½r programmet og trykk "TEST". Du skal nï¿½ kunne velge bevegelser til den grï¿½nne brikken med fï¿½lgende tastetrykk:
+"1": Beveg ett felt i nï¿½verende retning (MOVE1)
+"2": Beveg to felt i nï¿½verende retning (MOVE2)
+"3": Beveg tre felt i nï¿½verende retning (MOVE3)
+"R": Roter mot hï¿½yre (ROTATERIGHT)
 "L": Roter mot venstre (ROTATELEFT)
 "U": Roter 180 grader (UTURN)
 "B": Beveg ett felt bakover. Retning forblir uendret (BACKUP)
+NÃ¥r du har valgt 5 bevegelser, sÃ¥ kan du trykke space og en fase vil bli gjennomfÃ¸rt
 
-2. Utvid konsollvinduet til editoren din for å følge med på informasjonen som blir gitt under bevegelse.
+2. Utvid konsollvinduet til editoren din for ï¿½ fï¿½lge med pï¿½ informasjonen som blir gitt under bevegelse.
 
-3. Trykk følgende tastekombinasjon på tastaturet mens du underveis sjekker at informasjonen i konsollen er korrekt:
-"1", "2", "L", "R", "R", "2", "L", "3", "3", "3", "U", "2", "3", "3", "B", "U", "B", "U", "B".
+3. Trykk fï¿½lgende tastekombinasjon pï¿½ tastaturet mens du underveis sjekker at informasjonen i konsollen er korrekt:
+"1", "2", "L", "R", "R", "space" , "2", "L", "3", "3", "3", "space", 
+"U", "2", "3", "3", "B", "space",  "U", "B", "U", "B", "U", "space".
 
-4. Du peker nå i retning sør og står to felt nord for lyseblå brikke.
-Følgende informasjon om brikken skal stå i konsollen:
+4. Du peker nï¿½ i retning nord og stï¿½r to felt nord for lyseblï¿½ brikke.
+Fï¿½lgende informasjon om brikken skal stï¿½ i konsollen:
 
 CONTROLLED TILE: 
 Card type: BACKUP
 Color: Green
-Direction: SOUTH
+Direction: NORTH
 Position: (2,4)
 
-Resterende brikker på spillbretter er uendret.
+Resterende brikker pï¿½ spillbretter er uendret.
 
 
 ### Kollisjonstest med flere spillere
@@ -49,52 +57,55 @@ Hensikt:
 - Sjekke at bevegelse fungerer ved kollisjon med andre spillere. 
 - Sjekke at posisjonen til de andre spillerene blir oppdatert og at retningen deres forblir uendret.
 
-1. Kjør programmet og trykk "TEST". 
-2. Tast inn følgende kombinasjon:
-"R", "1", "L", "3"
-- Grønn brikke dytter ved MOVE3 mørk blå brikke tre felt retning nord.
-3.Fortsett med følgende kombinasjon:
-"U", "1", "R", "B"
-- Grønn brikke dytter ved BACKUP lys blå brikke ett felt retning øst.
-4. Fortsett med følgende kombinasjon:
-"L", "1", "L", "1", "L", "1", "2" 
-- Grønn brikke dytter ved MOVE1 lys blå brikke og gul brikke ett felt nord, deretter to felt nord ved MOVE2
-5. Fortsett med følgende kombinasjon:
-"B", "L", "3", "R", "1", "R", "3"
-- Grønn brikke dytter ved MOVE3 mørk blå brikke to felt øst og blir stoppet av vegg.
-6. Fortsett med følgende kombinasjon:
-"R", "1", "L", "1", "L", "3", "2"
-- Grønn brikke bytter alle tre brikker ved MOVE3 og MOVE2 fem felt nord
+1. Kjï¿½r programmet og trykk "TEST". 
+2. Tast inn fï¿½lgende kombinasjon:
+"3", "3", "L", "1", "R" , "space"
+- Grï¿½nn brikke nede  til venstre for gul brikke med retning nord
+3.Fortsett med fï¿½lgende kombinasjon:
+"3", "R", "3", "3", "3", "space"
+- Grï¿½nn brikke dytter gul brikke helt bort til lyseblÃ¥ brikke, deretter dytter han begge 1 felt og blir stoppet av veggen.
+4. Fortsett med fï¿½lgende kombinasjon:
+"L", "1", "R", "1", "L", "space".
+- Grï¿½nn brikke stÃ¥r nÃ¥ nord for gul brikke, med retning nord. 
+5. Fortsett med fï¿½lgende kombinasjon:
+"B", "B", "U", "1", "2", "space"
+- Grï¿½nn brikke dytter nÃ¥ gul brikke 2 felt med Ã¥ rygge, tar en uturn og dytter gul brikke 3 felt videre.
 
-7. Sjekk at følgende informasjon står i konsoll:
+6. Trykk pÃ¥ "i", og sjekk at du fÃ¥r fÃ¸lgende informasjon:
+
 -------------------
 CONTROLLED TILE: 
-Card type: MOVE2
 Color: Green
-Direction: NORTH
-Position: (3,8)
+Direction: SOUTH
+Position: (10,6)
 
 -------------------
 OTHER TILES: 
 Color: Dark blue
 Direction: NORTH
-Position: (3,9)
+Position: (10,1)
 
 Color: Light blue
 Direction: NORTH
-Position: (3,10)
+Position: (11,10)
 
 Color: Yellow
 Direction: NORTH
-Position: (3,11)
+Position: (10,5)
+-------------------
 
-8. Trykk vilkårlig på "1", "2" eller "3" og sjekk at informasjonen forblir lik pkt. 7 og at ingen brikker ender posisjon eller retning.
+
+
+
+
+
 
 
 ## Test playScreen
 Hensikt:
-- Sjekke at alt er i orden også i playScreen
+- Sjekke at alt er i orden ogsï¿½ i playScreen
 
-1. Kjør programmet og trykk "PLAY"
-2. Bruk "SPACE" for å kjøre gjennom en fase
-3. Sjekk at spillere gjør tilfeldige bevegelser og at ingen bryter regeler for kollisjon
+1. Kjï¿½r programmet og trykk "PLAY"
+2. Bruk "SPACE" for ï¿½ kjï¿½re gjennom en fase
+3. Sjekk at spillere gjï¿½r tilfeldige bevegelser og at ingen bryter regeler for kollisjon
+

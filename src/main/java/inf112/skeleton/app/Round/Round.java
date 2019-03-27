@@ -14,8 +14,7 @@ public class Round {
         this.phasesInTheRound = new ArrayList<>();
         currentPhase = 0;
     }
-
-
+    
     public void addPhases(Phase phase){
         if(phasesInTheRound.size() < maxPhasesInOneRound){
             phasesInTheRound.add(phase);
@@ -33,7 +32,6 @@ public class Round {
         else return false;
     }
 
-
     public Boolean isCompleted(){
         if(currentPhase >= maxPhasesInOneRound){
             phasesInTheRound.clear();
@@ -45,6 +43,8 @@ public class Round {
     public void nextPhase(){
         currentPhase++;
     }
+
+
 
 
     public Phase getCurrentPhase(){

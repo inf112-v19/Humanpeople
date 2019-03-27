@@ -18,18 +18,21 @@ public class Player {
     private int damageTokens = MAX_DAMAGE_TOKENS;
     private int id;
     private PlayerDeck playerDeck;
-    private boolean isAlive = true;
+    private boolean isDestroyed;
+    private boolean isAlive;
     private boolean handChosen;
 
-
-    public Player(TiledMapTileSet tiles, int id) {
+    public Player(int id) {
         this.id = id;
-        this.playerTile = new PlayerLayerObject(tiles, id);
+        this.playerTile = new PlayerLayerObject(id);
         this.playerDeck = new PlayerDeck();
         this.backup = new Position(id, id);
-        handChosen = false;
 
+        handChosen = false;
+        isAlive = true;
+        isDestroyed = false;
     }
+
 
     public int getId() {
         return id;
@@ -47,7 +50,7 @@ public class Player {
      * Restores the amount of damageTokens to be the max amount of damage tokens
      */
     public void restoreDamageTokens() {
-        isAlive = true;
+        isDestroyed = false;
         damageTokens = MAX_DAMAGE_TOKENS;
     }
 
@@ -57,9 +60,11 @@ public class Player {
      */
     public boolean lostAllDamageTokens() {
         if (damageTokens < 1) {
-           lifeTokens--; // TODO Check if lifeTokes == 0 before doing anyting
-            isAlive = false;
-           restoreDamageTokens();
+           lifeTokens--;
+           if (lifeTokens < 1)
+                isAlive = false;
+           else
+                restoreDamageTokens();
            return true;
         }
         return false;
@@ -71,7 +76,11 @@ public class Player {
 
     public void destroy() {
         lifeTokens--;
-        isAlive = false;
+        isDestroyed = true;
+    }
+
+    public boolean isDestroyed() {
+        return isDestroyed;
     }
 
     public boolean isAlive() {
@@ -108,6 +117,17 @@ public class Player {
 
     public TiledMapTile getBackupAvatar() {
         return playerTile.getBackup().getAvatar();
+    }
+
+    public void damagePlayer(int howMuchDamage) {
+        if(howMuchDamage < 1)
+            throw new IllegalArgumentException("Damage much be greater than 0");
+
+        damageTokens = damageTokens - howMuchDamage;
+    }
+
+    public int getDamageTokens() {
+        return damageTokens;
     }
 
     public PlayerDeck getPlayerDeck() {

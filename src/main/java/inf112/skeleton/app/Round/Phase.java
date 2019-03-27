@@ -18,6 +18,7 @@ public class Phase {
     public Boolean getPhaseComplete() {
         return phaseComplete;
     }
+
     public ProgramCard nextMovement(){
         ProgramCard currentCard = movesToPreform.get(0);
         if(currentCard.getProgramType().isMoveCard()){

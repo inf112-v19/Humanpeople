@@ -50,7 +50,14 @@ public class ProgramCardTests {
     }
 
     @Test
-    public void compareToTest() {
-        assertEquals(1, card1.compareTo(card2));
+    public void cardsAreComparableTest() {
+        int lowerIdComparedToHigherId = card2.compareTo(card1);
+        assertEquals(lowerIdComparedToHigherId, -1 );
+
+        int equalIdComparedToEqualId = card1.compareTo(card1);
+        assertEquals(equalIdComparedToEqualId, 0);
+
+        int higherIdComparedToLowerId = card1.compareTo(card2);
+        assertEquals(higherIdComparedToLowerId, 1);
     }
 }
