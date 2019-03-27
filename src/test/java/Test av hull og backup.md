@@ -23,7 +23,7 @@ Hensikt:
 - Sjekke at spilleren ikke fortsetter å bevege seg etter å ha blitt destruert
 - Sjekke at spiller returnerer til backup punkt etter å ha blitt destruert
 
-Test
+Test:
 
 1. Kjør programmet og klikk på "Test" knappen.
 
@@ -31,19 +31,19 @@ Test
   "3" "R" "1" "3" "L"
 
 Resultat:
+
 	Spilleren blir destruert da den går på hullet etter å ha fulgt
 	instruksjonene "3" "R" "1". Blir flyttet til backup. Utfører ikke
 	resten av instruksjonene.
 	
 ---
 
-
----
-###Test
 Test av destruksjon ved forsøk på å gå over hull
 
 Hensikt:
 - Sjekke at spiller blir destruert selv da den prøver å gå over hullet
+
+Test
 
 1. Kjør programmet og klikk på "Test" knappen.
 
@@ -51,6 +51,7 @@ Hensikt:
   "3" "R" "3" "3" "L"
 
 Resultat:
+
 	Spilleren blir destruert da den går på hullet etter å ha fulgt
 	instruksjonene "3" "R" og 1 trinn av instuksjonen "3".
 	Blir flyttet til backup. Utfører ikke resten av instruksjonene.
@@ -70,6 +71,7 @@ Test
 2. Tast inn følgende kombinasjon:
    "R" "1" "3" "3" "3"
 Resultat:
+
 	Spilleren går på flagg nr.1 og ender fasen her, etter instruksjon "R " "1".
 	Her blir backup oppdatert. Spilleren faller i hullet etter instruksjon "3".
 	Spilleren blir flyttet til oppdatert backup.
@@ -89,6 +91,7 @@ Test
 2. Tast inn følgende kombinasjon:
    "R" "3" "3" "3" "3"
 Resultat:
+
 	Spilleren går over flagg nr.1 og faller i hullet etter instruksjon "R" "3".
 	Backup blir ikke flyttet/oppdatert. Spilleren blir flyttet til backup.
 	
@@ -121,13 +124,14 @@ Test
    "R" "3" "1" "1" "1"
 
 Resultat:
+
 	Spiller(Grønn) dytter spiller(Mørkeblå) til flagg nr.2. Backup for spiller(Mørkeblå)
 	blir oppdatert. Spiller(Grønn) dytter spiller(Mørkelå) ned i hull. Begge spillere
 	returneres til backup.
 	
 ---
 
-Test av ikke legge igjen backup
+Test for annen spiller ikke legge igjen backup
 
 Hensikt:
 - Sjekke at annen spiller ikke legger igjen backup hvis den beveger seg over 
@@ -158,6 +162,7 @@ Test
    "L" "1" "L" "1" "1"
 
 Resultat:
+
 	Spiller(Grønn) dytter spiller(Mørkeblå) over flagg nr.2. Backup blir ikke oppdatert.
 	Spiller(Grønn) dytter spiller(Mørkeblå) i hull. Spiller(Mørkeblå) blir
 	flyttet til backup og stopper bevegelse i runden.
