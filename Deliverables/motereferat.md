@@ -114,4 +114,10 @@
   - Planlegge avslutning av iterasjon.
   - Neste møte: 27.03.2019
   
+### Referat møte 27.03.2019
+ - Oppmøte: Sondre, Matias, Stian, Eirik
+ - Felles arbeid med gjenverende implementasjoner for denne iterasjonen (oblig 4)
+ - Merging av alle nye implementasjoner
+ - Neste møte: 27.03.2019
+  
   
