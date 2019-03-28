@@ -79,7 +79,7 @@ public class GroundLayerObjectTest {
     public void illegalIdTest() {
         GroundLayerObject illegalId = new GroundLayerObject(991234);
     }
-    
+
     @Test
     public void getId() {
         assertEquals(northWall.getId(), 1);
