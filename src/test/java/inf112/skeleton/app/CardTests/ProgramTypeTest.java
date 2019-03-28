@@ -1,5 +1,6 @@
-package inf112.skeleton.app.Cards;
+package inf112.skeleton.app.CardTests;
 
+import inf112.skeleton.app.Cards.ProgramType;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

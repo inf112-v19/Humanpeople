@@ -50,6 +50,17 @@ public class ProgramCardTests {
     }
 
     @Test
+    public void setAndGetPlayerThatPlayedCardId() {
+        card1.setPlayerThatPlayedTheCard(2);
+        assertEquals(card1.getPlayerThatPlayedTheCard(), 2);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void playerThatPlayedCardNotSet() {
+        card1.getPlayerThatPlayedTheCard();
+    }
+
+    @Test
     public void cardsAreComparableTest() {
         int lowerIdComparedToHigherId = card2.compareTo(card1);
         assertEquals(lowerIdComparedToHigherId, -1 );
