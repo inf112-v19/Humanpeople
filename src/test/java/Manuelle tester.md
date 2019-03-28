@@ -32,22 +32,20 @@ Hensikt:
 "L": Roter mot venstre (ROTATELEFT)
 "U": Roter 180 grader (UTURN)
 "B": Beveg ett felt bakover. Retning forblir uendret (BACKUP)
-Når du har valgt 5 bevegelser, så kan du trykke space og en fase vil bli gjennomført
+Når du har valgt 5 bevegelser, så kan du trykke space og en runde vil bli gjennomført
 
-2. Utvid konsollvinduet til editoren din for � f�lge med p� informasjonen som blir gitt under bevegelse.
+2. Du kan trykke på "I" for å få informasjon om brikkene på brettet
 
 3. Trykk f�lgende tastekombinasjon p� tastaturet mens du underveis sjekker at informasjonen i konsollen er korrekt:
-"1", "2", "L", "R", "R", "space" , "2", "L", "3", "3", "3", "space", 
-"U", "2", "3", "3", "B", "space",  "U", "B", "U", "B", "U", "space".
+"B", "R", "3", "2", "L" "space" , "1", "3", "R", "1", "L", "space", 
+"3", "L", "3", "L", "1", "space",  "R", "1", "R", "2", "U", "space".
 
-4. Du peker n� i retning nord og st�r to felt nord for lysebl� brikke.
-F�lgende informasjon om brikken skal st� i konsollen:
+4. Dersom du trykker på "I" skal f�lgende informasjon om brikken st� i konsollen:
 
 CONTROLLED TILE: 
-Card type: BACKUP
 Color: Green
-Direction: NORTH
-Position: (2,4)
+Direction: SOUTH
+Position: (3,8)
 
 Resterende brikker p� spillbretter er uendret.
 
@@ -106,6 +104,8 @@ Hensikt:
 - Sjekke at alt er i orden ogs� i playScreen
 
 1. Kj�r programmet og trykk "PLAY"
-2. Bruk "SPACE" for � kj�re gjennom en fase
-3. Sjekk at spillere gj�r tilfeldige bevegelser og at ingen bryter regeler for kollisjon
+2. Du kan nå velge kort ved å dra dem fra oppe til høyre, og legge dem i slots. Fra venstre til høyre representerer programmet ditt 1-5. Når du trykker play skal en runde gjennomføres.
+3. Sjekk at draganddropen fungerer som forventet, og at grønn brikke beveger seg korrekt etter programmet du har lagt frem
+4. Følg med på at kollisjon med andre brikker, og vegger fungerer som normalt
+5. Etter runden er gjennomført får du delt ut nye kort, og du kan velge nytt program
 
