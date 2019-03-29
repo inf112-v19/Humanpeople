@@ -32,7 +32,6 @@ public class GameMap {
     private Round round;
     private boolean cardsDelt;
 
-
     public GameMap(String filename, int nPlayers) {
         this.mapLoader = new TmxMapLoader();
         this.map = mapLoader.load(filename);
@@ -47,9 +46,9 @@ public class GameMap {
         this.backupLayer = (TiledMapTileLayer) map.getLayers().get(4);
         this.playerTiles = new ArrayList<>();
         initializePlayers();
-        cardsDelt = true;
+        this.cardsDelt = true;
 
-        round = new Round();
+        this.round = new Round();
     }
 
     /**
@@ -154,11 +153,10 @@ public class GameMap {
             return;
         }
 
-        // A player which is dead cannot move
+        // A player which is destroyed cannot move
         if (player.isDestroyed()) {
             return;
         }
-
         // Checks if player is in a state where he/she has to return to backup
         ProgramType programType = card.getProgramType();
         Direction playerDir = player.getDirection();
@@ -169,10 +167,7 @@ public class GameMap {
             if (programType == ProgramType.BACKWARD)
                 moveDir = rotate(ProgramType.UTURN, playerDir);
 
-
-
                 Position newPos = player.getPosition();
-
                 if (canGo(moveDir, newPos))
                     movePlayerTilesInList(moveDir);
 
@@ -230,6 +225,10 @@ public class GameMap {
         return true;
     }
 
+    /**
+     * If someone is standing on the backup of a player when he is due to return, then return player to a position adjacent to the backup
+     * @param player
+     */
     public void movePlayerToNearestField(Player player) {
         Position backup = player.getBackup();
         if (canGo(Direction.NORTH, backup) && !grid.isHole(backup.north())) {
@@ -312,6 +311,8 @@ public class GameMap {
     }
 
     public void preformNextMovement(){
+        returnNeededPlayersToBackup();
+
         if(round.isSet()){
             if(!round.isCompleted()){
                 if(round.getCurrentPhase().getPhaseComplete()){
@@ -332,8 +333,6 @@ public class GameMap {
                     cardsDelt = true;
                     setAllPlayerHandsChosen(false);
                 }
-                // Returns players to backup if needed
-                returnNeededPlayersToBackup();
                 // If round is complete, revive all players for further play
                 reviveAllPlayers();
             }
@@ -389,7 +388,6 @@ public class GameMap {
             playerLayer.setCell(playerPosition.getX(), playerPosition.getY(), null);
 
             playerLayerObject.moveTileInDirection(direction);
-
             grid.setPlayerPosition(playerLayerObject);
         }
     }

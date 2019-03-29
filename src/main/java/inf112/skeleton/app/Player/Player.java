@@ -47,7 +47,7 @@ public class Player {
     }
 
     /**
-     * Restores the amount of damageTokens to be the max amount of damage tokens
+     * Restores the amount of damageTokens to be the max amount of damage tokens and set isDestryed to false
      */
     public void restoreDamageTokens() {
         isDestroyed = false;
