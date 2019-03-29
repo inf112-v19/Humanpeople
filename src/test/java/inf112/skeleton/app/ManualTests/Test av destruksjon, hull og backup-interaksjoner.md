@@ -28,7 +28,7 @@ Test:
 1. Kjør programmet og klikk på "Test" knappen.
 
 2. Tast inn følgende kombinasjon:
-  "3" "R" "1" "3" "L"
+  "3" "R" "1" "3" "L" "Space"
 
 Resultat:
 
@@ -48,7 +48,7 @@ Test:
 1. Kjør programmet og klikk på "Test" knappen.
 
 2. Tast inn følgende kombinasjon:
-  "3" "R" "3" "3" "L"
+  "3" "R" "3" "3" "L" "Space"
 
 Resultat:
 
@@ -69,7 +69,7 @@ Test:
 1. Kjør programmet og klikk på "Test" knappen.
 
 2. Tast inn følgende kombinasjon:
-   "R" "1" "3" "3" "3"
+   "R" "1" "3" "3" "3" "Space"
    
 Resultat:
 
@@ -90,7 +90,7 @@ Test:
 1. Kjør programmet og klikk på "Test" knappen.
 
 2. Tast inn følgende kombinasjon:
-   "R" "3" "3" "3" "3"
+   "R" "3" "3" "3" "3" "Space"
    
 Resultat:
 
@@ -111,19 +111,19 @@ Test:
 1. Kjør programmet og klikk på "Test" knappen.
 
 2. Tast inn følgende kombinasjon:
-   "R" "R" "1" "L" "3"
+   "R" "R" "1" "L" "3" "Space"
 
 3. Tast inn følgende kombinasjon:
-   "3" "3" "L" "1" "R"
+   "3" "3" "L" "1" "R" "Space"
 
 4. Tast inn følgende kombinasjon:
-   "1" "L" "1" "L" "3"
+   "1" "L" "1" "L" "3" "Space"
 
 5. Tast inn følgende kombinasjon:
-   "2" "L" "1" "R" "1"
+   "2" "L" "1" "R" "1" "Space"
 
 6. Tast inn følgende kombinasjon:
-   "R" "3" "1" "1" "1"
+   "R" "3" "1" "1" "1" "Space"
 
 Resultat:
 
@@ -146,22 +146,22 @@ Test:
 1. Kjør programmet og klikk på "Test" knappen.
 
 2. Tast inn følgende kombinasjon:
-   "R" "R" "1" "L" "3"
+   "R" "R" "1" "L" "3" "Space"
 
 3. Tast inn følgende kombinasjon:
-   "3" "3" "L" "1" "R"
+   "3" "3" "L" "1" "R" "Space"
 
 4. Tast inn følgende kombinasjon:
-   "1" "L" "1" "L" "3"
+   "1" "L" "1" "L" "3" "Space"
 
 5. Tast inn følgende kombinasjon:
-   "1" "3" "R" "1" "L"
+   "1" "3" "R" "1" "L" "Space"
 
 6. Tast inn følgende kombinasjon:
-   "1" "L" "1" "R" "1"
+   "1" "L" "1" "R" "1" "Space"
 
 7. Tast inn følgende kombinasjon:
-   "L" "1" "L" "1" "1"
+   "L" "1" "L" "1" "1" "Space"
 
 Resultat:
 
