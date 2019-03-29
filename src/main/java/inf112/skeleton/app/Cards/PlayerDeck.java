@@ -94,7 +94,6 @@ public class PlayerDeck {
         return deck.size();
     }
 
-
     @Override
     public int hashCode() {
         return Objects.hash(deck, hand);
@@ -107,16 +106,13 @@ public class PlayerDeck {
         return hand.size();
     }
 
-
-
-    //forTesting
-    public void setPlayerHand(ArrayList<ProgramCard> hand){
+    public void setPlayerHand(ArrayList<ProgramCard> hand) {
         this.hand = hand;
     }
 
-
-    public ProgramCard getCard(int i){
+    public ProgramCard getCard(int i) {
         return deck.get(i);
     }
+
 
 }
