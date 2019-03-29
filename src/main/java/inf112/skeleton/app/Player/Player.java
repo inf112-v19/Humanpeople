@@ -137,7 +137,7 @@ public class Player {
     public void setHandChosen(Boolean handChosen){
         this.handChosen = handChosen;
     }
-    public boolean getHandChoosen(){
+    public boolean getHandChosen(){
         return handChosen;
     }
 

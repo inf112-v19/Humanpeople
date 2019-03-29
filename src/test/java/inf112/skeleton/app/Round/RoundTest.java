@@ -25,7 +25,7 @@ public class RoundTest {
 
     @Test
     public void isSet() {
-        assertFalse(round.isSet());
+        assertFalse(round.allPhasesAddedToRound());
         ArrayList<ProgramCard> programCards0 = new ArrayList<>();
         Phase phase0 = new Phase(programCards0);
         ArrayList<ProgramCard> programCards1 = new ArrayList<>();
@@ -42,7 +42,7 @@ public class RoundTest {
         round.addPhases(phase2);
         round.addPhases(phase3);
         round.addPhases(phase4);
-        assertTrue(round.isSet());
+        assertTrue(round.allPhasesAddedToRound());
     }
 
     @Test

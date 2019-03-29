@@ -19,17 +19,10 @@ public class Round {
         if(phasesInTheRound.size() < maxPhasesInOneRound){
             phasesInTheRound.add(phase);
         }
-        else {
-            //TODO
-            //            throw new TooManyPhasesException("Trying to add more than 5 phases");
-        }
     }
-    public boolean isSet(){
-        if(phasesInTheRound.size() == 5){
-            return  true;
-        }
 
-        else return false;
+    public boolean allPhasesAddedToRound(){
+        return phasesInTheRound.size() == 5;
     }
 
     public Boolean isCompleted(){
@@ -43,9 +36,6 @@ public class Round {
     public void nextPhase(){
         currentPhase++;
     }
-
-
-
 
     public Phase getCurrentPhase(){
         return phasesInTheRound.get(currentPhase);

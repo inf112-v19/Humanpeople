@@ -104,7 +104,7 @@ public class GameMap {
     }
 
     public void addPlayerHandToNewRound() {
-        if (!round.isSet()) {
+        if (!round.allPhasesAddedToRound()) {
             round = new Round();
             cardsDealt = false;
             int amountOfPhases = 5;
@@ -282,7 +282,7 @@ public class GameMap {
     public void preformNextMovement() {
         returnDestroyedPlayersToBackup();
 
-        if (round.isSet()) {
+        if (round.allPhasesAddedToRound()) {
             if (!round.isCompleted()) {
                 if (round.getCurrentPhase().getPhaseComplete()) {
                     // If any player has stepped on a flag then set current position as backup

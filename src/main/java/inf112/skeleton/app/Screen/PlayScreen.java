@@ -84,7 +84,7 @@ public class PlayScreen implements Screen {
             //ProgramCardDeck deck = gameMap.getDeck();
             chooseCards(player);
         }
-        if(gameMap.getPlayers().get(0).getHandChoosen()){
+        if(gameMap.getPlayers().get(0).getHandChosen()){
             gameMap.addPlayerHandToNewRound();
         }
         updateMap();
@@ -143,7 +143,7 @@ public class PlayScreen implements Screen {
                     }
                 }
                 Player player = gameMap.getPlayers().get(0);
-                if(!player.getHandChoosen()){
+                if(!player.getHandChosen()){
                     System.out.println("Cards selected");
                     ArrayList<ProgramCard> list = new ArrayList<ProgramCard>(Arrays.asList(chosenCards));
 
