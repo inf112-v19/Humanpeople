@@ -6,6 +6,7 @@ import inf112.skeleton.app.Cards.ProgramCardDeck;
 import inf112.skeleton.app.Cards.ProgramType;
 import inf112.skeleton.app.Directions.Direction;
 import inf112.skeleton.app.Directions.Position;
+import inf112.skeleton.app.Directions.StartingPositions;
 import inf112.skeleton.app.GameObjects.PlayerLayerObject;
 import inf112.skeleton.app.Player.Player;
 import inf112.skeleton.app.Round.Phase;

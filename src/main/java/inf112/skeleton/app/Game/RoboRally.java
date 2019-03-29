@@ -3,7 +3,6 @@ package inf112.skeleton.app.Game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import inf112.skeleton.app.Screen.MenuScreen;
-import inf112.skeleton.app.Screen.PlayScreen;
 
 public class RoboRally extends Game {
     public SpriteBatch batch;

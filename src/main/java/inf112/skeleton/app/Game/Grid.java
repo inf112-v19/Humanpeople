@@ -169,16 +169,6 @@ public class Grid {
         }
     }
 
-    public boolean offBoard(Position pos){
-        int x = pos.getX();
-        int y = pos.getY();
-
-        if(x < 0 || x > width-1 || y < 0 || y > height-1)
-            return true;
-
-        return false;
-    }
-
     /**
      * @param direction
      * @param position

@@ -1,4 +1,4 @@
-package inf112.skeleton.app.Game;
+package inf112.skeleton.app.Directions;
 
 import inf112.skeleton.app.Directions.Position;
 
@@ -39,37 +39,5 @@ public class StartingPositions {
                 return start3;
                 default: return new Position(0,0);
         }
-    }
-
-    public Position getStart0() {
-        return start0;
-    }
-
-    public void setStart0(Position position) {
-        start0 = position;
-    }
-
-    public Position getStart1() {
-        return start1;
-    }
-
-    public void setStart1(Position position) {
-        start1 = position;
-    }
-
-    public Position getStart2() {
-        return start2;
-    }
-
-    public void setStart2(Position position) {
-        start2 = position;
-    }
-
-    public Position getStart3() {
-        return start3;
-    }
-
-    public void setStart3(Position position) {
-        start3 = position;
     }
 }
