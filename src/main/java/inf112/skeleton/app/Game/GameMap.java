@@ -30,7 +30,7 @@ public class GameMap {
     private ArrayList<Player> players;
 
     private Round round;
-    private boolean cardsDelt;
+    private boolean cardsDealt;
 
     public GameMap(String filename, int nPlayers) {
         this.mapLoader = new TmxMapLoader();
@@ -46,7 +46,7 @@ public class GameMap {
         this.backupLayer = (TiledMapTileLayer) map.getLayers().get(4);
         this.playerTiles = new ArrayList<>();
         initializePlayers();
-        this.cardsDelt = true;
+        this.cardsDealt = true;
 
         this.round = new Round();
     }
@@ -69,18 +69,14 @@ public class GameMap {
         }
         // Give out cards to players
         programCardDeck.giveOutCardsToAllPlayers(players);
-        //chooseRandomCardsForAllPlayersHand();
 
         drawPlayers();
     }
-    public void dealCards(){
+
+    public void dealCards() {
         getDeck().giveOutCardsToAllPlayers(players);
     }
-    public void chooseRandomCardsForAllPlayersHand() {
-        for (Player player : players) {
-            player.select5FirstCards();
-        }
-    }
+
 
     public void drawPlayers() {
         for (Player player : players) {
@@ -97,12 +93,6 @@ public class GameMap {
         playerLayer.setCell(pos.getX(), pos.getY(), avatar);
     }
 
-    public void drawAllBackups() {
-        for (Player player : players) {
-            drawBackup(player);
-        }
-    }
-
     public void drawBackup(Player player) {
         Position pos = player.getBackup();
 
@@ -112,14 +102,12 @@ public class GameMap {
         backupLayer.setCell(pos.getX(), pos.getY(), avatar);
     }
 
-
     public void addPlayerHandToNewRound() {
-        if(!round.isSet()){
+        if (!round.isSet()) {
             round = new Round();
-            cardsDelt = false;
-
+            cardsDealt = false;
             int amountOfPhases = 5;
-            for(int i = 0; i< amountOfPhases; i++){
+            for (int i = 0; i < amountOfPhases; i++) {
                 ArrayList<ProgramCard> cardsToAddInPhaseI = new ArrayList<>();
                 for (Player player : players) {
                     // If the players hand is empty then give out 9 new cards and select 5 cards for hand
@@ -127,49 +115,37 @@ public class GameMap {
                     if (player.getPlayerDeck().handIsEmpty()) {
                         giveOutCardsToPlayer(player);
                     }
-                    //TODO flytt id adding til fornuftig sted(for at man skal vite hvem som spilte kortet)
                     ProgramCard tempCard = player.getPlayerDeck().getCardFromHand();
                     tempCard.setPlayerThatPlayedTheCard(player.getId());
-
                     cardsToAddInPhaseI.add(tempCard);
                 }
                 round.addPhases(new Phase(cardsToAddInPhaseI));
-
             }
         }
     }
-    public void setAllPlayerHandsChosen(boolean handsChosen){
-        for (Player player:players){
+
+    public void setAllPlayerHandsChosen(boolean handsChosen) {
+        for (Player player : players) {
             player.setHandChosen(handsChosen);
         }
     }
 
-
     public void movePlayer(int playerId, ProgramCard card) {
         Player player = players.get(playerId);
-
-        if (hasToReturnToBackup(player)) {
-            returnToBackup(player);
-            return;
-        }
-
         // A player which is destroyed cannot move
         if (player.isDestroyed()) {
             return;
         }
-        // Checks if player is in a state where he/she has to return to backup
         ProgramType programType = card.getProgramType();
         Direction playerDir = player.getDirection();
         Direction moveDir = playerDir;
-
         if (programType.isMoveCard()) {
-
             if (programType == ProgramType.BACKWARD)
                 moveDir = rotate(ProgramType.UTURN, playerDir);
 
-                Position newPos = player.getPosition();
-                if (canGo(moveDir, newPos))
-                    movePlayerTilesInList(moveDir);
+            Position newPos = player.getPosition();
+            if (canGo(moveDir, newPos))
+                movePlayerTilesInList(moveDir);
 
             if (programType == ProgramType.BACKWARD)
                 player.getPlayerTile().setDirection(playerDir);
@@ -185,6 +161,7 @@ public class GameMap {
 
     /**
      * Removes the given player's backup point and sets it to the player's current position
+     *
      * @param player
      */
     public void setBackup(Player player) {
@@ -200,6 +177,7 @@ public class GameMap {
 
     /**
      * Sets players position to backup and draws players
+     *
      * @param player
      */
     public void returnToBackup(Player player) {
@@ -209,8 +187,7 @@ public class GameMap {
 
         if (existsPlayerOnBackup(player)) {
             movePlayerToNearestField(player);
-        }
-        else {
+        } else {
             player.setPosition(backup);
             grid.setPlayerPosition(player.getPlayerTile());
         }
@@ -227,6 +204,7 @@ public class GameMap {
 
     /**
      * If someone is standing on the backup of a player when he is due to return, then return player to a position adjacent to the backup
+     *
      * @param player
      */
     public void movePlayerToNearestField(Player player) {
@@ -235,18 +213,15 @@ public class GameMap {
             Position newPosition = backup.north();
             player.setPosition(newPosition);
             grid.setPlayerPosition(player.getPlayerTile());
-        }
-        else if (canGo(Direction.EAST, backup) && !grid.isHole(backup.east())) {
+        } else if (canGo(Direction.EAST, backup) && !grid.isHole(backup.east())) {
             Position newPosition = backup.east();
             player.setPosition(newPosition);
             grid.setPlayerPosition(player.getPlayerTile());
-        }
-        else if (canGo(Direction.SOUTH, backup) && !grid.isHole(backup.south())) {
+        } else if (canGo(Direction.SOUTH, backup) && !grid.isHole(backup.south())) {
             Position newPosition = backup.south();
             player.setPosition(newPosition);
             grid.setPlayerPosition(player.getPlayerTile());
-        }
-        else if (canGo(Direction.WEST, backup) && !grid.isHole(backup.west())) {
+        } else if (canGo(Direction.WEST, backup) && !grid.isHole(backup.west())) {
             Position newPosition = backup.west();
             player.setPosition(newPosition);
             grid.setPlayerPosition(player.getPlayerTile());
@@ -255,26 +230,19 @@ public class GameMap {
 
     /**
      * Checks if player is in a state where he/she has to return to backup
+     *
      * @param player
      * @return
      */
     public boolean hasToReturnToBackup(Player player) {
-        if (steppedOnHole(player) || player.lostAllDamageTokens() || walkedOffMap(player))
+        if (steppedOnHole(player) || player.lostAllDamageTokens())
             return true;
         return false;
     }
 
     /**
-     * Checks if player has walked off the game map
-     * @param player
-     * @return true if player is off map
-     */
-    public boolean walkedOffMap(Player player) {
-        return false;
-    }
-
-    /**
      * Checks if player is stepping on a hole. If so, kill player
+     *
      * @param player
      * @return true if player is in hole
      */
@@ -293,7 +261,6 @@ public class GameMap {
     public void steppedOnFlag() {
         for (Player player : players) {
             if (playerSteppedOnFlag(player)) {
-                // TODO Save that flag has been visited by current player
                 if (!grid.isBackup(player.getPosition()))
                     setBackup(player);
             }
@@ -302,6 +269,7 @@ public class GameMap {
 
     /**
      * Checks if player is stepping on a flag
+     *
      * @param player
      * @return true if player is in hole
      */
@@ -310,27 +278,24 @@ public class GameMap {
         return grid.isFlag(currentPosition);
     }
 
-    public void preformNextMovement(){
-        returnNeededPlayersToBackup();
+    public void preformNextMovement() {
+        returnDestroyedPlayersToBackup();
 
-        if(round.isSet()){
-            if(!round.isCompleted()){
-                if(round.getCurrentPhase().getPhaseComplete()){
+        if (round.isSet()) {
+            if (!round.isCompleted()) {
+                if (round.getCurrentPhase().getPhaseComplete()) {
                     // If any player has stepped on a flag then set current position as backup
                     steppedOnFlag();
-
-                    //Todo do special movment (rullebånd og slikt)
-                    System.out.println("Phase "+ (round.getCurrentPhaseNumber()+1) +" er ferdig");
+                    System.out.println("Phase " + (round.getCurrentPhaseNumber() + 1) + " er ferdig");
                     round.nextPhase();
-                }else {
+                } else {
                     ProgramCard currentCard = round.getNextMovementCard();
-                    movePlayer(currentCard.getPlayerThatPlayedTheCard(),currentCard);
+                    movePlayer(currentCard.getPlayerThatPlayedTheCard(), currentCard);
                 }
-            }
-            else {
-                if(!cardsDelt){
+            } else {
+                if (!cardsDealt) {
                     dealCards();
-                    cardsDelt = true;
+                    cardsDealt = true;
                     setAllPlayerHandsChosen(false);
                 }
                 // If round is complete, revive all players for further play
@@ -342,7 +307,7 @@ public class GameMap {
     /**
      * If a player has to return to backup, then they are returned to backup
      */
-    public void returnNeededPlayersToBackup() {
+    public void returnDestroyedPlayersToBackup() {
         for (Player player : players) {
             if (hasToReturnToBackup(player)) {
                 returnToBackup(player);
@@ -366,7 +331,7 @@ public class GameMap {
         player.select5FirstCards();
     }
 
-    public ProgramCardDeck getDeck(){
+    public ProgramCardDeck getDeck() {
         return programCardDeck;
     }
 
@@ -380,7 +345,7 @@ public class GameMap {
 
         //Flytter siste spiller først for å ikke ødelegge grid.set og grid.remove logikken
         for (int i = numberOfPlayersToMove; i >= 0; i--) {
-            Player player = players.get(i);
+
             PlayerLayerObject playerLayerObject = playerTiles.get(i);
             Position playerPosition = playerLayerObject.getPosition();
 
@@ -430,11 +395,11 @@ public class GameMap {
     }
 
 
-    public boolean getCardsDelt() {
-        return cardsDelt;
+    public boolean getCardsDealt() {
+        return cardsDealt;
     }
 
-    public void setCardsDelt(boolean cardsDelt) {
-        this.cardsDelt = cardsDelt;
+    public void setCardsDealt(boolean cardsDealt) {
+        this.cardsDealt = cardsDealt;
     }
 }
