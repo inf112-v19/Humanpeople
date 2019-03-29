@@ -104,10 +104,6 @@ public class PlayerLayerObject implements GameObject {
         return backup;
     }
 
-    public void update(Direction direction){
-        setDirection(direction);
-        moveTileInDirection(direction);
-    }
     public void moveTileInDirection(Direction direction){
 
         switch (direction) {
