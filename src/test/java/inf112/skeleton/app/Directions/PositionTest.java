@@ -8,7 +8,6 @@ import static org.junit.Assert.*;
 public class PositionTest {
 
 
-
     @Test
     public void getX() {
         int x = 8;
@@ -33,22 +32,22 @@ public class PositionTest {
 
     @Test
     public void south() {
-        Position pos = new Position(3,3);
-        Position southPos = new Position(3,2);
+        Position pos = new Position(3, 3);
+        Position southPos = new Position(3, 2);
         assertEquals(pos.south().getY(), southPos.getY());
     }
 
     @Test
     public void east() {
-        Position pos = new Position(3,3);
-        Position eastPos = new Position(4,3);
+        Position pos = new Position(3, 3);
+        Position eastPos = new Position(4, 3);
         assertEquals(pos.east().getX(), eastPos.getX());
     }
 
     @Test
     public void west() {
-        Position pos = new Position(3,3);
-        Position westPos = new Position(2,3);
+        Position pos = new Position(3, 3);
+        Position westPos = new Position(2, 3);
         assertEquals(pos.west().getX(), westPos.getX());
     }
 }

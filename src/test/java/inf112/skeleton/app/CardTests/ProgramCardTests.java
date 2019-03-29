@@ -63,7 +63,7 @@ public class ProgramCardTests {
     @Test
     public void cardsAreComparableTest() {
         int lowerIdComparedToHigherId = card2.compareTo(card1);
-        assertEquals(lowerIdComparedToHigherId, -1 );
+        assertEquals(lowerIdComparedToHigherId, -1);
 
         int equalIdComparedToEqualId = card1.compareTo(card1);
         assertEquals(equalIdComparedToEqualId, 0);

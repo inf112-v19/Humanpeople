@@ -22,7 +22,7 @@ public class ProgramCardDeckTests {
     }
 
 
-    @Test (expected = IndexOutOfBoundsException.class)
+    @Test(expected = IndexOutOfBoundsException.class)
     public void cannotTakeCardFromThatDontExist() {
         deck1.takeCard(deck1.getSizeOfDeck() + 1);
     }
@@ -66,9 +66,9 @@ public class ProgramCardDeckTests {
     @Test
     public void removingCardsFromDeckReducesSizeTest() {
         int i = 15;
-        int newdeckSize = deck1.getSizeOfDeck()- i ;
+        int newdeckSize = deck1.getSizeOfDeck() - i;
 
-        for(int j= 0; j < i; j++) {
+        for (int j = 0; j < i; j++) {
             deck1.takeTopCard();
         }
 

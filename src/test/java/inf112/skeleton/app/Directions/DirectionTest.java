@@ -14,9 +14,10 @@ public class DirectionTest {
     Direction southDir;
     Direction westDir;
     Direction eastDir;
+
     @Before
     public void setUp() throws Exception {
-         east = 1;
+        east = 1;
         south = 2;
         west = 3;
         north = 0;
