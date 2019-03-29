@@ -70,7 +70,7 @@ public class Grid {
                     gameLogicGrid[x][y].add(flagIndex, new NothingSpecial());
                 else {
                     int flagLayerId = flagCell.getTile().getId();
-                    gameLogicGrid[x][y].add(flagIndex, new FlagLayerObject(tiles, flagLayerId));
+                    gameLogicGrid[x][y].add(flagIndex, new SpecialLayerObject(tiles, flagLayerId));
                 }
 
                 // Hole layer
@@ -79,7 +79,7 @@ public class Grid {
                     gameLogicGrid[x][y].add(holeIndex, new NothingSpecial());
                 else {
                     int holeLayerId = holeCell.getTile().getId();
-                    gameLogicGrid[x][y].add(holeIndex, new HoleLayerObject(tiles, holeLayerId));
+                    gameLogicGrid[x][y].add(holeIndex, new SpecialLayerObject(tiles, holeLayerId));
                 }
 
                 // BackupLayer
