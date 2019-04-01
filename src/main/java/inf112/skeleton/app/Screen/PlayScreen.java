@@ -255,6 +255,7 @@ public class PlayScreen implements Screen {
             cardImage.addListener(new DragListener() {
                 public void drag(InputEvent event, float x, float y, int pointer) {
                     cardImage.moveBy(x - cardImage.getWidth() / 2, y - cardImage.getHeight() / 2);
+                    cardImage.toFront();
                 }
 
                 @Override
