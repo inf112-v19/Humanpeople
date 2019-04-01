@@ -126,3 +126,9 @@
   - Ferdigskrevet draft
   - Neste møte: 29.03.2019
   
+### Referat møte 29.03.2019
+ - Oppmøte: Stian, Sondre, Matias, Eirik
+ - Bug fix: Spiller dyttes over hull uten å dette nedi
+ - Finpussing av Oblig4
+ - Refaktorering av kode til Oblig4
+ - Neste møte: 02.04.2019
