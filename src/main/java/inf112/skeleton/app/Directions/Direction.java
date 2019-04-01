@@ -8,17 +8,7 @@ public enum Direction {
     public static Direction randomDirection() {
         Random r = new Random();
         int randomInteger = r.nextInt(3);
-        switch (randomInteger) {
-            case 0:
-                return NORTH;
-            case 1:
-                return EAST;
-            case 2:
-                return SOUTH;
-            case 3:
-                return WEST;
-        }
-        return NORTH;
+        return getDir(randomInteger);
     }
 
     public static Direction getDir(int i) {

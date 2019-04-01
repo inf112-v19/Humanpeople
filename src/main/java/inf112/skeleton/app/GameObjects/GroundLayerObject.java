@@ -32,7 +32,8 @@ public class GroundLayerObject implements GameObject {
                 break;
             case 5: // GROUND
                 break;
-
+            case 6: // hole
+                break;
             case 11:
                 north = false;
                 west = false; // NORTHWEST
@@ -71,5 +72,15 @@ public class GroundLayerObject implements GameObject {
     @Override
     public int getId() {
         return id;
+    }
+
+    @Override
+    public boolean equals(GameObject obj) {
+        return this.id == obj.getId();
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return 0;
     }
 }

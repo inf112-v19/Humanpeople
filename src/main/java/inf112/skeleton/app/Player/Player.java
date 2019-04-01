@@ -18,14 +18,21 @@ public class Player {
     private int damageTokens = MAX_DAMAGE_TOKENS;
     private int id;
     private PlayerDeck playerDeck;
+    private boolean isDestroyed;
+    private boolean isAlive;
+    private boolean handChosen;
 
-
-    public Player(TiledMapTileSet tiles, int id) {
+    public Player(int id) {
         this.id = id;
-        this.playerTile = new PlayerLayerObject(tiles, id);
+        this.playerTile = new PlayerLayerObject(id);
         this.playerDeck = new PlayerDeck();
         this.backup = new Position(id, id);
+
+        handChosen = false;
+        isAlive = true;
+        isDestroyed = false;
     }
+
 
     public int getId() {
         return id;
@@ -39,8 +46,55 @@ public class Player {
             playerDeck.selectCardForHand(i);
     }
 
+    /**
+     * Restores the amount of damageTokens to be the max amount of damage tokens and set isDestryed to false
+     */
+    public void restoreDamageTokens() {
+        isDestroyed = false;
+        damageTokens = MAX_DAMAGE_TOKENS;
+    }
+
+    /**
+     * If all damageTokens are lost then reduce lifeTokens with 1 and restore damageTokens
+     * @return
+     */
+    public boolean lostAllDamageTokens() {
+        if (damageTokens < 1) {
+           lifeTokens--;
+           if (lifeTokens < 1)
+                isAlive = false;
+           else
+                restoreDamageTokens();
+           return true;
+        }
+        return false;
+    }
+
+    public void revive() {
+        isDestroyed = false;
+    }
+
+    public void destroy() {
+        lifeTokens--;
+        if (lifeTokens < 1)
+            isAlive = false;
+        isDestroyed = true;
+    }
+
+    public boolean isDestroyed() {
+        return isDestroyed;
+    }
+
+    public boolean isAlive() {
+        return isAlive;
+    }
+
     public Position getPosition() {
         return playerTile.getPosition();
+    }
+
+    public void setPosition(Position position) {
+        playerTile.setPosition(position);
     }
 
     public Direction getDirection() {
@@ -51,6 +105,10 @@ public class Player {
         return playerTile;
     }
 
+    public Position getBackup() {
+        return backup;
+    }
+
     public void setBackup(Position pos) {
         backup = pos;
     }
@@ -59,8 +117,31 @@ public class Player {
         return playerTile.getAvatar();
     }
 
+    public TiledMapTile getBackupAvatar() {
+        return playerTile.getBackup().getAvatar();
+    }
+
+    public void damagePlayer(int howMuchDamage) {
+        if(howMuchDamage < 1)
+            throw new IllegalArgumentException("Damage much be greater than 0");
+
+        damageTokens = damageTokens - howMuchDamage;
+    }
+
+    public int getDamageTokens() {
+        return damageTokens;
+    }
+
     public PlayerDeck getPlayerDeck() {
         return playerDeck;
     }
+
+    public void setHandChosen(Boolean handChosen){
+        this.handChosen = handChosen;
+    }
+    public boolean getHandChosen(){
+        return handChosen;
+    }
+
 
 }

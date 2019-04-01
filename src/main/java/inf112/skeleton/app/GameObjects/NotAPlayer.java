@@ -6,6 +6,9 @@ import inf112.skeleton.app.Directions.Direction;
  * Placeholder for player layer so that positions never are null
  */
 public class NotAPlayer implements GameObject {
+
+    private int id;
+
     public NotAPlayer() {
     }
 
@@ -16,6 +19,16 @@ public class NotAPlayer implements GameObject {
 
     @Override
     public int getId() {
+        return 0;
+    }
+
+    @Override
+    public boolean equals(GameObject obj) {
+        return this.id == obj.getId();
+    }
+
+    @Override
+    public int compareTo(Object o) {
         return 0;
     }
 }

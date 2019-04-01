@@ -3,6 +3,7 @@ package inf112.skeleton.app.CardTests;
 import inf112.skeleton.app.Cards.ProgramCard;
 import inf112.skeleton.app.Cards.ProgramCardDeck;
 import inf112.skeleton.app.Cards.ProgramType;
+import inf112.skeleton.app.Player.Player;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,6 +22,36 @@ public class ProgramCardDeckTests {
     }
 
 
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void cannotTakeCardFromThatDontExist() {
+        deck1.takeCard(deck1.getSizeOfDeck() + 1);
+    }
+
+    @Test
+    public void giveOutCardsToAllPlayersTest() {
+        Player player1 = new Player(0);
+        Player player2 = new Player(1);
+        ArrayList<Player> players = new ArrayList<>();
+        players.add(player1);
+        players.add(player2);
+
+        assertEquals(player1.getPlayerDeck().deckSize(), 0);
+        assertEquals(player2.getPlayerDeck().deckSize(), 0);
+        deck1.giveOutCardsToAllPlayers(players);
+        assertEquals(player1.getPlayerDeck().deckSize(), 9);
+        assertEquals(player2.getPlayerDeck().deckSize(), 9);
+
+    }
+
+    @Test
+    public void giveOutCardToSinglePlayerTest() {
+        Player player = new Player(0);
+        assertEquals(player.getPlayerDeck().deckSize(), 0);
+        deck1.giveOutCardsToPlayer(player);
+        assertEquals(player.getPlayerDeck().deckSize(), 9);
+    }
+
+
     @Test
     public void deckTest() {
         ArrayList<ProgramCard> deck2 = deck1.getDeck();
@@ -30,6 +61,19 @@ public class ProgramCardDeckTests {
     @Test
     public void standardDeckSizeTest() {
         assertEquals(deck1.getSizeOfDeck(), 84);
+    }
+
+    @Test
+    public void removingCardsFromDeckReducesSizeTest() {
+        int i = 15;
+        int newdeckSize = deck1.getSizeOfDeck() - i;
+
+        for (int j = 0; j < i; j++) {
+            deck1.takeTopCard();
+        }
+
+        assertEquals(deck1.getSizeOfDeck(), newdeckSize);
+
     }
 
     @Test
@@ -56,6 +100,7 @@ public class ProgramCardDeckTests {
         }
         boolean shuffled = false;
         deck1.shuffleDeck();
+
         for (int i = 0; i < 84; i++) {
             if (!(deck1.getDeck().get(i).getPriority() == deck2.getDeck().get(i).getPriority())) {
                 shuffled = true;
@@ -116,7 +161,7 @@ public class ProgramCardDeckTests {
                 move2++;
             } else if (type == ProgramType.MOVE3) {
                 move3++;
-            } else if (type == ProgramType.BACKUP) {
+            } else if (type == ProgramType.BACKWARD) {
                 backUp++;
             } else if (type == ProgramType.ROTATELEFT) {
                 rotateLeft++;

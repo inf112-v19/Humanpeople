@@ -14,27 +14,23 @@ public class PlayerLayerObject implements GameObject {
 
     private int id;
 
-    private final TiledMapTile northAvatar;
-    private final TiledMapTile southAvatar;
-    private final TiledMapTile eastAvatar;
-    private final TiledMapTile westAvatar;
+    private TiledMapTileSet tiles;
+    private  TiledMapTile northAvatar;
+    private  TiledMapTile southAvatar;
+    private  TiledMapTile eastAvatar;
+    private  TiledMapTile westAvatar;
+
+    private SpecialLayerObject backup;
 
     private String color;
     private Position pos;
     private Direction dir;
 
 
-    public PlayerLayerObject(TiledMapTileSet tiles, int id) {
+    public PlayerLayerObject(int id) {
         this.id = id;
         pos = new Position(id, id);
         dir = Direction.NORTH;
-
-        int tileId = (id*10)+30;
-        northAvatar = tiles.getTile(tileId+1);
-        eastAvatar = tiles.getTile(tileId+2);
-        westAvatar = tiles.getTile(tileId+3);
-        southAvatar = tiles.getTile(tileId+4);
-
         switch(id){
             case 0 : color = "Green"; break;
             case 1: color = "Dark blue"; break;
@@ -42,6 +38,16 @@ public class PlayerLayerObject implements GameObject {
             case 3: color = "Yellow"; break;
             default: color = "none"; break;
         }
+    }
+
+    public void setSprite(TiledMapTileSet tiles) {
+        this.tiles = tiles;
+        int tileId = (id*10)+30;
+        northAvatar = tiles.getTile(tileId+1);
+        eastAvatar = tiles.getTile(tileId+2);
+        westAvatar = tiles.getTile(tileId+3);
+        southAvatar = tiles.getTile(tileId+4);
+        backup = new SpecialLayerObject(tiles, tileId+5);
     }
 
 
@@ -53,6 +59,11 @@ public class PlayerLayerObject implements GameObject {
     @Override
     public int getId() {
         return id;
+    }
+
+    @Override
+    public boolean equals(GameObject obj) {
+        return this.id == obj.getId();
     }
 
     public Position getPosition() {
@@ -70,8 +81,6 @@ public class PlayerLayerObject implements GameObject {
     public void setDirection(Direction dir) {
         this.dir = dir;
     }
-
-
 
     public TiledMapTile getAvatar() {
         switch (dir) {
@@ -91,10 +100,10 @@ public class PlayerLayerObject implements GameObject {
         return northAvatar;
     }
 
-    public void update(Direction direction){
-        setDirection(direction);
-        moveTileInDirection(direction);
+    public SpecialLayerObject getBackup() {
+        return backup;
     }
+
     public void moveTileInDirection(Direction direction){
 
         switch (direction) {
@@ -114,6 +123,11 @@ public class PlayerLayerObject implements GameObject {
 
     public String getColor(){
         return color;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return 0;
     }
 }
 
