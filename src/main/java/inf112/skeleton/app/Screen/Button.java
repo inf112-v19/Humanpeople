@@ -17,7 +17,6 @@ public class Button {
         skin.setSize(width, height);
     }
 
-    //To make button clickable when window is resized
     public float getButtonStartX() {
         return skin.getX() * (float) Gdx.graphics.getWidth() / RoboRally.cfgWidth;
     }

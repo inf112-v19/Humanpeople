@@ -171,5 +171,33 @@ Resultat:
 	
 ---
 
+### Test for at en spiller kan dø
+Hensikt:
+    - Spillere som har mistet alle life tokens, "død", skal ikke kunne bevege seg
+    - Hver gang en spiller lander i et hull kan den ikke bevege seg videre i den nåværende runden.
+      En spiller har 3 life tokens og regnes som død etter alle disse er mistet.
+
+Test:
+
+    1. Kjør programmet og klikk på "Test" knappen.
+
+    2. Tast inn følgende kombinasjon:
+    "R" "3" "3" "3" "3" "Space"
+
+    3. Tast inn følgende kombinasjon:
+    "3" "3" "3" "3" "3" "Space"
+
+    4. Tast inn følgende kombinasjon:
+    "3" "3" "3" "3" "3" "Space"
+
+    5. Tast inn følgende kombinasjon (eller hvilkensomhelst annen kombinasjon av 1,2,3,L,R,U og deretter SPACE):
+    "3" "3" "3" "3" "3" "Space"
+
+Resultat:
+    - Spiller lander i et hull hver runde (etter hver inputlinje)
+    -Se at spiller ikke beveget seg etter siste input ble gitt
+    - Spiller er "død"
+
+---
 
 Tester av: Eirik

@@ -56,12 +56,10 @@ public class TestScreen implements Screen {
         gameCam.position.set(gamePort.getWorldWidth() / 2, (gamePort.getWorldHeight() / 2), 0);
 
 
-
         //Every program card type
         move1 = new ProgramCard(ProgramType.MOVE1, 0, "");
         move2 = new ProgramCard(ProgramType.MOVE2, 0, "");
         move3 = new ProgramCard(ProgramType.MOVE3, 0, "");
-
 
 
         right = new ProgramCard(ProgramType.ROTATERIGHT, 0, "");
@@ -70,7 +68,7 @@ public class TestScreen implements Screen {
         uTurn = new ProgramCard(ProgramType.UTURN, 0, "");
 
 
-        //setter iden til 0 for å flytte spilleren med id 0
+        //setter id-en til 0 for å flytte spilleren med id 0
         move1.setPlayerThatPlayedTheCard(0);
         move2.setPlayerThatPlayedTheCard(0);
         move3.setPlayerThatPlayedTheCard(0);
@@ -84,12 +82,12 @@ public class TestScreen implements Screen {
     }
 
     public void update(float deltaTime) {
-        handleInput(deltaTime);
+        handleInput();
         updateMap();
 
         tickTime += deltaTime;
-        if(tickTime>0.2){
-            tickTime=0;
+        if (tickTime > 0.2) {
+            tickTime = 0;
             gameMap.preformNextMovement();
             //TODO få getInfo til å virke på en fornuftig måte
 //            getInfo();
@@ -97,90 +95,64 @@ public class TestScreen implements Screen {
     }
 
 
-    public void handleInput(float deltaTime) {
-        time += deltaTime;
-        if(!infoShowed){
+    public void handleInput() {
+        if (!infoShowed) {
             infoShowed = true;
             System.out.println("\nSelect 5:\n1 = move1\n2 = move2\n3 = move3\nr = rotateRight\nl = rotateLeft\nu = uTurn\nb = backup\n\nSpace = Confirm");
         }
-        if(time >0.1){
-
-            if(cardsForPlayer.size()!=5){
-                if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
-                    time = 0;
-                    cardsForPlayer.add(move1);
-                    System.out.println("selected: "+cardsForPlayer.size()+"/"+5);
-//            getInfo(move1);
-                }
-                if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
-                    time = 0;
-                    cardsForPlayer.add(move2);
-                    System.out.println("selected: "+cardsForPlayer.size()+"/"+5);
-//            getInfo(move2);
-                }
-                if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)) {
-                    time = 0;
-
-                    cardsForPlayer.add(move3);
-                    System.out.println("selected: "+cardsForPlayer.size()+"/"+5);
-//            getInfo(move3);
-                }
-                if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
-                    time = 0;
-
-                    cardsForPlayer.add(right);
-                    System.out.println("selected: "+cardsForPlayer.size()+"/"+5);
-//            getInfo(right);
-                }
-
-                if (Gdx.input.isKeyJustPressed(Input.Keys.L)) {
-                    time = 0;
-
-                    cardsForPlayer.add(left);
-                    System.out.println("selected: "+cardsForPlayer.size()+"/"+5);
-//            getInfo(left);
-                }
-
-                if (Gdx.input.isKeyJustPressed(Input.Keys.U)) {
-                    time = 0;
-
-                    cardsForPlayer.add(uTurn);
-                    System.out.println("selected: "+cardsForPlayer.size()+"/"+5);
-//            getInfo(uTurn);
-                }
-
-                if (Gdx.input.isKeyJustPressed(Input.Keys.B)) {
-                    time = 0;
-                    cardsForPlayer.add(backUp);
-                    System.out.println("selected: "+cardsForPlayer.size()+"/"+5);
-
-//            getInfo(backUp);
-                }
+        if (cardsForPlayer.size() != 5) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
+                cardsForPlayer.add(move1);
+                System.out.println("selected: " + cardsForPlayer.size() + "/" + 5);
             }
-            //Test of movement according to program cards (using movePlayer() for testing)
-            else{
-                if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-                    time = 0;
-
-                    gameMap.getPlayers().get(0).getPlayerDeck().setPlayerHand(cardsForPlayer);
-                    givePlayersRotateHand();
-                    gameMap.addPlayerHandToNewRound();
-                    cardsForPlayer.clear();
-                    infoShowed = false;
-                }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
+                cardsForPlayer.add(move2);
+                System.out.println("selected: " + cardsForPlayer.size() + "/" + 5);
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)) {
+                cardsForPlayer.add(move3);
+                System.out.println("selected: " + cardsForPlayer.size() + "/" + 5);
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
+                cardsForPlayer.add(right);
+                System.out.println("selected: " + cardsForPlayer.size() + "/" + 5);
             }
 
-            if(Gdx.input.isKeyJustPressed(Input.Keys.I)) {
-                getInfo();
+            if (Gdx.input.isKeyJustPressed(Input.Keys.L)) {
+                cardsForPlayer.add(left);
+                System.out.println("selected: " + cardsForPlayer.size() + "/" + 5);
+            }
+
+            if (Gdx.input.isKeyJustPressed(Input.Keys.U)) {
+                cardsForPlayer.add(uTurn);
+                System.out.println("selected: " + cardsForPlayer.size() + "/" + 5);
+            }
+
+            if (Gdx.input.isKeyJustPressed(Input.Keys.B)) {
+                cardsForPlayer.add(backUp);
+                System.out.println("selected: " + cardsForPlayer.size() + "/" + 5);
             }
         }
+        //Test of movement according to program cards (using movePlayer() for testing
+        else if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            gameMap.getPlayers().get(0).getPlayerDeck().setPlayerHand(cardsForPlayer);
+            givePlayersRotateHand();
+            gameMap.addPlayerHandToNewRound();
+            cardsForPlayer.clear();
+            infoShowed = false;
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
+            getInfo();
+        }
     }
-    public void givePlayersRotateHand(){
-        for(int i = 1;i<numberOfPlayers; i++){
+
+    public void givePlayersRotateHand() {
+        for (int i = 1; i < numberOfPlayers; i++) {
             ArrayList<ProgramCard> temp = new ArrayList<>();
-            ProgramCard card = new ProgramCard(ProgramType.ROTATERIGHT,i,"");
+            ProgramCard card = new ProgramCard(ProgramType.ROTATERIGHT, i, "");
             card.setPlayerThatPlayedTheCard(i);
-            for(int z = 0; z<5;z++){
+            for (int z = 0; z < 5; z++) {
                 temp.add(card);
             }
             gameMap.getPlayers().get(i).getPlayerDeck().setPlayerHand(temp);

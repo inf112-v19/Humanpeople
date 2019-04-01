@@ -76,6 +76,8 @@ public class Player {
 
     public void destroy() {
         lifeTokens--;
+        if (lifeTokens < 1)
+            isAlive = false;
         isDestroyed = true;
     }
 

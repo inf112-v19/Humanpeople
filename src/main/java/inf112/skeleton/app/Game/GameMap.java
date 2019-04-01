@@ -134,7 +134,7 @@ public class GameMap {
     public void movePlayer(int playerId, ProgramCard card) {
         Player player = players.get(playerId);
         // A player which is destroyed cannot move
-        if (player.isDestroyed()) {
+        if (player.isDestroyed() || !player.isAlive()) {
             return;
         }
         ProgramType programType = card.getProgramType();
@@ -300,7 +300,7 @@ public class GameMap {
                     setAllPlayerHandsChosen(false);
                 }
                 // If round is complete, revive all players for further play
-                reviveAllPlayers();
+                restoreDamageTokensAllPlayers();
             }
         }
     }
@@ -316,9 +316,9 @@ public class GameMap {
         }
     }
 
-    public void reviveAllPlayers() {
+    public void restoreDamageTokensAllPlayers() {
         for (Player player : players) {
-            player.revive();
+            player.restoreDamageTokens();
         }
     }
 
