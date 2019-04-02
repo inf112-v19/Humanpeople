@@ -6,7 +6,6 @@ import inf112.skeleton.app.Cards.ProgramCardDeck;
 import inf112.skeleton.app.Cards.ProgramType;
 import inf112.skeleton.app.Directions.Direction;
 import inf112.skeleton.app.Directions.Position;
-import javafx.geometry.Pos;
 import org.junit.Before;
 import org.junit.Test;
 
