@@ -132,3 +132,10 @@
  - Finpussing av Oblig4
  - Refaktorering av kode til Oblig4
  - Neste møte: 02.04.2019
+ 
+ ### Referat møte 02.04.2019
+  - Oppmøte: Alle
+  - Gjennomgang av referat fra kundemøte
+  - Opprettet klassediagram
+  - Planlegger neste iterasjon på neste møte
+  - Neste møte: 
