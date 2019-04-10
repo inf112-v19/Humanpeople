@@ -14,7 +14,6 @@ import inf112.skeleton.app.Round.Round;
 
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class GameMap {
 
@@ -113,14 +112,16 @@ public class GameMap {
             for (int i = 0; i < amountOfPhases; i++) {
                 ArrayList<ProgramCard> cardsToAddInPhaseI = new ArrayList<>();
                 for (Player player : players) {
-                    // If the players hand is empty then give out 9 new cards and select 5 cards for hand
-                    // Temporary solution. Card selection system is coming.
-                    if (player.getPlayerDeck().handIsEmpty()) {
-                        giveOutCardsToPlayer(player);
+                    if (player.isActive()) {
+                        // If the players hand is empty then give out 9 new cards and select 5 cards for hand
+                        // Temporary solution. Card selection system is coming.
+                        if (player.getPlayerDeck().handIsEmpty()) {
+                            giveOutCardsToPlayer(player);
+                        }
+                        ProgramCard tempCard = player.getPlayerDeck().getCardFromHand();
+                        tempCard.setPlayerThatPlayedTheCard(player.getId());
+                        cardsToAddInPhaseI.add(tempCard);
                     }
-                    ProgramCard tempCard = player.getPlayerDeck().getCardFromHand();
-                    tempCard.setPlayerThatPlayedTheCard(player.getId());
-                    cardsToAddInPhaseI.add(tempCard);
                 }
                 round.addPhases(new Phase(cardsToAddInPhaseI));
             }
@@ -158,7 +159,6 @@ public class GameMap {
             Direction rotated = rotate(card.getProgramType(), playerDir);
             player.getPlayerTile().setDirection(rotated);
         }
-
         drawPlayers();
     }
 
@@ -238,7 +238,7 @@ public class GameMap {
      * @return
      */
     public boolean hasToReturnToBackup(Player player) {
-        if (steppedOnHole(player) || player.lostAllDamageTokens())
+        if (steppedOnHole(player) || player.lostAllHealth())
             return true;
         return false;
     }
@@ -367,7 +367,17 @@ public class GameMap {
                 }
                 // If round is complete, revive all players for further play
                 restoreDamageTokensAllPlayers();
+                activatePlayers();
             }
+        }
+    }
+
+    /**
+     * All powered down players are set to active
+     */
+    public void activatePlayers() {
+        for (Player player : players) {
+            player.activate();
         }
     }
 
@@ -410,7 +420,7 @@ public class GameMap {
 
     public void restoreDamageTokensAllPlayers() {
         for (Player player : players) {
-            player.restoreDamageTokens();
+            player.fix();
         }
     }
 

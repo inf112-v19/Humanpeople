@@ -67,7 +67,7 @@ public class PlayerTest {
         assertEquals(player.getHealth(), 9);
         player.damagePlayer(4);
         assertEquals(player.getHealth(), 5);
-        player.restoreDamageTokens();
+        player.fix();
         assertEquals(player.getHealth(), 9);
     }
 
@@ -84,9 +84,9 @@ public class PlayerTest {
 
     @Test
     public void lostAllDamageTokens() {
-        assertFalse(player.lostAllDamageTokens());
+        assertFalse(player.lostAllHealth());
         player.damagePlayer(9);
-        assertTrue(player.lostAllDamageTokens());
+        assertTrue(player.lostAllHealth());
     }
 
     @Test
@@ -95,13 +95,13 @@ public class PlayerTest {
         assertTrue(player1.isAlive());
 
         player1.damagePlayer(9);
-        player1.lostAllDamageTokens();
+        player1.lostAllHealth();
 
         player1.damagePlayer(9);
-        player1.lostAllDamageTokens();
+        player1.lostAllHealth();
 
         player1.damagePlayer(9);
-        player1.lostAllDamageTokens();
+        player1.lostAllHealth();
 
         assertFalse(player1.isAlive());
     }

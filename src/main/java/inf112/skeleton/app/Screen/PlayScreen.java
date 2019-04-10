@@ -47,6 +47,7 @@ public class PlayScreen implements Screen {
     private float height;
 
     private ImageButton playButton;
+    private ImageButton powerDownButton;
 
     private Image cardSlotsTop;
     private Image cardSlotsMid;
@@ -97,6 +98,7 @@ public class PlayScreen implements Screen {
 
         stage = new Stage();
         initializePlayButton();
+        initializePowerDownButton();
         initializeCardSlots();
 
         Gdx.input.setInputProcessor(stage);
@@ -105,9 +107,9 @@ public class PlayScreen implements Screen {
     public void initializePlayButton() {
         Sprite picture = new Sprite(new Texture("assets/mainMenu/playBtn.png"));
         playButton = new ImageButton(new SpriteDrawable(picture));
-        playButton.setWidth(width / 2);
+        playButton.setWidth((int) (width / 2.2));
         playButton.setHeight((picture.getHeight() - 5) / 2);
-        playButton.setPosition(width / 2, height / 2 - picture.getHeight() - 4);
+        playButton.setPosition((int) (width / 2.2), height / 2 - picture.getHeight() - 4);
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -126,6 +128,22 @@ public class PlayScreen implements Screen {
                     player.getPlayerDeck().setPlayerHand(list);
                     player.setHandChosen(true);
                 }
+            }
+        });
+    }
+
+    public void initializePowerDownButton() {
+        Sprite picture = new Sprite(new Texture("assets/mainMenu/PowerDownBtn.png"));
+        powerDownButton = new ImageButton(new SpriteDrawable(picture));
+        powerDownButton.setWidth((int) (width / 1.8));
+        powerDownButton.setHeight((picture.getHeight() - 5) / 2);
+        powerDownButton.setPosition((int) (width / 1.8), height / 2 - picture.getHeight() - 4);
+        powerDownButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Player player = gameMap.getPlayers().get(0);
+                player.powerDown();
+                player.setHandChosen(true);
             }
         });
     }
@@ -259,6 +277,7 @@ public class PlayScreen implements Screen {
         stage.addActor(cardSlotsMid);
         stage.addActor(cardSlotsBottom);
         stage.addActor(playButton);
+        stage.addActor(powerDownButton);
     }
 
 

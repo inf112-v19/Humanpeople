@@ -48,24 +48,27 @@ public class Player {
     }
 
     /**
-     * Restores the amount of health to be the max amount of damage tokens and set isDestryed to false
+     * Restores the amount of health to be the max amount of damage tokens -2 and set isDestroyed to false
      */
-    public void restoreDamageTokens() {
+    public void fix() {
         isDestroyed = false;
-        health = MAX_HEALTH -2;
+        health = MAX_HEALTH - 2;
     }
 
+    public void restoreHealth() {
+        health = MAX_HEALTH;
+    }
     /**
      * If all health are lost then reduce lifeTokens with 1 and restore health
      * @return
      */
-    public boolean lostAllDamageTokens() {
+    public boolean lostAllHealth() {
         if (health < 1) {
            lifeTokens--;
            if (lifeTokens < 1)
                 isAlive = false;
            else
-                restoreDamageTokens();
+                fix();
            return true;
         }
         return false;
@@ -75,10 +78,15 @@ public class Player {
         isAlive = true;
     }
 
+    /**
+     * Removes one life token, sets isDestroyed to true and sets health = 0
+     * If all life tokens are lost then set isAlive to false
+     */
     public void destroy() {
         lifeTokens--;
         if (lifeTokens < 1)
             isAlive = false;
+        health = 0;
         isDestroyed = true;
     }
 
@@ -88,6 +96,21 @@ public class Player {
 
     public boolean isAlive() {
         return isAlive;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void powerDown() {
+        active = false;
+    }
+
+    /**
+     * A powered down player is now active
+     */
+    public void activate() {
+        active = true;
     }
 
     public Position getPosition() {
