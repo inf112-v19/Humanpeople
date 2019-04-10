@@ -313,7 +313,7 @@ public class GameMap {
             grid.setPlayerPosition(player.getPlayerTile());
         }
         else if (grid.isRightGyro(currentPosition)) {
-
+ 
         }
         else if (grid.isLeftGyro(currentPosition)) {
 
