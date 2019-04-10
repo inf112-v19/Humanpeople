@@ -1,7 +1,6 @@
 package inf112.skeleton.app.Player;
 
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
-import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import inf112.skeleton.app.Cards.PlayerDeck;
 import inf112.skeleton.app.Directions.Direction;
 import inf112.skeleton.app.Directions.Position;
@@ -9,17 +8,18 @@ import inf112.skeleton.app.GameObjects.PlayerLayerObject;
 
 public class Player {
 
-    public static final int MAX_DAMAGE_TOKENS = 9;
+    public static final int MAX_HEALTH = 9;
     public static final int MAX_LIFE_TOKENS = 3;
 
     private Position backup;
     private PlayerLayerObject playerTile;
     private int lifeTokens = MAX_LIFE_TOKENS;
-    private int damageTokens = MAX_DAMAGE_TOKENS;
+    private int health = MAX_HEALTH;
     private int id;
     private PlayerDeck playerDeck;
     private boolean isDestroyed;
     private boolean isAlive;
+    private boolean active;
     private boolean handChosen;
 
     public Player(int id) {
@@ -31,6 +31,7 @@ public class Player {
         handChosen = false;
         isAlive = true;
         isDestroyed = false;
+        active = true;
     }
 
 
@@ -47,19 +48,19 @@ public class Player {
     }
 
     /**
-     * Restores the amount of damageTokens to be the max amount of damage tokens and set isDestryed to false
+     * Restores the amount of health to be the max amount of damage tokens and set isDestryed to false
      */
     public void restoreDamageTokens() {
         isDestroyed = false;
-        damageTokens = MAX_DAMAGE_TOKENS;
+        health = MAX_HEALTH -2;
     }
 
     /**
-     * If all damageTokens are lost then reduce lifeTokens with 1 and restore damageTokens
+     * If all health are lost then reduce lifeTokens with 1 and restore health
      * @return
      */
     public boolean lostAllDamageTokens() {
-        if (damageTokens < 1) {
+        if (health < 1) {
            lifeTokens--;
            if (lifeTokens < 1)
                 isAlive = false;
@@ -71,7 +72,7 @@ public class Player {
     }
 
     public void revive() {
-        isDestroyed = false;
+        isAlive = true;
     }
 
     public void destroy() {
@@ -125,11 +126,11 @@ public class Player {
         if(howMuchDamage < 1)
             throw new IllegalArgumentException("Damage much be greater than 0");
 
-        damageTokens = damageTokens - howMuchDamage;
+        health = health - howMuchDamage;
     }
 
-    public int getDamageTokens() {
-        return damageTokens;
+    public int getHealth() {
+        return health;
     }
 
     public PlayerDeck getPlayerDeck() {

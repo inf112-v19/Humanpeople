@@ -1,12 +1,9 @@
 package inf112.skeleton.app.Player;
 
-import inf112.skeleton.app.Cards.PlayerDeck;
 import inf112.skeleton.app.Cards.ProgramCard;
-import inf112.skeleton.app.Cards.ProgramCardDeck;
 import inf112.skeleton.app.Cards.ProgramType;
 import inf112.skeleton.app.Directions.Direction;
 import inf112.skeleton.app.Directions.Position;
-import javafx.geometry.Pos;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -67,22 +64,22 @@ public class PlayerTest {
 
     @Test
     public void restoreDamageTokens() {
-        assertEquals(player.getDamageTokens(), 9);
+        assertEquals(player.getHealth(), 9);
         player.damagePlayer(4);
-        assertEquals(player.getDamageTokens(), 5);
+        assertEquals(player.getHealth(), 5);
         player.restoreDamageTokens();
-        assertEquals(player.getDamageTokens(), 9);
+        assertEquals(player.getHealth(), 9);
     }
 
     @Test
     public void damagePlayerTest() {
-        assertEquals(player.getDamageTokens(), 9);
+        assertEquals(player.getHealth(), 9);
         player.damagePlayer(2);
-        assertEquals(player.getDamageTokens(), 7);
+        assertEquals(player.getHealth(), 7);
         player.damagePlayer(3);
-        assertEquals(player.getDamageTokens(), 4);
+        assertEquals(player.getHealth(), 4);
         player.damagePlayer(4);
-        assertEquals(player.getDamageTokens(), 0);
+        assertEquals(player.getHealth(), 0);
     }
 
     @Test

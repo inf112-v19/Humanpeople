@@ -1,6 +1,5 @@
 package inf112.skeleton.app.Directions;
 
-import javafx.geometry.Pos;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

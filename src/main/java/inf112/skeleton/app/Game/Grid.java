@@ -1,6 +1,7 @@
 package inf112.skeleton.app.Game;
 
 import com.badlogic.gdx.maps.tiled.*;
+import inf112.skeleton.app.Cards.ProgramCard;
 import inf112.skeleton.app.GameObjects.*;
 import inf112.skeleton.app.Directions.Direction;
 import inf112.skeleton.app.Directions.Position;
@@ -251,6 +252,56 @@ public class Grid {
         if (flagLayer.getCell(x,y) != null) {
             TiledMapTile tileAtPosition = flagLayer.getCell(x, y).getTile();
             return tileAtPosition.getId() == flagObjectId;
+        }
+        return false;
+    }
+
+    public boolean isNorthBelt(Position position) {
+        int northBeltId1 = 21;
+        return isConveyorBelt(position, northBeltId1);
+    }
+
+    public boolean isEastBelt(Position position) {
+        int eastBeltId1 = 24;
+        int eastBeltId2 = 25;
+        return isConveyorBelt(position, eastBeltId1) || isConveyorBelt(position, eastBeltId2);
+    }
+
+    public boolean isSouthBelt(Position position) {
+        int southBeltId1 = 22;
+        int southBeltId2 = 28;
+        int southBeltId3 = 27;
+        return isConveyorBelt(position, southBeltId1) || isConveyorBelt(position, southBeltId2) || isConveyorBelt(position, southBeltId3);
+    }
+
+    public boolean isWestBelt(Position position) {
+        int westBeltId1 = 23;
+        int westBeltId2 = 26;
+        return isConveyorBelt(position, westBeltId1) || isConveyorBelt(position, westBeltId2);
+    }
+
+    public boolean isRightGyro(Position position) {
+        int rightGyroId = 6;
+        return isConveyorBelt(position, rightGyroId);
+    }
+
+    public boolean isLeftGyro(Position position) {
+        int leftGyroId = 6;
+        return isConveyorBelt(position, leftGyroId);
+    }
+
+    /**
+     *
+     * @param position
+     * @param conveyorId
+     * @return true if the given conveyor belt id matches the tile at the given position
+     */
+    public boolean isConveyorBelt(Position position, int conveyorId) {
+        int x = position.getX();
+        int y = position.getY();
+        if (specialLayer.getCell(x,y) != null) {
+            TiledMapTile tileAtPosition = specialLayer.getCell(x, y).getTile();
+            return tileAtPosition.getId() == conveyorId;
         }
         return false;
     }

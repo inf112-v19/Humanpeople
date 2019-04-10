@@ -14,6 +14,7 @@ import inf112.skeleton.app.Round.Round;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GameMap {
 
@@ -81,7 +82,8 @@ public class GameMap {
 
     public void drawPlayers() {
         for (Player player : players) {
-            drawPlayer(player);
+            if (player.isAlive())
+                drawPlayer(player);
         }
     }
 
@@ -242,7 +244,7 @@ public class GameMap {
     }
 
     /**
-     * Checks if player is stepping on a hole. If so, kill player
+     * Checks if player is stepping on a hole. If so, destroy player
      *
      * @param player
      * @return true if player is in hole
@@ -254,6 +256,70 @@ public class GameMap {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Moves all players standing on conveyor belts
+     */
+    public void moveConveyorBelts() {
+        for (Player player : players) {
+            if (steppedOnConveyorBelt(player))
+                moveAccordingToConveyorBelt(player);
+        }
+    }
+
+    /**
+     * Checks if player is standing on a conveyor belt or a gyro
+     * @param player
+     * @return true if standing on belt or gyro
+     */
+    public boolean steppedOnConveyorBelt(Player player) {
+        Position position = player.getPosition();
+        return (grid.isEastBelt(position) || grid.isNorthBelt(position) || grid.isSouthBelt(position) || grid.isWestBelt(position) || grid.isLeftGyro(position) || grid.isRightGyro(position));
+    }
+
+    /**
+     * Checks what type of conveyor belt the player is standing on and moves the player accordingly
+     * @param player
+     * @return list of program cards for player to move
+     */
+    public void moveAccordingToConveyorBelt(Player player) {
+        Position currentPosition = player.getPosition();
+        int x = currentPosition.getX();
+        int y = currentPosition.getY();
+
+        if (grid.isEastBelt(currentPosition)) {
+            Position newPosition = currentPosition.east();
+            grid.removePlayerPosition(currentPosition);
+            player.setPosition(newPosition);
+            grid.setPlayerPosition(player.getPlayerTile());
+        }
+        else if (grid.isNorthBelt(currentPosition)) {
+            Position newPosition = currentPosition.north();
+            grid.removePlayerPosition(currentPosition);
+            player.setPosition(newPosition);
+            grid.setPlayerPosition(player.getPlayerTile());
+        }
+        else if (grid.isSouthBelt(currentPosition)) {
+            Position newPosition = currentPosition.south();
+            grid.removePlayerPosition(currentPosition);
+            player.setPosition(newPosition);
+            grid.setPlayerPosition(player.getPlayerTile());
+        }
+        else if (grid.isWestBelt(currentPosition)) {
+            Position newPosition = currentPosition.west();
+            grid.removePlayerPosition(currentPosition);
+            player.setPosition(newPosition);
+            grid.setPlayerPosition(player.getPlayerTile());
+        }
+        else if (grid.isRightGyro(currentPosition)) {
+
+        }
+        else if (grid.isLeftGyro(currentPosition)) {
+
+        }
+        playerLayer.setCell(x, y, null);
+        drawPlayer(player);
     }
 
     /**
@@ -286,7 +352,7 @@ public class GameMap {
             if (!round.isCompleted()) {
                 if (round.getCurrentPhase().getPhaseComplete()) {
                     // If any player has stepped on a flag then set current position as backup
-                    steppedOnFlag();
+                    endOfPhaseChecks();
                     System.out.println("Phase " + (round.getCurrentPhaseNumber() + 1) + " er ferdig");
                     round.nextPhase();
                 } else {
@@ -302,6 +368,32 @@ public class GameMap {
                 // If round is complete, revive all players for further play
                 restoreDamageTokensAllPlayers();
             }
+        }
+    }
+
+    /**
+     * Checks the board and all its play
+     */
+    public void endOfPhaseChecks() {
+        steppedOnFlag();
+        moveConveyorBelts();
+        //removeDeadPlayers();
+    }
+
+    /**
+     * If a player is alive, he is removed from the game
+     */
+    public void removeDeadPlayers() {
+        ArrayList<Integer> deadPlayers = new ArrayList<>();
+        for (int i = 0; i < players.size(); i++) {
+            Player player = players.get(i);
+            if (!player.isAlive()) {
+                grid.removePlayerPosition(player.getPosition());
+                deadPlayers.add(player.getId());
+            }
+        }
+        for (int i : deadPlayers) {
+            players.remove(i);
         }
     }
 
@@ -328,7 +420,7 @@ public class GameMap {
      * @param player
      */
     public void giveOutCardsToPlayer(Player player) {
-        programCardDeck.giveOutCardsToPlayer(player);
+        //programCardDeck.giveOutCardsToPlayer(player);
         player.select5FirstCards();
     }
 

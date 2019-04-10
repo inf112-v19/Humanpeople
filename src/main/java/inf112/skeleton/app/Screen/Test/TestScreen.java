@@ -40,17 +40,15 @@ public class TestScreen implements Screen {
 
     ArrayList<ProgramCard> cardsForPlayer;
 
-    private int numberOfPlayers;
     private boolean infoShowed;
 
 
     public TestScreen(RoboRally game) {
         cardsForPlayer = new ArrayList<>();
-        numberOfPlayers = 4;
         this.game = game;
         this.gameCam = new OrthographicCamera();
         this.gamePort = new FitViewport(RoboRally.width, RoboRally.height, gameCam);
-        this.gameMap = new GameMap("assets/map3.tmx", numberOfPlayers);
+        this.gameMap = new GameMap("assets/map3.tmx", 4);
         this.map = gameMap.getMap();
         this.renderer = new OrthogonalTiledMapRenderer(map);
         gameCam.position.set(gamePort.getWorldWidth() / 2, (gamePort.getWorldHeight() / 2), 0);
@@ -78,7 +76,6 @@ public class TestScreen implements Screen {
         uTurn.setPlayerThatPlayedTheCard(0);
 
         infoShowed = false;
-
     }
 
     public void update(float deltaTime) {
@@ -148,7 +145,7 @@ public class TestScreen implements Screen {
     }
 
     public void givePlayersRotateHand() {
-        for (int i = 1; i < numberOfPlayers; i++) {
+        for (int i = 1; i < numberOfPlayers(); i++) {
             ArrayList<ProgramCard> temp = new ArrayList<>();
             ProgramCard card = new ProgramCard(ProgramType.ROTATERIGHT, i, "");
             card.setPlayerThatPlayedTheCard(i);
@@ -188,6 +185,10 @@ public class TestScreen implements Screen {
             System.out.println("Direction: " + dir);
             System.out.println("Position: (" + posX + "," + posY + ")" + "\n");
         }
+    }
+
+    public int numberOfPlayers() {
+        return gameMap.getPlayers().size();
     }
 
     private void updateMap() {
