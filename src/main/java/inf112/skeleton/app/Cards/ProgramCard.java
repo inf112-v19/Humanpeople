@@ -106,4 +106,10 @@ public class ProgramCard implements ICard {
                 "assets/cards/ProgramCards/backUp/backUp1p" + 430 + ".png");
     }
 
+    @Override
+    public String toString() {
+        String string = "Type : " + programType + ", Priority:" + priority;
+        return string;
+    }
+
 }

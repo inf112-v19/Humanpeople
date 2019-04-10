@@ -55,15 +55,15 @@ public class TestScreen implements Screen {
 
 
         //Every program card type
-        move1 = new ProgramCard(ProgramType.MOVE1, 0, "");
-        move2 = new ProgramCard(ProgramType.MOVE2, 0, "");
-        move3 = new ProgramCard(ProgramType.MOVE3, 0, "");
+        move1 = new ProgramCard(ProgramType.MOVE1, 1, "");
+        move2 = new ProgramCard(ProgramType.MOVE2, 2, "");
+        move3 = new ProgramCard(ProgramType.MOVE3, 3, "");
 
 
-        right = new ProgramCard(ProgramType.ROTATERIGHT, 0, "");
-        left = new ProgramCard(ProgramType.ROTATELEFT, 0, "");
-        backUp = new ProgramCard(ProgramType.BACKWARD, 0, "");
-        uTurn = new ProgramCard(ProgramType.UTURN, 0, "");
+        right = new ProgramCard(ProgramType.ROTATERIGHT, 4, "");
+        left = new ProgramCard(ProgramType.ROTATELEFT, 5, "");
+        backUp = new ProgramCard(ProgramType.BACKWARD, 6, "");
+        uTurn = new ProgramCard(ProgramType.UTURN, 7, "");
 
 
         //setter id-en til 0 for å flytte spilleren med id 0
