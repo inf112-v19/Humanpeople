@@ -4,9 +4,7 @@ import com.badlogic.gdx.maps.tiled.*;
 import inf112.skeleton.app.Cards.ProgramCard;
 import inf112.skeleton.app.Cards.ProgramCardDeck;
 import inf112.skeleton.app.Cards.ProgramType;
-import inf112.skeleton.app.Directions.Direction;
-import inf112.skeleton.app.Directions.Position;
-import inf112.skeleton.app.Directions.StartingPositions;
+import inf112.skeleton.app.Directions.*;
 import inf112.skeleton.app.GameObjects.FlagLayerObject;
 import inf112.skeleton.app.GameObjects.PlayerLayerObject;
 import inf112.skeleton.app.Player.Player;
@@ -15,7 +13,6 @@ import inf112.skeleton.app.Round.Round;
 
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class GameMap {
 
@@ -31,7 +28,7 @@ public class GameMap {
     private final TiledMapTileLayer backupLayer4;
     private TiledMapTileSet tiles;
     private final int nPlayers;
-    private StartingPositions startingPositions;
+    private IStartingPosition startingPositions;
     private ProgramCardDeck programCardDeck;
     private ArrayList<PlayerLayerObject> playerTiles;
     private ArrayList<Player> players;
@@ -46,7 +43,10 @@ public class GameMap {
         this.tiles = map.getTileSets().getTileSet("testTileset");
         this.players = new ArrayList<>();
         this.nPlayers = nPlayers;
-        this.startingPositions = new StartingPositions(grid.getWidth(), grid.getHeight());
+        if (filename.equals("assets/testMap.tmx"))
+            this.startingPositions = new TestStartingPositions(grid.getWidth(), grid.getHeight());
+        else
+            this.startingPositions = new StartingPositions(grid.getWidth(), grid.getHeight(), nPlayers);
         this.programCardDeck = new ProgramCardDeck();
         this.playerLayer = (TiledMapTileLayer) map.getLayers().get(8);
         this.specialLayer = (TiledMapTileLayer) map.getLayers().get(1);

@@ -1,28 +1,29 @@
 package inf112.skeleton.app.Directions;
 
-public class StartingPositions implements IStartingPosition {
+import inf112.skeleton.app.Directions.Position;
+
+public class TestStartingPositions implements IStartingPosition {
 
     private Position start0;
     private Position start1;
     private Position start2;
     private Position start3;
 
-    public StartingPositions(int gameMapWidth, int gameMapHeight, int nPlayers) {
-        int middleOfBoardX = (gameMapWidth / 2) - 1;
-        int x0 = middleOfBoardX;
-        int y0 = 0;
+    public TestStartingPositions(int gameMapWidth, int gameMapHeight) {
+        int x0 = 1;
+        int y0 = 1;
         start0 = new Position(x0,y0);
 
-        int x1 = middleOfBoardX+2;
-        int y1 = 0;
+        int x1 = gameMapWidth-2;
+        int y1 = 1;
         start1 = new Position(x1,y1);
 
-        int x2 = middleOfBoardX-2;
-        int y2 = 0;
+        int x2 = gameMapWidth-2;
+        int y2 = gameMapHeight-2;
         start2 = new Position(x2, y2);
 
-        int x3 = middleOfBoardX+4;
-        int y3 = 0;
+        int x3 = 1;
+        int y3 = gameMapHeight-2;
         start3 = new Position(x3, y3);
     }
 
@@ -36,7 +37,7 @@ public class StartingPositions implements IStartingPosition {
                 return start2;
             case 3:
                 return start3;
-            default: return new Position(0,0);
+                default: return new Position(0,0);
         }
     }
 }

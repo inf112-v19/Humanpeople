@@ -48,7 +48,7 @@ public class TestScreen implements Screen {
         this.game = game;
         this.gameCam = new OrthographicCamera();
         this.gamePort = new FitViewport(RoboRally.width, RoboRally.height, gameCam);
-        this.gameMap = new GameMap("assets/map3.tmx", 4);
+        this.gameMap = new GameMap("assets/testMap.tmx", 4);
         this.map = gameMap.getMap();
         this.renderer = new OrthogonalTiledMapRenderer(map);
         gameCam.position.set(gamePort.getWorldWidth() / 2, (gamePort.getWorldHeight() / 2), 0);
