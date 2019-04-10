@@ -95,7 +95,6 @@ public class PlayScreen implements Screen {
 
     @Override
     public void show() {
-
         stage = new Stage();
         initializePlayButton();
         initializePowerDownButton();

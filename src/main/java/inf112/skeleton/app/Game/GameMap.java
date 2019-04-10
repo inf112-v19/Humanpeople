@@ -88,7 +88,6 @@ public class GameMap {
         getDeck().giveOutCardsToAllPlayers(players);
     }
 
-
     public void drawPlayers() {
         for (Player player : players) {
             if (player.isAlive())

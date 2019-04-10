@@ -19,6 +19,7 @@ public class Grid {
     private TiledMapTileLayer backupLayer2;
     private TiledMapTileLayer backupLayer3;
     private TiledMapTileLayer backupLayer4;
+    private TiledMapTileLayer laserLayer;
     private TiledMapTileSet tiles;
 
     private ArrayList<PlayerLayerObject> listOfPlayerTilesToMove;
@@ -31,6 +32,7 @@ public class Grid {
     private final int backup2Index;
     private final int backup3Index;
     private final int backup4Index;
+    private final int laserIndex;
 
 
     public Grid(TiledMap map) {
@@ -49,6 +51,7 @@ public class Grid {
         backup3Index = 6;
         backup4Index = 7;
         playerIndex = 8;
+        laserIndex = 9;
 
         groundLayer = (TiledMapTileLayer) map.getLayers().get(groundIndex);
         specialLayer = (TiledMapTileLayer) map.getLayers().get(specialIndex);
@@ -58,6 +61,7 @@ public class Grid {
         backupLayer2 = (TiledMapTileLayer) map.getLayers().get(backup2Index);
         backupLayer3 = (TiledMapTileLayer) map.getLayers().get(backup3Index);
         backupLayer4 = (TiledMapTileLayer) map.getLayers().get(backup4Index);
+        laserLayer = (TiledMapTileLayer) map.getLayers().get(laserIndex);
 
         listOfPlayerTilesToMove = new ArrayList<>();
         fillGridWithArrayListsAndGameObjects();
@@ -109,6 +113,9 @@ public class Grid {
 
                 // PlayerLayer
                 gameLogicGrid[x][y].add(playerIndex, new NotAPlayer());
+
+                // Laser layer
+                gameLogicGrid[x][y].add(laserIndex, new NothingSpecial());
             }
         }
     }
