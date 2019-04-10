@@ -1,7 +1,6 @@
 package inf112.skeleton.app.Game;
 
 import com.badlogic.gdx.maps.tiled.*;
-import inf112.skeleton.app.Cards.ProgramCard;
 import inf112.skeleton.app.GameObjects.*;
 import inf112.skeleton.app.Directions.Direction;
 import inf112.skeleton.app.Directions.Position;
@@ -16,7 +15,10 @@ public class Grid {
     private TiledMapTileLayer specialLayer;
     private TiledMapTileLayer flagLayer;
     private TiledMapTileLayer holeLayer;
-    private TiledMapTileLayer backupLayer;
+    private TiledMapTileLayer backupLayer1;
+    private TiledMapTileLayer backupLayer2;
+    private TiledMapTileLayer backupLayer3;
+    private TiledMapTileLayer backupLayer4;
     private TiledMapTileSet tiles;
 
     private ArrayList<PlayerLayerObject> listOfPlayerTilesToMove;
@@ -25,7 +27,11 @@ public class Grid {
     private final int playerIndex;
     private final int flagIndex;
     private final int holeIndex;
-    private final int backupIndex;
+    private final int backup1Index;
+    private final int backup2Index;
+    private final int backup3Index;
+    private final int backup4Index;
+
 
     public Grid(TiledMap map) {
         width = (Integer) map.getProperties().get("width");
@@ -38,14 +44,20 @@ public class Grid {
         specialIndex = 1;
         flagIndex = 2;
         holeIndex = 3;
-        backupIndex = 4;
-        playerIndex = 5;
+        backup1Index = 4;
+        backup2Index = 5;
+        backup3Index = 6;
+        backup4Index = 7;
+        playerIndex = 8;
 
         groundLayer = (TiledMapTileLayer) map.getLayers().get(groundIndex);
         specialLayer = (TiledMapTileLayer) map.getLayers().get(specialIndex);
         flagLayer = (TiledMapTileLayer) map.getLayers().get(flagIndex);
         holeLayer = (TiledMapTileLayer) map.getLayers().get(holeIndex);
-        backupLayer = (TiledMapTileLayer) map.getLayers().get(backupIndex);
+        backupLayer1 = (TiledMapTileLayer) map.getLayers().get(backup1Index);
+        backupLayer2 = (TiledMapTileLayer) map.getLayers().get(backup2Index);
+        backupLayer3 = (TiledMapTileLayer) map.getLayers().get(backup3Index);
+        backupLayer4 = (TiledMapTileLayer) map.getLayers().get(backup4Index);
 
         listOfPlayerTilesToMove = new ArrayList<>();
         fillGridWithArrayListsAndGameObjects();
@@ -83,8 +95,17 @@ public class Grid {
                     gameLogicGrid[x][y].add(holeIndex, new SpecialLayerObject(tiles, holeLayerId));
                 }
 
-                // BackupLayer
-                gameLogicGrid[x][y].add(backupIndex, new NothingSpecial());
+                // BackupLayer 1
+                gameLogicGrid[x][y].add(backup1Index, new NothingSpecial());
+
+                // BackupLayer 2
+                gameLogicGrid[x][y].add(backup2Index, new NothingSpecial());
+
+                // BackupLayer 3
+                gameLogicGrid[x][y].add(backup3Index, new NothingSpecial());
+
+                // BackupLayer 4
+                gameLogicGrid[x][y].add(backup4Index, new NothingSpecial());
 
                 // PlayerLayer
                 gameLogicGrid[x][y].add(playerIndex, new NotAPlayer());
@@ -105,20 +126,24 @@ public class Grid {
         gameLogicGrid[position.getX()][position.getY()].add(playerIndex, new NotAPlayer());
     }
 
-    public void setBackupPosition(PlayerLayerObject playerLayerObject) {
-        Position currentPosition = playerLayerObject.getPosition();
+    public void setBackupPosition(PlayerLayerObject player) {
+        int playerId = player.getId();
+        Position currentPosition = player.getPosition();
         int x = currentPosition.getX();
         int y = currentPosition.getY();
-        TiledMapTile backupTile = playerLayerObject.getBackup().getAvatar();
-        gameLogicGrid[x][y].remove(backupIndex);
-        gameLogicGrid[x][y].add(backupIndex, backupTile);
+        TiledMapTile backupTile = player.getBackup().getAvatar();
+        int backupLayerIndex = backup1Index + playerId;
+
+        gameLogicGrid[x][y].remove(backupLayerIndex);
+        gameLogicGrid[x][y].add(backupLayerIndex, backupTile);
     }
 
-    public void removeBackupPosition(Position position) {
+    public void removeBackupPosition(Position position, int playerId) {
         int x = position.getX();
         int y = position.getY();
-        gameLogicGrid[x][y].remove(backupIndex);
-        gameLogicGrid[x][y].add(backupIndex, new NothingSpecial());
+        int backupLayerIndex = backup1Index + playerId;
+        gameLogicGrid[x][y].remove(backup1Index);
+        gameLogicGrid[x][y].add(backup1Index, new NothingSpecial());
     }
 
 
@@ -205,8 +230,8 @@ public class Grid {
     private boolean isBackupItem(Position position, int backupObjectId) {
         int x = position.getX();
         int y = position.getY();
-        if (backupLayer.getCell(x, y) != null) {
-            TiledMapTile tileAtPosition = backupLayer.getCell(x, y).getTile();
+        if (backupLayer1.getCell(x, y) != null) {
+            TiledMapTile tileAtPosition = backupLayer1.getCell(x, y).getTile();
             return tileAtPosition.getId() == backupObjectId;
         }
         return false;

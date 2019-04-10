@@ -132,6 +132,7 @@ public class PlayScreen implements Screen {
         });
     }
 
+
     public void initializePowerDownButton() {
         Sprite picture = new Sprite(new Texture("assets/mainMenu/PowerDownBtn.png"));
         powerDownButton = new ImageButton(new SpriteDrawable(picture));
@@ -185,7 +186,6 @@ public class PlayScreen implements Screen {
         gamePort.update(width, height);
         stage.setViewport(gamePort);
     }
-
 
     public void initializeCardSelection(Player player) {
         PlayerDeck deck = player.getPlayerDeck();

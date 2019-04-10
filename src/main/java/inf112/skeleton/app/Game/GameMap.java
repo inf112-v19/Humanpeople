@@ -7,6 +7,7 @@ import inf112.skeleton.app.Cards.ProgramType;
 import inf112.skeleton.app.Directions.Direction;
 import inf112.skeleton.app.Directions.Position;
 import inf112.skeleton.app.Directions.StartingPositions;
+import inf112.skeleton.app.GameObjects.FlagLayerObject;
 import inf112.skeleton.app.GameObjects.PlayerLayerObject;
 import inf112.skeleton.app.Player.Player;
 import inf112.skeleton.app.Round.Phase;
@@ -22,7 +23,11 @@ public class GameMap {
     private Grid grid;
     private final TiledMapTileLayer playerLayer;
     private final TiledMapTileLayer specialLayer;
-    private final TiledMapTileLayer backupLayer;
+    private final TiledMapTileLayer flagLayer;
+    private final TiledMapTileLayer backupLayer1;
+    private final TiledMapTileLayer backupLayer2;
+    private final TiledMapTileLayer backupLayer3;
+    private final TiledMapTileLayer backupLayer4;
     private TiledMapTileSet tiles;
     private final int nPlayers;
     private StartingPositions startingPositions;
@@ -42,9 +47,13 @@ public class GameMap {
         this.nPlayers = nPlayers;
         this.startingPositions = new StartingPositions(grid.getWidth(), grid.getHeight());
         this.programCardDeck = new ProgramCardDeck();
-        this.playerLayer = (TiledMapTileLayer) map.getLayers().get(5);
+        this.playerLayer = (TiledMapTileLayer) map.getLayers().get(8);
         this.specialLayer = (TiledMapTileLayer) map.getLayers().get(1);
-        this.backupLayer = (TiledMapTileLayer) map.getLayers().get(4);
+        this.flagLayer = (TiledMapTileLayer) map.getLayers().get(2);
+        this.backupLayer1 = (TiledMapTileLayer) map.getLayers().get(4);
+        this.backupLayer2 = (TiledMapTileLayer) map.getLayers().get(5);
+        this.backupLayer3 = (TiledMapTileLayer) map.getLayers().get(6);
+        this.backupLayer4 = (TiledMapTileLayer) map.getLayers().get(7);
         this.playerTiles = new ArrayList<>();
         initializePlayers();
         this.cardsDealt = true;
@@ -97,11 +106,18 @@ public class GameMap {
 
     public void drawBackup(Player player) {
         Position pos = player.getBackup();
+        int x = pos.getX();
+        int y = pos.getY();
 
         TiledMapTileLayer.Cell avatar = new TiledMapTileLayer.Cell();
         avatar.setTile(player.getBackupAvatar());
 
-        backupLayer.setCell(pos.getX(), pos.getY(), avatar);
+        switch (player.getId()) {
+            case 0: backupLayer1.setCell(x, y, avatar); break;
+            case 1: backupLayer2.setCell(x, y, avatar); break;
+            case 2: backupLayer3.setCell(x, y, avatar); break;
+            case 3: backupLayer4.setCell(x, y, avatar); break;
+        }
     }
 
     public void addPlayerHandToNewRound() {
@@ -169,8 +185,15 @@ public class GameMap {
      */
     public void setBackup(Player player) {
         Position previousBackupPosition = player.getBackup();
-        grid.removeBackupPosition(previousBackupPosition);
-        backupLayer.setCell(previousBackupPosition.getX(), previousBackupPosition.getY(), null);
+        int x = previousBackupPosition.getX();
+        int y = previousBackupPosition.getY();
+        grid.removeBackupPosition(previousBackupPosition, player.getId());
+        switch (player.getId()) {
+            case 0: backupLayer1.setCell(x, y, null); break;
+            case 1: backupLayer2.setCell(x, y, null); break;
+            case 2: backupLayer3.setCell(x, y, null); break;
+            case 3: backupLayer4.setCell(x, y, null); break;
+        }
 
         grid.setBackupPosition(player.getPlayerTile());
         Position currentPosition = player.getPosition();
@@ -285,6 +308,7 @@ public class GameMap {
      */
     public void moveAccordingToConveyorBelt(Player player) {
         Position currentPosition = player.getPosition();
+        Direction currentDirection = player.getDirection();
         int x = currentPosition.getX();
         int y = currentPosition.getY();
 
@@ -313,10 +337,12 @@ public class GameMap {
             grid.setPlayerPosition(player.getPlayerTile());
         }
         else if (grid.isRightGyro(currentPosition)) {
- 
+            Direction newDirection = Direction.rotate(currentDirection, 1);
+            player.setDirection(newDirection);
         }
         else if (grid.isLeftGyro(currentPosition)) {
-
+            Direction newDirection = Direction.rotate(currentDirection, -1);
+            player.setDirection(newDirection);
         }
         playerLayer.setCell(x, y, null);
         drawPlayer(player);
@@ -324,12 +350,18 @@ public class GameMap {
 
     /**
      * If player is standing on flag and another player does not have a backup there already, then set backup
+     * If player is standing on a flag which it CAN visit, then update lastFlagVisited for player
      */
     public void steppedOnFlag() {
         for (Player player : players) {
             if (playerSteppedOnFlag(player)) {
-                if (!grid.isBackup(player.getPosition()))
-                    setBackup(player);
+                Position pos = player.getPosition();
+                int flagId = flagLayer.getCell(pos.getX(), pos.getY()).getTile().getId();
+                FlagLayerObject flag = new FlagLayerObject(flagId);
+                if (flag.canVisit(player)) {
+                    player.visitFlag();
+                }
+                setBackup(player);
             }
         }
     }
@@ -366,7 +398,7 @@ public class GameMap {
                     setAllPlayerHandsChosen(false);
                 }
                 // If round is complete, revive all players for further play
-                restoreDamageTokensAllPlayers();
+                fixPlayers();
                 activatePlayers();
             }
         }
@@ -418,9 +450,10 @@ public class GameMap {
         }
     }
 
-    public void restoreDamageTokensAllPlayers() {
+    public void fixPlayers() {
         for (Player player : players) {
-            player.fix();
+            if (player.isDestroyed())
+                player.fix();
         }
     }
 

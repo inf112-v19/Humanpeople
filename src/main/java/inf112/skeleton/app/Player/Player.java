@@ -17,10 +17,15 @@ public class Player {
     private int health = MAX_HEALTH;
     private int id;
     private PlayerDeck playerDeck;
+
     private boolean isDestroyed;
     private boolean isAlive;
     private boolean active;
+
     private boolean handChosen;
+
+    private int lastFlagVisited;
+
 
     public Player(int id) {
         this.id = id;
@@ -28,10 +33,12 @@ public class Player {
         this.playerDeck = new PlayerDeck();
         this.backup = new Position(id, id);
 
-        handChosen = false;
-        isAlive = true;
-        isDestroyed = false;
-        active = true;
+        this.handChosen = false;
+        this.isAlive = true;
+        this.isDestroyed = false;
+        this.active = true;
+
+        this.lastFlagVisited = 0;
     }
 
 
@@ -59,17 +66,13 @@ public class Player {
         health = MAX_HEALTH;
     }
     /**
-     * If all health are lost then reduce lifeTokens with 1 and restore health
-     * @return
+     * If health is less than 1 player is destroyed
+     * @return true if player has no health
      */
     public boolean lostAllHealth() {
         if (health < 1) {
-           lifeTokens--;
-           if (lifeTokens < 1)
-                isAlive = false;
-           else
-                fix();
-           return true;
+            isDestroyed = true;
+            return true;
         }
         return false;
     }
@@ -84,8 +87,9 @@ public class Player {
      */
     public void destroy() {
         lifeTokens--;
-        if (lifeTokens < 1)
+        if (lifeTokens < 1) {
             isAlive = false;
+        }
         health = 0;
         isDestroyed = true;
     }
@@ -110,7 +114,16 @@ public class Player {
      * A powered down player is now active
      */
     public void activate() {
+        restoreHealth();
         active = true;
+    }
+
+    public int getLastFlagVisited() {
+        return lastFlagVisited;
+    }
+
+    public void visitFlag() {
+        lastFlagVisited++;
     }
 
     public Position getPosition() {
@@ -123,6 +136,10 @@ public class Player {
 
     public Direction getDirection() {
         return playerTile.getDirection();
+    }
+
+    public void setDirection(Direction dir) {
+        playerTile.setDirection(dir);
     }
 
     public PlayerLayerObject getPlayerTile() {
