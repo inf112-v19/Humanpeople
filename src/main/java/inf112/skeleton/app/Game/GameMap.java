@@ -26,6 +26,7 @@ public class GameMap {
     private final TiledMapTileLayer backupLayer2;
     private final TiledMapTileLayer backupLayer3;
     private final TiledMapTileLayer backupLayer4;
+    private final TiledMapTileLayer laserLayer;
     private TiledMapTileSet tiles;
     private final int nPlayers;
     private IStartingPosition startingPositions;
@@ -55,6 +56,7 @@ public class GameMap {
         this.backupLayer2 = (TiledMapTileLayer) map.getLayers().get(5);
         this.backupLayer3 = (TiledMapTileLayer) map.getLayers().get(6);
         this.backupLayer4 = (TiledMapTileLayer) map.getLayers().get(7);
+        this.laserLayer = (TiledMapTileLayer) map.getLayers().get(8);
         this.playerTiles = new ArrayList<>();
         initializePlayers();
         this.cardsDealt = true;
@@ -105,6 +107,7 @@ public class GameMap {
     }
 
     public void drawBackup(Player player) {
+        int playerId = player.getId();
         Position pos = player.getBackup();
         int x = pos.getX();
         int y = pos.getY();
@@ -112,7 +115,7 @@ public class GameMap {
         TiledMapTileLayer.Cell avatar = new TiledMapTileLayer.Cell();
         avatar.setTile(player.getBackupAvatar());
 
-        switch (player.getId()) {
+        switch (playerId) {
             case 0: backupLayer1.setCell(x, y, avatar); break;
             case 1: backupLayer2.setCell(x, y, avatar); break;
             case 2: backupLayer3.setCell(x, y, avatar); break;
@@ -312,25 +315,25 @@ public class GameMap {
         int x = currentPosition.getX();
         int y = currentPosition.getY();
 
-        if (grid.isEastBelt(currentPosition)) {
+        if (grid.isEastBelt(currentPosition) && canGo(Direction.EAST, currentPosition)) {
             Position newPosition = currentPosition.east();
             grid.removePlayerPosition(currentPosition);
             player.setPosition(newPosition);
             grid.setPlayerPosition(player.getPlayerTile());
         }
-        else if (grid.isNorthBelt(currentPosition)) {
+        else if (grid.isNorthBelt(currentPosition) && canGo(Direction.NORTH, currentPosition)) {
             Position newPosition = currentPosition.north();
             grid.removePlayerPosition(currentPosition);
             player.setPosition(newPosition);
             grid.setPlayerPosition(player.getPlayerTile());
         }
-        else if (grid.isSouthBelt(currentPosition)) {
+        else if (grid.isSouthBelt(currentPosition) && canGo(Direction.SOUTH, currentPosition)) {
             Position newPosition = currentPosition.south();
             grid.removePlayerPosition(currentPosition);
             player.setPosition(newPosition);
             grid.setPlayerPosition(player.getPlayerTile());
         }
-        else if (grid.isWestBelt(currentPosition)) {
+        else if (grid.isWestBelt(currentPosition) && canGo(Direction.WEST, currentPosition)) {
             Position newPosition = currentPosition.west();
             grid.removePlayerPosition(currentPosition);
             player.setPosition(newPosition);
@@ -344,6 +347,29 @@ public class GameMap {
             Direction newDirection = Direction.rotate(currentDirection, -1);
             player.setDirection(newDirection);
         }
+        else if (grid.isDoubleNorthBelt(currentPosition) && canGo(Direction.NORTH, currentPosition)) {
+            Position newPosition = currentPosition.north();
+            grid.removePlayerPosition(currentPosition);
+            player.setPosition(newPosition);
+            grid.setPlayerPosition(player.getPlayerTile());
+            if (steppedOnConveyorBelt(player))
+                moveAccordingToConveyorBelt(player);
+        }
+        else if (grid.isDoubleSouthBelt(currentPosition) && canGo(Direction.SOUTH, currentPosition)) {
+            Position newPosition = currentPosition.south();
+            grid.removePlayerPosition(currentPosition);
+            player.setPosition(newPosition);
+            grid.setPlayerPosition(player.getPlayerTile());
+            if (steppedOnConveyorBelt(player))
+                moveAccordingToConveyorBelt(player);
+        }
+        else if (grid.isWestBelt(currentPosition) && canGo(Direction.WEST, currentPosition)) {
+            Position newPosition = currentPosition.west();
+            grid.removePlayerPosition(currentPosition);
+            player.setPosition(newPosition);
+            grid.setPlayerPosition(player.getPlayerTile());
+        }
+
         playerLayer.setCell(x, y, null);
         drawPlayer(player);
     }

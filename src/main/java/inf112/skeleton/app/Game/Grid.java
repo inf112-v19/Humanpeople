@@ -313,13 +313,33 @@ public class Grid {
     }
 
     public boolean isRightGyro(Position position) {
-        int rightGyroId = 6;
+        int rightGyroId = 6; // TODO make asset
         return isConveyorBelt(position, rightGyroId);
     }
 
     public boolean isLeftGyro(Position position) {
-        int leftGyroId = 6;
+        int leftGyroId = 6; // TODO make asset
         return isConveyorBelt(position, leftGyroId);
+    }
+
+    public boolean isDoubleWestBelt(Position position) {
+        int doubleWestBeltId = 6; // TODO make asset
+        return isConveyorBelt(position, doubleWestBeltId);
+    }
+
+    public boolean isDoubleEastBelt(Position position) {
+        int doubleEastBeltId = 6; // TODO make asset
+        return isConveyorBelt(position, doubleEastBeltId);
+    }
+
+    public boolean isDoubleSouthBelt(Position position) {
+        int doubleSouthBeltId = 6; // TODO make asset
+        return isConveyorBelt(position, doubleSouthBeltId);
+    }
+
+    public boolean isDoubleNorthBelt(Position position) {
+        int doubleNorthBeltId = 6; // TODO make asset
+        return isConveyorBelt(position, doubleNorthBeltId);
     }
 
     /**
