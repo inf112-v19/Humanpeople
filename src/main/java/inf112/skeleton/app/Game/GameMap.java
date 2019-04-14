@@ -94,6 +94,10 @@ public class GameMap {
         for (Player player : players) {
             if (player.isAlive())
                 drawPlayer(player);
+
+            else {
+                grid.removePlayerPosition(player.getPosition());
+            }
         }
     }
 
@@ -116,10 +120,18 @@ public class GameMap {
         avatar.setTile(player.getBackupAvatar());
 
         switch (playerId) {
-            case 0: backupLayer1.setCell(x, y, avatar); break;
-            case 1: backupLayer2.setCell(x, y, avatar); break;
-            case 2: backupLayer3.setCell(x, y, avatar); break;
-            case 3: backupLayer4.setCell(x, y, avatar); break;
+            case 0:
+                backupLayer1.setCell(x, y, avatar);
+                break;
+            case 1:
+                backupLayer2.setCell(x, y, avatar);
+                break;
+            case 2:
+                backupLayer3.setCell(x, y, avatar);
+                break;
+            case 3:
+                backupLayer4.setCell(x, y, avatar);
+                break;
         }
     }
 
@@ -192,10 +204,18 @@ public class GameMap {
         int y = previousBackupPosition.getY();
         grid.removeBackupPosition(previousBackupPosition, player.getId());
         switch (player.getId()) {
-            case 0: backupLayer1.setCell(x, y, null); break;
-            case 1: backupLayer2.setCell(x, y, null); break;
-            case 2: backupLayer3.setCell(x, y, null); break;
-            case 3: backupLayer4.setCell(x, y, null); break;
+            case 0:
+                backupLayer1.setCell(x, y, null);
+                break;
+            case 1:
+                backupLayer2.setCell(x, y, null);
+                break;
+            case 2:
+                backupLayer3.setCell(x, y, null);
+                break;
+            case 3:
+                backupLayer4.setCell(x, y, null);
+                break;
         }
 
         grid.setBackupPosition(player.getPlayerTile());
@@ -296,6 +316,7 @@ public class GameMap {
 
     /**
      * Checks if player is standing on a conveyor belt or a gyro
+     *
      * @param player
      * @return true if standing on belt or gyro
      */
@@ -306,6 +327,7 @@ public class GameMap {
 
     /**
      * Checks what type of conveyor belt the player is standing on and moves the player accordingly
+     *
      * @param player
      * @return list of program cards for player to move
      */
@@ -320,50 +342,42 @@ public class GameMap {
             grid.removePlayerPosition(currentPosition);
             player.setPosition(newPosition);
             grid.setPlayerPosition(player.getPlayerTile());
-        }
-        else if (grid.isNorthBelt(currentPosition) && canGo(Direction.NORTH, currentPosition)) {
+        } else if (grid.isNorthBelt(currentPosition) && canGo(Direction.NORTH, currentPosition)) {
             Position newPosition = currentPosition.north();
             grid.removePlayerPosition(currentPosition);
             player.setPosition(newPosition);
             grid.setPlayerPosition(player.getPlayerTile());
-        }
-        else if (grid.isSouthBelt(currentPosition) && canGo(Direction.SOUTH, currentPosition)) {
+        } else if (grid.isSouthBelt(currentPosition) && canGo(Direction.SOUTH, currentPosition)) {
             Position newPosition = currentPosition.south();
             grid.removePlayerPosition(currentPosition);
             player.setPosition(newPosition);
             grid.setPlayerPosition(player.getPlayerTile());
-        }
-        else if (grid.isWestBelt(currentPosition) && canGo(Direction.WEST, currentPosition)) {
+        } else if (grid.isWestBelt(currentPosition) && canGo(Direction.WEST, currentPosition)) {
             Position newPosition = currentPosition.west();
             grid.removePlayerPosition(currentPosition);
             player.setPosition(newPosition);
             grid.setPlayerPosition(player.getPlayerTile());
-        }
-        else if (grid.isRightGyro(currentPosition)) {
+        } else if (grid.isRightGyro(currentPosition)) {
             Direction newDirection = Direction.rotate(currentDirection, 1);
             player.setDirection(newDirection);
-        }
-        else if (grid.isLeftGyro(currentPosition)) {
+        } else if (grid.isLeftGyro(currentPosition)) {
             Direction newDirection = Direction.rotate(currentDirection, -1);
             player.setDirection(newDirection);
-        }
-        else if (grid.isDoubleNorthBelt(currentPosition) && canGo(Direction.NORTH, currentPosition)) {
+        } else if (grid.isDoubleNorthBelt(currentPosition) && canGo(Direction.NORTH, currentPosition)) {
             Position newPosition = currentPosition.north();
             grid.removePlayerPosition(currentPosition);
             player.setPosition(newPosition);
             grid.setPlayerPosition(player.getPlayerTile());
             if (steppedOnConveyorBelt(player))
                 moveAccordingToConveyorBelt(player);
-        }
-        else if (grid.isDoubleSouthBelt(currentPosition) && canGo(Direction.SOUTH, currentPosition)) {
+        } else if (grid.isDoubleSouthBelt(currentPosition) && canGo(Direction.SOUTH, currentPosition)) {
             Position newPosition = currentPosition.south();
             grid.removePlayerPosition(currentPosition);
             player.setPosition(newPosition);
             grid.setPlayerPosition(player.getPlayerTile());
             if (steppedOnConveyorBelt(player))
                 moveAccordingToConveyorBelt(player);
-        }
-        else if (grid.isWestBelt(currentPosition) && canGo(Direction.WEST, currentPosition)) {
+        } else if (grid.isWestBelt(currentPosition) && canGo(Direction.WEST, currentPosition)) {
             Position newPosition = currentPosition.west();
             grid.removePlayerPosition(currentPosition);
             player.setPosition(newPosition);
@@ -445,7 +459,88 @@ public class GameMap {
     public void endOfPhaseChecks() {
         steppedOnFlag();
         moveConveyorBelts();
+        fireLasers();
         //removeDeadPlayers();
+    }
+
+    /**
+     * Fire both player and board lasers
+     */
+    public void fireLasers() {
+
+        for (Player player : players) {
+            Position startPos = player.getPosition();
+            Direction dir = player.getDirection();
+            int distance = getTargetDistance(startPos, dir);
+            drawLaser(distance, startPos, dir);
+        }
+    }
+
+    /** Draw laser tiles from startPos as far as distance
+     * @param distance the laser can travel unhindered
+     * @param startPos of the laser
+     * @param dir      of the laser
+     */
+    public void drawLaser(int distance, Position startPos, Direction dir) {
+        System.out.println("DISTANCE: " + distance);
+        System.out.println();
+
+
+        //TODO lage laser asset som tegnes her
+//        TiledMapTileLayer.Cell laser = new TiledMapTileLayer.Cell();
+//        laser.setTile();
+//        playerLayer.setCell(pos.getX(), pos.getY(), laser);
+    }
+
+    /**
+     * The distance the laser has to be drawn. Returns as soon as it has found a wall or a player.
+     * If player is found, deal damage.
+     * @param pos
+     * @param dir
+     * @return distance to target
+     */
+    public int getTargetDistance(Position pos, Direction dir) {
+        int distance = 0;
+
+        while (grid.canFire(pos, dir)) {
+            switch (dir) {
+                case NORTH:
+                    pos = pos.north();
+                    break;
+                case SOUTH:
+                    pos = pos.south();
+                    break;
+                case EAST:
+                    pos = pos.east();
+                    break;
+                case WEST:
+                    pos = pos.west();
+                    break;
+            }
+
+            if (grid.hasPlayer(pos)) {
+                System.out.println("TRYING TO HIT PLAYER");
+                try {
+                    getPlayerFromPosition(pos).damagePlayer(1);
+                    System.out.println("PLAYER " + getPlayerFromPosition(pos).getPlayerTile().getColor() + " GOT BLASTED");
+                } catch (IllegalArgumentException e) {
+                    System.out.println("THE PLAYER IS DEAD");
+                }
+                return distance;
+            }
+            distance++;
+        }
+        System.out.println("WALL");
+        return distance;
+    }
+
+    public Player getPlayerFromPosition(Position pos) {
+        if (grid.hasPlayer(pos))
+            for (Player player : players) {
+                if (player.getPosition().equals(pos))
+                    return player;
+            }
+        throw new IllegalArgumentException("Position must have a player");
     }
 
     /**

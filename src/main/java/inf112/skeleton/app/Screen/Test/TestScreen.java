@@ -129,6 +129,16 @@ public class TestScreen implements Screen {
                 cardsForPlayer.add(backUp);
                 System.out.println("selected: " + cardsForPlayer.size() + "/" + 5);
             }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.H)) {
+                System.out.println("LASER");
+                gameMap.fireLasers();
+            }
+            if(Gdx.input.isKeyJustPressed(Input.Keys.J)) {
+                for (Player player : gameMap.getPlayers()) {
+                    player.printStatus();
+                    System.out.println();
+                }
+            }
         }
         //Test of movement according to program cards (using movePlayer() for testing
         else if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {

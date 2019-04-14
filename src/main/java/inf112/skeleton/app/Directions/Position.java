@@ -32,4 +32,10 @@ public class Position {
     public Position west() {
         return new Position(x - 1, y);
     }
+
+    @Override
+    public boolean equals(Object o){
+        Position pos = (Position) o;
+        return pos.getX() == this.getX() && pos.getY() == this.getY();
+    }
 }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.maps.tiled.*;
 import inf112.skeleton.app.GameObjects.*;
 import inf112.skeleton.app.Directions.Direction;
 import inf112.skeleton.app.Directions.Position;
+import inf112.skeleton.app.Player.Player;
 
 import java.util.ArrayList;
 
@@ -82,7 +83,7 @@ public class Grid {
                 gameLogicGrid[x][y].add(specialIndex, new NothingSpecial());
 
                 // Flag layer
-                TiledMapTileLayer.Cell flagCell = flagLayer.getCell(x,y);
+                TiledMapTileLayer.Cell flagCell = flagLayer.getCell(x, y);
                 if (flagCell == null)
                     gameLogicGrid[x][y].add(flagIndex, new NothingSpecial());
                 else {
@@ -91,7 +92,7 @@ public class Grid {
                 }
 
                 // Hole layer
-                TiledMapTileLayer.Cell holeCell = holeLayer.getCell(x,y);
+                TiledMapTileLayer.Cell holeCell = holeLayer.getCell(x, y);
                 if (holeCell == null)
                     gameLogicGrid[x][y].add(holeIndex, new NothingSpecial());
                 else {
@@ -167,7 +168,7 @@ public class Grid {
      */
     public void AllowedToMoveInDirection(Direction dir, Position pos) {
         GameObject groundLayerObject = (GameObject) gameLogicGrid[pos.getX()][pos.getY()].get(groundIndex);
-        if (groundLayerObject.canGo(dir) ) {
+        if (groundLayerObject.canGo(dir)) {
             listOfPlayerTilesToMove.add((PlayerLayerObject) gameLogicGrid[pos.getX()][pos.getY()].get(playerIndex));
             Position positionInDir;
             switch (dir) {
@@ -216,6 +217,7 @@ public class Grid {
 
     /**
      * Checks if tile at given position is a backup
+     *
      * @param position
      * @return true if tile has backup
      */
@@ -230,6 +232,7 @@ public class Grid {
 
     /**
      * Checks if given backup object is located at given position
+     *
      * @param position
      * @param backupObjectId
      * @return
@@ -246,6 +249,7 @@ public class Grid {
 
     /**
      * Checks if tile at given position is a hole
+     *
      * @param position
      * @return
      */
@@ -253,7 +257,7 @@ public class Grid {
         int holeId = 6;
         int x = position.getX();
         int y = position.getY();
-        if (holeLayer.getCell(x,y) != null) {
+        if (holeLayer.getCell(x, y) != null) {
             TiledMapTile tileAtPosition = holeLayer.getCell(x, y).getTile();
             return tileAtPosition.getId() == holeId;
         }
@@ -262,6 +266,7 @@ public class Grid {
 
     /**
      * Checks if tile at given position is a flag
+     *
      * @param position
      * @return
      */
@@ -274,6 +279,7 @@ public class Grid {
 
     /**
      * Checks if given flag object is located at given position
+     *
      * @param position
      * @param flagObjectId
      * @return
@@ -281,7 +287,7 @@ public class Grid {
     private boolean isFlagItem(Position position, int flagObjectId) {
         int x = position.getX();
         int y = position.getY();
-        if (flagLayer.getCell(x,y) != null) {
+        if (flagLayer.getCell(x, y) != null) {
             TiledMapTile tileAtPosition = flagLayer.getCell(x, y).getTile();
             return tileAtPosition.getId() == flagObjectId;
         }
@@ -343,7 +349,6 @@ public class Grid {
     }
 
     /**
-     *
      * @param position
      * @param conveyorId
      * @return true if the given conveyor belt id matches the tile at the given position
@@ -351,7 +356,7 @@ public class Grid {
     public boolean isConveyorBelt(Position position, int conveyorId) {
         int x = position.getX();
         int y = position.getY();
-        if (specialLayer.getCell(x,y) != null) {
+        if (specialLayer.getCell(x, y) != null) {
             TiledMapTile tileAtPosition = specialLayer.getCell(x, y).getTile();
             return tileAtPosition.getId() == conveyorId;
         }
@@ -365,4 +370,42 @@ public class Grid {
     public int getHeight() {
         return height;
     }
+
+    public boolean canFire(Position pos, Direction dir){
+        GameObject groundLayerObject = (GameObject) gameLogicGrid[pos.getX()][pos.getY()].get(groundIndex);
+        return groundLayerObject.canGo(dir) && pos.getX() < getWidth() && pos.getY() < getHeight();
+    }
+
+    public boolean hasPlayer(Position pos){
+        GameObject playerLayerObject = (GameObject) gameLogicGrid[pos.getX()][pos.getY()].get(playerIndex);
+        return playerLayerObject instanceof PlayerLayerObject;
+    }
+
+    /**
+     * @return distance to target
+     */
+//    public int getTargetDistance(Position pos, Direction dir) {
+//        int distance = 0;
+//
+//        while(canFire(pos, dir)) {
+//            switch (dir) {
+//                case NORTH: pos = pos.north();
+//                    break;
+//                case SOUTH: pos = pos.south();
+//                    break;
+//                case EAST: pos = pos.east();
+//                    break;
+//                case WEST: pos = pos.west();
+//                    break;
+//            }
+//            if(hasPlayer(pos)) {
+//                System.out.println("PLAYER");
+//                return distance;
+//            }
+//
+//            distance++;
+//        }
+//        System.out.println("WALL");
+//        return distance;
+//    }
 }
