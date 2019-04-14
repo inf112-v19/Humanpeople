@@ -410,7 +410,7 @@ public class GameMap {
      * Checks if player is stepping on a flag
      *
      * @param player
-     * @return true if player is in hole
+     * @return true if player is in flag
      */
     public boolean playerSteppedOnFlag(Player player) {
         Position currentPosition = player.getPosition();
@@ -418,6 +418,7 @@ public class GameMap {
     }
 
     public void preformNextMovement() {
+        checkBoardLasers();
         returnDestroyedPlayersToBackup();
 
         if (round.allPhasesAddedToRound()) {
@@ -473,6 +474,20 @@ public class GameMap {
             Direction dir = player.getDirection();
             int distance = getTargetDistance(startPos, dir);
             drawLaser(distance, startPos, dir);
+        }
+    }
+
+    /**
+     * Checks if any players are hit by the board lasers.
+     * Deals 1 damage if they are.
+     */
+    public void checkBoardLasers(){
+        for (Player player : players) {
+            Position pos = player.getPosition();
+            if(grid.isLaser(pos)){
+                System.out.println("DAMAGE BOARD LASER " + player.getPlayerTile().getColor());
+                player.damagePlayer(1);
+            }
         }
     }
 

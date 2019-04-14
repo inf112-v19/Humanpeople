@@ -116,7 +116,15 @@ public class Grid {
                 gameLogicGrid[x][y].add(playerIndex, new NotAPlayer());
 
                 // Laser layer
-                gameLogicGrid[x][y].add(laserIndex, new NothingSpecial());
+//                gameLogicGrid[x][y].add(laserIndex, new NothingSpecial());
+
+                TiledMapTileLayer.Cell laserCell = laserLayer.getCell(x, y);
+                if (laserCell == null)
+                    gameLogicGrid[x][y].add(laserIndex, new NothingSpecial());
+                else {
+                    int laserLayerId = laserCell.getTile().getId();
+                    gameLogicGrid[x][y].add(laserIndex, new LaserLayerObject(tiles, laserLayerId));
+                }
             }
         }
     }
@@ -264,6 +272,18 @@ public class Grid {
         return false;
     }
 
+    public boolean isLaser(Position pos){
+        int laserId = 9;
+        int x = pos.getX();
+        int y = pos.getY();
+
+        if (laserLayer.getCell(x, y) != null) {
+            TiledMapTile tileAtPosition = laserLayer.getCell(x, y).getTile();
+            return tileAtPosition.getId() == laserId;
+        }
+        return false;
+    }
+
     /**
      * Checks if tile at given position is a flag
      *
@@ -371,41 +391,24 @@ public class Grid {
         return height;
     }
 
+    /**
+     *
+     * @param pos
+     * @param dir
+     * @return true if the laser can travel one tile from position pos in direction dir
+     */
     public boolean canFire(Position pos, Direction dir){
         GameObject groundLayerObject = (GameObject) gameLogicGrid[pos.getX()][pos.getY()].get(groundIndex);
         return groundLayerObject.canGo(dir) && pos.getX() < getWidth() && pos.getY() < getHeight();
     }
 
+    /**
+     *
+     * @param pos
+     * @return true if there is a player in the position
+     */
     public boolean hasPlayer(Position pos){
         GameObject playerLayerObject = (GameObject) gameLogicGrid[pos.getX()][pos.getY()].get(playerIndex);
         return playerLayerObject instanceof PlayerLayerObject;
     }
-
-    /**
-     * @return distance to target
-     */
-//    public int getTargetDistance(Position pos, Direction dir) {
-//        int distance = 0;
-//
-//        while(canFire(pos, dir)) {
-//            switch (dir) {
-//                case NORTH: pos = pos.north();
-//                    break;
-//                case SOUTH: pos = pos.south();
-//                    break;
-//                case EAST: pos = pos.east();
-//                    break;
-//                case WEST: pos = pos.west();
-//                    break;
-//            }
-//            if(hasPlayer(pos)) {
-//                System.out.println("PLAYER");
-//                return distance;
-//            }
-//
-//            distance++;
-//        }
-//        System.out.println("WALL");
-//        return distance;
-//    }
 }
