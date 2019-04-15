@@ -138,4 +138,11 @@
   - Gjennomgang av referat fra kundemøte
   - Opprettet klassediagram
   - Planlegger neste iterasjon på neste møte
-  - Neste møte: 
+  - Neste møte: 09.04.2019
+ 
+ ### Referat møte 09.04.2019
+  - Oppmøte: alle
+  - Oppretter arbeidsoppgaver for siste iterasjon
+  - Fordeling av arbeidsoppgaver
+  - Alle satte arbeidsoppgaver skal være gjennomført til neste møte
+  - Neste møte: 23.04.2019
