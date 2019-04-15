@@ -120,7 +120,7 @@
  - Merging av alle nye implementasjoner
  - Neste møte: 28.03.2019
  
- ### Referat møte 
+ ### Referat møte 28.03.2019
   - Oppmøte: Sondre, Matias, Eirik
   - Fellesskriving av oblig 4
   - Ferdigskrevet draft
@@ -143,6 +143,17 @@
  ### Referat møte 09.04.2019
   - Oppmøte: alle
   - Oppretter arbeidsoppgaver for siste iterasjon
+   * Laser
+   * Flere backups på en tile
+   * Endgame
+   * Skademeksanisme
+   * Kortstokk utdeling
+   * Spiller kan dø
+   * Tannhjul
+   * Bevegelse ut i fra prioritet
+   * Transportbånd
+   * Power Down
+   * LAN
   - Fordeling av arbeidsoppgaver
   - Alle satte arbeidsoppgaver skal være gjennomført til neste møte
   - Neste møte: 23.04.2019
