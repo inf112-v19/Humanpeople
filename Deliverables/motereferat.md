@@ -143,17 +143,17 @@
  ### Referat møte 09.04.2019
   - Oppmøte: alle
   - Oppretter arbeidsoppgaver for siste iterasjon
-   * Laser
-   * Flere backups på en tile
-   * Endgame
-   * Skademeksanisme
-   * Kortstokk utdeling
-   * Spiller kan dø
-   * Tannhjul
-   * Bevegelse ut i fra prioritet
-   * Transportbånd
-   * Power Down
-   * LAN
+    * Laser
+    * Flere backups på en tile
+    * Endgame
+    * Skademeksanisme
+    * Kortstokk utdeling
+    * Spiller kan dø
+    * Tannhjul
+    * Bevegelse ut i fra prioritet
+    * Transportbånd
+    * Power Down
+    * LAN
   - Fordeling av arbeidsoppgaver
   - Alle satte arbeidsoppgaver skal være gjennomført til neste møte
   - Neste møte: 23.04.2019
