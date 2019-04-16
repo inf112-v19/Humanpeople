@@ -39,25 +39,26 @@ public class UserInterface {
     private float height;
     private Player player;
 
-    public UserInterface(float width, float height, Player player){
-    this.height = height;
-    this.width = width;
-    this.player = player;
-    stage = new Stage();
+    public UserInterface(float width, float height, Player player) {
+        this.height = height;
+        this.width = width;
+        this.player = player;
+        stage = new Stage();
 
-    initializePlayButton();
-    initializePowerDownButton();
-    initializeCardSlots();
+        initializePlayButton();
+        initializePowerDownButton();
+        initializeCardSlots();
     }
 
-    public Player getPlayer(){
+    public Player getPlayer() {
         return player;
     }
 
-    public Stage getStage(){
+    public Stage getStage() {
         return stage;
     }
-    public void initializeCardSlots(){
+
+    private void initializeCardSlots() {
         //Creates the slot bars
         Sprite picture = new Sprite(new Texture("assets/hand/hand5v3.png"));
         cardSlotsBottom = new Image(new SpriteDrawable(picture));
@@ -79,28 +80,29 @@ public class UserInterface {
         cardSlotsMid.setPosition(width / 2, height - (picture.getHeight() + 25) * 2);
     }
 
-    public void initializePlayButton() {
+    private void initializePlayButton() {
         Sprite picture = new Sprite(new Texture("assets/mainMenu/playBtn.png"));
         playButton = new ImageButton(new SpriteDrawable(picture));
-        playButton.setWidth(picture.getWidth()/2);
+        playButton.setWidth(picture.getWidth() / 2);
         playButton.setHeight((picture.getHeight() - 5) / 2);
         playButton.setPosition((int) (width / 1.7), height / 2 - picture.getHeight() - 4);
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                for (int i = 0; i < chosenCards.length; i++) {
-                    if (chosenCards[i] == null) {
-                        System.out.println("Choose " + (chosenCards.length - i) + " more cards");
-                        return;
-                    }
-                }
+                int count = 0;
+                for (int i = 0; i < chosenCards.length; i++)
+                    if (chosenCards[i] == null)
+                        count++;
 
-//                Player player = gameMap.getPlayers().get(0);
+
+                if (count > 0) {
+                    System.out.println("Choose " + (count) + " more cards");
+                    return;
+                }
 
                 if (!player.getHandChosen()) {
                     System.out.println("Cards selected");
                     ArrayList<ProgramCard> list = new ArrayList<ProgramCard>(Arrays.asList(chosenCards));
-
                     player.getPlayerDeck().setPlayerHand(list);
                     player.setHandChosen(true);
                 }
@@ -108,19 +110,18 @@ public class UserInterface {
         });
     }
 
-    public void initializePowerDownButton() {
+    private void initializePowerDownButton() {
         Sprite picture = new Sprite(new Texture("assets/mainMenu/PowerDownBtn.png"));
         powerDownButton = new ImageButton(new SpriteDrawable(picture));
-        powerDownButton.setWidth(picture.getWidth()/2);
+        powerDownButton.setWidth(picture.getWidth() / 2);
         powerDownButton.setHeight((picture.getHeight() - 5) / 2);
         powerDownButton.setPosition((int) (width / 1.3), height / 2 - picture.getHeight() - 4);
         powerDownButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-//                Player player = gameMap.getPlayers().get(0);
                 player.powerDown();
                 player.setHandChosen(true);
-                System.out.println("kake");
+                System.out.println("POWER DOWN FOR PLAYER " + player.getPlayerTile().getColor());
             }
         });
     }
@@ -171,43 +172,77 @@ public class UserInterface {
         }
     }
 
-    public void cardListener(Image cardImage) {
+    private void cardListener(Image cardImage) {
         //Coordinates for card drop zone
-        float xLimit = width / 2;
         float yLimit = height / 3;
 
         //Coordinates for dropped card
         ProgramCard programCard = cardMap.get(cardImage);
-        float x = cardImage.getX() + cardImage.getWidth()/2;
+        float x = cardImage.getX() + cardImage.getWidth() / 2;
         float y = cardImage.getTop() - cardImage.getHeight() / 2;
+        int index = 0;
 
-        for(int i = 0; i < pos.length; i++) {
-            if (x > pos[i].getX()-cardImage.getWidth()/2 && x < pos[i].getX()+cardImage.getWidth() && y < yLimit && !programCard.isMarked()) {
-//                    if (chosenCards[i] == null) {
+        //If card is already in the selected list, reset its position
+        if (programCard.isMarked()) {
+            index = getIndex(programCard);
+            chosenCards[index] = null;
+        }
 
-                //Reset card already there
-                if(chosenCards[i] != null) {
+        for (int i = 0; i < pos.length; i++) {
+            //If inside the zone
+            if (x > pos[i].getX() - cardImage.getWidth() / 2 && x < pos[i].getX() + cardImage.getWidth()
+                    && y < yLimit) {
+
+                //If overlap, reset card in the selected list when current card comes from deck
+                if (chosenCards[i] != null && !programCard.isMarked()) {
                     Image im = imageMap.get(chosenCards[i]);
                     im.setPosition(im.getOriginX(), im.getOriginY());
                     chosenCards[i].setMarked(false);
+
+                    //If overlap and current card comes from selected list, switch places with card already there
+                } else if (chosenCards[i] != null && !chosenCards[i].equals(programCard) && programCard.isMarked()) {
+                    Image other = imageMap.get(chosenCards[i]);
+
+                    //Save the current cards old position
+                    Position oldPos = pos[index];
+
+                    //Set other card to current cards old position
+                    other.setPosition(oldPos.getX(), oldPos.getY());
+                    chosenCards[index] = cardMap.get(other);
                 }
-                //Set new card
+
+                //Set new card to the new position
                 cardImage.setPosition(pos[i].getX(), pos[i].getY());
                 programCard.setMarked(true);
                 chosenCards[i] = programCard;
                 return;
             }
-            else {
-                cardImage.setPosition(cardImage.getOriginX(), cardImage.getOriginY());
-                programCard.setMarked(false);
-                for (int k = 0; k < chosenCards.length; k++) {
-                    if (chosenCards[k] != null && chosenCards[k].equals(programCard)) {
-                        chosenCards[k] = null;
-                        return;
-                    }
-                }
+        }
+
+        cardImage.setPosition(cardImage.getOriginX(), cardImage.getOriginY());
+        programCard.setMarked(false);
+        for (int k = 0; k < chosenCards.length; k++) {
+            if (chosenCards[k] != null && chosenCards[k].equals(programCard)) {
+                chosenCards[k] = null;
+                return;
             }
         }
+    }
+
+    private int getIndex(ProgramCard card) {
+        for (int i = 0; i < chosenCards.length; i++) {
+            if (chosenCards[i] != null && chosenCards[i].equals(card))
+                return i;
+        }
+        return -1;
+    }
+
+    private Position getPosition(ProgramCard card) {
+        for (int i = 0; i < chosenCards.length; i++) {
+            if (chosenCards[i].equals(card))
+                return pos[i];
+        }
+        return null;
     }
 
     public void prepareNextRound() {
