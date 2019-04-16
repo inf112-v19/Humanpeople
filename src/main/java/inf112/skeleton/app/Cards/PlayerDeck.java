@@ -46,7 +46,6 @@ public class PlayerDeck {
         hand.add(programCard);
     }
 
-<<<<<<< HEAD
     /**'
      * Takes a card from the hand at index, and puts it back in deck. Removes from hand
      * @param cardInHandNumber
@@ -58,8 +57,7 @@ public class PlayerDeck {
         hand.remove(cardInHandNumber);
         deck.add(programCard);
     }
-=======
->>>>>>> master
+
     /**
      * Get the next card form hand
      * If no cards left on hand then throw NoSuchElementException
@@ -120,7 +118,6 @@ public class PlayerDeck {
         return hand.size();
     }
 
-<<<<<<< HEAD
     /**
      *
      * @param index
@@ -133,7 +130,7 @@ public class PlayerDeck {
     public ArrayList<ProgramCard> getHand() {
         return hand;
     }
-=======
+
     public void setPlayerHand(ArrayList<ProgramCard> hand) {
         this.hand = hand;
     }
@@ -142,6 +139,4 @@ public class PlayerDeck {
         return deck.get(i);
     }
 
-
->>>>>>> master
 }
