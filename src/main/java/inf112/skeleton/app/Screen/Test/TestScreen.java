@@ -11,25 +11,25 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import inf112.skeleton.app.Cards.ProgramCard;
 import inf112.skeleton.app.Cards.ProgramType;
-import inf112.skeleton.app.GameMap;
-import inf112.skeleton.app.GameObjects.Directions.Direction;
-import inf112.skeleton.app.Player;
-import inf112.skeleton.app.RoboRally;
-import inf112.skeleton.app.Scenes.Hud;
+import inf112.skeleton.app.Game.GameMap;
+import inf112.skeleton.app.Directions.Direction;
+import inf112.skeleton.app.Player.Player;
+import inf112.skeleton.app.Game.RoboRally;
 
-import java.sql.SQLOutput;
+import java.util.ArrayList;
 
 public class TestScreen implements Screen {
 
     private RoboRally game;
     private OrthographicCamera gameCam;
     private Viewport gamePort;
-    private Hud hud;
 
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private GameMap gameMap;
     private float time = 0;
+    private float tickTime = 0;
+
     ProgramCard move1;
     ProgramCard move2;
     ProgramCard move3;
@@ -38,95 +38,145 @@ public class TestScreen implements Screen {
     ProgramCard backUp;
     ProgramCard uTurn;
 
+    ArrayList<ProgramCard> cardsForPlayer;
+
+    private int numberOfPlayers;
+    private boolean infoShowed;
+
+
     public TestScreen(RoboRally game) {
+        cardsForPlayer = new ArrayList<>();
+        numberOfPlayers = 4;
         this.game = game;
         this.gameCam = new OrthographicCamera();
         this.gamePort = new FitViewport(RoboRally.width, RoboRally.height, gameCam);
-        this.hud = new Hud(game.batch);
-        this.gameMap = new GameMap("assets/map3.tmx", 4);
+        this.gameMap = new GameMap("assets/map3.tmx", numberOfPlayers);
         this.map = gameMap.getMap();
         this.renderer = new OrthogonalTiledMapRenderer(map);
-
         gameCam.position.set(gamePort.getWorldWidth() / 2, (gamePort.getWorldHeight() / 2), 0);
 
+
         //Every program card type
-        move1 = new ProgramCard(ProgramType.MOVE1, 0, "" );
-        move2 = new ProgramCard(ProgramType.MOVE2, 0, "" );
-        move3 = new ProgramCard(ProgramType.MOVE3, 0, "" );
-        right = new ProgramCard(ProgramType.ROTATERIGHT, 0, "" );
-        left = new ProgramCard(ProgramType.ROTATELEFT, 0, "" );
-        backUp = new ProgramCard(ProgramType.BACKUP, 0, "" );
-        uTurn = new ProgramCard(ProgramType.UTURN, 0, "" );
+        move1 = new ProgramCard(ProgramType.MOVE1, 0, "");
+        move2 = new ProgramCard(ProgramType.MOVE2, 0, "");
+        move3 = new ProgramCard(ProgramType.MOVE3, 0, "");
+
+
+        right = new ProgramCard(ProgramType.ROTATERIGHT, 0, "");
+        left = new ProgramCard(ProgramType.ROTATELEFT, 0, "");
+        backUp = new ProgramCard(ProgramType.BACKWARD, 0, "");
+        uTurn = new ProgramCard(ProgramType.UTURN, 0, "");
+
+
+        //setter id-en til 0 for å flytte spilleren med id 0
+        move1.setPlayerThatPlayedTheCard(0);
+        move2.setPlayerThatPlayedTheCard(0);
+        move3.setPlayerThatPlayedTheCard(0);
+        right.setPlayerThatPlayedTheCard(0);
+        left.setPlayerThatPlayedTheCard(0);
+        backUp.setPlayerThatPlayedTheCard(0);
+        uTurn.setPlayerThatPlayedTheCard(0);
+
+        infoShowed = false;
+
     }
 
     public void update(float deltaTime) {
-        handleInput(deltaTime);
+        handleInput();
         updateMap();
-    }
 
-
-    public void handleInput(float deltaTime) {
-        time += deltaTime;
-
-        //Test of movement according to program cards (using movePlayer() for testing)
-        if (Gdx.input.isKeyPressed(Input.Keys.NUM_1) && time > 0.2){
-            time = 0;
-            gameMap.movePlayer(0, move1);
-            getInfo(move1);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.NUM_2) && time > 0.2){
-            time = 0;
-            gameMap.movePlayer(0, move2);
-            getInfo(move2);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.NUM_3) && time > 0.2){
-            time = 0;
-            gameMap.movePlayer(0, move3);
-            getInfo(move3);
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.R) && time > 0.2){
-            time = 0;
-            gameMap.movePlayer(0, right);
-            getInfo(right);
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.L) && time > 0.2){
-            time = 0;
-            gameMap.movePlayer(0, left);
-            getInfo(left);
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.U) && time > 0.2){
-            time = 0;
-            gameMap.movePlayer(0, uTurn);
-            getInfo(uTurn);
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.B) && time > 0.2){
-            time = 0;
-            gameMap.movePlayer(0, backUp);
-            getInfo(backUp);
+        tickTime += deltaTime;
+        if (tickTime > 0.2) {
+            tickTime = 0;
+            gameMap.preformNextMovement();
+            //TODO få getInfo til å virke på en fornuftig måte
+//            getInfo();
         }
     }
 
-    private void getInfo(ProgramCard card){
-        //Get information from controlled tile
+
+    public void handleInput() {
+        if (!infoShowed) {
+            infoShowed = true;
+            System.out.println("\nSelect 5:\n1 = move1\n2 = move2\n3 = move3\nr = rotateRight\nl = rotateLeft\nu = uTurn\nb = backup\n\nSpace = Confirm");
+        }
+        if (cardsForPlayer.size() != 5) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
+                cardsForPlayer.add(move1);
+                System.out.println("selected: " + cardsForPlayer.size() + "/" + 5);
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
+                cardsForPlayer.add(move2);
+                System.out.println("selected: " + cardsForPlayer.size() + "/" + 5);
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)) {
+                cardsForPlayer.add(move3);
+                System.out.println("selected: " + cardsForPlayer.size() + "/" + 5);
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
+                cardsForPlayer.add(right);
+                System.out.println("selected: " + cardsForPlayer.size() + "/" + 5);
+            }
+
+            if (Gdx.input.isKeyJustPressed(Input.Keys.L)) {
+                cardsForPlayer.add(left);
+                System.out.println("selected: " + cardsForPlayer.size() + "/" + 5);
+            }
+
+            if (Gdx.input.isKeyJustPressed(Input.Keys.U)) {
+                cardsForPlayer.add(uTurn);
+                System.out.println("selected: " + cardsForPlayer.size() + "/" + 5);
+            }
+
+            if (Gdx.input.isKeyJustPressed(Input.Keys.B)) {
+                cardsForPlayer.add(backUp);
+                System.out.println("selected: " + cardsForPlayer.size() + "/" + 5);
+            }
+        }
+        //Test of movement according to program cards (using movePlayer() for testing
+        else if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            gameMap.getPlayers().get(0).getPlayerDeck().setPlayerHand(cardsForPlayer);
+            givePlayersRotateHand();
+            gameMap.addPlayerHandToNewRound();
+            cardsForPlayer.clear();
+            infoShowed = false;
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
+            getInfo();
+        }
+    }
+
+    public void givePlayersRotateHand() {
+        for (int i = 1; i < numberOfPlayers; i++) {
+            ArrayList<ProgramCard> temp = new ArrayList<>();
+            ProgramCard card = new ProgramCard(ProgramType.ROTATERIGHT, i, "");
+            card.setPlayerThatPlayedTheCard(i);
+            for (int z = 0; z < 5; z++) {
+                temp.add(card);
+            }
+            gameMap.getPlayers().get(i).getPlayerDeck().setPlayerHand(temp);
+        }
+    }
+
+    private void getInfo() {
+        //Get information from controlled tile:
         System.out.println("-------------------");
         System.out.println("CONTROLLED TILE: ");
+
         Player testPlayer = gameMap.getPlayers().get(0);
         int posX = testPlayer.getPosition().getX();
         int posY = testPlayer.getPosition().getY();
         Direction dir = testPlayer.getDirection();
-        System.out.println("Card type: " + card.getProgramType());
+
         System.out.println("Color: " + testPlayer.getPlayerTile().getColor());
         System.out.println("Direction: " + dir);
         System.out.println("Position: (" + posX + "," + posY + ")" + "\n");
         System.out.println("-------------------");
 
-        //Get information from the other tiles
+        //Get information from the other tiles:
         System.out.println("OTHER TILES: ");
-        for(Player player : gameMap.getPlayers()) {
+        for (Player player : gameMap.getPlayers()) {
             if (player.getPlayerTile().getColor() == "Green")
                 continue;
 

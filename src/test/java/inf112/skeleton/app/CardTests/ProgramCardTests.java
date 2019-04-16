@@ -48,4 +48,27 @@ public class ProgramCardTests {
         assertNotEquals(card1.getFilename(), card2.getFilename());
         assertEquals(card1.getFilename(), "filename420");
     }
+
+    @Test
+    public void setAndGetPlayerThatPlayedCardId() {
+        card1.setPlayerThatPlayedTheCard(2);
+        assertEquals(card1.getPlayerThatPlayedTheCard(), 2);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void playerThatPlayedCardNotSet() {
+        card1.getPlayerThatPlayedTheCard();
+    }
+
+    @Test
+    public void cardsAreComparableTest() {
+        int lowerIdComparedToHigherId = card2.compareTo(card1);
+        assertEquals(lowerIdComparedToHigherId, -1);
+
+        int equalIdComparedToEqualId = card1.compareTo(card1);
+        assertEquals(equalIdComparedToEqualId, 0);
+
+        int higherIdComparedToLowerId = card1.compareTo(card2);
+        assertEquals(higherIdComparedToLowerId, 1);
+    }
 }

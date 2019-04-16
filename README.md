@@ -1,8 +1,13 @@
-# INF112 Maven template 
-Simple skeleton with libgdx. 
+# INF112 Project 
+## RoboRally
+Humanpeople proudly present RoboRally made perfect.
+Download our alpha and get gaming!
 
 
-## Known bugs
-Currently throws "WARNING: An illegal reflective access operation has occurred", 
-when the java version used is >8. This has no effect on function or performance, and is just a warning.
+### Team Members
+- Sondre (Teamlead)
+- Eirik (Customer contact)
+- Matias (Testlead)
+- Stian
+- Sjur
 

@@ -1,6 +1,6 @@
 package inf112.skeleton.app.Cards;
 
-public interface ICard {
+public interface ICard extends Comparable {
 
     String getFilename();
 }

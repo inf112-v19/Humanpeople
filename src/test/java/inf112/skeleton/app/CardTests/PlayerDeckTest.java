@@ -17,7 +17,7 @@ public class PlayerDeckTest {
      */
     @Test(expected = IndexOutOfBoundsException.class)
     public void selectCardForHandIndexTooHigh() {
-        PlayerDeck pd  = new PlayerDeck();
+        PlayerDeck pd = new PlayerDeck();
         pd.setDeck(creatDeckOfNcards(9));
         int tooHighIndex = 10;
         pd.selectCardForHand(tooHighIndex);
@@ -28,7 +28,7 @@ public class PlayerDeckTest {
      */
     @Test(expected = IndexOutOfBoundsException.class)
     public void selectCardFromHandMaxAmountOfCardsOnHand() {
-        PlayerDeck pd  = new PlayerDeck();
+        PlayerDeck pd = new PlayerDeck();
         pd.setDeck(creatDeckOfNcards(9));
 
         int cardsForHand = 5;
@@ -44,7 +44,7 @@ public class PlayerDeckTest {
      */
     @Test(expected = NoSuchElementException.class)
     public void getCardFromHandNoCardsLeft() {
-        PlayerDeck pd  = new PlayerDeck();
+        PlayerDeck pd = new PlayerDeck();
         pd.getCardFromHand();
     }
 
@@ -107,7 +107,7 @@ public class PlayerDeckTest {
 
     @Test
     public void deckSizeTest() {
-        PlayerDeck pd  = new PlayerDeck();
+        PlayerDeck pd = new PlayerDeck();
 
         for (int i = 0; i < PlayerDeck.MAX_NUMBER_CARDS_IN_DECK; i++) {
             pd.setDeck(creatDeckOfNcards(i));
@@ -117,12 +117,12 @@ public class PlayerDeckTest {
 
     @Test
     public void handSizeTest() {
-        PlayerDeck pd  = new PlayerDeck();
+        PlayerDeck pd = new PlayerDeck();
         pd.setDeck(creatDeckOfNcards(9));
 
         for (int i = 0; i < PlayerDeck.MAX_NUMBER_CARDS_ON_HAND; i++) {
             pd.selectCardForHand(i);
-            int nCardsOnHand = i+1;
+            int nCardsOnHand = i + 1;
             assertEquals(nCardsOnHand, pd.handSize());
         }
     }
