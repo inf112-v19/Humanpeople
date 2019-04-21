@@ -1,6 +1,7 @@
 package inf112.skeleton.app.Screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -23,6 +24,8 @@ import inf112.skeleton.app.Directions.Position;
 import inf112.skeleton.app.Game.GameMap;
 import inf112.skeleton.app.Game.RoboRally;
 import inf112.skeleton.app.Player.Player;
+import net.java.games.input.Component;
+import net.java.games.input.Keyboard;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -72,6 +75,7 @@ public class PlayScreen implements Screen {
     }
 
     public void update(float deltaTime) {
+        handleInput();
         tickTime += deltaTime;
         if (gameMap.getCardsDealt()) {
             gameMap.setCardsDealt(false);
@@ -280,6 +284,11 @@ public class PlayScreen implements Screen {
         stage.addActor(powerDownButton);
     }
 
+    public void handleInput() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
+            game.setScreen(new MenuScreen(game));
+        }
+    }
 
     @Override
     public void pause() {

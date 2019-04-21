@@ -6,7 +6,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import inf112.skeleton.app.Game.RoboRally;
+import inf112.skeleton.app.Player.Player;
 import inf112.skeleton.app.Screen.Test.TestScreen;
 
 /**
@@ -41,10 +46,10 @@ public class MenuScreen implements Screen {
         int playButtonPosX = (Gdx.graphics.getWidth()/2) - (playButtonTexture.getWidth()/2);
         int playButtonPosY = (Gdx.graphics.getHeight()/2) - (playButtonTexture.getHeight()/2);
         this.playButton = new Button(playButtonTexture, playButtonPosX, playButtonPosY, playButtonTexture.getWidth(), playButtonTexture.getHeight());
-
         this.testButtonTexture = new Texture("assets/mainMenu/testBtn.png");
         this.testButton = new Button(testButtonTexture,2,2,testButtonTexture.getWidth(),testButtonTexture.getHeight());
     }
+
 
     @Override
     public void show() {
@@ -68,7 +73,6 @@ public class MenuScreen implements Screen {
         if (Gdx.input.isTouched()) {
             int inputX = Gdx.input.getX();
             int inputY = Gdx.input.getY();
-
             if (playButton.checkIfClicked(inputX, inputY))
                 game.setScreen(playScreen);
 

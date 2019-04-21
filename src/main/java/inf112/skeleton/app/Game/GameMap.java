@@ -223,6 +223,11 @@ public class GameMap {
         drawPlayers();
     }
 
+    /**
+     * Checks if there is a player already at the given player's backup
+     * @param player
+     * @return true if there is another player on the backup
+     */
     public boolean existsPlayerOnBackup(Player player) {
         Position backup = player.getBackup();
         TiledMapTileLayer.Cell currentPlayerLayerCell = playerLayer.getCell(backup.getX(), backup.getY());
@@ -285,12 +290,35 @@ public class GameMap {
     }
 
     /**
+     * Checks for all players if they are standing on a wrench
+     */
+    public void steppedOnWrench() {
+        for (Player player : players) {
+            steppedOnWrench(player);
+        }
+    }
+
+    /**
+     * Checks if player has stepped on a wrench
+     * @param player
+     * @return true if player is standing on a wrench tile
+     */
+    public boolean steppedOnWrench(Player player) {
+        Position currentPosition = player.getPosition();
+        if (grid.isWrench(currentPosition)) {
+            // TODO do what wrenches are supposed to do
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Moves all players standing on conveyor belts
      */
     public void moveConveyorBelts() {
         for (Player player : players) {
             if (steppedOnConveyorBelt(player))
-                moveAccordingToConveyorBelt(player);
+                moveAccordingToConveyorBelt(player, false);
         }
     }
 
@@ -301,15 +329,19 @@ public class GameMap {
      */
     public boolean steppedOnConveyorBelt(Player player) {
         Position position = player.getPosition();
-        return (grid.isEastBelt(position) || grid.isNorthBelt(position) || grid.isSouthBelt(position) || grid.isWestBelt(position) || grid.isLeftGyro(position) || grid.isRightGyro(position));
+        return (grid.isEastBelt(position) || grid.isNorthBelt(position)
+                || grid.isSouthBelt(position) || grid.isWestBelt(position)
+                || grid.isLeftGyro(position) || grid.isRightGyro(position)
+                || grid.isDoubleNorthBelt(position) || grid.isDoubleSouthBelt(position)
+                || grid.isDoubleWestBelt(position) || grid.isDoubleEastBelt(position));
     }
 
     /**
      * Checks what type of conveyor belt the player is standing on and moves the player accordingly
      * @param player
-     * @return list of program cards for player to move
+     * @param hasMovedOnce
      */
-    public void moveAccordingToConveyorBelt(Player player) {
+    public void moveAccordingToConveyorBelt(Player player, boolean hasMovedOnce) {
         Position currentPosition = player.getPosition();
         Direction currentDirection = player.getDirection();
         int x = currentPosition.getX();
@@ -352,22 +384,32 @@ public class GameMap {
             grid.removePlayerPosition(currentPosition);
             player.setPosition(newPosition);
             grid.setPlayerPosition(player.getPlayerTile());
-            if (steppedOnConveyorBelt(player))
-                moveAccordingToConveyorBelt(player);
+            if (steppedOnConveyorBelt(player) && !hasMovedOnce)
+                moveAccordingToConveyorBelt(player, true);
         }
         else if (grid.isDoubleSouthBelt(currentPosition) && canGo(Direction.SOUTH, currentPosition)) {
             Position newPosition = currentPosition.south();
             grid.removePlayerPosition(currentPosition);
             player.setPosition(newPosition);
             grid.setPlayerPosition(player.getPlayerTile());
-            if (steppedOnConveyorBelt(player))
-                moveAccordingToConveyorBelt(player);
+            if (steppedOnConveyorBelt(player) && !hasMovedOnce)
+                moveAccordingToConveyorBelt(player, true);
         }
-        else if (grid.isWestBelt(currentPosition) && canGo(Direction.WEST, currentPosition)) {
+        else if (grid.isDoubleWestBelt(currentPosition) && canGo(Direction.WEST, currentPosition)) {
             Position newPosition = currentPosition.west();
             grid.removePlayerPosition(currentPosition);
             player.setPosition(newPosition);
             grid.setPlayerPosition(player.getPlayerTile());
+            if (steppedOnConveyorBelt(player) && !hasMovedOnce)
+                moveAccordingToConveyorBelt(player, true);
+        }
+        else if (grid.isDoubleEastBelt(currentPosition) && canGo(Direction.EAST, currentPosition)) {
+            Position newPosition = currentPosition.east();
+            grid.removePlayerPosition(currentPosition);
+            player.setPosition(newPosition);
+            grid.setPlayerPosition(player.getPlayerTile());
+            if (steppedOnConveyorBelt(player) && !hasMovedOnce)
+                moveAccordingToConveyorBelt(player, true);
         }
 
         playerLayer.setCell(x, y, null);
@@ -440,11 +482,12 @@ public class GameMap {
     }
 
     /**
-     * Checks the board and all its play
+     * Checks all players for end of phase actions
      */
     public void endOfPhaseChecks() {
         steppedOnFlag();
         moveConveyorBelts();
+        steppedOnWrench();
         //removeDeadPlayers();
     }
 

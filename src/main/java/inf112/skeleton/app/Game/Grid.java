@@ -313,33 +313,44 @@ public class Grid {
     }
 
     public boolean isRightGyro(Position position) {
-        int rightGyroId = 6; // TODO make asset
+        int rightGyroId = 71; // TODO make asset
         return isConveyorBelt(position, rightGyroId);
     }
 
     public boolean isLeftGyro(Position position) {
-        int leftGyroId = 6; // TODO make asset
+        int leftGyroId = 72; // TODO make asset
         return isConveyorBelt(position, leftGyroId);
     }
 
     public boolean isDoubleWestBelt(Position position) {
-        int doubleWestBeltId = 6; // TODO make asset
+        int doubleWestBeltId = 30; // TODO make asset
         return isConveyorBelt(position, doubleWestBeltId);
     }
 
     public boolean isDoubleEastBelt(Position position) {
-        int doubleEastBeltId = 6; // TODO make asset
+        int doubleEastBeltId = 29; // TODO make asset
         return isConveyorBelt(position, doubleEastBeltId);
     }
 
     public boolean isDoubleSouthBelt(Position position) {
-        int doubleSouthBeltId = 6; // TODO make asset
+        int doubleSouthBeltId = 19; // TODO make asset
         return isConveyorBelt(position, doubleSouthBeltId);
     }
 
     public boolean isDoubleNorthBelt(Position position) {
-        int doubleNorthBeltId = 6; // TODO make asset
+        int doubleNorthBeltId = 18; // TODO make asset
         return isConveyorBelt(position, doubleNorthBeltId);
+    }
+
+    public boolean isWrench(Position position) {
+        int wrenchTileId = 73; // TODO make asset
+        int x = position.getX();
+        int y = position.getY();
+        if (specialLayer.getCell(x,y) != null) {
+            TiledMapTile tileAtPosition = specialLayer.getCell(x, y).getTile();
+            return tileAtPosition.getId() == wrenchTileId;
+        }
+        return false;
     }
 
     /**
