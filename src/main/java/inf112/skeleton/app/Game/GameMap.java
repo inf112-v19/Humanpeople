@@ -56,7 +56,7 @@ public class GameMap {
         this.backupLayer2 = (TiledMapTileLayer) map.getLayers().get(5);
         this.backupLayer3 = (TiledMapTileLayer) map.getLayers().get(6);
         this.backupLayer4 = (TiledMapTileLayer) map.getLayers().get(7);
-        this.laserLayer = (TiledMapTileLayer) map.getLayers().get(8);
+        this.laserLayer = (TiledMapTileLayer) map.getLayers().get(9);
         this.playerTiles = new ArrayList<>();
         initializePlayers();
         this.cardsDealt = true;
@@ -418,6 +418,7 @@ public class GameMap {
     }
 
     public void preformNextMovement() {
+        cleanLasers();
         checkBoardLasers();
         returnDestroyedPlayersToBackup();
 
@@ -470,6 +471,8 @@ public class GameMap {
     public void fireLasers() {
 
         for (Player player : players) {
+            if (!player.isActive() || !player.isAlive())
+                continue;
             Position startPos = player.getPosition();
             Direction dir = player.getDirection();
             int distance = getTargetDistance(startPos, dir);
@@ -481,17 +484,19 @@ public class GameMap {
      * Checks if any players are hit by the board lasers.
      * Deals 1 damage if they are.
      */
-    public void checkBoardLasers(){
+    public void checkBoardLasers() {
         for (Player player : players) {
             Position pos = player.getPosition();
-            if(grid.isLaser(pos)){
+            if (grid.isLaser(pos)) {
                 System.out.println("DAMAGE BOARD LASER " + player.getPlayerTile().getColor());
                 player.damagePlayer(1);
             }
         }
     }
 
-    /** Draw laser tiles from startPos as far as distance
+    /**
+     * Draw laser tiles from startPos as far as distance
+     *
      * @param distance the laser can travel unhindered
      * @param startPos of the laser
      * @param dir      of the laser
@@ -499,17 +504,84 @@ public class GameMap {
     public void drawLaser(int distance, Position startPos, Direction dir) {
         System.out.println("DISTANCE: " + distance);
         System.out.println();
+        TiledMapTileLayer.Cell laser = new TiledMapTileLayer.Cell();
+        TiledMapTileLayer.Cell crossLaser = new TiledMapTileLayer.Cell();
+        crossLaser.setTile(tiles.getTile(83));
 
+        switch (dir) {
+            case NORTH:
+                for (int i = 1; i < distance + 1; i++) {
+                    laser.setTile(tiles.getTile(82));
+//                    if (!grid.isBoardLaser(startPos.getX(), startPos.getY() + i))
+                    if (laserLayer.getCell(startPos.getX(), startPos.getY() + i) != null &&
+                            laserLayer.getCell(startPos.getX(), startPos.getY() + i).getTile().getId() == 81) {
+                        laserLayer.setCell(startPos.getX(), startPos.getY() + i, crossLaser);
+                        continue;
+                    }
 
-        //TODO lage laser asset som tegnes her
-//        TiledMapTileLayer.Cell laser = new TiledMapTileLayer.Cell();
-//        laser.setTile();
-//        playerLayer.setCell(pos.getX(), pos.getY(), laser);
+                    laserLayer.setCell(startPos.getX(), startPos.getY() + i, laser);
+                }
+                break;
+            case SOUTH:
+                for (int i = 1; i < distance + 1; i++) {
+                    laser.setTile(tiles.getTile(82));
+//                    if (!grid.isBoardLaser(startPos.getX(), startPos.getY() - i))
+                    if (laserLayer.getCell(startPos.getX(), startPos.getY() - i) != null &&
+                            laserLayer.getCell(startPos.getX(), startPos.getY() - i).getTile().getId() == 81) {
+                        laserLayer.setCell(startPos.getX(), startPos.getY() - i, crossLaser);
+                        continue;
+                    }
+                    laserLayer.setCell(startPos.getX(), startPos.getY() - i, laser);
+                }
+                break;
+            case EAST:
+                laser.setTile(tiles.getTile(81));
+                for (int i = 1; i < distance + 1; i++) {
+//                    if (!grid.isBoardLaser(startPos.getX() + i, startPos.getY()))
+                    if (laserLayer.getCell(startPos.getX() + i, startPos.getY()) != null &&
+                            laserLayer.getCell(startPos.getX() + i, startPos.getY()).getTile().getId() == 82) {
+                        laserLayer.setCell(startPos.getX() + i, startPos.getY(), crossLaser);
+                        continue;
+                    }
+                    laserLayer.setCell(startPos.getX() + i, startPos.getY(), laser);
+                }
+                break;
+            case WEST:
+                laser.setTile(tiles.getTile(81));
+                for (int i = 1; i < distance + 1; i++) {
+//                    if (!grid.isBoardLaser(startPos.getX() - i, startPos.getY()))
+                    if (laserLayer.getCell(startPos.getX() - i, startPos.getY()) != null &&
+                            laserLayer.getCell(startPos.getX() - i, startPos.getY()).getTile().getId() == 82) {
+                        laserLayer.setCell(startPos.getX() - i, startPos.getY(), crossLaser);
+                        continue;
+                    }
+                        laserLayer.setCell(startPos.getX() - i, startPos.getY(), laser);
+                }
+                break;
+        }
+    }
+
+    /**
+     * Remove laser tiles after fire. Ignore board lasers.
+     */
+    public void cleanLasers() {
+        for (int x = 0; x < laserLayer.getWidth(); x++)
+            for (int y = 0; y < laserLayer.getHeight(); y++) {
+
+                if (grid.isBoardLaser(x, y)) {
+                    TiledMapTileLayer.Cell laser = new TiledMapTileLayer.Cell();
+                    laser.setTile(tiles.getTile(grid.getBoardLaserId(x, y)));
+                    laserLayer.setCell(x, y, laser);
+                    continue;
+                }
+                laserLayer.setCell(x, y, null);
+            }
     }
 
     /**
      * The distance the laser has to be drawn. Returns as soon as it has found a wall or a player.
      * If player is found, deal damage.
+     *
      * @param pos
      * @param dir
      * @return distance to target
@@ -539,7 +611,7 @@ public class GameMap {
                     getPlayerFromPosition(pos).damagePlayer(1);
                     System.out.println("PLAYER " + getPlayerFromPosition(pos).getPlayerTile().getColor() + " GOT BLASTED");
                 } catch (IllegalArgumentException e) {
-                    System.out.println("THE PLAYER IS DEAD");
+                    System.out.println("THE PLAYER IS DESTROYED");
                 }
                 return distance;
             }

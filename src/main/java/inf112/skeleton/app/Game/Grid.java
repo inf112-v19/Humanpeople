@@ -35,6 +35,8 @@ public class Grid {
     private final int backup4Index;
     private final int laserIndex;
 
+    private int staticBoardLasers[][];
+
 
     public Grid(TiledMap map) {
         width = (Integer) map.getProperties().get("width");
@@ -42,6 +44,7 @@ public class Grid {
 
         tiles = map.getTileSets().getTileSet("testTileset");
         gameLogicGrid = new ArrayList[width][height];
+        staticBoardLasers = new int[width][height];
 
         groundIndex = 0;
         specialIndex = 1;
@@ -124,11 +127,19 @@ public class Grid {
                 else {
                     int laserLayerId = laserCell.getTile().getId();
                     gameLogicGrid[x][y].add(laserIndex, new LaserLayerObject(tiles, laserLayerId));
+                    staticBoardLasers[x][y] = laserLayerId;
                 }
             }
         }
     }
 
+    public int getBoardLaserId(int x, int y){
+        return staticBoardLasers[x][y];
+    }
+
+    public boolean isBoardLaser(int x, int y){
+        return staticBoardLasers[x][y] == 81 || staticBoardLasers[x][y] == 82;
+    }
     public void setPlayerPosition(PlayerLayerObject playerLayerObject) {
         Position currentPosition = playerLayerObject.getPosition();
         int x = currentPosition.getX();
@@ -273,13 +284,14 @@ public class Grid {
     }
 
     public boolean isLaser(Position pos){
-        int laserId = 9;
+        int horizontalLaserId = 81;
+        int verticalLaserId = 82;
         int x = pos.getX();
         int y = pos.getY();
 
         if (laserLayer.getCell(x, y) != null) {
             TiledMapTile tileAtPosition = laserLayer.getCell(x, y).getTile();
-            return tileAtPosition.getId() == laserId;
+            return tileAtPosition.getId() == horizontalLaserId || tileAtPosition.getId() == verticalLaserId;
         }
         return false;
     }
