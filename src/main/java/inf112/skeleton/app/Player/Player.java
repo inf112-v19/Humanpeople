@@ -58,11 +58,15 @@ public class Player {
      * Restores the amount of health to be the max amount of damage tokens -2 and set isDestroyed to false
      */
     public void fix() {
+        if(!isAlive)
+            return;
+
         isDestroyed = false;
         health = MAX_HEALTH - 2;
     }
 
     public void restoreHealth() {
+        isDestroyed = false;
         health = MAX_HEALTH;
     }
 
@@ -74,8 +78,10 @@ public class Player {
         if (health >= MAX_HEALTH)
             health++;
     }
+
     /**
      * If health is less than 1 player is destroyed
+     *
      * @return true if player has no health
      */
     public boolean lostAllHealth() {
@@ -90,6 +96,19 @@ public class Player {
         isAlive = true;
     }
 
+    public void damagePlayer(int howMuchDamage) {
+        if (howMuchDamage < 1)
+            throw new IllegalArgumentException("Damage much be greater than 0");
+        if(!isAlive || isDestroyed)
+            throw new IllegalArgumentException("Player must be alive and not destroyed to take damage");
+
+        health = health - howMuchDamage;
+
+        if(health == 0) {
+            System.out.println("DESTROYED");
+            this.destroy();
+        }
+    }
     /**
      * Removes one life token, sets isDestroyed to true and sets health = 0
      * If all life tokens are lost then set isAlive to false
@@ -98,10 +117,13 @@ public class Player {
         lifeTokens--;
         if (lifeTokens < 1) {
             isAlive = false;
+            health = 0;
+            return;
         }
         health = 0;
         isDestroyed = true;
     }
+
 
     public boolean isDestroyed() {
         return isDestroyed;
@@ -123,7 +145,7 @@ public class Player {
      * A powered down player is now active
      */
     public void activate() {
-        restoreHealth();
+//        restoreHealth();
         active = true;
     }
 
@@ -171,11 +193,12 @@ public class Player {
         return playerTile.getBackup().getAvatar();
     }
 
-    public void damagePlayer(int howMuchDamage) {
-        if(howMuchDamage < 1)
-            throw new IllegalArgumentException("Damage much be greater than 0");
+    public void printStatus() {
+        String status = "ALIVE";
+        if(!isAlive)
+            status = "DEAD";
 
-        health = health - howMuchDamage;
+        System.out.printf("##COLOR: %-10s ##HP: %d ##LIFETOKENS: %s ##FLAG: %s ##STATUS: %s", this.getPlayerTile().getColor(), getHealth(), getLifeTokens(), getLastFlagVisited(), status);
     }
 
     public int getHealth() {
@@ -190,10 +213,12 @@ public class Player {
         return playerDeck;
     }
 
-    public void setHandChosen(Boolean handChosen){
+
+    public void setHandChosen(Boolean handChosen) {
         this.handChosen = handChosen;
     }
-    public boolean getHandChosen(){
+
+    public boolean getHandChosen() {
         return handChosen;
     }
 

@@ -4,6 +4,7 @@ import com.badlogic.gdx.maps.tiled.*;
 import inf112.skeleton.app.GameObjects.*;
 import inf112.skeleton.app.Directions.Direction;
 import inf112.skeleton.app.Directions.Position;
+import inf112.skeleton.app.Player.Player;
 
 import java.util.ArrayList;
 
@@ -34,6 +35,8 @@ public class Grid {
     private final int backup4Index;
     private final int laserIndex;
 
+    private int staticBoardLasers[][];
+
 
     public Grid(TiledMap map) {
         width = (Integer) map.getProperties().get("width");
@@ -41,6 +44,7 @@ public class Grid {
 
         tiles = map.getTileSets().getTileSet("testTileset");
         gameLogicGrid = new ArrayList[width][height];
+        staticBoardLasers = new int[width][height];
 
         groundIndex = 0;
         specialIndex = 1;
@@ -82,7 +86,7 @@ public class Grid {
                 gameLogicGrid[x][y].add(specialIndex, new NothingSpecial());
 
                 // Flag layer
-                TiledMapTileLayer.Cell flagCell = flagLayer.getCell(x,y);
+                TiledMapTileLayer.Cell flagCell = flagLayer.getCell(x, y);
                 if (flagCell == null)
                     gameLogicGrid[x][y].add(flagIndex, new NothingSpecial());
                 else {
@@ -91,7 +95,7 @@ public class Grid {
                 }
 
                 // Hole layer
-                TiledMapTileLayer.Cell holeCell = holeLayer.getCell(x,y);
+                TiledMapTileLayer.Cell holeCell = holeLayer.getCell(x, y);
                 if (holeCell == null)
                     gameLogicGrid[x][y].add(holeIndex, new NothingSpecial());
                 else {
@@ -115,11 +119,27 @@ public class Grid {
                 gameLogicGrid[x][y].add(playerIndex, new NotAPlayer());
 
                 // Laser layer
-                gameLogicGrid[x][y].add(laserIndex, new NothingSpecial());
+//                gameLogicGrid[x][y].add(laserIndex, new NothingSpecial());
+
+                TiledMapTileLayer.Cell laserCell = laserLayer.getCell(x, y);
+                if (laserCell == null)
+                    gameLogicGrid[x][y].add(laserIndex, new NothingSpecial());
+                else {
+                    int laserLayerId = laserCell.getTile().getId();
+                    gameLogicGrid[x][y].add(laserIndex, new LaserLayerObject(tiles, laserLayerId));
+                    staticBoardLasers[x][y] = laserLayerId;
+                }
             }
         }
     }
 
+    public int getBoardLaserId(int x, int y){
+        return staticBoardLasers[x][y];
+    }
+
+    public boolean isBoardLaser(int x, int y){
+        return staticBoardLasers[x][y] == 81 || staticBoardLasers[x][y] == 82;
+    }
     public void setPlayerPosition(PlayerLayerObject playerLayerObject) {
         Position currentPosition = playerLayerObject.getPosition();
         int x = currentPosition.getX();
@@ -167,7 +187,7 @@ public class Grid {
      */
     public void AllowedToMoveInDirection(Direction dir, Position pos) {
         GameObject groundLayerObject = (GameObject) gameLogicGrid[pos.getX()][pos.getY()].get(groundIndex);
-        if (groundLayerObject.canGo(dir) ) {
+        if (groundLayerObject.canGo(dir)) {
             listOfPlayerTilesToMove.add((PlayerLayerObject) gameLogicGrid[pos.getX()][pos.getY()].get(playerIndex));
             Position positionInDir;
             switch (dir) {
@@ -216,6 +236,7 @@ public class Grid {
 
     /**
      * Checks if tile at given position is a backup
+     *
      * @param position
      * @return true if tile has backup
      */
@@ -230,6 +251,7 @@ public class Grid {
 
     /**
      * Checks if given backup object is located at given position
+     *
      * @param position
      * @param backupObjectId
      * @return
@@ -246,6 +268,7 @@ public class Grid {
 
     /**
      * Checks if tile at given position is a hole
+     *
      * @param position
      * @return
      */
@@ -253,15 +276,29 @@ public class Grid {
         int holeId = 6;
         int x = position.getX();
         int y = position.getY();
-        if (holeLayer.getCell(x,y) != null) {
+        if (holeLayer.getCell(x, y) != null) {
             TiledMapTile tileAtPosition = holeLayer.getCell(x, y).getTile();
             return tileAtPosition.getId() == holeId;
         }
         return false;
     }
 
+    public boolean isLaser(Position pos){
+        int horizontalLaserId = 81;
+        int verticalLaserId = 82;
+        int x = pos.getX();
+        int y = pos.getY();
+
+        if (laserLayer.getCell(x, y) != null) {
+            TiledMapTile tileAtPosition = laserLayer.getCell(x, y).getTile();
+            return tileAtPosition.getId() == horizontalLaserId || tileAtPosition.getId() == verticalLaserId;
+        }
+        return false;
+    }
+
     /**
      * Checks if tile at given position is a flag
+     *
      * @param position
      * @return
      */
@@ -274,6 +311,7 @@ public class Grid {
 
     /**
      * Checks if given flag object is located at given position
+     *
      * @param position
      * @param flagObjectId
      * @return
@@ -281,7 +319,7 @@ public class Grid {
     private boolean isFlagItem(Position position, int flagObjectId) {
         int x = position.getX();
         int y = position.getY();
-        if (flagLayer.getCell(x,y) != null) {
+        if (flagLayer.getCell(x, y) != null) {
             TiledMapTile tileAtPosition = flagLayer.getCell(x, y).getTile();
             return tileAtPosition.getId() == flagObjectId;
         }
@@ -354,7 +392,6 @@ public class Grid {
     }
 
     /**
-     *
      * @param position
      * @param conveyorId
      * @return true if the given conveyor belt id matches the tile at the given position
@@ -362,7 +399,7 @@ public class Grid {
     public boolean isConveyorBelt(Position position, int conveyorId) {
         int x = position.getX();
         int y = position.getY();
-        if (specialLayer.getCell(x,y) != null) {
+        if (specialLayer.getCell(x, y) != null) {
             TiledMapTile tileAtPosition = specialLayer.getCell(x, y).getTile();
             return tileAtPosition.getId() == conveyorId;
         }
@@ -375,5 +412,26 @@ public class Grid {
 
     public int getHeight() {
         return height;
+    }
+
+    /**
+     *
+     * @param pos
+     * @param dir
+     * @return true if the laser can travel one tile from position pos in direction dir
+     */
+    public boolean canFire(Position pos, Direction dir){
+        GameObject groundLayerObject = (GameObject) gameLogicGrid[pos.getX()][pos.getY()].get(groundIndex);
+        return groundLayerObject.canGo(dir) && pos.getX() < getWidth() && pos.getY() < getHeight();
+    }
+
+    /**
+     *
+     * @param pos
+     * @return true if there is a player in the position
+     */
+    public boolean hasPlayer(Position pos){
+        GameObject playerLayerObject = (GameObject) gameLogicGrid[pos.getX()][pos.getY()].get(playerIndex);
+        return playerLayerObject instanceof PlayerLayerObject;
     }
 }
