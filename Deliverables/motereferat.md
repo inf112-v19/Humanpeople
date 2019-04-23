@@ -157,3 +157,10 @@
   - Fordeling av arbeidsoppgaver
   - Alle satte arbeidsoppgaver skal være gjennomført til neste møte
   - Neste møte: 23.04.2019
+  
+### Referat møte 23.04.2019
+ - Oppmøte: alle
+ - Gjennomgang av kode over påskeferien
+ - Diskusjon om hvordan vi gjør LAN
+ - Diskusjon om gjennværende arbeidsoppgaver for iterasjon 5
+ - Neste møte: 26.04.2019
