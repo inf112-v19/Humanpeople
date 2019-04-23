@@ -1,6 +1,9 @@
 package inf112.skeleton.app.Game;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.maps.tiled.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import inf112.skeleton.app.Cards.ProgramCard;
 import inf112.skeleton.app.Cards.ProgramCardDeck;
 import inf112.skeleton.app.Cards.ProgramType;
@@ -10,6 +13,7 @@ import inf112.skeleton.app.GameObjects.PlayerLayerObject;
 import inf112.skeleton.app.Player.Player;
 import inf112.skeleton.app.Round.Phase;
 import inf112.skeleton.app.Round.Round;
+import inf112.skeleton.app.Screen.VictoryScreen;
 
 
 import java.util.ArrayList;
@@ -33,6 +37,8 @@ public class GameMap {
     private ProgramCardDeck programCardDeck;
     private ArrayList<PlayerLayerObject> playerTiles;
     private ArrayList<Player> players;
+
+    private int finalFlagNumber = 3;
 
     private Round round;
     private boolean cardsDealt;

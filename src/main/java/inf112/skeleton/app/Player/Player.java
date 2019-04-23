@@ -8,7 +8,7 @@ import inf112.skeleton.app.GameObjects.PlayerLayerObject;
 
 public class Player {
 
-    public static final int MAX_HEALTH = 9;
+    public static final int MAX_HEALTH = 10;
     public static final int MAX_LIFE_TOKENS = 3;
 
     private Position backup;
