@@ -237,8 +237,8 @@ public class GameMap {
     }
 
     /**
-     * If someone is standing on the backup of a player when he is due to return, then return player to a position adjacent to the backup
-     *
+     * If someone is standing on the backup of a player when he is due to return,
+     * then return player to a position adjacent to the backup
      * @param player
      */
     public void movePlayerToNearestField(Player player) {
@@ -299,14 +299,15 @@ public class GameMap {
     }
 
     /**
-     * Checks if player has stepped on a wrench
+     * Checks if player has stepped on a wrench.
+     * If player stepped on wrench, then add one health to the player
      * @param player
      * @return true if player is standing on a wrench tile
      */
     public boolean steppedOnWrench(Player player) {
         Position currentPosition = player.getPosition();
         if (grid.isWrench(currentPosition)) {
-            // TODO do what wrenches are supposed to do
+            player.incrementHealth();
             return true;
         }
         return false;

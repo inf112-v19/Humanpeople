@@ -273,6 +273,24 @@ public class PlayScreen implements Screen {
         }
     }
 
+    public Image getLifeTokenOfPlayer() {
+        ArrayList<Player> players = gameMap.getPlayers();
+        Player player1 = players.get(0);
+        int lifeTokens = player1.getLifeTokens();
+        Texture lifeTokenTexture = null;
+        switch (lifeTokens) {
+            case 3: lifeTokenTexture = new Texture("assets/lifeTokens/lifeTokens3.png"); break;
+            case 2: lifeTokenTexture = new Texture("assets/lifeTokens/lifeTokens2.png"); break;
+            case 1: lifeTokenTexture = new Texture("assets/lifeTokens/lifeTokens1.png"); break;
+            case 0: lifeTokenTexture = new Texture("assets/lifeTokens/lifeTokens0.png"); break;
+            default: lifeTokenTexture = new Texture("assets/lifeTokens/lifeTokens0.png"); break;
+        }
+        Sprite lifeTokenSprite = new Sprite(lifeTokenTexture);
+        Image lifeTokenImage = new Image(new SpriteDrawable(lifeTokenSprite));
+        lifeTokenImage.setPosition(1,1);
+        return lifeTokenImage;
+    }
+
     public void prepareNextRound() {
         chosenCards = new ProgramCard[5];
         cardMap.clear();

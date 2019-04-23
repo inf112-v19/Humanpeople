@@ -65,6 +65,15 @@ public class Player {
     public void restoreHealth() {
         health = MAX_HEALTH;
     }
+
+    /**
+     * Increase the health of the player by one.
+     * Does not increase if player has max health
+     */
+    public void incrementHealth() {
+        if (health >= MAX_HEALTH)
+            health++;
+    }
     /**
      * If health is less than 1 player is destroyed
      * @return true if player has no health
@@ -171,6 +180,10 @@ public class Player {
 
     public int getHealth() {
         return health;
+    }
+
+    public int getLifeTokens() {
+        return lifeTokens;
     }
 
     public PlayerDeck getPlayerDeck() {
