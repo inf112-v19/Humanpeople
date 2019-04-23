@@ -25,6 +25,7 @@ public class Player {
     private boolean handChosen;
 
     private int lastFlagVisited;
+    private boolean hitByBoardLaser;
 
 
     public Player(int id) {
@@ -37,7 +38,7 @@ public class Player {
         this.isAlive = true;
         this.isDestroyed = false;
         this.active = true;
-
+        this.hitByBoardLaser = false;
         this.lastFlagVisited = 0;
     }
 
@@ -220,6 +221,14 @@ public class Player {
 
     public boolean getHandChosen() {
         return handChosen;
+    }
+
+    public boolean isHitByBoardLaser(){
+        return hitByBoardLaser;
+    }
+
+    public void setHitByBoardLaser(boolean b){
+        hitByBoardLaser = b;
     }
 
 

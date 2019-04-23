@@ -462,7 +462,6 @@ public class GameMap {
 
     public void preformNextMovement() {
         cleanLasers();
-        checkBoardLasers();
         returnDestroyedPlayersToBackup();
 
         if (round.allPhasesAddedToRound()) {
@@ -475,6 +474,7 @@ public class GameMap {
                 } else {
                     ProgramCard currentCard = round.getNextMovementCard();
                     movePlayer(currentCard.getPlayerThatPlayedTheCard(), currentCard);
+                    checkBoardLasers();
                 }
             } else {
                 if (!cardsDealt) {
@@ -506,7 +506,13 @@ public class GameMap {
         moveConveyorBelts();
         steppedOnWrench();
         fireLasers();
+        resetHitByBoardLaser();
         //removeDeadPlayers();
+    }
+
+    private void resetHitByBoardLaser() {
+        for(Player player : players)
+            player.setHitByBoardLaser(false);
     }
 
     /**
@@ -531,9 +537,10 @@ public class GameMap {
     public void checkBoardLasers() {
         for (Player player : players) {
             Position pos = player.getPosition();
-            if (grid.isLaser(pos)) {
+            if (grid.isLaser(pos) && !player.isHitByBoardLaser()) {
                 System.out.println("DAMAGE BOARD LASER " + player.getPlayerTile().getColor());
                 player.damagePlayer(1);
+                player.setHitByBoardLaser(true);
             }
         }
     }
