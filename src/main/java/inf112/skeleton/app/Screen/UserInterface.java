@@ -58,26 +58,58 @@ public class UserInterface {
         return stage;
     }
 
+    public void getLifeTokenOfPlayer() {
+        int lifeTokens = player.getLifeTokens();
+        Texture lifeTokenTexture;
+        switch (lifeTokens) {
+            case 3:
+                lifeTokenTexture = new Texture("assets/lifeTokens/lifeTokens3.png");
+                break;
+            case 2:
+                lifeTokenTexture = new Texture("assets/lifeTokens/lifeTokens2.png");
+                break;
+            case 1:
+                lifeTokenTexture = new Texture("assets/lifeTokens/lifeTokens1.png");
+                break;
+            case 0:
+                lifeTokenTexture = new Texture("assets/lifeTokens/lifeTokens0.png");
+                break;
+            default:
+                lifeTokenTexture = new Texture("assets/lifeTokens/lifeTokens0.png");
+                break;
+        }
+        Sprite lifeTokenSprite = new Sprite(lifeTokenTexture);
+        final Image lifeTokenImage = new Image(new SpriteDrawable(lifeTokenSprite));
+        lifeTokenImage.setHeight(lifeTokenImage.getHeight() / 8);
+        lifeTokenImage.setWidth(lifeTokenImage.getWidth() / 8);
+        lifeTokenImage.setPosition(490, 42);
+        stage.addActor(lifeTokenImage);
+    }
+
+
     private void initializeCardSlots() {
         //Creates the slot bars
         Sprite picture = new Sprite(new Texture("assets/hand/hand5v3.png"));
         cardSlotsBottom = new Image(new SpriteDrawable(picture));
         cardSlotsBottom.setWidth(width / 2);
         cardSlotsBottom.setHeight(picture.getHeight() + 25);
-        cardSlotsBottom.setPosition(width / 2, 0);
         cardSlotsBottom.setColor(Color.LIME);
+        cardSlotsBottom.setScale(0.8f);
+        cardSlotsBottom.setPosition(424, 106);
 
         picture = new Sprite(new Texture("assets/hand/hand5v3.png"));
         cardSlotsTop = new Image(new SpriteDrawable(picture));
         cardSlotsTop.setWidth(width / 2);
         cardSlotsTop.setHeight(picture.getHeight() + 25);
-        cardSlotsTop.setPosition(width / 2, height - (picture.getHeight() + 25));
+        cardSlotsTop.setPosition(424, 292);
+        cardSlotsTop.setScale(0.8f);
 
         picture = new Sprite(new Texture("assets/hand/hand5v3.png"));
         cardSlotsMid = new Image(new SpriteDrawable(picture));
         cardSlotsMid.setWidth(width / 2);
         cardSlotsMid.setHeight(picture.getHeight() + 25);
-        cardSlotsMid.setPosition(width / 2, height - (picture.getHeight() + 25) * 2);
+        cardSlotsMid.setPosition(424, 199);
+        cardSlotsMid.setScale(0.8f);
     }
 
     private void initializePlayButton() {
@@ -85,7 +117,7 @@ public class UserInterface {
         playButton = new ImageButton(new SpriteDrawable(picture));
         playButton.setWidth(picture.getWidth() / 2);
         playButton.setHeight((picture.getHeight() - 5) / 2);
-        playButton.setPosition((int) (width / 1.7), height / 2 - picture.getHeight() - 4);
+        playButton.setPosition((int) (width / 2), 0);
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -115,7 +147,7 @@ public class UserInterface {
         powerDownButton = new ImageButton(new SpriteDrawable(picture));
         powerDownButton.setWidth(picture.getWidth() / 2);
         powerDownButton.setHeight((picture.getHeight() - 5) / 2);
-        powerDownButton.setPosition((int) (width / 1.3), height / 2 - picture.getHeight() - 4);
+        powerDownButton.setPosition((int) width - picture.getWidth(), 0);
         powerDownButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -132,24 +164,26 @@ public class UserInterface {
             ProgramCard programCard = deck.getCard(i);
             Sprite picture = new Sprite(new Texture(programCard.getFilename()));
             final Image cardImage = new Image(new SpriteDrawable(picture));
-            float pWidth = picture.getWidth() / 8;
-            float pHeight = picture.getHeight() / 8;
+            float pWidth = (picture.getWidth() / 8) * 0.8f;
+            float pHeight = (picture.getHeight() / 8) * 0.8f;
+            float firstCardX = 428;
+            float firstCardY = 297;
             cardImage.setWidth(pWidth);
             cardImage.setHeight(pHeight);
 
             //Place 5 first cards in top row and save position as origin
             if (i < 5) {
-                cardImage.setPosition(width / 2 + (i * pWidth) + 5, height - pHeight - 10);
-                cardImage.setOrigin(width / 2 + (i * pWidth) + 5, height - pHeight - 10);
+                cardImage.setPosition(firstCardX + (i * pWidth), firstCardY);
+                cardImage.setOrigin(firstCardX + (i * pWidth), firstCardY);
 
                 //List of coordinates for the bottom slot row for easy access
-                pos[i] = new Position((int) (width / 2 + (i * pWidth) + 5), 0 + 7);
+                pos[i] = new Position((int) (firstCardX + (i * pWidth)), (int) (firstCardY - pHeight*2 - 26));
             }
 
             //Place remaining 4 cards in row beneath
             else {
-                cardImage.setPosition(width / 2 + (i * pWidth) - 5 * pWidth + 5, height - pHeight * 2 - 27);
-                cardImage.setOrigin(width / 2 + (i * pWidth) - 5 * pWidth + 5, height - pHeight * 2 - 27);
+                cardImage.setPosition(firstCardX + ((i - 5) * pWidth), firstCardY - pHeight-13);
+                cardImage.setOrigin(firstCardX + ((i - 5) * pWidth), firstCardY - pHeight-13);
             }
 
             //Adds dragging functionality to each image
@@ -174,7 +208,8 @@ public class UserInterface {
 
     private void cardListener(Image cardImage) {
         //Coordinates for card drop zone
-        float yLimit = height / 3;
+        float yLimitTop = cardSlotsBottom.getTop();
+        float yLimitBottom = cardSlotsBottom.getTop() - cardSlotsBottom.getHeight();
 
         //Coordinates for dropped card
         ProgramCard programCard = cardMap.get(cardImage);
@@ -191,7 +226,7 @@ public class UserInterface {
         for (int i = 0; i < pos.length; i++) {
             //If inside the zone
             if (x > pos[i].getX() - cardImage.getWidth() / 2 && x < pos[i].getX() + cardImage.getWidth()
-                    && y < yLimit) {
+                    && y < yLimitTop && y > yLimitBottom) {
 
                 //If overlap, reset card in the selected list when current card comes from deck
                 if (chosenCards[i] != null && !programCard.isMarked()) {
@@ -255,6 +290,7 @@ public class UserInterface {
         stage.addActor(cardSlotsBottom);
         stage.addActor(playButton);
         stage.addActor(powerDownButton);
+        getLifeTokenOfPlayer();
     }
 
 }

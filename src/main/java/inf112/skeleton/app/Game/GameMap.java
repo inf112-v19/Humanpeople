@@ -556,7 +556,7 @@ public class GameMap {
             case NORTH:
                 for (int i = 1; i < distance + 1; i++) {
                     laser.setTile(tiles.getTile(82));
-//                    if (!grid.isBoardLaser(startPos.getX(), startPos.getY() + i))
+
                     if (laserLayer.getCell(startPos.getX(), startPos.getY() + i) != null &&
                             laserLayer.getCell(startPos.getX(), startPos.getY() + i).getTile().getId() == 81) {
                         laserLayer.setCell(startPos.getX(), startPos.getY() + i, crossLaser);
@@ -569,7 +569,7 @@ public class GameMap {
             case SOUTH:
                 for (int i = 1; i < distance + 1; i++) {
                     laser.setTile(tiles.getTile(82));
-//                    if (!grid.isBoardLaser(startPos.getX(), startPos.getY() - i))
+
                     if (laserLayer.getCell(startPos.getX(), startPos.getY() - i) != null &&
                             laserLayer.getCell(startPos.getX(), startPos.getY() - i).getTile().getId() == 81) {
                         laserLayer.setCell(startPos.getX(), startPos.getY() - i, crossLaser);
@@ -581,7 +581,7 @@ public class GameMap {
             case EAST:
                 laser.setTile(tiles.getTile(81));
                 for (int i = 1; i < distance + 1; i++) {
-//                    if (!grid.isBoardLaser(startPos.getX() + i, startPos.getY()))
+
                     if (laserLayer.getCell(startPos.getX() + i, startPos.getY()) != null &&
                             laserLayer.getCell(startPos.getX() + i, startPos.getY()).getTile().getId() == 82) {
                         laserLayer.setCell(startPos.getX() + i, startPos.getY(), crossLaser);
@@ -593,7 +593,7 @@ public class GameMap {
             case WEST:
                 laser.setTile(tiles.getTile(81));
                 for (int i = 1; i < distance + 1; i++) {
-//                    if (!grid.isBoardLaser(startPos.getX() - i, startPos.getY()))
+
                     if (laserLayer.getCell(startPos.getX() - i, startPos.getY()) != null &&
                             laserLayer.getCell(startPos.getX() - i, startPos.getY()).getTile().getId() == 82) {
                         laserLayer.setCell(startPos.getX() - i, startPos.getY(), crossLaser);
