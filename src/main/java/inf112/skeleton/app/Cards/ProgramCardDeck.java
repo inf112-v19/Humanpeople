@@ -9,6 +9,7 @@ import java.util.Random;
 
 public class ProgramCardDeck {
     private ArrayList<ProgramCard> programCardDeck;
+    private ArrayList<ProgramCard> inActiveCardDeck;
 
 
     public ProgramCardDeck() {
@@ -70,6 +71,15 @@ public class ProgramCardDeck {
         return card;
     }
 
+    private void shuffleInnInactiveCards() {
+        for (int i=0; i<getSizeOfDeck(); i++) {
+            inActiveCardDeck.add(takeCard(i));
+        }
+        programCardDeck = inActiveCardDeck;
+        shuffleDeck();
+        inActiveCardDeck.clear();
+    }
+
     public ProgramCard takeTopCard() {
         if (getSizeOfDeck() < 1)
             throw new NoSuchElementException("There are no more cards to take.");
@@ -96,6 +106,9 @@ public class ProgramCardDeck {
      * @param players
      */
     public void giveOutCardsToAllPlayers(ArrayList<Player> players) {
+        if (getSizeOfDeck() < 50)
+            newProgramCardDeck();
+
         for (int i = 0; i < players.size(); i++) {
             Player player = players.get(i);
             ArrayList<ProgramCard> playerDeck = new ArrayList<>();
@@ -113,6 +126,9 @@ public class ProgramCardDeck {
      * @param player
      */
     public void giveOutCardsToPlayer(Player player) {
+        if (getSizeOfDeck() < 50)
+            newProgramCardDeck();
+
         ArrayList<ProgramCard> playerDeck = new ArrayList<>();
         for (int i = 0; i < PlayerDeck.MAX_NUMBER_CARDS_IN_DECK; i++)
             playerDeck.add(takeRandomCard());
