@@ -71,6 +71,12 @@ public class ProgramCardDeck {
         return card;
     }
 
+    public void addToInactiveCardDeck(ProgramCard card) {
+        if (programCardDeck.contains(card))
+            throw new IllegalArgumentException("Cannot have duplicates of ProgramCards");
+        inActiveCardDeck.add(card);
+    }
+
     private void shuffleInnInactiveCards() {
         for (int i=0; i<getSizeOfDeck(); i++) {
             inActiveCardDeck.add(takeCard(i));
@@ -88,6 +94,7 @@ public class ProgramCardDeck {
         programCardDeck.remove(0);
         return topCard;
     }
+
 
 
     public ProgramCard takeRandomCard() {
