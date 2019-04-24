@@ -96,9 +96,6 @@ public class ProgramCardDeck {
      * @param players
      */
     public void giveOutCardsToAllPlayers(ArrayList<Player> players) {
-        if (getSizeOfDeck() < 50)
-            newProgramCardDeck();
-
         for (int i = 0; i < players.size(); i++) {
             Player player = players.get(i);
             ArrayList<ProgramCard> playerDeck = new ArrayList<>();
@@ -116,9 +113,6 @@ public class ProgramCardDeck {
      * @param player
      */
     public void giveOutCardsToPlayer(Player player) {
-        if (getSizeOfDeck() < 50)
-            newProgramCardDeck();
-
         ArrayList<ProgramCard> playerDeck = new ArrayList<>();
         for (int i = 0; i < PlayerDeck.MAX_NUMBER_CARDS_IN_DECK; i++)
             playerDeck.add(takeRandomCard());
