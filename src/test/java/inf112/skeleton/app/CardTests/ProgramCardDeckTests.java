@@ -21,8 +21,8 @@ public class ProgramCardDeckTests {
 
     @Test
     public void rightAmountOfSpecificTypeCardsTest() {
-        deck.newProgramCardDeck();
-        ArrayList<ProgramType> types = new ArrayList<ProgramType>();
+        deck.reConstructProgramCardDeck();
+        ArrayList<ProgramType> types = new ArrayList<>();
         ProgramType type;
 
         int move1 = 0;
@@ -57,15 +57,15 @@ public class ProgramCardDeckTests {
                 errors++;
             }
         }
-        assertEquals(types.size(), 7);
-        assertEquals(move1, 18);
-        assertEquals(move2, 12);
-        assertEquals(move3, 6);
-        assertEquals(backUp, 6);
-        assertEquals(rotateLeft, 18);
-        assertEquals(rotateRight, 18);
-        assertEquals(uTurn, 6);
-        assertEquals(errors, 0);
+        assertEquals(7, types.size());
+        assertEquals(18, move1);
+        assertEquals(12, move2);
+        assertEquals(6, move3);
+        assertEquals(6, backUp);
+        assertEquals(18, rotateLeft);
+        assertEquals(18, rotateRight);
+        assertEquals(6, uTurn);
+        assertEquals(0, errors);
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
@@ -122,21 +122,21 @@ public class ProgramCardDeckTests {
 
     }
 
-    @Test
-    public void someCardsNotEqualTest() {
-        for (int i = 1; i < deck.getSizeOfDeck(); i++) {
-            assertNotEquals(deck.getDeck().get(0), deck.getDeck().get(i));
-        }
-        for (int j = 2; j < deck.getSizeOfDeck(); j++) {
-            assertNotEquals(deck.getDeck().get(1), deck.getDeck().get(j));
-        }
-        for (int k = 0; k < 50; k++) {
-            assertNotEquals(deck.getDeck().get(50), deck.getDeck().get(k));
-        }
-        for (int l = 51; l < deck.getSizeOfDeck(); l++) {
-            assertNotEquals(deck.getDeck().get(50), deck.getDeck().get(l));
-        }
-    }
+//    @Test
+//    public void someCardsNotEqualTest() {
+//        for (int i = 1; i < deck.getSizeOfDeck(); i++) {
+//            assertNotEquals(deck.getDeck().get(0), deck.getDeck().get(i));
+//        }
+//        for (int j = 2; j < deck.getSizeOfDeck(); j++) {
+//            assertNotEquals(deck.getDeck().get(1), deck.getDeck().get(j));
+//        }
+//        for (int k = 0; k < 50; k++) {
+//            assertNotEquals(deck.getDeck().get(50), deck.getDeck().get(k));
+//        }
+//        for (int l = 51; l < deck.getSizeOfDeck(); l++) {
+//            assertNotEquals(deck.getDeck().get(50), deck.getDeck().get(l));
+//        }
+//    }
 
 
 //    @Test

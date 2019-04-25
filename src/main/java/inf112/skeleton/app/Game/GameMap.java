@@ -104,6 +104,7 @@ public class GameMap {
     }
 
     public void addPlayerHandToNewRound() {
+        programCardDeck.shuffleInnInactiveCards();
         if (!round.allPhasesAddedToRound()) {
             round = new Round();
             cardsDealt = false;
