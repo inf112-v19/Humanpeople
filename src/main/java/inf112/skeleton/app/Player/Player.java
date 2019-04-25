@@ -52,6 +52,7 @@ public class Player {
     public void restoreDamageTokens() {
         isDestroyed = false;
         damageTokens = MAX_DAMAGE_TOKENS;
+
     }
 
     /**

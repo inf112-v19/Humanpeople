@@ -6,10 +6,9 @@ import inf112.skeleton.app.Cards.ProgramType;
 import inf112.skeleton.app.Player.Player;
 import org.junit.Before;
 import org.junit.Test;
-
 import java.util.ArrayList;
-
 import static org.junit.Assert.*;
+
 
 public class ProgramCardDeckTests {
     private ProgramCardDeck deck;
@@ -181,6 +180,4 @@ public class ProgramCardDeckTests {
         }
         assertEquals(filenames.size(), deck.getSizeOfDeck());
     }
-
-
 }
