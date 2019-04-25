@@ -33,6 +33,7 @@ public class UserInterface {
     ProgramCard chosenCards[] = new ProgramCard[5];
     HashMap<Image, ProgramCard> cardMap = new HashMap<>();
     HashMap<ProgramCard, Image> imageMap = new HashMap<>();
+    private boolean hasPoweredDown = false;
 
     private Stage stage;
     private float width;
@@ -94,7 +95,6 @@ public class UserInterface {
                     if (chosenCards[i] == null)
                         count++;
 
-
                 if (count > 0) {
                     System.out.println("Choose " + (count) + " more cards");
                     return;
@@ -119,14 +119,30 @@ public class UserInterface {
         powerDownButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                player.powerDown();
-                player.setHandChosen(true);
-                System.out.println("POWER DOWN FOR PLAYER " + player.getPlayerTile().getColor());
+                if (hasChosenCards()) {
+                    System.out.println("Cards selected");
+                    ArrayList<ProgramCard> list = new ArrayList<ProgramCard>(Arrays.asList(chosenCards));
+                    player.getPlayerDeck().setPlayerHand(list);
+                    player.setHandChosen(true);
+
+                    System.out.println("PLAYER " + player.getPlayerTile().getColor() + " WILL POWER DOWN NEXT ROUND");
+                    hasPoweredDown = true;
+                }
+                else
+                    System.out.println("Cannot power down before all 5 cards are chosen");
             }
         });
     }
 
     public void initializeCardSelection() {
+        // If player has selected powerdown, then do not distribute new cards. PowerDown
+        if (hasPoweredDown) {
+            player.powerDown();
+            player.setHandChosen(true);
+            System.out.println("POWER DOWN FOR PLAYER " + player.getPlayerTile().getColor());
+            hasPoweredDown = false;
+            return;
+        }
         PlayerDeck deck = player.getPlayerDeck();
         for (int i = 0; i < deck.deckSize(); i++) {
             ProgramCard programCard = deck.getCard(i);
@@ -243,6 +259,18 @@ public class UserInterface {
                 return pos[i];
         }
         return null;
+    }
+
+    /**
+     * Checks if the player has selected all 5 cards
+     * @return true if all 5 cards are selected
+     */
+    public boolean hasChosenCards() {
+        for (int i = 0; i < chosenCards.length; i++) {
+            if (chosenCards[i] == null)
+                return false;
+        }
+        return true;
     }
 
     public void prepareNextRound() {

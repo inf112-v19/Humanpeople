@@ -489,8 +489,7 @@ public class GameMap {
                     setAllPlayerHandsChosen(false);
                 }
                 // If round is complete, revive all players for further play
-                fixPlayers();
-                activatePlayers();
+                endOfRoundChecks();
             }
         }
     }
@@ -512,7 +511,37 @@ public class GameMap {
         moveConveyorBelts();
         steppedOnWrench();
         fireLasers();
+        hasWon();
         //removeDeadPlayers();
+    }
+
+    /**
+     * Checks all players for end of round actions
+     */
+    public void endOfRoundChecks() {
+        fixPlayers();
+        activatePlayers();
+    }
+
+    /**
+     * Checks if any players have won, i.e. has visited all flags
+     */
+    public void hasWon() {
+        for (Player player : players) {
+            hasWon(player);
+        }
+    }
+
+    /**
+     * Checks if the player has won, i.e. has visited all flags
+     */
+    public void hasWon(Player player) {
+        int lastFlagVisited = player.getLastFlagVisited();
+
+        if (lastFlagVisited == finalFlagNumber) {
+            System.out.println("Player " + player.getId() + " has won!");
+        }
+
     }
 
     /**

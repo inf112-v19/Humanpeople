@@ -139,6 +139,7 @@ public class Player {
 
     public void powerDown() {
         active = false;
+        health = MAX_HEALTH;
     }
 
     /**

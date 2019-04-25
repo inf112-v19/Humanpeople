@@ -80,9 +80,6 @@ public class PlayScreen implements Screen {
         if (tickTime > 0.4) {
             tickTime = 0;
             gameMap.preformNextMovement();
-            hasWon();
-            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-
         }
     }
 
@@ -151,29 +148,5 @@ public class PlayScreen implements Screen {
 
     @Override
     public void dispose() {
-    }
-
-    /**
-     * Checks if any players have won, i.e. has visited all flags
-     */
-    public void hasWon() {
-        ArrayList<Player> players = gameMap.getPlayers();
-        for (Player player : players) {
-            hasWon(player);
-        }
-    }
-
-    /**
-     * Checks if the player has won, i.e. has visited all flags
-     */
-    public void hasWon(Player player) {
-        int lastFlagVisited = player.getLastFlagVisited();
-
-        if (lastFlagVisited == 1) {
-            VictoryScreen victoryScreen = new VictoryScreen(player);
-            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            stage.addActor(victoryScreen.getTable());
-        }
-
     }
 }
