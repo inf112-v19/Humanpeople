@@ -10,14 +10,18 @@ import java.util.Random;
 public class ProgramCardDeck {
     private ArrayList<ProgramCard> programCardDeck;
     private ArrayList<ProgramCard> inActiveCardDeck;
+    private static ProgramCardDeck singleInstance;
 
 
-    public ProgramCardDeck() {
-        programCardDeck = new ArrayList<>();
+    private ProgramCardDeck() {
+        programCardDeck = new ArrayList<ProgramCard>();
+        inActiveCardDeck = new ArrayList<ProgramCard>();
         newProgramCardDeck();
     }
 
-    private void newProgramCardDeck() {
+    public void newProgramCardDeck() {
+        programCardDeck.clear();
+        inActiveCardDeck.clear();
         //Add Move1 cards (18) p(490-650)
         for (int i = 0; i < 18; i++) {
             programCardDeck.add(new ProgramCard(ProgramType.MOVE1, (490 + (10 * i)),
@@ -149,5 +153,12 @@ public class ProgramCardDeck {
 
     public ArrayList<ProgramCard> getDeck() {
         return this.programCardDeck;
+    }
+
+    public static ProgramCardDeck getProgramCardDeckSingleton() {
+        if (singleInstance == null) {
+            singleInstance = new ProgramCardDeck();
+        }
+        return singleInstance;
     }
 }

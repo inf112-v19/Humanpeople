@@ -70,7 +70,19 @@ public class PlayerDeck {
         if (newDeck.size() > MAX_NUMBER_CARDS_IN_DECK)
             throw new IllegalArgumentException("The deck needs to be size 9. Size was: " + newDeck.size());
 
+
         this.deck = newDeck;
+    }
+
+
+    private void discardDeck() {
+        discardCards(deck);
+    }
+    private void discardCards(ArrayList<ProgramCard> unusedCards) {
+        ProgramCardDeck programCardDeck = ProgramCardDeck.getProgramCardDeckSingleton();
+        for (int i=0; i<unusedCards.size(); i++) {
+            programCardDeck.addToInactiveCardDeck(unusedCards.get(i));
+        }
     }
 
     /**

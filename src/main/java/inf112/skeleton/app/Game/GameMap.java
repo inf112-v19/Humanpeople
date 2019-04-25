@@ -41,7 +41,7 @@ public class GameMap {
         this.players = new ArrayList<>();
         this.nPlayers = nPlayers;
         this.startingPositions = new StartingPositions(grid.getWidth(), grid.getHeight());
-        this.programCardDeck = new ProgramCardDeck();
+        this.programCardDeck = ProgramCardDeck.getProgramCardDeckSingleton();
         this.playerLayer = (TiledMapTileLayer) map.getLayers().get(5);
         this.specialLayer = (TiledMapTileLayer) map.getLayers().get(1);
         this.backupLayer = (TiledMapTileLayer) map.getLayers().get(4);
