@@ -119,30 +119,30 @@ public class UserInterface {
 
     public void getLifeTokenOfPlayer() {
         int lifeTokens = player.getLifeTokens();
-        Texture lifeTokenTexture;
-        switch (lifeTokens) {
-            case 3:
-                lifeTokenTexture = new Texture("assets/userInterface/lifeTokens/lifeTokens3.png");
-                break;
-            case 2:
-                lifeTokenTexture = new Texture("assets/userInterface/lifeTokens/lifeTokens2.png");
-                break;
-            case 1:
-                lifeTokenTexture = new Texture("assets/userInterface/lifeTokens/lifeTokens1.png");
-                break;
-            case 0:
-                lifeTokenTexture = new Texture("assets/userInterface/lifeTokens/lifeTokens0.png");
-                break;
-            default:
-                lifeTokenTexture = new Texture("assets/userInterface/lifeTokens/lifeTokens0.png");
-                break;
-        }
-        Sprite lifeTokenSprite = new Sprite(lifeTokenTexture);
-        final Image lifeTokenImage = new Image(new SpriteDrawable(lifeTokenSprite));
-        lifeTokenImage.setHeight(lifeTokenImage.getHeight() / 8 + 5);
-        lifeTokenImage.setWidth(lifeTokenImage.getWidth() / 8);
-        lifeTokenImage.setPosition(width - lifeTokenImage.getWidth() - playButton.getWidth(), 43);
-        stage.addActor(lifeTokenImage);
+            Texture lifeTokenTexture;
+            switch (lifeTokens) {
+                case 3:
+                    lifeTokenTexture = new Texture("assets/userInterface/lifeTokens/lifeTokens3.png");
+                    break;
+                case 2:
+                    lifeTokenTexture = new Texture("assets/userInterface/lifeTokens/lifeTokens2.png");
+                    break;
+                case 1:
+                    lifeTokenTexture = new Texture("assets/userInterface/lifeTokens/lifeTokens1.png");
+                    break;
+                case 0:
+                    lifeTokenTexture = new Texture("assets/userInterface/lifeTokens/lifeTokens0.png");
+                    break;
+                default:
+                    lifeTokenTexture = new Texture("assets/userInterface/lifeTokens/lifeTokens0.png");
+                    break;
+            }
+            Sprite lifeTokenSprite = new Sprite(lifeTokenTexture);
+            final Image lifeTokenImage = new Image(new SpriteDrawable(lifeTokenSprite));
+            lifeTokenImage.setHeight(lifeTokenImage.getHeight() / 8 + 5);
+            lifeTokenImage.setWidth(lifeTokenImage.getWidth() / 8);
+            lifeTokenImage.setPosition(width - lifeTokenImage.getWidth() - playButton.getWidth(), 43);
+            stage.addActor(lifeTokenImage);
     }
 
     public void getFlagInfo() {
