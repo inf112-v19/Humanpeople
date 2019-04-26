@@ -129,6 +129,31 @@ public class PlayerLayerObject implements GameObject {
     public int compareTo(Object o) {
         return 0;
     }
+
+    /**
+     * @return grey tile of player in the direction the player currently has
+     */
+    public TiledMapTile getDestroyedAvatar() {
+        int avatarId = 0;
+        switch (dir) {
+            case NORTH:
+                avatarId = 91;
+                break;
+
+            case SOUTH:
+                avatarId = 94;
+                break;
+
+            case EAST:
+                avatarId = 92;
+                break;
+
+            case WEST:
+                avatarId = 93;
+                break;
+        }
+        return tiles.getTile(avatarId);
+    }
 }
 
 

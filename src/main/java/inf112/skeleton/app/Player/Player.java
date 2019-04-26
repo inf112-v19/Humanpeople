@@ -18,9 +18,10 @@ public class Player {
     private int id;
     private PlayerDeck playerDeck;
 
+    private boolean returnedToBackup;
+    private boolean active;
     private boolean isDestroyed;
     private boolean isAlive;
-    private boolean active;
 
     private boolean handChosen;
 
@@ -34,9 +35,9 @@ public class Player {
         this.backup = new Position(id, id);
 
         this.handChosen = false;
-        this.isAlive = true;
-        this.isDestroyed = false;
         this.active = true;
+        this.isDestroyed = false;
+        this.isAlive = true;
 
         this.lastFlagVisited = 0;
     }
@@ -61,6 +62,7 @@ public class Player {
         if(!isAlive)
             return;
 
+        returnedToBackup = false;
         isDestroyed = false;
         health = MAX_HEALTH - 2;
     }
@@ -116,12 +118,21 @@ public class Player {
     public void destroy() {
         lifeTokens--;
         if (lifeTokens < 1) {
+            isDestroyed = true;
             isAlive = false;
             health = 0;
             return;
         }
         health = 0;
         isDestroyed = true;
+    }
+
+    public boolean hasReturnedToBackup() {
+        return returnedToBackup;
+    }
+
+    public void returnToBackup() {
+        returnedToBackup = true;
     }
 
 
@@ -189,6 +200,8 @@ public class Player {
     public TiledMapTile getAvatar() {
         return playerTile.getAvatar();
     }
+
+    public TiledMapTile getDestroyedAvatar() { return playerTile.getDestroyedAvatar(); }
 
     public TiledMapTile getBackupAvatar() {
         return playerTile.getBackup().getAvatar();

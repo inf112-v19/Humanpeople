@@ -116,11 +116,11 @@ public class PlayScreen implements Screen {
         int lifeTokens = player1.getLifeTokens();
         Texture lifeTokenTexture = null;
         switch (lifeTokens) {
-            case 3: lifeTokenTexture = new Texture("assets/lifeTokens/lifeTokens3.png"); break;
-            case 2: lifeTokenTexture = new Texture("assets/lifeTokens/lifeTokens2.png"); break;
-            case 1: lifeTokenTexture = new Texture("assets/lifeTokens/lifeTokens1.png"); break;
-            case 0: lifeTokenTexture = new Texture("assets/lifeTokens/lifeTokens0.png"); break;
-            default: lifeTokenTexture = new Texture("assets/lifeTokens/lifeTokens0.png"); break;
+            case 3: lifeTokenTexture = new Texture("assets/userInterface/lifeTokens/lifeTokens3.png"); break;
+            case 2: lifeTokenTexture = new Texture("assets/userInterface/lifeTokens/lifeTokens2.png"); break;
+            case 1: lifeTokenTexture = new Texture("assets/userInterface/lifeTokens/lifeTokens1.png"); break;
+            case 0: lifeTokenTexture = new Texture("assets/userInterface/lifeTokens/lifeTokens0.png"); break;
+            default: lifeTokenTexture = new Texture("assets/userInterface/lifeTokens/lifeTokens0.png"); break;
         }
         Sprite lifeTokenSprite = new Sprite(lifeTokenTexture);
         Image lifeTokenImage = new Image(new SpriteDrawable(lifeTokenSprite));

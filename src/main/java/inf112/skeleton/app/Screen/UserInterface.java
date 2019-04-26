@@ -33,6 +33,7 @@ public class UserInterface {
     ProgramCard chosenCards[] = new ProgramCard[5];
     HashMap<Image, ProgramCard> cardMap = new HashMap<>();
     HashMap<ProgramCard, Image> imageMap = new HashMap<>();
+
     private boolean hasPoweredDown = false;
 
     private Stage stage;
@@ -136,7 +137,7 @@ public class UserInterface {
 
     public void initializeCardSelection() {
         // If player has selected powerdown, then do not distribute new cards. PowerDown
-        if (hasPoweredDown) {
+        if (hasPoweredDown || !player.isAlive()) {
             player.powerDown();
             player.setHandChosen(true);
             System.out.println("POWER DOWN FOR PLAYER " + player.getPlayerTile().getColor());
@@ -259,6 +260,25 @@ public class UserInterface {
                 return pos[i];
         }
         return null;
+    }
+
+    /**
+     * @return graphic for how many flags the player has visited
+     */
+    public Image getFlagVisitedImage() {
+        int lastFlagVisited = player.getLastFlagVisited();
+        Texture lifeTokenTexture = null;
+        switch (lastFlagVisited) {
+            case 3: lifeTokenTexture = new Texture("assets/userInterface/flagChecks/flagCheck3.png"); break;
+            case 2: lifeTokenTexture = new Texture("assets/userInterface/flagChecks/flagCheck2.png"); break;
+            case 1: lifeTokenTexture = new Texture("assets/userInterface/flagChecks/flagCheck1.png"); break;
+            case 0: lifeTokenTexture = new Texture("assets/userInterface/flagChecks/flagCheck0.png"); break;
+            default: lifeTokenTexture = new Texture("assets/userInterface/flagChecks/flagCheck0.png"); break;
+        }
+        Sprite lifeTokenSprite = new Sprite(lifeTokenTexture);
+        Image lifeTokenImage = new Image(new SpriteDrawable(lifeTokenSprite));
+        lifeTokenImage.setPosition(1,1);
+        return lifeTokenImage;
     }
 
     /**

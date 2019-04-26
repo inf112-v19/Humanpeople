@@ -1,9 +1,6 @@
 package inf112.skeleton.app.Game;
 
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.maps.tiled.*;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import inf112.skeleton.app.Cards.ProgramCard;
 import inf112.skeleton.app.Cards.ProgramCardDeck;
 import inf112.skeleton.app.Cards.ProgramType;
@@ -13,7 +10,6 @@ import inf112.skeleton.app.GameObjects.PlayerLayerObject;
 import inf112.skeleton.app.Player.Player;
 import inf112.skeleton.app.Round.Phase;
 import inf112.skeleton.app.Round.Round;
-import inf112.skeleton.app.Screen.VictoryScreen;
 
 
 import java.util.ArrayList;
@@ -98,10 +94,7 @@ public class GameMap {
 
     public void drawPlayers() {
         for (Player player : players) {
-            if (player.isAlive())
-                drawPlayer(player);
-            else
-                grid.removePlayerPosition(player.getPosition());
+            drawPlayer(player);
         }
     }
 
@@ -109,7 +102,11 @@ public class GameMap {
         Position pos = player.getPosition();
 
         TiledMapTileLayer.Cell avatar = new TiledMapTileLayer.Cell();
-        avatar.setTile(player.getAvatar());
+        // If player is destroyed then draw a grey avatar
+        if (player.isDestroyed())
+            avatar.setTile(player.getDestroyedAvatar());
+        else
+            avatar.setTile(player.getAvatar());
 
         playerLayer.setCell(pos.getX(), pos.getY(), avatar);
     }
@@ -244,11 +241,13 @@ public class GameMap {
             player.setPosition(backup);
             grid.setPlayerPosition(player.getPlayerTile());
         }
+        player.returnToBackup();
         drawPlayers();
     }
 
     /**
      * Checks if there is a player already at the given player's backup
+     *
      * @param player
      * @return true if there is another player on the backup
      */
@@ -263,6 +262,7 @@ public class GameMap {
     /**
      * If someone is standing on the backup of a player when he is due to return,
      * then return player to a position adjacent to the backup
+     *
      * @param player
      */
     public void movePlayerToNearestField(Player player) {
@@ -293,6 +293,8 @@ public class GameMap {
      * @return
      */
     public boolean hasToReturnToBackup(Player player) {
+        if (player.hasReturnedToBackup())
+            return false;
         if (steppedOnHole(player) || player.lostAllHealth())
             return true;
         return false;
@@ -325,6 +327,7 @@ public class GameMap {
     /**
      * Checks if player has stepped on a wrench.
      * If player stepped on wrench, then add one health to the player
+     *
      * @param player
      * @return true if player is standing on a wrench tile
      */
@@ -407,24 +410,21 @@ public class GameMap {
             grid.setPlayerPosition(player.getPlayerTile());
             if (steppedOnConveyorBelt(player) && !hasMovedOnce)
                 moveAccordingToConveyorBelt(player, true);
-        }
-        else if (grid.isDoubleSouthBelt(currentPosition) && canGo(Direction.SOUTH, currentPosition)) {
+        } else if (grid.isDoubleSouthBelt(currentPosition) && canGo(Direction.SOUTH, currentPosition)) {
             Position newPosition = currentPosition.south();
             grid.removePlayerPosition(currentPosition);
             player.setPosition(newPosition);
             grid.setPlayerPosition(player.getPlayerTile());
             if (steppedOnConveyorBelt(player) && !hasMovedOnce)
                 moveAccordingToConveyorBelt(player, true);
-        }
-        else if (grid.isWestBelt(currentPosition) && canGo(Direction.WEST, currentPosition)) {
+        } else if (grid.isWestBelt(currentPosition) && canGo(Direction.WEST, currentPosition)) {
             Position newPosition = currentPosition.west();
             grid.removePlayerPosition(currentPosition);
             player.setPosition(newPosition);
             grid.setPlayerPosition(player.getPlayerTile());
             if (steppedOnConveyorBelt(player) && !hasMovedOnce)
                 moveAccordingToConveyorBelt(player, true);
-        }
-        else if (grid.isDoubleEastBelt(currentPosition) && canGo(Direction.EAST, currentPosition)) {
+        } else if (grid.isDoubleEastBelt(currentPosition) && canGo(Direction.EAST, currentPosition)) {
             Position newPosition = currentPosition.east();
             grid.removePlayerPosition(currentPosition);
             player.setPosition(newPosition);
@@ -512,7 +512,6 @@ public class GameMap {
         steppedOnWrench();
         fireLasers();
         hasWon();
-        //removeDeadPlayers();
     }
 
     /**
@@ -521,6 +520,8 @@ public class GameMap {
     public void endOfRoundChecks() {
         fixPlayers();
         activatePlayers();
+        //removeDeadPlayers();
+        drawPlayers();
     }
 
     /**
@@ -634,7 +635,7 @@ public class GameMap {
                         laserLayer.setCell(startPos.getX() - i, startPos.getY(), crossLaser);
                         continue;
                     }
-                        laserLayer.setCell(startPos.getX() - i, startPos.getY(), laser);
+                    laserLayer.setCell(startPos.getX() - i, startPos.getY(), laser);
                 }
                 break;
         }
@@ -713,17 +714,28 @@ public class GameMap {
      * If a player is alive, he is removed from the game
      */
     public void removeDeadPlayers() {
-        ArrayList<Integer> deadPlayers = new ArrayList<>();
-        for (int i = 0; i < players.size(); i++) {
-            Player player = players.get(i);
-            if (!player.isAlive()) {
-                grid.removePlayerPosition(player.getPosition());
-                deadPlayers.add(player.getId());
+        outerloop:
+        while (true) {
+            int nPlayers = players.size();
+            for (int i = 0; i < nPlayers; i++) {
+                Player player = players.get(i);
+                if (!player.isAlive()) {
+                    players.remove(player);
+                    continue outerloop;
+                }
             }
+            break;
         }
-        for (int i : deadPlayers) {
-            players.remove(i);
-        }
+
+
+           /*if (!player.isAlive()) {
+               Position playerPosition = player.getPosition();
+               int x = playerPosition.getX();
+               int y = playerPosition.getY();
+
+               grid.removePlayerPosition(playerPosition);
+               playerLayer.setCell(x, y, null);
+           }*/
     }
 
     /**
