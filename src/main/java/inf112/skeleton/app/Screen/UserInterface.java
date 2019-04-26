@@ -169,17 +169,6 @@ public class UserInterface {
         flagCheckImage.setWidth(flagCheckImage.getWidth() / 8);
         flagCheckImage.setPosition(width/2, 43);
         flagCheckImage.toFront();
-        flagCheckImage.addListener(new DragListener(){
-            @Override
-            public void drag(InputEvent event, float x, float y, int pointer) {
-                flagCheckImage.moveBy(x-flagCheckImage.getWidth()/2, y-flagCheckImage.getHeight()/2);
-            }
-
-            @Override
-            public void dragStop(InputEvent event, float x, float y, int pointer) {
-                System.out.println("X: " + flagCheckImage.getX() + " Y: " + flagCheckImage.getY());
-            }
-        });
         stage.addActor(flagCheckImage);
     }
 
