@@ -18,7 +18,7 @@ public class Player {
     private int id;
     private PlayerDeck playerDeck;
 
-    private boolean returnedToBackup;
+    private boolean removedFromBoard;
     private boolean active;
     private boolean isDestroyed;
     private boolean isAlive;
@@ -62,7 +62,6 @@ public class Player {
         if(!isAlive)
             return;
 
-        returnedToBackup = false;
         isDestroyed = false;
         health = MAX_HEALTH - 2;
     }
@@ -127,12 +126,12 @@ public class Player {
         isDestroyed = true;
     }
 
-    public boolean hasReturnedToBackup() {
-        return returnedToBackup;
+    public boolean hasBeenRemoveFromBoard() {
+        return removedFromBoard;
     }
 
-    public void returnToBackup() {
-        returnedToBackup = true;
+    public void removeFromBoard() {
+        removedFromBoard = true;
     }
 
 
@@ -234,6 +233,11 @@ public class Player {
 
     public boolean getHandChosen() {
         return handChosen;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return id == ((Player) obj).getId();
     }
 
 

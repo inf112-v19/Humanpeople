@@ -94,7 +94,8 @@ public class GameMap {
 
     public void drawPlayers() {
         for (Player player : players) {
-            drawPlayer(player);
+            if (player.isAlive())
+                drawPlayer(player);
         }
     }
 
@@ -241,7 +242,6 @@ public class GameMap {
             player.setPosition(backup);
             grid.setPlayerPosition(player.getPlayerTile());
         }
-        player.returnToBackup();
         drawPlayers();
     }
 
@@ -293,7 +293,7 @@ public class GameMap {
      * @return
      */
     public boolean hasToReturnToBackup(Player player) {
-        if (player.hasReturnedToBackup())
+        if (player.hasBeenRemoveFromBoard())
             return false;
         if (steppedOnHole(player) || player.lostAllHealth())
             return true;
@@ -512,6 +512,7 @@ public class GameMap {
         steppedOnWrench();
         fireLasers();
         hasWon();
+        removeDeadPlayers();
     }
 
     /**
@@ -520,7 +521,6 @@ public class GameMap {
     public void endOfRoundChecks() {
         fixPlayers();
         activatePlayers();
-        //removeDeadPlayers();
         drawPlayers();
     }
 
@@ -551,7 +551,7 @@ public class GameMap {
     public void fireLasers() {
 
         for (Player player : players) {
-            if (!player.isActive() || !player.isAlive())
+            if (!player.isActive() || !player.isAlive() || player.isDestroyed())
                 continue;
             Position startPos = player.getPosition();
             Direction dir = player.getDirection();
@@ -714,28 +714,17 @@ public class GameMap {
      * If a player is alive, he is removed from the game
      */
     public void removeDeadPlayers() {
-        outerloop:
-        while (true) {
-            int nPlayers = players.size();
-            for (int i = 0; i < nPlayers; i++) {
-                Player player = players.get(i);
-                if (!player.isAlive()) {
-                    players.remove(player);
-                    continue outerloop;
-                }
+        for (Player player : players) {
+            if (!player.isAlive() && !player.hasBeenRemoveFromBoard()) {
+                Position playerPosition = player.getPosition();
+                int x = playerPosition.getX();
+                int y = playerPosition.getY();
+
+                grid.removePlayerPosition(playerPosition);
+                playerLayer.setCell(x, y, null);
+                player.removeFromBoard();
             }
-            break;
         }
-
-
-           /*if (!player.isAlive()) {
-               Position playerPosition = player.getPosition();
-               int x = playerPosition.getX();
-               int y = playerPosition.getY();
-
-               grid.removePlayerPosition(playerPosition);
-               playerLayer.setCell(x, y, null);
-           }*/
     }
 
     /**
