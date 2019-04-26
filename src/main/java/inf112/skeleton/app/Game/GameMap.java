@@ -467,7 +467,6 @@ public class GameMap {
 
     public void preformNextMovement() {
         cleanLasers();
-        checkBoardLasers();
         returnDestroyedPlayersToBackup();
 
         if (round.allPhasesAddedToRound()) {
@@ -480,6 +479,7 @@ public class GameMap {
                 } else {
                     ProgramCard currentCard = round.getNextMovementCard();
                     movePlayer(currentCard.getPlayerThatPlayedTheCard(), currentCard);
+                    checkBoardLasers();
                 }
             } else {
                 if (!cardsDealt) {
@@ -510,6 +510,7 @@ public class GameMap {
         moveConveyorBelts();
         steppedOnWrench();
         fireLasers();
+        resetHitByBoardLaser();
         hasWon();
         removeDeadPlayers();
     }
@@ -541,7 +542,11 @@ public class GameMap {
         if (lastFlagVisited == finalFlagNumber) {
             System.out.println("Player " + player.getId() + " has won!");
         }
+    }
 
+    private void resetHitByBoardLaser() {
+        for(Player player : players)
+            player.setHitByBoardLaser(false);
     }
 
     /**
@@ -566,9 +571,10 @@ public class GameMap {
     public void checkBoardLasers() {
         for (Player player : players) {
             Position pos = player.getPosition();
-            if (grid.isLaser(pos)) {
+            if (grid.isLaser(pos) && !player.isHitByBoardLaser()) {
                 System.out.println("DAMAGE BOARD LASER " + player.getPlayerTile().getColor());
                 player.damagePlayer(1);
+                player.setHitByBoardLaser(true);
             }
         }
     }
@@ -591,7 +597,7 @@ public class GameMap {
             case NORTH:
                 for (int i = 1; i < distance + 1; i++) {
                     laser.setTile(tiles.getTile(82));
-//                    if (!grid.isBoardLaser(startPos.getX(), startPos.getY() + i))
+
                     if (laserLayer.getCell(startPos.getX(), startPos.getY() + i) != null &&
                             laserLayer.getCell(startPos.getX(), startPos.getY() + i).getTile().getId() == 81) {
                         laserLayer.setCell(startPos.getX(), startPos.getY() + i, crossLaser);
@@ -604,7 +610,7 @@ public class GameMap {
             case SOUTH:
                 for (int i = 1; i < distance + 1; i++) {
                     laser.setTile(tiles.getTile(82));
-//                    if (!grid.isBoardLaser(startPos.getX(), startPos.getY() - i))
+
                     if (laserLayer.getCell(startPos.getX(), startPos.getY() - i) != null &&
                             laserLayer.getCell(startPos.getX(), startPos.getY() - i).getTile().getId() == 81) {
                         laserLayer.setCell(startPos.getX(), startPos.getY() - i, crossLaser);
@@ -616,7 +622,7 @@ public class GameMap {
             case EAST:
                 laser.setTile(tiles.getTile(81));
                 for (int i = 1; i < distance + 1; i++) {
-//                    if (!grid.isBoardLaser(startPos.getX() + i, startPos.getY()))
+
                     if (laserLayer.getCell(startPos.getX() + i, startPos.getY()) != null &&
                             laserLayer.getCell(startPos.getX() + i, startPos.getY()).getTile().getId() == 82) {
                         laserLayer.setCell(startPos.getX() + i, startPos.getY(), crossLaser);
@@ -628,7 +634,7 @@ public class GameMap {
             case WEST:
                 laser.setTile(tiles.getTile(81));
                 for (int i = 1; i < distance + 1; i++) {
-//                    if (!grid.isBoardLaser(startPos.getX() - i, startPos.getY()))
+
                     if (laserLayer.getCell(startPos.getX() - i, startPos.getY()) != null &&
                             laserLayer.getCell(startPos.getX() - i, startPos.getY()).getTile().getId() == 82) {
                         laserLayer.setCell(startPos.getX() - i, startPos.getY(), crossLaser);

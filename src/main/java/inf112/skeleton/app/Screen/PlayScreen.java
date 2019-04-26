@@ -3,35 +3,15 @@ package inf112.skeleton.app.Screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
-import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import inf112.skeleton.app.Cards.PlayerDeck;
-import inf112.skeleton.app.Cards.ProgramCard;
-import inf112.skeleton.app.Directions.Position;
 import inf112.skeleton.app.Game.GameMap;
 import inf112.skeleton.app.Game.RoboRally;
-import inf112.skeleton.app.Player.Player;
-import net.java.games.input.Component;
-import net.java.games.input.Keyboard;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-
-
 
 /**
  * Play screen of RoboRally
@@ -58,7 +38,7 @@ public class PlayScreen implements Screen {
         gamePort = new StretchViewport(RoboRally.width * 2, RoboRally.height, gameCam);
         gameCam.translate(RoboRally.width, RoboRally.height / 2);
         width = gamePort.getWorldWidth();
-        height = RoboRally.height;
+        height = gamePort.getWorldHeight();
         this.gameMap = new GameMap("assets/map3.tmx", 4);
         this.map = gameMap.getMap();
         this.renderer = new OrthogonalTiledMapRenderer(map);
@@ -80,6 +60,12 @@ public class PlayScreen implements Screen {
         if (tickTime > 0.4) {
             tickTime = 0;
             gameMap.preformNextMovement();
+        }
+        //Update ui
+        if(tickTime > 0.2){
+            ui.getDamageTokenOfPlayer();
+            ui.getLifeTokenOfPlayer();
+            ui.getFlagInfo();
         }
     }
 
@@ -108,24 +94,6 @@ public class PlayScreen implements Screen {
     public void resize(int width, int height) {
         gamePort.update(width, height);
         stage.setViewport(gamePort);
-    }
-
-    public Image getLifeTokenOfPlayer() {
-        ArrayList<Player> players = gameMap.getPlayers();
-        Player player1 = players.get(0);
-        int lifeTokens = player1.getLifeTokens();
-        Texture lifeTokenTexture = null;
-        switch (lifeTokens) {
-            case 3: lifeTokenTexture = new Texture("assets/userInterface/lifeTokens/lifeTokens3.png"); break;
-            case 2: lifeTokenTexture = new Texture("assets/userInterface/lifeTokens/lifeTokens2.png"); break;
-            case 1: lifeTokenTexture = new Texture("assets/userInterface/lifeTokens/lifeTokens1.png"); break;
-            case 0: lifeTokenTexture = new Texture("assets/userInterface/lifeTokens/lifeTokens0.png"); break;
-            default: lifeTokenTexture = new Texture("assets/userInterface/lifeTokens/lifeTokens0.png"); break;
-        }
-        Sprite lifeTokenSprite = new Sprite(lifeTokenTexture);
-        Image lifeTokenImage = new Image(new SpriteDrawable(lifeTokenSprite));
-        lifeTokenImage.setPosition(1,1);
-        return lifeTokenImage;
     }
 
     public void handleInput() {
