@@ -6,19 +6,13 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import inf112.skeleton.app.Cards.PlayerDeck;
 import inf112.skeleton.app.Cards.ProgramCard;
 import inf112.skeleton.app.Directions.Position;
-import inf112.skeleton.app.Game.RoboRally;
 import inf112.skeleton.app.Player.Player;
-
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -27,7 +21,9 @@ public class UserInterface {
 
     private ImageButton playButton;
     private ImageButton powerDownButton;
+
     private Image damageTokenImage;
+    private Image flagCheckImage;
 
     private Image cardSlotsTop;
     private Image cardSlotsMid;
@@ -66,16 +62,17 @@ public class UserInterface {
         return stage;
     }
 
-    public void getDamageTokenOfPlayer(){
-        if(stage.getActors().contains(damageTokenImage, false)) {
+    public void getDamageTokenOfPlayer() {
+        if (stage.getActors().contains(damageTokenImage, false))
             stage.getActors().removeValue(damageTokenImage, false);
-            System.out.println("heu");
-        }
 
 
         int damageTokens = player.getHealth();
         Texture damageTokenTexture;
         switch (damageTokens) {
+            case 10:
+                damageTokenTexture = new Texture("assets/userInterface/damageTokens/damageTokens10.png");
+                break;
             case 9:
                 damageTokenTexture = new Texture("assets/userInterface/damageTokens/damageTokens9.png");
                 break;
@@ -110,22 +107,11 @@ public class UserInterface {
                 damageTokenTexture = new Texture("assets/userInterface/damageTokens/damageTokens0.png");
                 break;
         }
-        Sprite lifeTokenSprite = new Sprite(damageTokenTexture);
-        damageTokenImage = new Image(new SpriteDrawable(lifeTokenSprite));
-        damageTokenImage.addListener(new DragListener(){
-            @Override
-            public void drag(InputEvent event, float x, float y, int pointer) {
-                damageTokenImage.moveBy(x - damageTokenImage.getWidth() / 2, y - damageTokenImage.getHeight() / 2);
-            }
-
-            @Override
-            public void dragStop(InputEvent event, float x, float y, int pointer) {
-                System.out.println("X: " + damageTokenImage.getX() + " " + "Y: " + damageTokenImage.getY());
-            }
-        });
-        damageTokenImage.setHeight(damageTokenImage.getHeight() / 7 + 10);
-        damageTokenImage.setWidth(damageTokenImage.getWidth() / 7-10);
-        damageTokenImage.setPosition(420, 0);
+        Sprite damageTokenSprite = new Sprite(damageTokenTexture);
+        damageTokenImage = new Image(new SpriteDrawable(damageTokenSprite));
+        damageTokenImage.setHeight(damageTokenImage.getHeight() / 7 + 14);
+        damageTokenImage.setWidth(width / 2);
+        damageTokenImage.setPosition(width / 2, 0);
         stage.addActor(damageTokenImage);
     }
 
@@ -151,23 +137,55 @@ public class UserInterface {
         }
         Sprite lifeTokenSprite = new Sprite(lifeTokenTexture);
         final Image lifeTokenImage = new Image(new SpriteDrawable(lifeTokenSprite));
-        lifeTokenImage.setHeight(lifeTokenImage.getHeight() / 8);
+        lifeTokenImage.setHeight(lifeTokenImage.getHeight() / 8 + 5);
         lifeTokenImage.setWidth(lifeTokenImage.getWidth() / 8);
-        lifeTokenImage.setPosition(490, 42);
+        lifeTokenImage.setPosition(width - lifeTokenImage.getWidth() - playButton.getWidth(), 43);
         stage.addActor(lifeTokenImage);
     }
 
+    public void getFlagInfo() {
+        if(stage.getActors().contains(flagCheckImage, false))
+            stage.getActors().removeValue(flagCheckImage, false);
+
+        int lastFlagVisited = player.getLastFlagVisited();
+        Texture flagCheckTexture;
+        switch (lastFlagVisited) {
+            case 3:
+                flagCheckTexture = new Texture("assets/userInterface/flagChecks/flagCheck3.png");
+                break;
+            case 2:
+                flagCheckTexture = new Texture("assets/userInterface/flagChecks/flagCheck2.png");
+                break;
+            case 1:
+                flagCheckTexture = new Texture("assets/userInterface/flagChecks/flagCheck1.png");
+                break;
+            default:
+                flagCheckTexture = new Texture("assets/userInterface/flagChecks/flagCheck0.png");
+                break;
+        }
+        Sprite flagCheckSprite = new Sprite(flagCheckTexture);
+        flagCheckImage = new Image(new SpriteDrawable(flagCheckSprite));
+        flagCheckImage.setHeight(flagCheckImage.getHeight() / 8 +11);
+        flagCheckImage.setWidth(flagCheckImage.getWidth() / 8);
+        flagCheckImage.setPosition(width/2, 43);
+        flagCheckImage.toFront();
+        flagCheckImage.addListener(new DragListener(){
+            @Override
+            public void drag(InputEvent event, float x, float y, int pointer) {
+                flagCheckImage.moveBy(x-flagCheckImage.getWidth()/2, y-flagCheckImage.getHeight()/2);
+            }
+
+            @Override
+            public void dragStop(InputEvent event, float x, float y, int pointer) {
+                System.out.println("X: " + flagCheckImage.getX() + " Y: " + flagCheckImage.getY());
+            }
+        });
+        stage.addActor(flagCheckImage);
+    }
 
     private void initializeCardSlots() {
         //Creates the slot bars
         Sprite picture = new Sprite(new Texture("assets/hand/hand5v3.png"));
-        cardSlotsBottom = new Image(new SpriteDrawable(picture));
-        cardSlotsBottom.setWidth(width / 2);
-        cardSlotsBottom.setHeight(picture.getHeight() + 25);
-        cardSlotsBottom.setScale(0.8f);
-        cardSlotsBottom.setPosition(424, 106);
-
-        picture = new Sprite(new Texture("assets/hand/hand5v3.png"));
         cardSlotsTop = new Image(new SpriteDrawable(picture));
         cardSlotsTop.setWidth(width / 2);
         cardSlotsTop.setHeight(picture.getHeight() + 25);
@@ -179,23 +197,32 @@ public class UserInterface {
         cardSlotsMid = new Image(new SpriteDrawable(picture));
         cardSlotsMid.setWidth(width / 2);
         cardSlotsMid.setHeight(picture.getHeight() + 25);
-        cardSlotsMid.setPosition(424, 199);
+        cardSlotsMid.setPosition(424, 200);
         cardSlotsMid.setScale(0.8f);
         cardSlotsMid.setColor(Color.LIGHT_GRAY);
+
+        picture = new Sprite(new Texture("assets/hand/hand5v3.png"));
+        cardSlotsBottom = new Image(new SpriteDrawable(picture));
+        cardSlotsBottom.setWidth(width / 2);
+        cardSlotsBottom.setHeight(picture.getHeight() + 25);
+        cardSlotsBottom.setScale(0.8f);
+        cardSlotsBottom.setPosition(424, 108);
+
+
     }
 
-    private void initializeSideBars(){
+    private void initializeSideBars() {
 
         Sprite picture = new Sprite(new Texture("assets/userInterface/leftSideBar.png"));
         leftBar = new Image(new SpriteDrawable(picture));
-        leftBar.setWidth(leftBar.getWidth());
-        leftBar.setHeight(leftBar.getHeight()/2);
-        leftBar.setPosition(width/2,0);
+        leftBar.setWidth(leftBar.getWidth() * 2);
+        leftBar.setHeight(leftBar.getHeight() / 2);
+        leftBar.setPosition(width / 2, 0);
 
         picture = new Sprite(new Texture("assets/userInterface/rightSideBar.png"));
         rightBar = new Image(new SpriteDrawable(picture));
-        rightBar.setWidth(rightBar.getWidth());
-        rightBar.setHeight(rightBar.getHeight()/2);
+        rightBar.setWidth(rightBar.getWidth() * 2);
+        rightBar.setHeight(rightBar.getHeight() / 2);
         rightBar.setPosition(width - rightBar.getWidth(), 0);
 
     }
@@ -203,9 +230,9 @@ public class UserInterface {
     private void initializePlayButton() {
         Sprite picture = new Sprite(new Texture("assets/userInterface/playButton.png"));
         playButton = new ImageButton(new SpriteDrawable(picture));
-        playButton.setWidth(playButton.getWidth()/7);
-        playButton.setHeight(playButton.getHeight()/7);
-        playButton.setPosition(667, 74);
+        playButton.setWidth(playButton.getWidth() / 7);
+        playButton.setHeight(playButton.getHeight() / 7+4);
+        playButton.setPosition(width-playButton.getWidth(), 78);
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -233,9 +260,9 @@ public class UserInterface {
     private void initializePowerDownButton() {
         Sprite picture = new Sprite(new Texture("assets/userInterface/powerDownButton.png"));
         powerDownButton = new ImageButton(new SpriteDrawable(picture));
-        powerDownButton.setWidth(powerDownButton.getWidth()/7);
-        powerDownButton.setHeight(powerDownButton.getHeight()/7);
-        powerDownButton.setPosition(667, 42);
+        powerDownButton.setWidth(powerDownButton.getWidth() / 7);
+        powerDownButton.setHeight(powerDownButton.getHeight() / 7 +4);
+        powerDownButton.setPosition(width-powerDownButton.getWidth(), 42);
         powerDownButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -255,7 +282,7 @@ public class UserInterface {
             float pWidth = (picture.getWidth() / 8) * 0.8f;
             float pHeight = (picture.getHeight() / 8) * 0.8f;
             float firstCardX = 428;
-            float firstCardY = 297;
+            float firstCardY = 298;
             cardImage.setWidth(pWidth);
             cardImage.setHeight(pHeight);
 
@@ -265,13 +292,13 @@ public class UserInterface {
                 cardImage.setOrigin(firstCardX + (i * pWidth), firstCardY);
 
                 //List of coordinates for the bottom slot row for easy access
-                pos[i] = new Position((int) (firstCardX + (i * pWidth)), (int) (firstCardY - pHeight*2 - 26));
+                pos[i] = new Position((int) (firstCardX + (i * pWidth)), (int) (firstCardY - pHeight * 2 - 26));
             }
 
             //Place remaining 4 cards in row beneath
             else {
-                cardImage.setPosition(firstCardX + ((i - 5) * pWidth), firstCardY - pHeight-13);
-                cardImage.setOrigin(firstCardX + ((i - 5) * pWidth), firstCardY - pHeight-13);
+                cardImage.setPosition(firstCardX + ((i - 5) * pWidth), firstCardY - pHeight - 13);
+                cardImage.setOrigin(firstCardX + ((i - 5) * pWidth), firstCardY - pHeight - 13);
             }
 
             //Adds dragging functionality to each image
@@ -382,6 +409,7 @@ public class UserInterface {
         stage.addActor(powerDownButton);
         getDamageTokenOfPlayer();
         getLifeTokenOfPlayer();
+        getFlagInfo();
     }
 
 }
