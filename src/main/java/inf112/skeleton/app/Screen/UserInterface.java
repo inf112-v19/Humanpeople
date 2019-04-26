@@ -43,11 +43,18 @@ public class UserInterface {
     private float width;
     private float height;
     private Player player;
+    private int health;
+    private int lifeTokens;
+    private int lastFlagVisited;
 
     public UserInterface(float width, float height, Player player) {
         this.height = height;
         this.width = width;
         this.player = player;
+        this.health = player.getHealth();
+        this.lifeTokens = player.getLifeTokens();
+        this.lastFlagVisited = player.getLastFlagVisited();
+
         stage = new Stage();
 
         initializeSideBars();
@@ -444,9 +451,12 @@ public class UserInterface {
         stage.addActor(cardSlotsBottom);
         stage.addActor(playButton);
         stage.addActor(powerDownButton);
-        getDamageTokenOfPlayer();
-        getLifeTokenOfPlayer();
-        getFlagInfo();
+        if (health != player.getHealth())
+            getDamageTokenOfPlayer();
+        if (lifeTokens != player.getLifeTokens())
+            getLifeTokenOfPlayer();
+        if (lastFlagVisited != player.getLastFlagVisited())
+            getFlagInfo();
     }
 
 }
