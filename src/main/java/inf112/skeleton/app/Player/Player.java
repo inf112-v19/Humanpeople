@@ -65,6 +65,7 @@ public class Player {
             return;
 
         isDestroyed = false;
+
         health = MAX_HEALTH - 2;
     }
 
@@ -80,6 +81,7 @@ public class Player {
     public void incrementHealth() {
         if (health < MAX_HEALTH)
             health++;
+
     }
 
     /**

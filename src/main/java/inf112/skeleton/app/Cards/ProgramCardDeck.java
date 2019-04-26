@@ -9,11 +9,14 @@ import java.util.Random;
 
 public class ProgramCardDeck {
     private ArrayList<ProgramCard> programCardDeck;
+    private ArrayList<ProgramCard> inActiveCardDeck;
+    private static ProgramCardDeck singleInstance;
 
 
-    public ProgramCardDeck() {
+    private ProgramCardDeck() {
         programCardDeck = new ArrayList<>();
-        newProgramCardDeck();
+        inActiveCardDeck = new ArrayList<>();
+        reConstructProgramCardDeck();
     }
 
     private void newProgramCardDeck() {
@@ -54,6 +57,7 @@ public class ProgramCardDeck {
         }
     }
 
+
     public void shuffleDeck() {
         Collections.shuffle(this.programCardDeck);
     }
@@ -61,29 +65,46 @@ public class ProgramCardDeck {
     public ProgramCard takeCard(int index) {
         if (getSizeOfDeck() < 1)
             throw new NoSuchElementException("There are no more cards to take.");
-
         if (index >= getSizeOfDeck())
             throw new IndexOutOfBoundsException("The index is too high.");
-
         ProgramCard card = programCardDeck.get(index);
         programCardDeck.remove(index);
+        inActiveCardDeck.add(card);
         return card;
+    }
+
+    public void addToInactiveCardDeck(ProgramCard card) {
+        if (inActiveCardDeck.contains(card))
+            throw new IllegalArgumentException("Cannot have duplicates of ProgramCards");
+        inActiveCardDeck.add(card);
+    }
+
+    public void shuffleInnInactiveCards() {
+        int duplicates = 0;
+        for (int i=0; i<inActiveCardDeck.size(); i++) {
+            if (programCardDeck.contains(inActiveCardDeck.get(i)))
+                duplicates++;
+            programCardDeck.add(inActiveCardDeck.get(i));
+        }
+        if (duplicates>0)
+            throw new IllegalArgumentException("Cannot have duplicates of ProgramCards. " + duplicates + " duplicates.");
+        shuffleDeck();
+        inActiveCardDeck.clear();
     }
 
     public ProgramCard takeTopCard() {
         if (getSizeOfDeck() < 1)
             throw new NoSuchElementException("There are no more cards to take.");
 
-        ProgramCard topCard = programCardDeck.get(0);
-        programCardDeck.remove(0);
+        ProgramCard topCard = takeCard(0);
         return topCard;
     }
+
 
 
     public ProgramCard takeRandomCard() {
         if (getSizeOfDeck() < 1)
             throw new NoSuchElementException("There are no more cards to take.");
-
         Random r = new Random();
         int index = r.nextInt(getSizeOfDeck());
         ProgramCard randomCard = takeCard(index);
@@ -96,17 +117,9 @@ public class ProgramCardDeck {
      * @param players
      */
     public void giveOutCardsToAllPlayers(ArrayList<Player> players) {
-        if (getSizeOfDeck() < 50)
-            newProgramCardDeck();
-
         for (int i = 0; i < players.size(); i++) {
             Player player = players.get(i);
-            ArrayList<ProgramCard> playerDeck = new ArrayList<>();
-
-            for (int j = 0; j < PlayerDeck.MAX_NUMBER_CARDS_IN_DECK; j++)
-                playerDeck.add(takeRandomCard());
-
-            player.getPlayerDeck().setDeck(playerDeck);
+            giveOutCardsToPlayer(player);
         }
     }
 
@@ -116,13 +129,9 @@ public class ProgramCardDeck {
      * @param player
      */
     public void giveOutCardsToPlayer(Player player) {
-        if (getSizeOfDeck() < 50)
-            newProgramCardDeck();
-
         ArrayList<ProgramCard> playerDeck = new ArrayList<>();
         for (int i = 0; i < PlayerDeck.MAX_NUMBER_CARDS_IN_DECK; i++)
             playerDeck.add(takeRandomCard());
-
         player.getPlayerDeck().setDeck(playerDeck);
     }
 
@@ -130,7 +139,31 @@ public class ProgramCardDeck {
         return programCardDeck.size();
     }
 
+    /**
+     * Only for testing!
+     * @return programCardDeck
+     */
     public ArrayList<ProgramCard> getDeck() {
         return this.programCardDeck;
+    }
+
+    /**
+     * Singleton
+     * @return singleInstance
+     */
+    public static ProgramCardDeck getProgramCardDeckSingleton() {
+        if (singleInstance == null) {
+            singleInstance = new ProgramCardDeck();
+        }
+        return singleInstance;
+    }
+
+    /**
+     * Only for testing!
+     */
+    public void reConstructProgramCardDeck() {
+        inActiveCardDeck.clear();
+        programCardDeck.clear();
+        newProgramCardDeck();
     }
 }

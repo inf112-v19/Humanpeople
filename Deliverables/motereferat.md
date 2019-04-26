@@ -118,6 +118,42 @@
  - Oppmøte: Sondre, Matias, Stian, Eirik
  - Felles arbeid med gjenverende implementasjoner for denne iterasjonen (oblig 4)
  - Merging av alle nye implementasjoner
- - Neste møte: 27.03.2019
+ - Neste møte: 28.03.2019
+ 
+ ### Referat møte 28.03.2019
+  - Oppmøte: Sondre, Matias, Eirik
+  - Fellesskriving av oblig 4
+  - Ferdigskrevet draft
+  - Neste møte: 29.03.2019
   
-  
+### Referat møte 29.03.2019
+ - Oppmøte: Stian, Sondre, Matias, Eirik
+ - Bug fix: Spiller dyttes over hull uten å dette nedi
+ - Finpussing av Oblig4
+ - Refaktorering av kode til Oblig4
+ - Neste møte: 02.04.2019
+ 
+ ### Referat møte 02.04.2019
+  - Oppmøte: Alle
+  - Gjennomgang av referat fra kundemøte
+  - Opprettet klassediagram
+  - Planlegger neste iterasjon på neste møte
+  - Neste møte: 09.04.2019
+ 
+ ### Referat møte 09.04.2019
+  - Oppmøte: alle
+  - Oppretter arbeidsoppgaver for siste iterasjon
+    * Laser
+    * Flere backups på en tile
+    * Endgame
+    * Skademeksanisme
+    * Kortstokk utdeling
+    * Spiller kan dø
+    * Tannhjul
+    * Bevegelse ut i fra prioritet
+    * Transportbånd
+    * Power Down
+    * LAN
+  - Fordeling av arbeidsoppgaver
+  - Alle satte arbeidsoppgaver skal være gjennomført til neste møte
+  - Neste møte: 23.04.2019
