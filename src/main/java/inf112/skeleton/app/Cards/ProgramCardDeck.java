@@ -130,7 +130,7 @@ public class ProgramCardDeck {
      */
     public void giveOutCardsToPlayer(Player player) {
         ArrayList<ProgramCard> playerDeck = new ArrayList<>();
-        for (int i = 0; i < PlayerDeck.MAX_NUMBER_CARDS_IN_DECK; i++)
+        for (int i = 0; i < PlayerDeck.NUMBER_OF_NEW_CARDS_TO_DECK; i++)
             playerDeck.add(takeRandomCard());
         player.getPlayerDeck().setDeck(playerDeck);
     }

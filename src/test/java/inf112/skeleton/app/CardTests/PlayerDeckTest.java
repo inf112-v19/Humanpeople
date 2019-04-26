@@ -109,7 +109,7 @@ public class PlayerDeckTest {
     public void deckSizeTest() {
         PlayerDeck pd = new PlayerDeck();
 
-        for (int i = 0; i < PlayerDeck.MAX_NUMBER_CARDS_IN_DECK; i++) {
+        for (int i = 0; i < PlayerDeck.NUMBER_OF_NEW_CARDS_TO_DECK; i++) {
             pd.setDeck(creatDeckOfNcards(i));
             assertEquals(i, pd.deckSize());
         }
@@ -120,7 +120,7 @@ public class PlayerDeckTest {
         PlayerDeck pd = new PlayerDeck();
         pd.setDeck(creatDeckOfNcards(9));
 
-        for (int i = 0; i < PlayerDeck.MAX_NUMBER_CARDS_ON_HAND; i++) {
+        for (int i = 0; i < PlayerDeck.NUMBER_CARDS_ON_HAND; i++) {
             pd.selectCardForHand(i);
             int nCardsOnHand = i + 1;
             assertEquals(nCardsOnHand, pd.handSize());

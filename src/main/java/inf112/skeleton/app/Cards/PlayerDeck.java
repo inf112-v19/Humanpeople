@@ -9,8 +9,12 @@ import java.util.Objects;
  */
 public class PlayerDeck {
 
-    public static int MAX_NUMBER_CARDS_ON_HAND;
-    public static int MAX_NUMBER_CARDS_IN_DECK;
+    private final static int NUMBER_CARDS_ON_HAND = 5;
+    public static int NUMBER_OF_LOCKED_CARDS;
+    public static int NUMBER_OF_NEW_CARDS_TO_HAND;
+    public static int NUMBER_OF_NEW_CARDS_TO_DECK;
+    private static int MAX_NUMBER_CARDS_IN_DECK = 9;
+
     /**
      * Deck of cards for the player to choose from
      */
@@ -24,8 +28,7 @@ public class PlayerDeck {
     public PlayerDeck() {
         deck = new ArrayList<>();
         hand = new ArrayList<>();
-        MAX_NUMBER_CARDS_ON_HAND = 5;
-        MAX_NUMBER_CARDS_IN_DECK = 9;
+        NUMBER_OF_NEW_CARDS_TO_DECK = MAX_NUMBER_CARDS_IN_DECK;
     }
 
     /**
@@ -36,11 +39,11 @@ public class PlayerDeck {
      */
     public void selectCardForHand(int cardInDeckNumber) {
         if (cardInDeckNumber < 0 || cardInDeckNumber > deckSize())
-            throw new IndexOutOfBoundsException("You only have " + MAX_NUMBER_CARDS_IN_DECK +
+            throw new IndexOutOfBoundsException("You only have " + NUMBER_OF_NEW_CARDS_TO_DECK +
                     " cards to choose from. No such " + cardInDeckNumber + "th programCard");
 
-        if (handSize() >= MAX_NUMBER_CARDS_ON_HAND)
-            throw new IndexOutOfBoundsException("The players hand is already full (size: " + MAX_NUMBER_CARDS_ON_HAND + ")");
+        if (handSize() >= NUMBER_CARDS_ON_HAND)
+            throw new IndexOutOfBoundsException("The players hand is already full (size: " + NUMBER_CARDS_ON_HAND + ")");
 
         ProgramCard programCard = deck.get(cardInDeckNumber);
         deck.remove(cardInDeckNumber);
@@ -49,14 +52,22 @@ public class PlayerDeck {
 
     public void changedHealth(int hP) {
         if (hP >= 9) {
-            MAX_NUMBER_CARDS_ON_HAND = 5;
-            MAX_NUMBER_CARDS_IN_DECK = 9;
+            NUMBER_OF_NEW_CARDS_TO_DECK = MAX_NUMBER_CARDS_IN_DECK;
         }
-        if (hP < 9) {
-            MAX_NUMBER_CARDS_IN_DECK = hP;
+        if (hP < 9 && hP >= 0) {
+            NUMBER_OF_NEW_CARDS_TO_DECK = hP-1;
         }
-        if (hP <= 5) {
-            MAX_NUMBER_CARDS_ON_HAND = hP;
+        burnCardsToHand(hP);
+    }
+
+    private void burnCardsToHand(int hP) {
+        if (hP > 6) {
+            NUMBER_OF_LOCKED_CARDS = 0;
+            NUMBER_OF_NEW_CARDS_TO_HAND = NUMBER_CARDS_ON_HAND;
+        }
+        if (hP <= 6 && hP >= 0) {
+            NUMBER_OF_LOCKED_CARDS = (10-(NUMBER_OF_NEW_CARDS_TO_DECK+hP));
+            NUMBER_OF_NEW_CARDS_TO_HAND = hP - NUMBER_OF_LOCKED_CARDS;
         }
     }
 
@@ -81,7 +92,7 @@ public class PlayerDeck {
      * @param newDeck
      */
     public void setDeck(ArrayList<ProgramCard> newDeck) {
-        if (newDeck.size() > MAX_NUMBER_CARDS_IN_DECK)
+        if (newDeck.size() > NUMBER_OF_NEW_CARDS_TO_DECK)
             throw new IllegalArgumentException("The deck needs to be size 9. Size was: " + newDeck.size());
         this.deck = newDeck;
     }
@@ -149,5 +160,11 @@ public class PlayerDeck {
         return deck.get(i);
     }
 
+    public int getMaxNumberCardsOnHand(){
+        return NUMBER_CARDS_ON_HAND;
+    }
 
+    public int getMaxNumberCardsInDeck() {
+        return NUMBER_OF_NEW_CARDS_TO_DECK;
+    }
 }
