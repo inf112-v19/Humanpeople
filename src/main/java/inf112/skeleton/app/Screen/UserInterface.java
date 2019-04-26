@@ -27,6 +27,7 @@ public class UserInterface {
 
     private ImageButton playButton;
     private ImageButton powerDownButton;
+    private Image damageTokenImage;
 
     private Image cardSlotsTop;
     private Image cardSlotsMid;
@@ -63,6 +64,69 @@ public class UserInterface {
 
     public Stage getStage() {
         return stage;
+    }
+
+    public void getDamageTokenOfPlayer(){
+        if(stage.getActors().contains(damageTokenImage, false)) {
+            stage.getActors().removeValue(damageTokenImage, false);
+            System.out.println("heu");
+        }
+
+
+        int damageTokens = player.getHealth();
+        Texture damageTokenTexture;
+        switch (damageTokens) {
+            case 9:
+                damageTokenTexture = new Texture("assets/userInterface/damageTokens/damageTokens9.png");
+                break;
+            case 8:
+                damageTokenTexture = new Texture("assets/userInterface/damageTokens/damageTokens8.png");
+                break;
+            case 7:
+                damageTokenTexture = new Texture("assets/userInterface/damageTokens/damageTokens7.png");
+                break;
+            case 6:
+                damageTokenTexture = new Texture("assets/userInterface/damageTokens/damageTokens6.png");
+                break;
+            case 5:
+                damageTokenTexture = new Texture("assets/userInterface/damageTokens/damageTokens5.png");
+                break;
+            case 4:
+                damageTokenTexture = new Texture("assets/userInterface/damageTokens/damageTokens4.png");
+                break;
+            case 3:
+                damageTokenTexture = new Texture("assets/userInterface/damageTokens/damageTokens3.png");
+                break;
+            case 2:
+                damageTokenTexture = new Texture("assets/userInterface/damageTokens/damageTokens2.png");
+                break;
+            case 1:
+                damageTokenTexture = new Texture("assets/userInterface/damageTokens/damageTokens1.png");
+                break;
+            case 0:
+                damageTokenTexture = new Texture("assets/userInterface/damageTokens/damageTokens0.png");
+                break;
+            default:
+                damageTokenTexture = new Texture("assets/userInterface/damageTokens/damageTokens0.png");
+                break;
+        }
+        Sprite lifeTokenSprite = new Sprite(damageTokenTexture);
+        damageTokenImage = new Image(new SpriteDrawable(lifeTokenSprite));
+        damageTokenImage.addListener(new DragListener(){
+            @Override
+            public void drag(InputEvent event, float x, float y, int pointer) {
+                damageTokenImage.moveBy(x - damageTokenImage.getWidth() / 2, y - damageTokenImage.getHeight() / 2);
+            }
+
+            @Override
+            public void dragStop(InputEvent event, float x, float y, int pointer) {
+                System.out.println("X: " + damageTokenImage.getX() + " " + "Y: " + damageTokenImage.getY());
+            }
+        });
+        damageTokenImage.setHeight(damageTokenImage.getHeight() / 7 + 10);
+        damageTokenImage.setWidth(damageTokenImage.getWidth() / 7-10);
+        damageTokenImage.setPosition(420, 0);
+        stage.addActor(damageTokenImage);
     }
 
     public void getLifeTokenOfPlayer() {
@@ -121,15 +185,16 @@ public class UserInterface {
     }
 
     private void initializeSideBars(){
+
         Sprite picture = new Sprite(new Texture("assets/userInterface/leftSideBar.png"));
         leftBar = new Image(new SpriteDrawable(picture));
-        leftBar.setWidth(leftBar.getWidth()/4 + 5);
+        leftBar.setWidth(leftBar.getWidth());
         leftBar.setHeight(leftBar.getHeight()/2);
         leftBar.setPosition(width/2,0);
 
         picture = new Sprite(new Texture("assets/userInterface/rightSideBar.png"));
         rightBar = new Image(new SpriteDrawable(picture));
-        rightBar.setWidth(rightBar.getWidth()/4+5);
+        rightBar.setWidth(rightBar.getWidth());
         rightBar.setHeight(rightBar.getHeight()/2);
         rightBar.setPosition(width - rightBar.getWidth(), 0);
 
@@ -315,6 +380,7 @@ public class UserInterface {
         stage.addActor(cardSlotsBottom);
         stage.addActor(playButton);
         stage.addActor(powerDownButton);
+        getDamageTokenOfPlayer();
         getLifeTokenOfPlayer();
     }
 

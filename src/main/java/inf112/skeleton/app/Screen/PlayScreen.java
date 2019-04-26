@@ -61,6 +61,9 @@ public class PlayScreen implements Screen {
             tickTime = 0;
             gameMap.preformNextMovement();
         }
+        if(tickTime > 0.1){
+            ui.getDamageTokenOfPlayer();
+        }
     }
 
     private void updateMap() {
