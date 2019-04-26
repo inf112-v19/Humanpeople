@@ -197,7 +197,6 @@ public class GameMap {
 
     /**
      * Removes the given player's backup point and sets it to the player's current position
-     *
      * @param player
      */
     public void setBackup(Player player) {
