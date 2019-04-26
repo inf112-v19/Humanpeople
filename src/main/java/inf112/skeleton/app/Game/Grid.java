@@ -4,6 +4,7 @@ import com.badlogic.gdx.maps.tiled.*;
 import inf112.skeleton.app.GameObjects.*;
 import inf112.skeleton.app.Directions.Direction;
 import inf112.skeleton.app.Directions.Position;
+import inf112.skeleton.app.Player.Player;
 
 import java.util.ArrayList;
 
@@ -15,7 +16,11 @@ public class Grid {
     private TiledMapTileLayer specialLayer;
     private TiledMapTileLayer flagLayer;
     private TiledMapTileLayer holeLayer;
-    private TiledMapTileLayer backupLayer;
+    private TiledMapTileLayer backupLayer1;
+    private TiledMapTileLayer backupLayer2;
+    private TiledMapTileLayer backupLayer3;
+    private TiledMapTileLayer backupLayer4;
+    private TiledMapTileLayer laserLayer;
     private TiledMapTileSet tiles;
 
     private ArrayList<PlayerLayerObject> listOfPlayerTilesToMove;
@@ -24,7 +29,14 @@ public class Grid {
     private final int playerIndex;
     private final int flagIndex;
     private final int holeIndex;
-    private final int backupIndex;
+    private final int backup1Index;
+    private final int backup2Index;
+    private final int backup3Index;
+    private final int backup4Index;
+    private final int laserIndex;
+
+    private int staticBoardLasers[][];
+
 
     public Grid(TiledMap map) {
         width = (Integer) map.getProperties().get("width");
@@ -32,19 +44,28 @@ public class Grid {
 
         tiles = map.getTileSets().getTileSet("testTileset");
         gameLogicGrid = new ArrayList[width][height];
+        staticBoardLasers = new int[width][height];
 
         groundIndex = 0;
         specialIndex = 1;
         flagIndex = 2;
         holeIndex = 3;
-        backupIndex = 4;
-        playerIndex = 5;
+        backup1Index = 4;
+        backup2Index = 5;
+        backup3Index = 6;
+        backup4Index = 7;
+        playerIndex = 8;
+        laserIndex = 9;
 
         groundLayer = (TiledMapTileLayer) map.getLayers().get(groundIndex);
         specialLayer = (TiledMapTileLayer) map.getLayers().get(specialIndex);
         flagLayer = (TiledMapTileLayer) map.getLayers().get(flagIndex);
         holeLayer = (TiledMapTileLayer) map.getLayers().get(holeIndex);
-        backupLayer = (TiledMapTileLayer) map.getLayers().get(backupIndex);
+        backupLayer1 = (TiledMapTileLayer) map.getLayers().get(backup1Index);
+        backupLayer2 = (TiledMapTileLayer) map.getLayers().get(backup2Index);
+        backupLayer3 = (TiledMapTileLayer) map.getLayers().get(backup3Index);
+        backupLayer4 = (TiledMapTileLayer) map.getLayers().get(backup4Index);
+        laserLayer = (TiledMapTileLayer) map.getLayers().get(laserIndex);
 
         listOfPlayerTilesToMove = new ArrayList<>();
         fillGridWithArrayListsAndGameObjects();
@@ -65,7 +86,7 @@ public class Grid {
                 gameLogicGrid[x][y].add(specialIndex, new NothingSpecial());
 
                 // Flag layer
-                TiledMapTileLayer.Cell flagCell = flagLayer.getCell(x,y);
+                TiledMapTileLayer.Cell flagCell = flagLayer.getCell(x, y);
                 if (flagCell == null)
                     gameLogicGrid[x][y].add(flagIndex, new NothingSpecial());
                 else {
@@ -74,7 +95,7 @@ public class Grid {
                 }
 
                 // Hole layer
-                TiledMapTileLayer.Cell holeCell = holeLayer.getCell(x,y);
+                TiledMapTileLayer.Cell holeCell = holeLayer.getCell(x, y);
                 if (holeCell == null)
                     gameLogicGrid[x][y].add(holeIndex, new NothingSpecial());
                 else {
@@ -82,15 +103,43 @@ public class Grid {
                     gameLogicGrid[x][y].add(holeIndex, new SpecialLayerObject(tiles, holeLayerId));
                 }
 
-                // BackupLayer
-                gameLogicGrid[x][y].add(backupIndex, new NothingSpecial());
+                // BackupLayer 1
+                gameLogicGrid[x][y].add(backup1Index, new NothingSpecial());
+
+                // BackupLayer 2
+                gameLogicGrid[x][y].add(backup2Index, new NothingSpecial());
+
+                // BackupLayer 3
+                gameLogicGrid[x][y].add(backup3Index, new NothingSpecial());
+
+                // BackupLayer 4
+                gameLogicGrid[x][y].add(backup4Index, new NothingSpecial());
 
                 // PlayerLayer
                 gameLogicGrid[x][y].add(playerIndex, new NotAPlayer());
+
+                // Laser layer
+//                gameLogicGrid[x][y].add(laserIndex, new NothingSpecial());
+
+                TiledMapTileLayer.Cell laserCell = laserLayer.getCell(x, y);
+                if (laserCell == null)
+                    gameLogicGrid[x][y].add(laserIndex, new NothingSpecial());
+                else {
+                    int laserLayerId = laserCell.getTile().getId();
+                    gameLogicGrid[x][y].add(laserIndex, new LaserLayerObject(tiles, laserLayerId));
+                    staticBoardLasers[x][y] = laserLayerId;
+                }
             }
         }
     }
 
+    public int getBoardLaserId(int x, int y){
+        return staticBoardLasers[x][y];
+    }
+
+    public boolean isBoardLaser(int x, int y){
+        return staticBoardLasers[x][y] == 81 || staticBoardLasers[x][y] == 82;
+    }
     public void setPlayerPosition(PlayerLayerObject playerLayerObject) {
         Position currentPosition = playerLayerObject.getPosition();
         int x = currentPosition.getX();
@@ -104,20 +153,24 @@ public class Grid {
         gameLogicGrid[position.getX()][position.getY()].add(playerIndex, new NotAPlayer());
     }
 
-    public void setBackupPosition(PlayerLayerObject playerLayerObject) {
-        Position currentPosition = playerLayerObject.getPosition();
+    public void setBackupPosition(PlayerLayerObject player) {
+        int playerId = player.getId();
+        Position currentPosition = player.getPosition();
         int x = currentPosition.getX();
         int y = currentPosition.getY();
-        TiledMapTile backupTile = playerLayerObject.getBackup().getAvatar();
-        gameLogicGrid[x][y].remove(backupIndex);
-        gameLogicGrid[x][y].add(backupIndex, backupTile);
+        TiledMapTile backupTile = player.getBackup().getAvatar();
+        int backupLayerIndex = backup1Index + playerId;
+
+        gameLogicGrid[x][y].remove(backupLayerIndex);
+        gameLogicGrid[x][y].add(backupLayerIndex, backupTile);
     }
 
-    public void removeBackupPosition(Position position) {
+    public void removeBackupPosition(Position position, int playerId) {
         int x = position.getX();
         int y = position.getY();
-        gameLogicGrid[x][y].remove(backupIndex);
-        gameLogicGrid[x][y].add(backupIndex, new NothingSpecial());
+        int backupLayerIndex = backup1Index + playerId;
+        gameLogicGrid[x][y].remove(backup1Index);
+        gameLogicGrid[x][y].add(backup1Index, new NothingSpecial());
     }
 
 
@@ -134,7 +187,7 @@ public class Grid {
      */
     public void AllowedToMoveInDirection(Direction dir, Position pos) {
         GameObject groundLayerObject = (GameObject) gameLogicGrid[pos.getX()][pos.getY()].get(groundIndex);
-        if (groundLayerObject.canGo(dir) ) {
+        if (groundLayerObject.canGo(dir)) {
             listOfPlayerTilesToMove.add((PlayerLayerObject) gameLogicGrid[pos.getX()][pos.getY()].get(playerIndex));
             Position positionInDir;
             switch (dir) {
@@ -183,6 +236,7 @@ public class Grid {
 
     /**
      * Checks if tile at given position is a backup
+     *
      * @param position
      * @return true if tile has backup
      */
@@ -197,6 +251,7 @@ public class Grid {
 
     /**
      * Checks if given backup object is located at given position
+     *
      * @param position
      * @param backupObjectId
      * @return
@@ -204,8 +259,8 @@ public class Grid {
     private boolean isBackupItem(Position position, int backupObjectId) {
         int x = position.getX();
         int y = position.getY();
-        if (backupLayer.getCell(x, y) != null) {
-            TiledMapTile tileAtPosition = backupLayer.getCell(x, y).getTile();
+        if (backupLayer1.getCell(x, y) != null) {
+            TiledMapTile tileAtPosition = backupLayer1.getCell(x, y).getTile();
             return tileAtPosition.getId() == backupObjectId;
         }
         return false;
@@ -213,6 +268,7 @@ public class Grid {
 
     /**
      * Checks if tile at given position is a hole
+     *
      * @param position
      * @return
      */
@@ -220,15 +276,29 @@ public class Grid {
         int holeId = 6;
         int x = position.getX();
         int y = position.getY();
-        if (holeLayer.getCell(x,y) != null) {
+        if (holeLayer.getCell(x, y) != null) {
             TiledMapTile tileAtPosition = holeLayer.getCell(x, y).getTile();
             return tileAtPosition.getId() == holeId;
         }
         return false;
     }
 
+    public boolean isLaser(Position pos){
+        int horizontalLaserId = 81;
+        int verticalLaserId = 82;
+        int x = pos.getX();
+        int y = pos.getY();
+
+        if (laserLayer.getCell(x, y) != null) {
+            TiledMapTile tileAtPosition = laserLayer.getCell(x, y).getTile();
+            return tileAtPosition.getId() == horizontalLaserId || tileAtPosition.getId() == verticalLaserId;
+        }
+        return false;
+    }
+
     /**
      * Checks if tile at given position is a flag
+     *
      * @param position
      * @return
      */
@@ -241,6 +311,7 @@ public class Grid {
 
     /**
      * Checks if given flag object is located at given position
+     *
      * @param position
      * @param flagObjectId
      * @return
@@ -248,9 +319,89 @@ public class Grid {
     private boolean isFlagItem(Position position, int flagObjectId) {
         int x = position.getX();
         int y = position.getY();
-        if (flagLayer.getCell(x,y) != null) {
+        if (flagLayer.getCell(x, y) != null) {
             TiledMapTile tileAtPosition = flagLayer.getCell(x, y).getTile();
             return tileAtPosition.getId() == flagObjectId;
+        }
+        return false;
+    }
+
+    public boolean isNorthBelt(Position position) {
+        int northBeltId1 = 21;
+        return isConveyorBelt(position, northBeltId1);
+    }
+
+    public boolean isEastBelt(Position position) {
+        int eastBeltId1 = 24;
+        int eastBeltId2 = 25;
+        return isConveyorBelt(position, eastBeltId1) || isConveyorBelt(position, eastBeltId2);
+    }
+
+    public boolean isSouthBelt(Position position) {
+        int southBeltId1 = 22;
+        int southBeltId2 = 28;
+        int southBeltId3 = 27;
+        return isConveyorBelt(position, southBeltId1) || isConveyorBelt(position, southBeltId2) || isConveyorBelt(position, southBeltId3);
+    }
+
+    public boolean isWestBelt(Position position) {
+        int westBeltId1 = 23;
+        int westBeltId2 = 26;
+        return isConveyorBelt(position, westBeltId1) || isConveyorBelt(position, westBeltId2);
+    }
+
+    public boolean isRightGyro(Position position) {
+        int rightGyroId = 71;
+        return isConveyorBelt(position, rightGyroId);
+    }
+
+    public boolean isLeftGyro(Position position) {
+        int leftGyroId = 72;
+        return isConveyorBelt(position, leftGyroId);
+    }
+
+    public boolean isDoubleWestBelt(Position position) {
+        int doubleWestBeltId = 30;
+        return isConveyorBelt(position, doubleWestBeltId);
+    }
+
+    public boolean isDoubleEastBelt(Position position) {
+        int doubleEastBeltId = 29;
+        return isConveyorBelt(position, doubleEastBeltId);
+    }
+
+    public boolean isDoubleSouthBelt(Position position) {
+        int doubleSouthBeltId = 19;
+        return isConveyorBelt(position, doubleSouthBeltId);
+    }
+
+    public boolean isDoubleNorthBelt(Position position) {
+        int doubleNorthBeltId = 18;
+        return isConveyorBelt(position, doubleNorthBeltId);
+    }
+
+    public boolean isWrench(Position position) {
+        int wrenchTileId = 73;
+        int x = position.getX();
+        int y = position.getY();
+        if (specialLayer.getCell(x,y) != null) {
+            TiledMapTile tileAtPosition = specialLayer.getCell(x, y).getTile();
+            return tileAtPosition.getId() == wrenchTileId;
+        }
+        return false;
+    }
+
+    /**
+     * @param position
+     * @param conveyorId
+     * @return true if the given conveyor belt id matches the tile at the given position
+     */
+    public boolean isConveyorBelt(Position position, int conveyorId) {
+        int x = position.getX();
+        int y = position.getY();
+        if (specialLayer.getCell(x, y) != null) {
+            TiledMapTile tileAtPosition = specialLayer.getCell(x, y).getTile();
+            return tileAtPosition.getId() == conveyorId;
         }
         return false;
     }
@@ -261,5 +412,26 @@ public class Grid {
 
     public int getHeight() {
         return height;
+    }
+
+    /**
+     *
+     * @param pos
+     * @param dir
+     * @return true if the laser can travel one tile from position pos in direction dir
+     */
+    public boolean canFire(Position pos, Direction dir){
+        GameObject groundLayerObject = (GameObject) gameLogicGrid[pos.getX()][pos.getY()].get(groundIndex);
+        return groundLayerObject.canGo(dir) && pos.getX() < getWidth() && pos.getY() < getHeight();
+    }
+
+    /**
+     *
+     * @param pos
+     * @return true if there is a player in the position
+     */
+    public boolean hasPlayer(Position pos){
+        GameObject playerLayerObject = (GameObject) gameLogicGrid[pos.getX()][pos.getY()].get(playerIndex);
+        return playerLayerObject instanceof PlayerLayerObject;
     }
 }

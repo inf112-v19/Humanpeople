@@ -3,6 +3,8 @@ package inf112.skeleton.app.Round;
 import inf112.skeleton.app.Cards.ProgramCard;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class Phase {
     private ArrayList<ProgramCard> movesToPerform;
@@ -11,6 +13,7 @@ public class Phase {
 
     public Phase(ArrayList<ProgramCard> movesToPerform) {
         this.movesToPerform = movesToPerform;
+        Collections.sort(this.movesToPerform, Collections.reverseOrder());
         phaseComplete = false;
         movesLeftOnCurrentCard = -1;
     }

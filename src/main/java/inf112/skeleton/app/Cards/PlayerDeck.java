@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 
 /**
- * Player deck for programming cards
+ * PlayerLayerObject deck for programming cards
  */
 public class PlayerDeck {
 

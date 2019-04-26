@@ -40,32 +40,30 @@ public class TestScreen implements Screen {
 
     ArrayList<ProgramCard> cardsForPlayer;
 
-    private int numberOfPlayers;
     private boolean infoShowed;
 
 
     public TestScreen(RoboRally game) {
         cardsForPlayer = new ArrayList<>();
-        numberOfPlayers = 4;
         this.game = game;
         this.gameCam = new OrthographicCamera();
         this.gamePort = new FitViewport(RoboRally.width, RoboRally.height, gameCam);
-        this.gameMap = new GameMap("assets/map3.tmx", numberOfPlayers);
+        this.gameMap = new GameMap("assets/testMap.tmx", 4);
         this.map = gameMap.getMap();
         this.renderer = new OrthogonalTiledMapRenderer(map);
         gameCam.position.set(gamePort.getWorldWidth() / 2, (gamePort.getWorldHeight() / 2), 0);
 
 
         //Every program card type
-        move1 = new ProgramCard(ProgramType.MOVE1, 0, "");
-        move2 = new ProgramCard(ProgramType.MOVE2, 0, "");
-        move3 = new ProgramCard(ProgramType.MOVE3, 0, "");
+        move1 = new ProgramCard(ProgramType.MOVE1, 1, "");
+        move2 = new ProgramCard(ProgramType.MOVE2, 2, "");
+        move3 = new ProgramCard(ProgramType.MOVE3, 3, "");
 
 
-        right = new ProgramCard(ProgramType.ROTATERIGHT, 0, "");
-        left = new ProgramCard(ProgramType.ROTATELEFT, 0, "");
-        backUp = new ProgramCard(ProgramType.BACKWARD, 0, "");
-        uTurn = new ProgramCard(ProgramType.UTURN, 0, "");
+        right = new ProgramCard(ProgramType.ROTATERIGHT, 4, "");
+        left = new ProgramCard(ProgramType.ROTATELEFT, 5, "");
+        backUp = new ProgramCard(ProgramType.BACKWARD, 6, "");
+        uTurn = new ProgramCard(ProgramType.UTURN, 7, "");
 
 
         //setter id-en til 0 for å flytte spilleren med id 0
@@ -78,7 +76,6 @@ public class TestScreen implements Screen {
         uTurn.setPlayerThatPlayedTheCard(0);
 
         infoShowed = false;
-
     }
 
     public void update(float deltaTime) {
@@ -132,6 +129,16 @@ public class TestScreen implements Screen {
                 cardsForPlayer.add(backUp);
                 System.out.println("selected: " + cardsForPlayer.size() + "/" + 5);
             }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.H)) {
+                System.out.println("LASER");
+                gameMap.fireLasers();
+            }
+            if(Gdx.input.isKeyJustPressed(Input.Keys.J)) {
+                for (Player player : gameMap.getPlayers()) {
+                    player.printStatus();
+                    System.out.println();
+                }
+            }
         }
         //Test of movement according to program cards (using movePlayer() for testing
         else if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
@@ -148,7 +155,7 @@ public class TestScreen implements Screen {
     }
 
     public void givePlayersRotateHand() {
-        for (int i = 1; i < numberOfPlayers; i++) {
+        for (int i = 1; i < numberOfPlayers(); i++) {
             ArrayList<ProgramCard> temp = new ArrayList<>();
             ProgramCard card = new ProgramCard(ProgramType.ROTATERIGHT, i, "");
             card.setPlayerThatPlayedTheCard(i);
@@ -188,6 +195,10 @@ public class TestScreen implements Screen {
             System.out.println("Direction: " + dir);
             System.out.println("Position: (" + posX + "," + posY + ")" + "\n");
         }
+    }
+
+    public int numberOfPlayers() {
+        return gameMap.getPlayers().size();
     }
 
     private void updateMap() {

@@ -1,8 +1,6 @@
 package inf112.skeleton.app.Player;
 
-import inf112.skeleton.app.Cards.PlayerDeck;
 import inf112.skeleton.app.Cards.ProgramCard;
-import inf112.skeleton.app.Cards.ProgramCardDeck;
 import inf112.skeleton.app.Cards.ProgramType;
 import inf112.skeleton.app.Directions.Direction;
 import inf112.skeleton.app.Directions.Position;
@@ -66,29 +64,29 @@ public class PlayerTest {
 
     @Test
     public void restoreDamageTokens() {
-        assertEquals(player.getDamageTokens(), 9);
+        assertEquals(player.getHealth(), 9);
         player.damagePlayer(4);
-        assertEquals(player.getDamageTokens(), 5);
-        player.restoreDamageTokens();
-        assertEquals(player.getDamageTokens(), 9);
+        assertEquals(player.getHealth(), 5);
+        player.fix();
+        assertEquals(player.getHealth(), 9);
     }
 
     @Test
     public void damagePlayerTest() {
-        assertEquals(player.getDamageTokens(), 9);
+        assertEquals(player.getHealth(), 9);
         player.damagePlayer(2);
-        assertEquals(player.getDamageTokens(), 7);
+        assertEquals(player.getHealth(), 7);
         player.damagePlayer(3);
-        assertEquals(player.getDamageTokens(), 4);
+        assertEquals(player.getHealth(), 4);
         player.damagePlayer(4);
-        assertEquals(player.getDamageTokens(), 0);
+        assertEquals(player.getHealth(), 0);
     }
 
     @Test
     public void lostAllDamageTokens() {
-        assertFalse(player.lostAllDamageTokens());
+        assertFalse(player.lostAllHealth());
         player.damagePlayer(9);
-        assertTrue(player.lostAllDamageTokens());
+        assertTrue(player.lostAllHealth());
     }
 
     @Test
@@ -97,13 +95,13 @@ public class PlayerTest {
         assertTrue(player1.isAlive());
 
         player1.damagePlayer(9);
-        player1.lostAllDamageTokens();
+        player1.lostAllHealth();
 
         player1.damagePlayer(9);
-        player1.lostAllDamageTokens();
+        player1.lostAllHealth();
 
         player1.damagePlayer(9);
-        player1.lostAllDamageTokens();
+        player1.lostAllHealth();
 
         assertFalse(player1.isAlive());
     }
