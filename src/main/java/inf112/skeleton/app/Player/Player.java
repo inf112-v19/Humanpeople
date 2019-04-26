@@ -78,7 +78,7 @@ public class Player {
      * Does not increase if player has max health
      */
     public void incrementHealth() {
-        if (health >= MAX_HEALTH)
+        if (health < MAX_HEALTH)
             health++;
     }
 
