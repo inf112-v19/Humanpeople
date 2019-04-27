@@ -101,7 +101,7 @@ public class GameMap {
 
     public void drawPlayer(Player player) {
         Position pos = player.getPosition();
-
+        laserLayer.setCell(pos.getX(), pos.getY(), null);
         TiledMapTileLayer.Cell avatar = new TiledMapTileLayer.Cell();
         avatar.setTile(player.getAvatar());
 
@@ -243,6 +243,7 @@ public class GameMap {
 
     /**
      * Checks if there is a player already at the given player's backup
+     *
      * @param player
      * @return true if there is another player on the backup
      */
@@ -257,6 +258,7 @@ public class GameMap {
     /**
      * If someone is standing on the backup of a player when he is due to return,
      * then return player to a position adjacent to the backup
+     *
      * @param player
      */
     public void movePlayerToNearestField(Player player) {
@@ -319,6 +321,7 @@ public class GameMap {
     /**
      * Checks if player has stepped on a wrench.
      * If player stepped on wrench, then add one health to the player
+     *
      * @param player
      * @return true if player is standing on a wrench tile
      */
@@ -401,24 +404,21 @@ public class GameMap {
             grid.setPlayerPosition(player.getPlayerTile());
             if (steppedOnConveyorBelt(player) && !hasMovedOnce)
                 moveAccordingToConveyorBelt(player, true);
-        }
-        else if (grid.isDoubleSouthBelt(currentPosition) && canGo(Direction.SOUTH, currentPosition)) {
+        } else if (grid.isDoubleSouthBelt(currentPosition) && canGo(Direction.SOUTH, currentPosition)) {
             Position newPosition = currentPosition.south();
             grid.removePlayerPosition(currentPosition);
             player.setPosition(newPosition);
             grid.setPlayerPosition(player.getPlayerTile());
             if (steppedOnConveyorBelt(player) && !hasMovedOnce)
                 moveAccordingToConveyorBelt(player, true);
-        }
-        else if (grid.isWestBelt(currentPosition) && canGo(Direction.WEST, currentPosition)) {
+        } else if (grid.isWestBelt(currentPosition) && canGo(Direction.WEST, currentPosition)) {
             Position newPosition = currentPosition.west();
             grid.removePlayerPosition(currentPosition);
             player.setPosition(newPosition);
             grid.setPlayerPosition(player.getPlayerTile());
             if (steppedOnConveyorBelt(player) && !hasMovedOnce)
                 moveAccordingToConveyorBelt(player, true);
-        }
-        else if (grid.isDoubleEastBelt(currentPosition) && canGo(Direction.EAST, currentPosition)) {
+        } else if (grid.isDoubleEastBelt(currentPosition) && canGo(Direction.EAST, currentPosition)) {
             Position newPosition = currentPosition.east();
             grid.removePlayerPosition(currentPosition);
             player.setPosition(newPosition);
@@ -511,7 +511,7 @@ public class GameMap {
     }
 
     private void resetHitByBoardLaser() {
-        for(Player player : players)
+        for (Player player : players)
             player.setHitByBoardLaser(false);
     }
 
@@ -526,7 +526,9 @@ public class GameMap {
             Position startPos = player.getPosition();
             Direction dir = player.getDirection();
             int distance = getTargetDistance(startPos, dir);
-            drawLaser(distance, startPos, dir);
+            TiledMapTileLayer.Cell laserAvatar = new TiledMapTileLayer.Cell();
+            laserAvatar.setTile(player.getLaserAvatar());
+            drawLaser(distance, startPos, dir, laserAvatar);
         }
     }
 
@@ -552,16 +554,17 @@ public class GameMap {
      * @param startPos of the laser
      * @param dir      of the laser
      */
-    public void drawLaser(int distance, Position startPos, Direction dir) {
+    public void drawLaser(int distance, Position startPos, Direction dir, TiledMapTileLayer.Cell laserAvatar) {
         System.out.println("DISTANCE: " + distance);
         System.out.println();
         TiledMapTileLayer.Cell laser = new TiledMapTileLayer.Cell();
         TiledMapTileLayer.Cell crossLaser = new TiledMapTileLayer.Cell();
         crossLaser.setTile(tiles.getTile(83));
-
+        laserLayer.setCell(startPos.getX(), startPos.getY(), laserAvatar);
         switch (dir) {
             case NORTH:
                 for (int i = 1; i < distance + 1; i++) {
+
                     laser.setTile(tiles.getTile(82));
 
                     if (laserLayer.getCell(startPos.getX(), startPos.getY() + i) != null &&
@@ -606,7 +609,7 @@ public class GameMap {
                         laserLayer.setCell(startPos.getX() - i, startPos.getY(), crossLaser);
                         continue;
                     }
-                        laserLayer.setCell(startPos.getX() - i, startPos.getY(), laser);
+                    laserLayer.setCell(startPos.getX() - i, startPos.getY(), laser);
                 }
                 break;
         }

@@ -190,6 +190,10 @@ public class Player {
         return playerTile.getAvatar();
     }
 
+    public TiledMapTile getLaserAvatar() {
+        return playerTile.getLaserAvatar();
+    }
+
     public TiledMapTile getBackupAvatar() {
         return playerTile.getBackup().getAvatar();
     }

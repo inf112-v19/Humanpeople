@@ -56,21 +56,21 @@ public class MenuScreen implements Screen {
     @Override
     public void show() {
 
-
-        try {
-            Sequence sequence = null;
-            sequence = MidiSystem.getSequence(new File("assets/music.mid"));
-            Sequencer sequencer = MidiSystem.getSequencer();
-            sequencer.open();
-            sequencer.setSequence(sequence);
-            sequencer.start();
-        } catch (InvalidMidiDataException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (MidiUnavailableException e) {
-            e.printStackTrace();
-        }
+//
+//        try {
+//            Sequence sequence = null;
+//            sequence = MidiSystem.getSequence(new File("assets/music.mid"));
+//            Sequencer sequencer = MidiSystem.getSequencer();
+//            sequencer.open();
+//            sequencer.setSequence(sequence);
+//            sequencer.start();
+//        } catch (InvalidMidiDataException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (MidiUnavailableException e) {
+//            e.printStackTrace();
+//        }
 
         stage = new Stage();
 
