@@ -18,6 +18,7 @@ public class Player {
     private int id;
     private PlayerDeck playerDeck;
 
+    private boolean returnedToBackup;
     private boolean removedFromBoard;
     private boolean active;
     private boolean isDestroyed;
@@ -36,6 +37,7 @@ public class Player {
         this.backup = new Position(id, id);
 
         this.handChosen = false;
+        this.returnedToBackup = false;
         this.active = true;
         this.isDestroyed = false;
         this.isAlive = true;
@@ -64,6 +66,7 @@ public class Player {
         if(!isAlive)
             return;
 
+        returnedToBackup = false;
         isDestroyed = false;
         health = MAX_HEALTH - 2;
     }
@@ -126,6 +129,14 @@ public class Player {
         }
         health = 0;
         isDestroyed = true;
+    }
+
+    public boolean hasReturnedToBackup() {
+        return returnedToBackup;
+    }
+
+    public void returnToBackup() {
+        returnedToBackup = true;
     }
 
     public boolean hasBeenRemoveFromBoard() {

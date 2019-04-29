@@ -6,6 +6,7 @@ Hensikt:
 - Sjekke at spiller returnerer til backup punkt etter å ha blitt destruert
 - Sjekke at spiller blir destruert selv da den prøver å gå over hullet
 - Sjekke at spiller legger igjen backup etter å ha endt en fase på ett flagg
+- Sjekk at flere spillere kan legge igjen backup på samme flagg
 - Sjekke at spiller ikke legger igjen backup hvis den går over flagget men 
 	ikke avslutter fasen på flagget
 - Sjekke at annen spiller kan legge igjen backup gitt at den ender fasen på flagg
@@ -79,6 +80,35 @@ Resultat:
 	
 ---
 
+### Test av oppdatering av backup ved flytting over flagg for flere spillere
+
+Hensikt:
+- Sjekke at flere spillere kan oppdatere sitt backup punkt på samme flagg
+
+Test:
+
+1. Kjør programmet og klikk på "Test" knappen.
+
+2. Tast inn følgende kombinasjon:
+   "U", "1", "L", "3", "3", "Space"
+   (Vent til bevegelsene har blitt gjennomført)
+
+   "3", "L", "1", "R", "1", "Space"
+   (Vent til bevegelsene har blitt gjennomført)
+
+   "L", "1", "L", "3", "2", "Space"
+   (Vent til bevegelsene har blitt gjennomført)
+
+   "1", "U", "1", "R", "L", "Space"
+
+Resultat:
+
+	Spilleren skal dytte den blå spilleren over flagg nr. 2 og går deretter på flagget selv
+	(begge i slutten av en fase).
+	Se at begge backup-punkter ligger på flagget.
+
+---
+
 ### Test av oppdatering av backup ved flytting over flagg
 
 Hensikt:
@@ -98,7 +128,6 @@ Resultat:
 	Backup blir ikke flyttet/oppdatert. Spilleren blir flyttet til backup.
 	
 ---
-
 
 ### Test av oppdatering av backup av annen spiller
 

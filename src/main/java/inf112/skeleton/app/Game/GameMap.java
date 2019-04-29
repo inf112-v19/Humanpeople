@@ -34,7 +34,8 @@ public class GameMap {
     private ArrayList<PlayerLayerObject> playerTiles;
     private ArrayList<Player> players;
 
-    private int finalFlagNumber = 3;
+    private int finalFlagNumber = 1;
+    private Player winner;
 
     private Round round;
     private boolean cardsDealt;
@@ -241,6 +242,7 @@ public class GameMap {
             player.setPosition(backup);
             grid.setPlayerPosition(player.getPlayerTile());
         }
+        player.returnToBackup();
         drawPlayers();
     }
 
@@ -292,9 +294,11 @@ public class GameMap {
      * @return
      */
     public boolean hasToReturnToBackup(Player player) {
-        if (player.hasBeenRemoveFromBoard())
+        if (steppedOnHole(player))
+            return true;
+        if (player.hasBeenRemoveFromBoard() || player.hasReturnedToBackup())
             return false;
-        if (steppedOnHole(player) || player.lostAllHealth())
+        if (player.lostAllHealth())
             return true;
         return false;
     }
@@ -528,6 +532,9 @@ public class GameMap {
      * Checks if any players have won, i.e. has visited all flags
      */
     public void hasWon() {
+        // If the winner variable is not null then that means someone has already won the game
+        if (winner != null)
+            return;
         for (Player player : players) {
             hasWon(player);
         }
@@ -540,8 +547,13 @@ public class GameMap {
         int lastFlagVisited = player.getLastFlagVisited();
 
         if (lastFlagVisited == finalFlagNumber) {
-            System.out.println("Player " + player.getId() + " has won!");
+            winner = player;
+            System.out.println("Player " + player.getId() + " has won!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         }
+    }
+
+    public Player getWinner() {
+        return winner;
     }
 
     private void resetHitByBoardLaser() {

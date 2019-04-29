@@ -8,10 +8,12 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import inf112.skeleton.app.Game.GameMap;
 import inf112.skeleton.app.Game.RoboRally;
+import inf112.skeleton.app.Player.Player;
 
 /**
  * Play screen of RoboRally
@@ -63,9 +65,19 @@ public class PlayScreen implements Screen {
         }
         //Update ui
         if(tickTime > 0.2){
-            ui.getDamageTokenOfPlayer();
-            ui.getLifeTokenOfPlayer();
-            ui.getFlagInfo();
+            // Update only if there is a change in the variables
+            if (ui.getPlayer().getHealth() != ui.getSavedHealth()) {
+                ui.getDamageTokenOfPlayer();
+                ui.setSavedHealth(ui.getPlayer().getHealth());
+            }
+            if (ui.getPlayer().getLifeTokens() != ui.getSavedLifeTokens()) {
+                ui.getLifeTokenOfPlayer();
+                ui.setSavedLifeTokens(ui.getPlayer().getLifeTokens());
+            }
+            if (ui.getPlayer().getLastFlagVisited() != ui.getSavedFlag()) {
+                ui.getFlagInfo();
+                ui.setSavedFlag(ui.getPlayer().getLastFlagVisited());
+            }
         }
     }
 
@@ -100,6 +112,12 @@ public class PlayScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
             game.setScreen(new MenuScreen(game));
         }
+    }
+
+    public void displayWinner(Player winner) {
+        VictoryScreen victoryScreen = new VictoryScreen(winner);
+        Table winScreen = victoryScreen.getTable();
+        stage.addActor(winScreen);
     }
 
     @Override
