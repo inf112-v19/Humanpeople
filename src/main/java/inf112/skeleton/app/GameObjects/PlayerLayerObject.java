@@ -15,10 +15,15 @@ public class PlayerLayerObject implements GameObject {
     private int id;
 
     private TiledMapTileSet tiles;
-    private  TiledMapTile northAvatar;
-    private  TiledMapTile southAvatar;
-    private  TiledMapTile eastAvatar;
-    private  TiledMapTile westAvatar;
+    private TiledMapTile northAvatar;
+    private TiledMapTile southAvatar;
+    private TiledMapTile eastAvatar;
+    private TiledMapTile westAvatar;
+
+    private TiledMapTile northLaserAvatar;
+    private TiledMapTile southLaserAvatar;
+    private TiledMapTile eastLaserAvatar;
+    private TiledMapTile westLaserAvatar;
 
     private SpecialLayerObject backup;
 
@@ -31,23 +36,38 @@ public class PlayerLayerObject implements GameObject {
         this.id = id;
         pos = new Position(id, id);
         dir = Direction.NORTH;
-        switch(id){
-            case 0 : color = "Green"; break;
-            case 1: color = "Dark blue"; break;
-            case 2: color = "Light blue"; break;
-            case 3: color = "Yellow"; break;
-            default: color = "none"; break;
+        switch (id) {
+            case 0:
+                color = "Green";
+                break;
+            case 1:
+                color = "Dark blue";
+                break;
+            case 2:
+                color = "Light blue";
+                break;
+            case 3:
+                color = "Yellow";
+                break;
+            default:
+                color = "none";
+                break;
         }
     }
 
     public void setSprite(TiledMapTileSet tiles) {
         this.tiles = tiles;
-        int tileId = (id*10)+30;
-        northAvatar = tiles.getTile(tileId+1);
-        eastAvatar = tiles.getTile(tileId+2);
-        westAvatar = tiles.getTile(tileId+3);
-        southAvatar = tiles.getTile(tileId+4);
-        backup = new SpecialLayerObject(tiles, tileId+5);
+        int tileId = (id * 10) + 30;
+        northAvatar = tiles.getTile(tileId + 1);
+        eastAvatar = tiles.getTile(tileId + 2);
+        westAvatar = tiles.getTile(tileId + 3);
+        southAvatar = tiles.getTile(tileId + 4);
+        backup = new SpecialLayerObject(tiles, tileId + 5);
+        northLaserAvatar = tiles.getTile(tileId + 6);
+        eastLaserAvatar = tiles.getTile(tileId + 7);
+        westLaserAvatar = tiles.getTile(tileId + 8);
+        southLaserAvatar = tiles.getTile(tileId + 9);
+
     }
 
 
@@ -100,11 +120,29 @@ public class PlayerLayerObject implements GameObject {
         return northAvatar;
     }
 
+    public TiledMapTile getLaserAvatar() {
+        switch (dir) {
+            case NORTH:
+                return northLaserAvatar;
+
+            case SOUTH:
+                return southLaserAvatar;
+
+            case EAST:
+                return eastLaserAvatar;
+
+            case WEST:
+                return westLaserAvatar;
+
+        }
+        return northLaserAvatar;
+    }
+
     public SpecialLayerObject getBackup() {
         return backup;
     }
 
-    public void moveTileInDirection(Direction direction){
+    public void moveTileInDirection(Direction direction) {
 
         switch (direction) {
             case NORTH:
@@ -121,7 +159,7 @@ public class PlayerLayerObject implements GameObject {
         }
     }
 
-    public String getColor(){
+    public String getColor() {
         return color;
     }
 

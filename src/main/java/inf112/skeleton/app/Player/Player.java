@@ -220,6 +220,10 @@ public class Player {
     }
 
     public TiledMapTile getDestroyedAvatar() { return playerTile.getDestroyedAvatar(); }
+    
+    public TiledMapTile getLaserAvatar() {
+        return playerTile.getLaserAvatar();
+    }
 
     public TiledMapTile getBackupAvatar() {
         return playerTile.getBackup().getAvatar();

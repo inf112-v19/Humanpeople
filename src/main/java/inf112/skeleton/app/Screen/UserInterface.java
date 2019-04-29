@@ -214,13 +214,13 @@ public class UserInterface {
 
     private void initializeSideBars() {
 
-        Sprite picture = new Sprite(new Texture("assets/userInterface/leftSideBar.png"));
+        Sprite picture = new Sprite(new Texture("assets/userInterface/rightSideBar.png"));
         leftBar = new Image(new SpriteDrawable(picture));
         leftBar.setWidth(leftBar.getWidth() * 2);
         leftBar.setHeight(leftBar.getHeight() / 2);
         leftBar.setPosition(width / 2, 0);
 
-        picture = new Sprite(new Texture("assets/userInterface/rightSideBar.png"));
+        picture = new Sprite(new Texture("assets/userInterface/leftSideBar.png"));
         rightBar = new Image(new SpriteDrawable(picture));
         rightBar.setWidth(rightBar.getWidth() * 2);
         rightBar.setHeight(rightBar.getHeight() / 2);
