@@ -39,6 +39,8 @@ public class GameMap {
     private Round round;
     private boolean cardsDealt;
 
+    private ArrayList<Player> belteliste = new ArrayList<>();
+
     public GameMap(String filename, int nPlayers) {
         this.mapLoader = new TmxMapLoader();
         this.map = mapLoader.load(filename);
@@ -242,6 +244,7 @@ public class GameMap {
             grid.setPlayerPosition(player.getPlayerTile());
         }
         drawPlayers();
+
     }
 
     /**
@@ -343,10 +346,14 @@ public class GameMap {
      * Moves all players standing on conveyor belts
      */
     public void moveConveyorBelts() {
+        belteliste.clear();
         for (Player player : players) {
             if (steppedOnConveyorBelt(player))
-                moveAccordingToConveyorBelt(player, false);
+                //moveAccordingToConveyorBelt(player, false);
+                belteliste.add(player);
         }
+        moveTest();
+
     }
 
     /**
@@ -363,7 +370,65 @@ public class GameMap {
                 || grid.isDoubleNorthBelt(position) || grid.isDoubleSouthBelt(position)
                 || grid.isDoubleWestBelt(position) || grid.isDoubleEastBelt(position));
     }
+    public void moveTest(){
+        int i = 0;
+        while(belteliste.size()>0){
+            i++;
+            if(i>100){
+                break;
+            }
+            Player player = belteliste.get(0);
+            Position currentPositon = player.getPosition();
+            if(grid.isNorthBelt(currentPositon)){
+                if(canGo(Direction.NORTH,currentPositon)){
+                    if(playerTiles.size()==1){
+                        int x = currentPositon.getX();
+                        int y = currentPositon.getY();
+                        playerLayer.setCell(x, y, null);
+                        movePlayerTilesInList(Direction.NORTH);
+                        belteliste.remove(player);
+                        drawPlayer(player);
 
+                    }
+                    else {
+                        belteliste.remove(player);
+                        belteliste.add(player);
+                    }
+                }else {
+                    belteliste.remove(player);
+                }
+            }
+            else if(grid.isWestBelt(currentPositon)){
+                if(canGo(Direction.WEST,currentPositon)){
+
+                }
+            }
+            else if(grid.isSouthBelt(currentPositon)){
+                if(canGo(Direction.SOUTH,currentPositon)){
+
+                }
+            }
+            else if(grid.isEastBelt(currentPositon)){
+                if(canGo(Direction.EAST,currentPositon)){
+                    if(playerTiles.size()==1){
+                        int x = currentPositon.getX();
+                        int y = currentPositon.getY();
+                        playerLayer.setCell(x, y, null);
+                        movePlayerTilesInList(Direction.EAST);
+                        belteliste.remove(player);
+                        drawPlayer(player);
+                    }
+                    else {
+                        belteliste.remove(player);
+                        belteliste.add(player);
+                    }
+                }else {
+                    belteliste.remove(player);
+                }
+            }
+
+        }
+    }
     /**
      * Checks what type of conveyor belt the player is standing on and moves the player accordingly
      *
@@ -377,25 +442,32 @@ public class GameMap {
         int y = currentPosition.getY();
 
         if (grid.isEastBelt(currentPosition) && canGo(Direction.EAST, currentPosition)) {
+            movePlayerTilesInList(Direction.EAST);
+            /*
             Position newPosition = currentPosition.east();
             grid.removePlayerPosition(currentPosition);
             player.setPosition(newPosition);
             grid.setPlayerPosition(player.getPlayerTile());
+            */
         } else if (grid.isNorthBelt(currentPosition) && canGo(Direction.NORTH, currentPosition)) {
-            Position newPosition = currentPosition.north();
+            movePlayerTilesInList(Direction.NORTH);
+
+            /*Position newPosition = currentPosition.north();
             grid.removePlayerPosition(currentPosition);
             player.setPosition(newPosition);
-            grid.setPlayerPosition(player.getPlayerTile());
+            grid.setPlayerPosition(player.getPlayerTile());*/
         } else if (grid.isSouthBelt(currentPosition) && canGo(Direction.SOUTH, currentPosition)) {
-            Position newPosition = currentPosition.south();
+            movePlayerTilesInList(Direction.SOUTH);
+            /*Position newPosition = currentPosition.south();
             grid.removePlayerPosition(currentPosition);
             player.setPosition(newPosition);
-            grid.setPlayerPosition(player.getPlayerTile());
+            grid.setPlayerPosition(player.getPlayerTile());*/
         } else if (grid.isWestBelt(currentPosition) && canGo(Direction.WEST, currentPosition)) {
-            Position newPosition = currentPosition.west();
+            movePlayerTilesInList(Direction.NORTH.WEST);
+            /*Position newPosition = currentPosition.west();
             grid.removePlayerPosition(currentPosition);
             player.setPosition(newPosition);
-            grid.setPlayerPosition(player.getPlayerTile());
+            grid.setPlayerPosition(player.getPlayerTile());*/
         } else if (grid.isRightGyro(currentPosition)) {
             Direction newDirection = Direction.rotate(currentDirection, 1);
             player.setDirection(newDirection);

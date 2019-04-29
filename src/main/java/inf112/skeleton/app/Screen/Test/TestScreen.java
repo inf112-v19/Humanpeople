@@ -41,6 +41,7 @@ public class TestScreen implements Screen {
     ArrayList<ProgramCard> cardsForPlayer;
 
     private boolean infoShowed;
+    boolean pause = false;
 
 
     public TestScreen(RoboRally game) {
@@ -81,18 +82,21 @@ public class TestScreen implements Screen {
     public void update(float deltaTime) {
         handleInput();
         updateMap();
-
-        tickTime += deltaTime;
-        if (tickTime > 0.2) {
-            tickTime = 0;
-            gameMap.preformNextMovement();
-            //TODO få getInfo til å virke på en fornuftig måte
+        if(!pause){
+            tickTime += deltaTime;
+            if (tickTime > 0.9) {
+                tickTime = 0;
+                gameMap.preformNextMovement();
+                //TODO få getInfo til å virke på en fornuftig måte
 //            getInfo();
+            }
         }
+
     }
 
 
     public void handleInput() {
+
         if (!infoShowed) {
             infoShowed = true;
             System.out.println("\nSelect 5:\n1 = move1\n2 = move2\n3 = move3\nr = rotateRight\nl = rotateLeft\nu = uTurn\nb = backup\n\nSpace = Confirm");
@@ -212,6 +216,9 @@ public class TestScreen implements Screen {
 
     @Override
     public void render(float v) {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.P)){
+            pause = !pause;
+        }
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
