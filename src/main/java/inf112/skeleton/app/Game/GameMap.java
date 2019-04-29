@@ -46,6 +46,7 @@ public class GameMap {
         this.specialLayer = (TiledMapTileLayer) map.getLayers().get(1);
         this.backupLayer = (TiledMapTileLayer) map.getLayers().get(4);
         this.playerTiles = new ArrayList<>();
+
         initializePlayers();
         this.cardsDealt = true;
 
@@ -55,6 +56,7 @@ public class GameMap {
     /**
      * Creates all players and gives out cards
      */
+
     private void initializePlayers() {
         //Initializes each player and gives them a unique ID
         for (int id = 0; id < nPlayers; id++) {
@@ -72,6 +74,19 @@ public class GameMap {
         programCardDeck.giveOutCardsToAllPlayers(players);
 
         drawPlayers();
+    }
+
+    public void initializePlayer(Player player) {
+        players.add(player);
+        Position startingPosition = startingPositions.getStartingPosition(player.getId());
+        player.setPosition(startingPosition);
+        player.setBackup(startingPosition);
+        PlayerLayerObject playerTile = player.getPlayerTile();
+        playerTile.setSprite(tiles);
+        grid.setPlayerPosition(playerTile);
+        setBackup(player);
+        drawPlayer(player);
+
     }
 
     public void dealCards() {
@@ -102,7 +117,13 @@ public class GameMap {
 
         backupLayer.setCell(pos.getX(), pos.getY(), avatar);
     }
-
+    public void getHandsFromServer(ArrayList<ProgramCard> listOfMovesFromServer, int id) {
+        for (int i = 0; i <players.size() ; i++) {
+            if(players.get(i).getId() == id) {
+                players.get(i).getPlayerDeck().setPlayerHand(listOfMovesFromServer);
+            }
+        }
+    }
     public void addPlayerHandToNewRound() {
         if (!round.allPhasesAddedToRound()) {
             round = new Round();

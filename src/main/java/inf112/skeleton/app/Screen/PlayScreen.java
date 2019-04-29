@@ -22,6 +22,7 @@ import inf112.skeleton.app.Cards.ProgramCard;
 import inf112.skeleton.app.Directions.Position;
 import inf112.skeleton.app.Game.GameMap;
 import inf112.skeleton.app.Game.RoboRally;
+import inf112.skeleton.app.Networking.GameServer;
 import inf112.skeleton.app.Player.Player;
 
 import java.util.ArrayList;
@@ -57,17 +58,21 @@ public class PlayScreen implements Screen {
     HashMap<Image, ProgramCard> cardMap = new HashMap<>();
 
 
-    public PlayScreen(RoboRally game) {
+    public PlayScreen(RoboRally game, int nPlayers) {
         this.game = game;
         this.gameCam = new OrthographicCamera();
         gamePort = new StretchViewport(RoboRally.width * 2, RoboRally.height, gameCam);
         gameCam.translate(RoboRally.width, RoboRally.height / 2);
         width = RoboRally.width * 2;
         height = RoboRally.height;
-
-        this.gameMap = new GameMap("assets/map3.tmx", 4);
+        this.gameMap = new GameMap("assets/map3.tmx", nPlayers);
         this.map = gameMap.getMap();
         this.renderer = new OrthogonalTiledMapRenderer(map);
+
+    }
+
+    public GameMap getGameMap() {
+        return gameMap;
     }
 
     public void update(float deltaTime) {

@@ -1,12 +1,15 @@
 package inf112.skeleton.app.Screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import inf112.skeleton.app.Game.RoboRally;
+import inf112.skeleton.app.Networking.GameClient;
+import inf112.skeleton.app.Networking.GameServer;
 import inf112.skeleton.app.Screen.Test.TestScreen;
 
 /**
@@ -29,8 +32,9 @@ public class MenuScreen implements Screen {
     private Texture testButtonTexture;
 
     public MenuScreen(RoboRally game){
+//        this.playScreen = new PlayScreen(game, 4);
+
         this.game = game;
-        this.playScreen = new PlayScreen(game);
         this.batch = new SpriteBatch();
 
         this.menuBackground = new Texture("assets/mainMenu/MRRCG.jpg");
@@ -69,11 +73,20 @@ public class MenuScreen implements Screen {
             int inputX = Gdx.input.getX();
             int inputY = Gdx.input.getY();
 
-            if (playButton.checkIfClicked(inputX, inputY))
+            if (playButton.checkIfClicked(inputX, inputY)) {
+                GameServer gameServer = new GameServer(game);
                 game.setScreen(playScreen);
+            }
 
-            else if(testButton.checkIfClicked(inputX,inputY))
-                game.setScreen(new TestScreen(game));
+            else if(testButton.checkIfClicked(inputX,inputY)) {
+                GameClient client = new GameClient(game);
+//                game.setScreen(playScreen);
+
+            }
+            else if(Gdx.input.isKeyPressed(Input.Keys.S)) {
+//                game.setScreen(new TestScreen(game));
+                System.out.println("ssss");
+            }
         }
     }
 
