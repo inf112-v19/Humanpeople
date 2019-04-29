@@ -8,6 +8,8 @@ public class Slave {
 
     public Slave() {
         this.client = new Client();
+        client.start();
+        
     }
     public InetAddress checkIfServerOnline(){
         return client.discoverHost(54777,5000);

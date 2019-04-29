@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import inf112.skeleton.app.Game.GameMap;
 import inf112.skeleton.app.Game.RoboRally;
+import inf112.skeleton.app.Host;
 
 /**
  * Play screen of RoboRally
@@ -30,7 +31,7 @@ public class PlayScreen implements Screen {
     private float width;
     private float height;
     private UserInterface ui;
-
+    private Host host;
 
     public PlayScreen(RoboRally game) {
         this.game = game;
@@ -68,7 +69,9 @@ public class PlayScreen implements Screen {
             ui.getFlagInfo();
         }
     }
-
+    public void setHost(){
+        host = new Host();
+    }
     private void updateMap() {
         map = gameMap.getMap();
     }

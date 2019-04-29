@@ -7,9 +7,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import inf112.skeleton.app.Game.RoboRally;
-import inf112.skeleton.app.Screen.Test.TestScreen;
 import inf112.skeleton.app.Slave;
-import inf112.skeleton.app.nett;
+import inf112.skeleton.app.Host;
 
 /**
  * Menu screen for RoboRally
@@ -73,17 +72,12 @@ public class MenuScreen implements Screen {
             int inputX = Gdx.input.getX();
             int inputY = Gdx.input.getY();
             if (playButton.checkIfClicked(inputX, inputY)){
-                //game.setScreen(playScreen);
-                nett n = new nett();
+                playScreen.setHost();
+                game.setScreen(playScreen);
             }
-
-
-
             else if(testButton.checkIfClicked(inputX,inputY));
                 //game.setScreen(new TestScreen(game));
-                if(s.checkIfServerOnline()!=null){
-                    System.err.println("hei");
-                }
+                game.setScreen(new clientScreen(game));
         }
     }
 
