@@ -131,6 +131,12 @@ public class Player {
         isDestroyed = true;
     }
 
+    public void kill() {
+        health = 0;
+        lifeTokens = 0;
+        isAlive = false;
+    }
+
     public boolean hasReturnedToBackup() {
         return returnedToBackup;
     }

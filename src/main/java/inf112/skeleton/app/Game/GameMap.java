@@ -34,7 +34,7 @@ public class GameMap {
     private ArrayList<PlayerLayerObject> playerTiles;
     private ArrayList<Player> players;
 
-    private int finalFlagNumber = 1;
+    private int finalFlagNumber = 3;
     private Player winner;
 
     private Round round;
@@ -548,7 +548,6 @@ public class GameMap {
 
         if (lastFlagVisited == finalFlagNumber) {
             winner = player;
-            System.out.println("Player " + player.getId() + " has won!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         }
     }
 

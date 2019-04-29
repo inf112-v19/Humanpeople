@@ -3,6 +3,7 @@
 Hensikt:
 - Sjekke at spilleren ikke mottar nye kort og ikke beveger seg etter en runde etter powerDown er valgt
 - Sjekke at spilleren får tilbake MAX_HEALTH ved PowerDown
+- Sjekke at spilleren kan vinne spillet
 - Sjekke at tannhjul roterer spillerne
 - Sjekke at tannhjul ikke roterer spillerne hvis de ikke står på tannhjulet ved endt fase
 
@@ -55,6 +56,29 @@ Resultat:
 	Spilleren får MAX_HEALTH ved starten av runden og brukeren vil dermed ikke se at spilleren har MAX_HEALTH - 2
 
 	MERK: Spilleren kan bli skutt med laser av de andre spillerne. Dette vil redusere antall damageTokens spilleren har.
+
+---
+
+### Test av vinn-mekanisme
+
+Hensikt:
+- Sjekke at spilleren kan vinne spillet
+
+Test:
+
+1. Kjør programmet og klikk på "SinglePlayer"-knappen.
+
+2. Velg kort og beveg spilleren til flagg nr. 1
+
+3. Velg kort og beveg spilleren til flagg nr. 2
+
+4. Velg kort og beveg spilleren til flagg nr. 3
+
+Resultat:
+
+    Tekst skrives over skjermen med "Congratulations! Player green has won!",
+    og spilleren fjernes fra brettet.
+    Spillet fortsetter i bakgrunnen.
 
 ---
 

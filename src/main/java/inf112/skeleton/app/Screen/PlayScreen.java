@@ -48,6 +48,10 @@ public class PlayScreen implements Screen {
     }
 
     public void update(float deltaTime) {
+        // Display winner if there is a winner
+        if (gameMap.getWinner() != null)
+            displayWinner(gameMap.getWinner());
+
         handleInput();
         tickTime += deltaTime;
         if (gameMap.getCardsDealt()) {
@@ -114,10 +118,17 @@ public class PlayScreen implements Screen {
         }
     }
 
+    /**
+     * Displays text over the board congratulating the winner
+     * The winner is removed from the board while the game continues in the background
+     * @param winner
+     */
     public void displayWinner(Player winner) {
         VictoryScreen victoryScreen = new VictoryScreen(winner);
         Table winScreen = victoryScreen.getTable();
         stage.addActor(winScreen);
+        winner.kill();
+        gameMap.removeDeadPlayers();
     }
 
     @Override
