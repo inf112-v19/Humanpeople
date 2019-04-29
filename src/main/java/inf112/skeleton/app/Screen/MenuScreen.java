@@ -6,13 +6,10 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import inf112.skeleton.app.Game.RoboRally;
-import inf112.skeleton.app.Player.Player;
 import inf112.skeleton.app.Screen.Test.TestScreen;
+import inf112.skeleton.app.Slave;
+import inf112.skeleton.app.nett;
 
 /**
  * Menu screen for RoboRally
@@ -32,8 +29,10 @@ public class MenuScreen implements Screen {
 
     private Button testButton;
     private Texture testButtonTexture;
+    private Slave s;
 
     public MenuScreen(RoboRally game){
+        s = new Slave();
         this.game = game;
         this.playScreen = new PlayScreen(game);
         this.batch = new SpriteBatch();
@@ -73,11 +72,18 @@ public class MenuScreen implements Screen {
         if (Gdx.input.isTouched()) {
             int inputX = Gdx.input.getX();
             int inputY = Gdx.input.getY();
-            if (playButton.checkIfClicked(inputX, inputY))
-                game.setScreen(playScreen);
+            if (playButton.checkIfClicked(inputX, inputY)){
+                //game.setScreen(playScreen);
+                nett n = new nett();
+            }
 
-            else if(testButton.checkIfClicked(inputX,inputY))
-                game.setScreen(new TestScreen(game));
+
+
+            else if(testButton.checkIfClicked(inputX,inputY));
+                //game.setScreen(new TestScreen(game));
+                if(s.checkIfServerOnline()!=null){
+                    System.err.println("hei");
+                }
         }
     }
 

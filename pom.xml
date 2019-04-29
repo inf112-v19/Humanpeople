@@ -26,6 +26,14 @@
       <version>1.9.9</version>
     </dependency>
 
+
+    <!-- https://mvnrepository.com/artifact/com.esotericsoftware/kryonet -->
+    <dependency>
+      <groupId>com.esotericsoftware</groupId>
+      <artifactId>kryonet</artifactId>
+      <version>2.22.0-RC1</version>
+    </dependency>
+
     <dependency>
       <groupId>com.badlogicgames.gdx</groupId>
       <artifactId>gdx-backend-lwjgl</artifactId>
