@@ -93,9 +93,18 @@ public class PlayerDeck {
      */
     public void setDeck(ArrayList<ProgramCard> newDeck) {
         if (newDeck.size() > NUMBER_OF_NEW_CARDS_TO_DECK)
-            throw new IllegalArgumentException("The deck needs to be size 9. Size was: " + newDeck.size());
-        this.deck = newDeck;
+            throw new IllegalArgumentException("The deck needs to be size " + NUMBER_OF_NEW_CARDS_TO_DECK + ". Size was: " + newDeck.size());
+//        this.deck = newDeck;
+
+        addNewCardsToDeck(newDeck);
     }
+
+    private void addNewCardsToDeck(ArrayList<ProgramCard> newDeck) {
+        this.deck.clear();
+        for (int i = 0; i < newDeck.size(); i++)
+            this.deck.add(newDeck.get(i));
+    }
+
 
 
     /**
@@ -160,11 +169,11 @@ public class PlayerDeck {
         return deck.get(i);
     }
 
-    public int getMaxNumberCardsOnHand(){
+    public int getNumberCardsOnHand(){
         return NUMBER_CARDS_ON_HAND;
     }
 
-    public int getMaxNumberCardsInDeck() {
+    public int getNumberOfNewCardsToDeck() {
         return NUMBER_OF_NEW_CARDS_TO_DECK;
     }
 }

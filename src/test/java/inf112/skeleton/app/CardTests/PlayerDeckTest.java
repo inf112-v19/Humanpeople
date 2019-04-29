@@ -120,7 +120,7 @@ public class PlayerDeckTest {
         PlayerDeck pd = new PlayerDeck();
         pd.setDeck(creatDeckOfNcards(9));
 
-        for (int i = 0; i < PlayerDeck.NUMBER_CARDS_ON_HAND; i++) {
+        for (int i = 0; i < pd.getNumberCardsOnHand(); i++) {
             pd.selectCardForHand(i);
             int nCardsOnHand = i + 1;
             assertEquals(nCardsOnHand, pd.handSize());
