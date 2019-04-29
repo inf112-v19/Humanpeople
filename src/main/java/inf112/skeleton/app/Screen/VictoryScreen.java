@@ -31,7 +31,7 @@ public class VictoryScreen {
     }
 
     /**
-     * Sets up table
+     * Sets up victory table
      */
     public void createTable() {
         Label.LabelStyle labelStyle = new Label.LabelStyle();

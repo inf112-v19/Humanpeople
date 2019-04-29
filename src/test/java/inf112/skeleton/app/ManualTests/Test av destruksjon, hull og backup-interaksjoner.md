@@ -4,7 +4,9 @@ Hensikt:
 - Sjekke at spiller blir destruert ved å gå på hull
 - Sjekke at spilleren ikke fortsetter å bevege seg etter å ha blitt destruert
 - Sjekke at spiller returnerer til backup punkt etter å ha blitt destruert
+- Sjekke at spiller blir grå etter å ha blitt destruert
 - Sjekke at spiller blir destruert selv da den prøver å gå over hullet
+- Sjekke at spiller blir fjernet fra brettet etter spilleren dør (alle lifeTokens er mistet)
 - Sjekke at spiller legger igjen backup etter å ha endt en fase på ett flagg
 - Sjekk at flere spillere kan legge igjen backup på samme flagg
 - Sjekke at spiller ikke legger igjen backup hvis den går over flagget men 
@@ -57,6 +59,51 @@ Resultat:
 	instruksjonene "3" "R" og 1 trinn av instuksjonen "3".
 	Blir flyttet til backup. Utfører ikke resten av instruksjonene.
 	
+---
+
+### Test av at spiller blir grå ved destruksjon
+
+Hensikt:
+- Sjekke at spiller blir grå når spilleren blir destruert
+
+Test:
+
+1. Kjør programmet og klikk på "Test" knappen.
+
+2. Tast inn følgende kombinasjon:
+  "R" "3" "U" "U" "U" "Space"
+
+Resultat:
+
+	Spilleren blir destruert da den går på hullet.
+	Blir flyttet til backup. Utfører ikke resten av instruksjonene.
+	Spilleren er nå grå (blir grønn igjen etter runden er ferdig)
+
+---
+
+### Test av at spiller fjernes fra bretter ved død
+
+Hensikt:
+- Sjekke at spiller blir fjernes fra brettet ved død
+
+Test:
+
+1. Kjør programmet og klikk på "Test" knappen.
+
+2. Tast inn følgende kombinasjon:
+  "R" "3" "U" "U" "U" "Space"
+  (Vent til slutten av runden (ingen flere bevegelser) før inntasting av neste steg)
+
+  "3" "U" "U" "U" "U" "Space"
+  (Vent til slutten av runden (ingen flere bevegelser) før inntasting av neste steg)
+
+  "3" "U" "U" "U" "U" "Space"
+  (Vent til slutten av runden (ingen flere bevegelser) før inntasting av neste steg)
+
+Resultat:
+
+	Spilleren befinner seg ikke lengre på brettet
+
 ---
 
 ### Test av oppdatering av backup ved endt fase på backup

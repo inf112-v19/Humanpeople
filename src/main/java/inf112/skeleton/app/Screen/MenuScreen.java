@@ -17,10 +17,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import inf112.skeleton.app.Game.RoboRally;
 import inf112.skeleton.app.Screen.Test.TestScreen;
 
-import javax.sound.midi.*;
-import java.io.File;
-import java.io.IOException;
-
 /**
  * Menu screen for RoboRally
  *
@@ -31,7 +27,8 @@ public class MenuScreen implements Screen {
     private RoboRally game;
     private Stage stage;
 
-    private ImageButton playButton;
+    private ImageButton singlePlayerButton;
+    private ImageButton multiPlayerButton;
     private ImageButton testButton;
     private Image menuBackground;
 
@@ -74,16 +71,21 @@ public class MenuScreen implements Screen {
 
         stage = new Stage();
 
-        Sprite picture = new Sprite(new Texture("assets/mainMenu/MRRCG.jpg"));
+        Sprite picture = new Sprite(new Texture("assets/mainMenu/background.png"));
         menuBackground = new Image(new SpriteDrawable(picture));
         menuBackground.setSize(width, height);
         menuBackground.setPosition(0, 0);
         stage.addActor(menuBackground);
 
-        picture = new Sprite(new Texture("assets/mainMenu/playBtn.png"));
-        playButton = new ImageButton(new SpriteDrawable(picture));
-        playButton.setPosition(0, 0);
-        playButton.addListener(new ClickListener() {
+        int buttonWidth = 150;
+        int buttonHeight = 150;
+
+        picture = new Sprite(new Texture("assets/mainMenu/singlePlayerButton.png"));
+        singlePlayerButton = new ImageButton(new SpriteDrawable(picture));
+        singlePlayerButton.setWidth(buttonWidth);
+        singlePlayerButton.setHeight(buttonHeight);
+        singlePlayerButton.setPosition(0, 0);
+        singlePlayerButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 dispose();
@@ -91,10 +93,27 @@ public class MenuScreen implements Screen {
             }
         });
 
-        stage.addActor(playButton);
+        stage.addActor(singlePlayerButton);
 
-        picture = new Sprite(new Texture("assets/mainMenu/testBtn.png"));
+        picture = new Sprite(new Texture("assets/mainMenu/multiPlayerButton.png"));
+        multiPlayerButton = new ImageButton(new SpriteDrawable(picture));
+        multiPlayerButton.setWidth(buttonWidth);
+        multiPlayerButton.setHeight(buttonHeight);
+        multiPlayerButton.setPosition((width / (float)(2.5)), 0);
+        multiPlayerButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                //dispose();
+                //game.setScreen(playScreen);
+            }
+        });
+
+        stage.addActor(multiPlayerButton);
+
+        picture = new Sprite(new Texture("assets/mainMenu/testButton.png"));
         testButton = new ImageButton(new SpriteDrawable(picture));
+        testButton.setWidth(buttonWidth);
+        testButton.setHeight(buttonHeight);
         testButton.setPosition(width-testButton.getWidth(), 0);
 
         testButton.addListener(new ClickListener() {
