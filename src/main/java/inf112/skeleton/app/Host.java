@@ -9,7 +9,7 @@ public class nett {
     public nett(){
         server.start();
         try {
-            server.bind(64555,54777);
+            server.bind(64554,54776);
         } catch (IOException e) {
             e.printStackTrace();
         }
