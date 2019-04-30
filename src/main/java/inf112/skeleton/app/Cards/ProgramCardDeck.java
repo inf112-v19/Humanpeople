@@ -105,7 +105,7 @@ public class ProgramCardDeck {
             Player player = players.get(i);
             ArrayList<ProgramCard> playerDeck = new ArrayList<>();
 
-            for (int j = 0; j < PlayerDeck.MAX_NUMBER_CARDS_IN_DECK; j++)
+            for (int j = 0; j < player.getPlayerDeck().NUMBER_OF_NEW_CARDS_TO_DECK; j++)
                 playerDeck.add(takeRandomCard());
 
             player.getPlayerDeck().setDeck(playerDeck);
