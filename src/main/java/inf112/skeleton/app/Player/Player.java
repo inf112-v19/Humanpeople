@@ -67,13 +67,13 @@ public class Player {
         isDestroyed = false;
 
         health = MAX_HEALTH - 2;
-        this.playerDeck.changedHealth(this.health);
+        playerDeck.changedHealth(health);
     }
 
     public void restoreHealth() {
         isDestroyed = false;
         health = MAX_HEALTH;
-        this.playerDeck.changedHealth(this.health);
+        playerDeck.changedHealth(health);
     }
 
     /**
@@ -83,7 +83,7 @@ public class Player {
     public void incrementHealth() {
         if (health < MAX_HEALTH)
             health++;
-        this.playerDeck.changedHealth(this.health);
+        playerDeck.changedHealth(health);
     }
 
     /**
@@ -115,7 +115,7 @@ public class Player {
             System.out.println("DESTROYED");
             this.destroy();
         }
-        this.playerDeck.changedHealth(this.health);
+        playerDeck.changedHealth(health);
     }
     /**
      * Removes one life token, sets isDestroyed to true and sets health = 0
@@ -131,7 +131,6 @@ public class Player {
         }
         health = 0;
         isDestroyed = true;
-        this.playerDeck.changedHealth(this.health);
     }
 
     public boolean hasBeenRemoveFromBoard() {
@@ -158,7 +157,7 @@ public class Player {
     public void powerDown() {
         active = false;
         health = MAX_HEALTH;
-        this.playerDeck.changedHealth(this.health);
+        playerDeck.changedHealth(health);
     }
 
     /**
@@ -238,7 +237,6 @@ public class Player {
 
     public void setHandChosen(Boolean handChosen) {
         this.handChosen = handChosen;
-
     }
 
     public boolean getHandChosen() {

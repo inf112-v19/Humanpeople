@@ -28,6 +28,7 @@ public class PlayerDeck {
     private ArrayList<ProgramCard> hand;
 
     public PlayerDeck() {
+
         deck = new ArrayList<>();
         hand = new ArrayList<>();
         handFromLastRound = new ArrayList<>();
@@ -55,28 +56,28 @@ public class PlayerDeck {
 
     public void changedHealth(int hP) {
         if (hP > 9) {
-            this.NUMBER_OF_NEW_CARDS_TO_DECK = MAX_NUMBER_CARDS_IN_DECK;
+            NUMBER_OF_NEW_CARDS_TO_DECK = MAX_NUMBER_CARDS_IN_DECK;
         }
         if (hP <= 9 && hP > 0) {
-            this.NUMBER_OF_NEW_CARDS_TO_DECK = hP-1;
+            NUMBER_OF_NEW_CARDS_TO_DECK = hP-1;
         }
         if (hP == 0)
-            this.NUMBER_OF_NEW_CARDS_TO_DECK = 0;
+            NUMBER_OF_NEW_CARDS_TO_DECK = 0;
         burnCardsToHand(hP);
     }
 
     private void burnCardsToHand(int hP) {
         if (hP > 6) {
-            this.NUMBER_OF_LOCKED_CARDS = 0;
-            this.NUMBER_OF_NEW_CARDS_TO_HAND = NUMBER_CARDS_ON_HAND;
+            NUMBER_OF_LOCKED_CARDS = 0;
+            NUMBER_OF_NEW_CARDS_TO_HAND = NUMBER_CARDS_ON_HAND;
         }
         if (hP <= 5 && hP >= 1) {
-            this.NUMBER_OF_LOCKED_CARDS = (6 - hP);
-            this.NUMBER_OF_NEW_CARDS_TO_HAND = this.NUMBER_CARDS_ON_HAND - this.NUMBER_OF_LOCKED_CARDS;
+            NUMBER_OF_LOCKED_CARDS = (6 - hP);
+            NUMBER_OF_NEW_CARDS_TO_HAND = NUMBER_CARDS_ON_HAND - NUMBER_OF_LOCKED_CARDS;
     }
         if (hP < 1) {
-            this.NUMBER_OF_NEW_CARDS_TO_HAND = 0;
-            this.NUMBER_OF_LOCKED_CARDS = 5;
+            NUMBER_OF_NEW_CARDS_TO_HAND = 0;
+            NUMBER_OF_LOCKED_CARDS = 5;
         }
     }
 

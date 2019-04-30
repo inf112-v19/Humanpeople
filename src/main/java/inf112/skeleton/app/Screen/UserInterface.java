@@ -33,7 +33,8 @@ public class UserInterface {
 
 
     Position pos[] = new Position[5];
-    ProgramCard chosenCards[] = new ProgramCard[5];
+    ProgramCard chosenCards[];
+    ProgramCard cardsFromLastTurn[] = new ProgramCard[5];
     HashMap<Image, ProgramCard> cardMap = new HashMap<>();
     HashMap<ProgramCard, Image> imageMap = new HashMap<>();
 
@@ -50,14 +51,26 @@ public class UserInterface {
         this.player = player;
         stage = new Stage();
 
+        initializeChosenCards();
+
         initializeSideBars();
         initializePlayButton();
         initializePowerDownButton();
         initializeCardSlots();
     }
 
+    private void initializeChosenCards() {
+        if (chosenCards == null) {
+            chosenCards = new ProgramCard[5];
+        } else {
+            for (int i = player.getPlayerDeck().getNumberOfLockedCards(); i < player.getPlayerDeck().getNumberCardsOnHand(); i++) {
+                chosenCards[i] = null;
+            }
+        }
+    }
+
     public Player getPlayer() {
-        return player;
+        return this.player;
     }
 
     public Stage getStage() {
@@ -69,7 +82,7 @@ public class UserInterface {
             stage.getActors().removeValue(damageTokenImage, false);
 
 
-        int damageTokens = player.getHealth();
+        int damageTokens = getPlayer().getHealth();
         Texture damageTokenTexture;
         switch (damageTokens) {
             case 10:
@@ -118,7 +131,7 @@ public class UserInterface {
     }
 
     public void getLifeTokenOfPlayer() {
-        int lifeTokens = player.getLifeTokens();
+        int lifeTokens = getPlayer().getLifeTokens();
         Texture lifeTokenTexture;
         switch (lifeTokens) {
             case 3:
@@ -149,7 +162,7 @@ public class UserInterface {
         if(stage.getActors().contains(flagCheckImage, false))
             stage.getActors().removeValue(flagCheckImage, false);
 
-        int lastFlagVisited = player.getLastFlagVisited();
+        int lastFlagVisited = getPlayer().getLastFlagVisited();
         Texture flagCheckTexture;
         switch (lastFlagVisited) {
             case 3:
@@ -227,21 +240,21 @@ public class UserInterface {
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                int count = 0;
+                int count = getPlayer().getPlayerDeck().getNumberOfLockedCards();
                 for (int i = 0; i < chosenCards.length; i++)
                     if (chosenCards[i] == null)
                         count++;
 
-                if (count > 0) {
+                if (count > getPlayer().getPlayerDeck().getNumberOfLockedCards()) {
                     System.out.println("Choose " + (count) + " more cards");
                     return;
                 }
 
-                if (!player.getHandChosen()) {
+                if (!getPlayer().getHandChosen()) {
                     System.out.println("Cards selected");
-                    ArrayList<ProgramCard> list = new ArrayList<ProgramCard>(Arrays.asList(chosenCards));
-                    player.getPlayerDeck().setPlayerHand(list);
-                    player.setHandChosen(true);
+                    ArrayList<ProgramCard> list = new ArrayList<>(Arrays.asList(chosenCards));
+                    getPlayer().getPlayerDeck().setPlayerHand(list);
+                    getPlayer().setHandChosen(true);
                 }
             }
         });
@@ -258,11 +271,11 @@ public class UserInterface {
             public void clicked(InputEvent event, float x, float y) {
                 if (hasChosenCards()) {
                     System.out.println("Cards selected");
-                    ArrayList<ProgramCard> list = new ArrayList<ProgramCard>(Arrays.asList(chosenCards));
-                    player.getPlayerDeck().setPlayerHand(list);
-                    player.setHandChosen(true);
+                    ArrayList<ProgramCard> list = new ArrayList<>(Arrays.asList(chosenCards));
+                    getPlayer().getPlayerDeck().setPlayerHand(list);
+                    getPlayer().setHandChosen(true);
 
-                    System.out.println("PLAYER " + player.getPlayerTile().getColor() + " WILL POWER DOWN NEXT ROUND");
+                    System.out.println("PLAYER " + getPlayer().getPlayerTile().getColor() + " WILL POWER DOWN NEXT ROUND");
                     hasPoweredDown = true;
                 }
                 else
@@ -273,14 +286,14 @@ public class UserInterface {
 
     public void initializeCardSelection() {
         // If player has selected powerdown, then do not distribute new cards. PowerDown
-        if (hasPoweredDown || !player.isAlive()) {
-            player.powerDown();
-            player.setHandChosen(true);
-            System.out.println("POWER DOWN FOR PLAYER " + player.getPlayerTile().getColor());
+        if (hasPoweredDown || !getPlayer().isAlive()) {
+            getPlayer().powerDown();
+            getPlayer().setHandChosen(true);
+            System.out.println("POWER DOWN FOR PLAYER " + getPlayer().getPlayerTile().getColor());
             hasPoweredDown = false;
             return;
         }
-        PlayerDeck deck = player.getPlayerDeck();
+        PlayerDeck deck = getPlayer().getPlayerDeck();
         for (int i = 0; i < deck.deckSize(); i++) {
             ProgramCard programCard = deck.getCard(i);
             Sprite picture = new Sprite(new Texture(programCard.getFilename()));
@@ -326,6 +339,8 @@ public class UserInterface {
             imageMap.put(programCard, cardImage);
         }
     }
+
+
 
     private void cardListener(Image cardImage) {
         //Coordinates for card drop zone
@@ -405,7 +420,7 @@ public class UserInterface {
      * @return graphic for how many flags the player has visited
      */
     public Image getFlagVisitedImage() {
-        int lastFlagVisited = player.getLastFlagVisited();
+        int lastFlagVisited = getPlayer().getLastFlagVisited();
         Texture lifeTokenTexture = null;
         switch (lastFlagVisited) {
             case 3: lifeTokenTexture = new Texture("assets/userInterface/flagChecks/flagCheck3.png"); break;

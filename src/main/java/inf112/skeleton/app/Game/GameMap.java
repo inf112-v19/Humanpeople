@@ -46,14 +46,12 @@ public class GameMap {
         this.tiles = map.getTileSets().getTileSet("testTileset");
         this.players = new ArrayList<>();
         this.nPlayers = nPlayers;
-
         if (filename.equals("assets/testMap.tmx"))
             this.startingPositions = new TestStartingPositions(grid.getWidth(), grid.getHeight());
         else
             this.startingPositions = new StartingPositions(grid.getWidth(), grid.getHeight(), nPlayers);
         this.programCardDeck = ProgramCardDeck.getProgramCardDeckSingleton();
         this.playerLayer = (TiledMapTileLayer) map.getLayers().get(8);
-
         this.specialLayer = (TiledMapTileLayer) map.getLayers().get(1);
         this.flagLayer = (TiledMapTileLayer) map.getLayers().get(2);
         this.backupLayer1 = (TiledMapTileLayer) map.getLayers().get(4);
