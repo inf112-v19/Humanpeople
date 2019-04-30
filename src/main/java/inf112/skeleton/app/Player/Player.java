@@ -69,11 +69,13 @@ public class Player {
         returnedToBackup = false;
         isDestroyed = false;
         health = MAX_HEALTH - 2;
+        playerDeck.changedHealth(health);
     }
 
     public void restoreHealth() {
         isDestroyed = false;
         health = MAX_HEALTH;
+        playerDeck.changedHealth(health);
     }
 
     /**
@@ -83,6 +85,7 @@ public class Player {
     public void incrementHealth() {
         if (health < MAX_HEALTH)
             health++;
+        playerDeck.changedHealth(health);
     }
 
     /**
@@ -114,6 +117,7 @@ public class Player {
             System.out.println("DESTROYED");
             this.destroy();
         }
+        playerDeck.changedHealth(health);
     }
     /**
      * Removes one life token, sets isDestroyed to true and sets health = 0
@@ -169,6 +173,7 @@ public class Player {
     public void powerDown() {
         active = false;
         health = MAX_HEALTH;
+        playerDeck.changedHealth(health);
     }
 
     /**
