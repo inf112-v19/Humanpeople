@@ -189,13 +189,8 @@ public class GameMap {
     }
 
     public void getHandsFromServer(ArrayList<ProgramCard> listOfMovesFromServer, int id) {
-
         players.get(id).getPlayerDeck().setPlayerHand(listOfMovesFromServer);
-
         System.out.println("handdsize: " + players.get(id).getPlayerDeck().handSize() + "id: " + id);
-        for (int i = 0; i < 5; i++) {
-            System.out.println(listOfMovesFromServer.get(i).getFilename());
-        }
         players.get(id).setHandChosen(true);
 
     }

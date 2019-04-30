@@ -23,12 +23,12 @@ public class GameClient {
 
 
     public Client client;
-    private int portSocket;
+    private int portSocket = 25135;
     ClientListener networkListener;
     private int timeToWaitForServerToRespond = 5000;
 
     //J-option ping, what would you like to connect to
-    private String IPAddress = "10.111.48.145";
+    private String IPAddress = "localhost";
     private boolean connected;
     private Player player;
     RoboRally game;
@@ -48,8 +48,8 @@ public class GameClient {
 
         Scanner in = new Scanner(System.in);
 
-        System.out.println("What port to connect to?");
-        portSocket = in.nextInt();
+//        System.out.println("What port to connect to?");
+//        portSocket = in.nextInt();
 //        System.out.println("What IP?");
 //        IPAddress = in.nextLine();
 
@@ -79,6 +79,7 @@ public class GameClient {
                 }
 
                 if(object instanceof Packets.PacketStartGame) {
+                    System.out.println("conn: " + connection.getID() + " , ");
                     final int howManyPlayers = ((Packets.PacketStartGame) object).howManyPlayers;
                     Gdx.app.postRunnable(new Runnable() {
 
@@ -86,6 +87,7 @@ public class GameClient {
 
                         playScreen = new PlayScreen(game, howManyPlayers);
                         myId = ((Packets.PacketStartGame) object).yourID;
+                        playScreen.initializeUI(myId);
                         player = playScreen.getGameMap().getPlayers().get(myId);
                         game.setScreen(playScreen);
                         playScreen.setMyID(myId);

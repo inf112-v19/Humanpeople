@@ -30,6 +30,9 @@ public class GameServer {
     RoboRally game;
     private boolean isGameStarted = false;
     private int listsReceived = 0;
+    boolean [] nClientConnected;
+    boolean [] haveNClientReceivedListOfMoves;
+    private Connection[] connections;
 
     public GameServer(final RoboRally game) {
         this.game = game;
@@ -37,8 +40,11 @@ public class GameServer {
         Scanner in = new Scanner(System.in);
         System.out.println("how many clients");
         howManyClients = in.nextInt();
+        nClientConnected = new boolean[howManyClients];
+        haveNClientReceivedListOfMoves = new boolean[howManyClients];
 
         final PlayScreen playScreen = new PlayScreen(this.game, howManyClients + 1);
+        playScreen.initializeUI(0);
         //Server has 0 as id
         playScreen.setMyID(0);
         gameMap = playScreen.getGameMap();
@@ -72,22 +78,31 @@ public class GameServer {
                 }
 
                 if (howManyConnected == howManyClients && !isGameStarted) {
-                    isGameStarted = true;
+
                     Packets.PacketStartGame startGame = new Packets.PacketStartGame();
                     startGame.howManyPlayers = howManyClients + 1;
                     startGame.yourID = connection.getID();
-                    connection.sendTCP(startGame);
-                    Gdx.app.postRunnable(new Runnable() {
-                        public void run() {
-                            game.setScreen(playScreen);
+                    if(!nClientConnected[startGame.yourID-1]) {
+                        nClientConnected[startGame.yourID-1] = true;
+                        connection.sendTCP(startGame);
 
-                        }
-                    });
-
+                    }
+                    if(isEveryoneConnected()) {
+                        Gdx.app.postRunnable(new Runnable() {
+                            public void run() {
+                                game.setScreen(playScreen);
+                            }
+                        });
+                        isGameStarted = true;
+                        connections = server.getConnections();
+                    }
                 }
-
-                Packets.PacketServerRequiersMoves newMoves = new Packets.PacketServerRequiersMoves();
-                connection.sendTCP(newMoves);
+                if(isGameStarted) {
+                    Packets.PacketServerRequiersMoves newMoves = new Packets.PacketServerRequiersMoves();
+                    for (int i = 0; i < connections.length; i++) {
+                        connections[i].sendTCP(newMoves);
+                    }
+                }
 
                 if (object instanceof Packets.PacketListOfMoves) {
                     //TODO Update positions and send back updated positions
@@ -96,20 +111,29 @@ public class GameServer {
 
 
                     ArrayList<ProgramCard> movesFromClient = ((Packets.PacketListOfMoves) object).movesToSend;
+                    int id = ((Packets.PacketListOfMoves) object).id;
 
                     if (movesFromClient.size() == 5) {
+
                         listOfMovesFromServer.allMoves.addAll(movesFromClient);
-                        listOfMovesFromServer.id = ((Packets.PacketListOfMoves) object).id;
+
+                        listOfMovesFromServer.id = id;
 //                        Gdx.app.postRunnable(new Runnable() {
 //                            public void run() {
                         System.out.println("listSize in server:; " + listOfMovesFromServer.allMoves.size());
 
-                        ArrayList<ProgramCard> pg = new ArrayList<>();
-                        pg.addAll(listOfMovesFromServer.allMoves);
-                        gameMap.getHandsFromServer(pg, listOfMovesFromServer.id);
-                        connection.sendTCP(listOfMovesFromServer);
-                        listsReceived++;
-                        listOfMovesFromServer.allMoves.clear();
+                            System.out.println("ClientID at server before sending moves: " +connection.getID());
+                        for (int i = 0; i < connections.length; i++) {
+                            connections[i].sendTCP(listOfMovesFromServer);
+                        }
+
+                            ArrayList<ProgramCard> pg = new ArrayList<>();
+                            pg.addAll(listOfMovesFromServer.allMoves);
+                            gameMap.getHandsFromServer(pg, listOfMovesFromServer.id);
+                            listOfMovesFromServer.allMoves.clear();
+                            listsReceived++;
+
+
 //                            }
 //                        });
                     }
@@ -117,6 +141,7 @@ public class GameServer {
 
 
                 if (listsReceived == howManyClients) {
+
                     final Packets.PacketListOfMovesFromServer listOfMovesFromServer = new Packets.PacketListOfMovesFromServer();
                     if (player.getHandChosen() && player.getPlayerDeck().handSize() == 5) {
                         for (int i = 0; i < 5; i++) {
@@ -126,7 +151,9 @@ public class GameServer {
                         listOfServerMoves.addAll(listOfMovesFromServer.allMoves);
                         System.out.println("size after adding servermoves: " + listOfMovesFromServer.allMoves.size());
                         listOfMovesFromServer.id = 0;
-                        connection.sendTCP(listOfMovesFromServer);
+                        for (int i = 0; i < connections.length; i++) {
+                            connections[i].sendTCP(listOfMovesFromServer);
+                        }
                         listOfMovesFromServer.allMoves.clear();
                         System.out.println("#: " + listOfServerMoves.size());
                         gameMap.getHandsFromServer(listOfServerMoves, 0);
@@ -138,6 +165,26 @@ public class GameServer {
 
 
         });
+    }
+    private boolean haveEveryoneReceived() {
+        for (int i = 0; i <haveNClientReceivedListOfMoves.length; i++) {
+            if(!haveNClientReceivedListOfMoves[i])
+                return false;
+        }
+        return true;
+    }
+
+    private boolean isEveryoneConnected() {
+        for (int i = 0; i <nClientConnected.length ; i++) {
+            if(!nClientConnected[i])
+                return  false;
+        }
+        return true;
+    }
+    private void setBooleanArrayToFalse(boolean[] array) {
+        for (int i = 0; i < array.length; i++) {
+            array[i] = false;
+        }
     }
 
 }

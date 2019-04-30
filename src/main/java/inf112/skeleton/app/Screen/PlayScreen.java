@@ -47,8 +47,11 @@ public class PlayScreen implements Screen {
         this.gameMap = new GameMap("assets/map3.tmx", nPlayers);
         this.map = gameMap.getMap();
         this.renderer = new OrthogonalTiledMapRenderer(map);
-        this.ui = new UserInterface(width, height, gameMap.getPlayers().get(myID));
 
+
+    }
+    public void initializeUI(int myID) {
+        this.ui = new UserInterface(width, height, gameMap.getPlayers().get(myID));
     }
     public void setMyID(int id ) {
         myID = id;
@@ -71,8 +74,6 @@ public class PlayScreen implements Screen {
             ui.initializeCardSelection();
         }
         if (gameMap.hasAllPlayersChosenHands()) {
-            System.out.println("Size from playScreen0: " + gameMap.getPlayers().get(0).getPlayerDeck().handSize());
-            System.out.println("Size from playscreen1:" + gameMap.getPlayers().get(1).getPlayerDeck().handSize());
             gameMap.addPlayerHandToNewRound();
         }
 
