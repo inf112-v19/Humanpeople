@@ -13,7 +13,6 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import inf112.skeleton.app.Game.GameMap;
 import inf112.skeleton.app.Game.RoboRally;
-import inf112.skeleton.app.Networking.GameServer;
 import inf112.skeleton.app.Player.Player;
 
 /**
