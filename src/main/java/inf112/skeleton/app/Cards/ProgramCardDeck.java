@@ -10,6 +10,7 @@ import java.util.Random;
 public class ProgramCardDeck {
     private ArrayList<ProgramCard> programCardDeck;
     private static ProgramCardDeck singleInstance;
+    private ArrayList<ProgramCard> inActiveCardDeck;
 
 
     private ProgramCardDeck() {
@@ -68,6 +69,7 @@ public class ProgramCardDeck {
 
         ProgramCard card = programCardDeck.get(index);
         programCardDeck.remove(index);
+        addToInactiveCardDeck(card);
         return card;
     }
 
@@ -97,9 +99,7 @@ public class ProgramCardDeck {
      * @param players
      */
     public void giveOutCardsToAllPlayers(ArrayList<Player> players) {
-        if (getSizeOfDeck() < 50)
-            newProgramCardDeck();
-
+        shuffleInnInactiveCards();
         for (int i = 0; i < players.size(); i++) {
             Player player = players.get(i);
             ArrayList<ProgramCard> playerDeck = new ArrayList<>();
@@ -117,9 +117,7 @@ public class ProgramCardDeck {
      * @param player
      */
     public void giveOutCardsToPlayer(Player player) {
-        if (getSizeOfDeck() < 50)
-            newProgramCardDeck();
-
+        shuffleInnInactiveCards();
         ArrayList<ProgramCard> playerDeck = new ArrayList<>();
         for (int i = 0; i < PlayerDeck.MAX_NUMBER_CARDS_IN_DECK; i++)
             playerDeck.add(takeRandomCard());
@@ -133,6 +131,25 @@ public class ProgramCardDeck {
 
     public ArrayList<ProgramCard> getDeck() {
         return this.programCardDeck;
+    }
+
+    public void addToInactiveCardDeck(ProgramCard card) {
+        if (inActiveCardDeck.contains(card))
+            throw new IllegalArgumentException("Cannot have duplicates of ProgramCards");
+        inActiveCardDeck.add(card);
+    }
+
+    public void shuffleInnInactiveCards() {
+        int duplicates = 0;
+        for (int i=0; i<inActiveCardDeck.size(); i++) {
+            if (programCardDeck.contains(inActiveCardDeck.get(i)))
+                duplicates++;
+            programCardDeck.add(inActiveCardDeck.get(i));
+        }
+        if (duplicates>0)
+            throw new IllegalArgumentException("Cannot have duplicates of ProgramCards. " + duplicates + " duplicates.");
+        shuffleDeck();
+        inActiveCardDeck.clear();
     }
 
     public static ProgramCardDeck getProgramCardDeckSingleton() {
