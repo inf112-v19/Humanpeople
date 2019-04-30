@@ -4,6 +4,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import inf112.skeleton.app.Cards.PlayerDeck;
 import inf112.skeleton.app.Directions.Direction;
 import inf112.skeleton.app.Directions.Position;
+import inf112.skeleton.app.Game.ConveyorBelt;
 import inf112.skeleton.app.GameObjects.PlayerLayerObject;
 
 public class Player {
@@ -22,6 +23,8 @@ public class Player {
     private boolean active;
     private boolean isDestroyed;
     private boolean isAlive;
+
+    private ConveyorBelt currentConveyorBelt;
 
     private boolean handChosen;
 
@@ -214,6 +217,14 @@ public class Player {
             status = "DEAD";
 
         System.out.printf("##COLOR: %-10s ##HP: %d ##LIFETOKENS: %s ##FLAG: %s ##STATUS: %s", this.getPlayerTile().getColor(), getHealth(), getLifeTokens(), getLastFlagVisited(), status);
+    }
+
+    public ConveyorBelt getCurrentConveyorBelt() {
+        return currentConveyorBelt;
+    }
+
+    public void setCurrentConveyorBelt(ConveyorBelt conveyorBelt) {
+        currentConveyorBelt = conveyorBelt;
     }
 
     public int getHealth() {

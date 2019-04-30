@@ -5,7 +5,6 @@ import inf112.skeleton.app.Cards.ProgramCard;
 import inf112.skeleton.app.Cards.ProgramCardDeck;
 import inf112.skeleton.app.Cards.ProgramType;
 import inf112.skeleton.app.Directions.*;
-import inf112.skeleton.app.GameObjects.FlagLayerObject;
 import inf112.skeleton.app.GameObjects.PlayerLayerObject;
 import inf112.skeleton.app.Player.Player;
 import inf112.skeleton.app.Round.Phase;
@@ -19,6 +18,7 @@ public class GameMap {
     private TmxMapLoader mapLoader;
     private TiledMap map;
     private Grid grid;
+
     private final TiledMapTileLayer playerLayer;
     private final TiledMapTileLayer specialLayer;
     private final TiledMapTileLayer flagLayer;
@@ -27,6 +27,7 @@ public class GameMap {
     private final TiledMapTileLayer backupLayer3;
     private final TiledMapTileLayer backupLayer4;
     private final TiledMapTileLayer laserLayer;
+
     private TiledMapTileSet tiles;
     private final int nPlayers;
     private IStartingPosition startingPositions;
@@ -34,12 +35,11 @@ public class GameMap {
     private ArrayList<PlayerLayerObject> playerTiles;
     private ArrayList<Player> players;
 
-    private int finalFlagNumber = 3;
-
     private Round round;
-    private boolean cardsDealt;
+    private EndOfPhaseActions endOfPhaseActions;
+    private EndOfRoundActions endOfRoundActions;
 
-    private ArrayList<Player> belteliste = new ArrayList<>();
+    private boolean cardsDealt;
 
     public GameMap(String filename, int nPlayers) {
         this.mapLoader = new TmxMapLoader();
@@ -66,6 +66,8 @@ public class GameMap {
         this.cardsDealt = true;
 
         this.round = new Round();
+        this.endOfPhaseActions = new EndOfPhaseActions(this, grid, map);
+        this.endOfRoundActions = new EndOfRoundActions(this);
     }
 
     /**
@@ -139,6 +141,37 @@ public class GameMap {
         }
     }
 
+    /**
+     * Removes the given player's backup point and sets it to the player's current position
+     *
+     * @param player
+     */
+    public void setBackup(Player player) {
+        Position previousBackupPosition = player.getBackup();
+        int x = previousBackupPosition.getX();
+        int y = previousBackupPosition.getY();
+        grid.removeBackupPosition(previousBackupPosition, player.getId());
+        switch (player.getId()) {
+            case 0:
+                backupLayer1.setCell(x, y, null);
+                break;
+            case 1:
+                backupLayer2.setCell(x, y, null);
+                break;
+            case 2:
+                backupLayer3.setCell(x, y, null);
+                break;
+            case 3:
+                backupLayer4.setCell(x, y, null);
+                break;
+        }
+
+        grid.setBackupPosition(player.getPlayerTile());
+        Position currentPosition = player.getPosition();
+        player.setBackup(currentPosition);
+        drawBackup(player);
+    }
+
     public void addPlayerHandToNewRound() {
         if (!round.allPhasesAddedToRound()) {
             round = new Round();
@@ -195,36 +228,6 @@ public class GameMap {
             player.getPlayerTile().setDirection(rotated);
         }
         drawPlayers();
-    }
-
-    /**
-     * Removes the given player's backup point and sets it to the player's current position
-     * @param player
-     */
-    public void setBackup(Player player) {
-        Position previousBackupPosition = player.getBackup();
-        int x = previousBackupPosition.getX();
-        int y = previousBackupPosition.getY();
-        grid.removeBackupPosition(previousBackupPosition, player.getId());
-        switch (player.getId()) {
-            case 0:
-                backupLayer1.setCell(x, y, null);
-                break;
-            case 1:
-                backupLayer2.setCell(x, y, null);
-                break;
-            case 2:
-                backupLayer3.setCell(x, y, null);
-                break;
-            case 3:
-                backupLayer4.setCell(x, y, null);
-                break;
-        }
-
-        grid.setBackupPosition(player.getPlayerTile());
-        Position currentPosition = player.getPosition();
-        player.setBackup(currentPosition);
-        drawBackup(player);
     }
 
     /**
@@ -317,226 +320,6 @@ public class GameMap {
         return false;
     }
 
-    /**
-     * Checks for all players if they are standing on a wrench
-     */
-    public void steppedOnWrench() {
-        for (Player player : players) {
-            steppedOnWrench(player);
-        }
-    }
-
-    /**
-     * Checks if player has stepped on a wrench.
-     * If player stepped on wrench, then add one health to the player
-     *
-     * @param player
-     * @return true if player is standing on a wrench tile
-     */
-    public boolean steppedOnWrench(Player player) {
-        Position currentPosition = player.getPosition();
-        if (grid.isWrench(currentPosition)) {
-            player.incrementHealth();
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Moves all players standing on conveyor belts
-     */
-    public void moveConveyorBelts() {
-        belteliste.clear();
-        for (Player player : players) {
-            if (steppedOnConveyorBelt(player))
-                //moveAccordingToConveyorBelt(player, false);
-                belteliste.add(player);
-        }
-        moveTest();
-
-    }
-
-    /**
-     * Checks if player is standing on a conveyor belt or a gyro
-     *
-     * @param player
-     * @return true if standing on belt or gyro
-     */
-    public boolean steppedOnConveyorBelt(Player player) {
-        Position position = player.getPosition();
-        return (grid.isEastBelt(position) || grid.isNorthBelt(position)
-                || grid.isSouthBelt(position) || grid.isWestBelt(position)
-                || grid.isLeftGyro(position) || grid.isRightGyro(position)
-                || grid.isDoubleNorthBelt(position) || grid.isDoubleSouthBelt(position)
-                || grid.isDoubleWestBelt(position) || grid.isDoubleEastBelt(position));
-    }
-    public void moveTest(){
-        int i = 0;
-        while(belteliste.size()>0){
-            i++;
-            if(i>100){
-                break;
-            }
-            Player player = belteliste.get(0);
-            Position currentPositon = player.getPosition();
-            if(grid.isNorthBelt(currentPositon)){
-                if(canGo(Direction.NORTH,currentPositon)){
-                    if(playerTiles.size()==1){
-                        int x = currentPositon.getX();
-                        int y = currentPositon.getY();
-                        playerLayer.setCell(x, y, null);
-                        movePlayerTilesInList(Direction.NORTH);
-                        belteliste.remove(player);
-                        drawPlayer(player);
-
-                    }
-                    else {
-                        belteliste.remove(player);
-                        belteliste.add(player);
-                    }
-                }else {
-                    belteliste.remove(player);
-                }
-            }
-            else if(grid.isWestBelt(currentPositon)){
-                if(canGo(Direction.WEST,currentPositon)){
-
-                }
-            }
-            else if(grid.isSouthBelt(currentPositon)){
-                if(canGo(Direction.SOUTH,currentPositon)){
-
-                }
-            }
-            else if(grid.isEastBelt(currentPositon)){
-                if(canGo(Direction.EAST,currentPositon)){
-                    if(playerTiles.size()==1){
-                        int x = currentPositon.getX();
-                        int y = currentPositon.getY();
-                        playerLayer.setCell(x, y, null);
-                        movePlayerTilesInList(Direction.EAST);
-                        belteliste.remove(player);
-                        drawPlayer(player);
-                    }
-                    else {
-                        belteliste.remove(player);
-                        belteliste.add(player);
-                    }
-                }else {
-                    belteliste.remove(player);
-                }
-            }
-
-        }
-    }
-    /**
-     * Checks what type of conveyor belt the player is standing on and moves the player accordingly
-     *
-     * @param player
-     * @param hasMovedOnce
-     */
-    public void moveAccordingToConveyorBelt(Player player, boolean hasMovedOnce) {
-        Position currentPosition = player.getPosition();
-        Direction currentDirection = player.getDirection();
-        int x = currentPosition.getX();
-        int y = currentPosition.getY();
-
-        if (grid.isEastBelt(currentPosition) && canGo(Direction.EAST, currentPosition)) {
-            movePlayerTilesInList(Direction.EAST);
-            /*
-            Position newPosition = currentPosition.east();
-            grid.removePlayerPosition(currentPosition);
-            player.setPosition(newPosition);
-            grid.setPlayerPosition(player.getPlayerTile());
-            */
-        } else if (grid.isNorthBelt(currentPosition) && canGo(Direction.NORTH, currentPosition)) {
-            movePlayerTilesInList(Direction.NORTH);
-
-            /*Position newPosition = currentPosition.north();
-            grid.removePlayerPosition(currentPosition);
-            player.setPosition(newPosition);
-            grid.setPlayerPosition(player.getPlayerTile());*/
-        } else if (grid.isSouthBelt(currentPosition) && canGo(Direction.SOUTH, currentPosition)) {
-            movePlayerTilesInList(Direction.SOUTH);
-            /*Position newPosition = currentPosition.south();
-            grid.removePlayerPosition(currentPosition);
-            player.setPosition(newPosition);
-            grid.setPlayerPosition(player.getPlayerTile());*/
-        } else if (grid.isWestBelt(currentPosition) && canGo(Direction.WEST, currentPosition)) {
-            movePlayerTilesInList(Direction.NORTH.WEST);
-            /*Position newPosition = currentPosition.west();
-            grid.removePlayerPosition(currentPosition);
-            player.setPosition(newPosition);
-            grid.setPlayerPosition(player.getPlayerTile());*/
-        } else if (grid.isRightGyro(currentPosition)) {
-            Direction newDirection = Direction.rotate(currentDirection, 1);
-            player.setDirection(newDirection);
-        } else if (grid.isLeftGyro(currentPosition)) {
-            Direction newDirection = Direction.rotate(currentDirection, -1);
-            player.setDirection(newDirection);
-        } else if (grid.isDoubleNorthBelt(currentPosition) && canGo(Direction.NORTH, currentPosition)) {
-            Position newPosition = currentPosition.north();
-            grid.removePlayerPosition(currentPosition);
-            player.setPosition(newPosition);
-            grid.setPlayerPosition(player.getPlayerTile());
-            if (steppedOnConveyorBelt(player) && !hasMovedOnce)
-                moveAccordingToConveyorBelt(player, true);
-        } else if (grid.isDoubleSouthBelt(currentPosition) && canGo(Direction.SOUTH, currentPosition)) {
-            Position newPosition = currentPosition.south();
-            grid.removePlayerPosition(currentPosition);
-            player.setPosition(newPosition);
-            grid.setPlayerPosition(player.getPlayerTile());
-            if (steppedOnConveyorBelt(player) && !hasMovedOnce)
-                moveAccordingToConveyorBelt(player, true);
-        } else if (grid.isWestBelt(currentPosition) && canGo(Direction.WEST, currentPosition)) {
-            Position newPosition = currentPosition.west();
-            grid.removePlayerPosition(currentPosition);
-            player.setPosition(newPosition);
-            grid.setPlayerPosition(player.getPlayerTile());
-            if (steppedOnConveyorBelt(player) && !hasMovedOnce)
-                moveAccordingToConveyorBelt(player, true);
-        } else if (grid.isDoubleEastBelt(currentPosition) && canGo(Direction.EAST, currentPosition)) {
-            Position newPosition = currentPosition.east();
-            grid.removePlayerPosition(currentPosition);
-            player.setPosition(newPosition);
-            grid.setPlayerPosition(player.getPlayerTile());
-            if (steppedOnConveyorBelt(player) && !hasMovedOnce)
-                moveAccordingToConveyorBelt(player, true);
-        }
-
-        playerLayer.setCell(x, y, null);
-        drawPlayer(player);
-    }
-
-    /**
-     * If player is standing on flag and another player does not have a backup there already, then set backup
-     * If player is standing on a flag which it CAN visit, then update lastFlagVisited for player
-     */
-    public void steppedOnFlag() {
-        for (Player player : players) {
-            if (playerSteppedOnFlag(player)) {
-                Position pos = player.getPosition();
-                int flagId = flagLayer.getCell(pos.getX(), pos.getY()).getTile().getId();
-                FlagLayerObject flag = new FlagLayerObject(flagId);
-                if (flag.canVisit(player)) {
-                    player.visitFlag();
-                }
-                setBackup(player);
-            }
-        }
-    }
-
-    /**
-     * Checks if player is stepping on a flag
-     *
-     * @param player
-     * @return true if player is in flag
-     */
-    public boolean playerSteppedOnFlag(Player player) {
-        Position currentPosition = player.getPosition();
-        return grid.isFlag(currentPosition);
-    }
-
     public void preformNextMovement() {
         cleanLasers();
         returnDestroyedPlayersToBackup();
@@ -566,58 +349,25 @@ public class GameMap {
     }
 
     /**
-     * All powered down players are set to active
-     */
-    public void activatePlayers() {
-        for (Player player : players) {
-            player.activate();
-        }
-    }
-
-    /**
      * Checks all players for end of phase actions
      */
     public void endOfPhaseChecks() {
-        steppedOnFlag();
-        moveConveyorBelts();
-        steppedOnWrench();
+        endOfPhaseActions.performAllChecks();
         fireLasers();
         resetHitByBoardLaser();
-        hasWon();
-        removeDeadPlayers();
+        drawPlayers();
     }
 
     /**
      * Checks all players for end of round actions
      */
     public void endOfRoundChecks() {
-        fixPlayers();
-        activatePlayers();
+        endOfRoundActions.performAllChecks();
         drawPlayers();
     }
 
-    /**
-     * Checks if any players have won, i.e. has visited all flags
-     */
-    public void hasWon() {
-        for (Player player : players) {
-            hasWon(player);
-        }
-    }
-
-    /**
-     * Checks if the player has won, i.e. has visited all flags
-     */
-    public void hasWon(Player player) {
-        int lastFlagVisited = player.getLastFlagVisited();
-
-        if (lastFlagVisited == finalFlagNumber) {
-            System.out.println("Player " + player.getId() + " has won!");
-        }
-    }
-
     private void resetHitByBoardLaser() {
-        for(Player player : players)
+        for (Player player : players)
             player.setHitByBoardLaser(false);
     }
 
@@ -625,7 +375,6 @@ public class GameMap {
      * Fire both player and board lasers
      */
     public void fireLasers() {
-
         for (Player player : players) {
             if (!player.isActive() || !player.isAlive() || player.isDestroyed())
                 continue;
@@ -788,23 +537,6 @@ public class GameMap {
     }
 
     /**
-     * If a player is alive, he is removed from the game
-     */
-    public void removeDeadPlayers() {
-        for (Player player : players) {
-            if (!player.isAlive() && !player.hasBeenRemoveFromBoard()) {
-                Position playerPosition = player.getPosition();
-                int x = playerPosition.getX();
-                int y = playerPosition.getY();
-
-                grid.removePlayerPosition(playerPosition);
-                playerLayer.setCell(x, y, null);
-                player.removeFromBoard();
-            }
-        }
-    }
-
-    /**
      * If a player has to return to backup, then they are returned to backup
      */
     public void returnDestroyedPlayersToBackup() {
@@ -812,13 +544,6 @@ public class GameMap {
             if (hasToReturnToBackup(player)) {
                 returnToBackup(player);
             }
-        }
-    }
-
-    public void fixPlayers() {
-        for (Player player : players) {
-            if (player.isDestroyed())
-                player.fix();
         }
     }
 
@@ -881,6 +606,10 @@ public class GameMap {
 
     public TiledMap getMap() {
         return map;
+    }
+
+    public ArrayList<PlayerLayerObject> getPlayerTiles() {
+        return playerTiles;
     }
 
     public Direction rotate(ProgramType rotate, Direction currentDir) {
