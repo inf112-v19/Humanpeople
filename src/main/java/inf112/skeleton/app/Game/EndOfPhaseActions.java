@@ -250,6 +250,7 @@ public class EndOfPhaseActions {
             }
             else if (conveyorBelt == ConveyorBelt.DOUBLE_NORTH) {
                 moveBeltInDirection(Direction.NORTH, player);
+                moveBeltInDirection(Direction.NORTH, player);
                 // TODO MOVE TWICE
 
             }

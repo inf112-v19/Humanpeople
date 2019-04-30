@@ -84,7 +84,7 @@ public class GameClient {
 
                         public void run() {
 
-                        playScreen = new PlayScreen(game, howManyPlayers);
+                        playScreen = new PlayScreen(game, howManyPlayers, true);
                         myId = ((Packets.PacketStartGame) object).yourID;
                         playScreen.initializeUI(myId);
                         player = playScreen.getGameMap().getPlayers().get(myId);

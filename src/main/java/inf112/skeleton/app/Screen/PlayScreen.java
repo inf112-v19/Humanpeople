@@ -35,8 +35,10 @@ public class PlayScreen implements Screen {
 
     private int myID;
 
+    private boolean isMultiPlayer;
 
-    public PlayScreen(RoboRally game, int nPlayers) {
+
+    public PlayScreen(RoboRally game, int nPlayers, boolean isMultiPlayer) {
         this.game = game;
         this.gameCam = new OrthographicCamera();
         gamePort = new StretchViewport(RoboRally.width * 2, RoboRally.height, gameCam);
@@ -46,6 +48,7 @@ public class PlayScreen implements Screen {
         this.gameMap = new GameMap("assets/map3.tmx", nPlayers);
         this.map = gameMap.getMap();
         this.renderer = new OrthogonalTiledMapRenderer(map);
+        this.isMultiPlayer = isMultiPlayer;
     }
 
     public void initializeUI(int myID) {
@@ -72,11 +75,20 @@ public class PlayScreen implements Screen {
             ui.prepareNextRound();
             ui.initializeCardSelection();
         }
-        if (gameMap.hasAllPlayersChosenHands()) {
-            System.out.println("Size from playScreen0: " + gameMap.getPlayers().get(0).getPlayerDeck().handSize());
-            System.out.println("Size from playscreen1:" + gameMap.getPlayers().get(1).getPlayerDeck().handSize());
-            gameMap.addPlayerHandToNewRound();
+         // If game is multiplayer then wait for all players to choose cards
+        if (isMultiPlayer) {
+            if (gameMap.hasAllPlayersChosenHands()) {
+                gameMap.addPlayerHandToNewRound();
+                gameMap.getPlayers().get(0).setHandChosen(false);
+            }
         }
+        // If game is singlePlayer wait for player 0 to choose cards
+        else if (gameMap.getPlayers().get(0).getHandChosen()) {
+            gameMap.selectCardsForBots();
+            gameMap.addPlayerHandToNewRound();
+            gameMap.getPlayers().get(0).setHandChosen(false);
+        }
+
 
         updateMap();
         if (tickTime > 0.4) {

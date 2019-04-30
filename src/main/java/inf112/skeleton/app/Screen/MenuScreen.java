@@ -49,7 +49,8 @@ public class MenuScreen implements Screen {
         this.gameCam.translate(RoboRally.width, RoboRally.height / 2);
         this.width = gamePort.getWorldWidth();
         this.height = gamePort.getWorldHeight();
-        this.playScreen = new PlayScreen(game, 4);
+        this.playScreen = new PlayScreen(game, 4, false);
+        playScreen.initializeUI(0);
         this.game = game;
     }
 

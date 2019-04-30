@@ -38,7 +38,7 @@ public class GameServer {
         System.out.println("how many clients");
         howManyClients = in.nextInt();
 
-        final PlayScreen playScreen = new PlayScreen(this.game, howManyClients + 1);
+        final PlayScreen playScreen = new PlayScreen(this.game, howManyClients + 1, true);
         //Server has 0 as id
         playScreen.setMyID(0);
         gameMap = playScreen.getGameMap();

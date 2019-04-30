@@ -605,6 +605,16 @@ public class GameMap {
         programCardDeck.giveOutCardsToPlayer(player);
     }
 
+    /**
+     * Select 5 first cards in playerDeck for all bots (not player 0)
+     */
+    public void selectCardsForBots() {
+        for (int i = 1; i < players.size(); i++) {
+            Player player = players.get(i);
+            player.select5FirstCards();
+        }
+    }
+
     public ProgramCardDeck getDeck() {
         return programCardDeck;
     }
