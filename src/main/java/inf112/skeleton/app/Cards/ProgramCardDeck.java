@@ -9,9 +9,10 @@ import java.util.Random;
 
 public class ProgramCardDeck {
     private ArrayList<ProgramCard> programCardDeck;
+    private static ProgramCardDeck singleInstance;
 
 
-    public ProgramCardDeck() {
+    private ProgramCardDeck() {
         programCardDeck = new ArrayList<>();
         newProgramCardDeck();
     }
@@ -133,4 +134,12 @@ public class ProgramCardDeck {
     public ArrayList<ProgramCard> getDeck() {
         return this.programCardDeck;
     }
+
+    public static ProgramCardDeck getProgramCardDeckSingleton() {
+        if (singleInstance == null) {
+            singleInstance = new ProgramCardDeck();
+        }
+        return singleInstance;
+    }
+
 }
