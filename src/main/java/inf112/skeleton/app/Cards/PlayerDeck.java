@@ -20,6 +20,8 @@ public class PlayerDeck {
      */
     private ArrayList<ProgramCard> deck;
 
+    private ArrayList<ProgramCard> handFromLastRound;
+
     /**
      * Cards on the players hand
      */
@@ -28,6 +30,7 @@ public class PlayerDeck {
     public PlayerDeck() {
         deck = new ArrayList<>();
         hand = new ArrayList<>();
+        handFromLastRound = new ArrayList<>();
         NUMBER_OF_NEW_CARDS_TO_DECK = MAX_NUMBER_CARDS_IN_DECK;
     }
 
@@ -51,23 +54,29 @@ public class PlayerDeck {
     }
 
     public void changedHealth(int hP) {
-        if (hP >= 9) {
-            NUMBER_OF_NEW_CARDS_TO_DECK = MAX_NUMBER_CARDS_IN_DECK;
+        if (hP > 9) {
+            this.NUMBER_OF_NEW_CARDS_TO_DECK = MAX_NUMBER_CARDS_IN_DECK;
         }
-        if (hP < 9 && hP >= 0) {
-            NUMBER_OF_NEW_CARDS_TO_DECK = hP-1;
+        if (hP <= 9 && hP > 0) {
+            this.NUMBER_OF_NEW_CARDS_TO_DECK = hP-1;
         }
+        if (hP == 0)
+            this.NUMBER_OF_NEW_CARDS_TO_DECK = 0;
         burnCardsToHand(hP);
     }
 
     private void burnCardsToHand(int hP) {
         if (hP > 6) {
-            NUMBER_OF_LOCKED_CARDS = 0;
-            NUMBER_OF_NEW_CARDS_TO_HAND = NUMBER_CARDS_ON_HAND;
+            this.NUMBER_OF_LOCKED_CARDS = 0;
+            this.NUMBER_OF_NEW_CARDS_TO_HAND = NUMBER_CARDS_ON_HAND;
         }
-        if (hP <= 6 && hP >= 0) {
-            NUMBER_OF_LOCKED_CARDS = (10-(NUMBER_OF_NEW_CARDS_TO_DECK+hP));
-            NUMBER_OF_NEW_CARDS_TO_HAND = hP - NUMBER_OF_LOCKED_CARDS;
+        if (hP <= 5 && hP >= 1) {
+            this.NUMBER_OF_LOCKED_CARDS = (6 - hP);
+            this.NUMBER_OF_NEW_CARDS_TO_HAND = this.NUMBER_CARDS_ON_HAND - this.NUMBER_OF_LOCKED_CARDS;
+    }
+        if (hP < 1) {
+            this.NUMBER_OF_NEW_CARDS_TO_HAND = 0;
+            this.NUMBER_OF_LOCKED_CARDS = 5;
         }
     }
 
@@ -94,15 +103,7 @@ public class PlayerDeck {
     public void setDeck(ArrayList<ProgramCard> newDeck) {
         if (newDeck.size() > NUMBER_OF_NEW_CARDS_TO_DECK)
             throw new IllegalArgumentException("The deck needs to be size " + NUMBER_OF_NEW_CARDS_TO_DECK + ". Size was: " + newDeck.size());
-//        this.deck = newDeck;
-
-        addNewCardsToDeck(newDeck);
-    }
-
-    private void addNewCardsToDeck(ArrayList<ProgramCard> newDeck) {
-        this.deck.clear();
-        for (int i = 0; i < newDeck.size(); i++)
-            this.deck.add(newDeck.get(i));
+        this.deck = newDeck;
     }
 
 
@@ -162,8 +163,26 @@ public class PlayerDeck {
     }
 
     public void setPlayerHand(ArrayList<ProgramCard> hand) {
-        this.hand = hand;
+        ArrayList<ProgramCard> handFromLastRound = getLockedCardsFromLastRound();
+        if (handFromLastRound.isEmpty()) {
+            this.hand = hand;
+            return;
+        }
+        for (int i = 0; i < handFromLastRound.size(); i++) {
+            this.hand.set(i, handFromLastRound.get(i));
+        }
+        for (int i = handFromLastRound.size(); i<NUMBER_CARDS_ON_HAND; i++) {
+            this.hand.set(i, hand.get(i));
+        }
     }
+
+    private ArrayList<ProgramCard> getLockedCardsFromLastRound() {
+        ArrayList<ProgramCard> lockedCardsFromLastRound = new ArrayList<>();
+        for (int i=0; i<this.getNumberOfLockedCards(); i++) {
+            lockedCardsFromLastRound.add(this.handFromLastRound.get(i));
+        }
+        return  lockedCardsFromLastRound;
+     }
 
     public ProgramCard getCard(int i) {
         return deck.get(i);
@@ -175,5 +194,9 @@ public class PlayerDeck {
 
     public int getNumberOfNewCardsToDeck() {
         return NUMBER_OF_NEW_CARDS_TO_DECK;
+    }
+
+    public int getNumberOfLockedCards() {
+        return  NUMBER_OF_LOCKED_CARDS;
     }
 }
