@@ -86,6 +86,7 @@ public class GameClient {
 
                         playScreen = new PlayScreen(game, howManyPlayers);
                         myId = ((Packets.PacketStartGame) object).yourID;
+                        playScreen.initializeUI(myId);
                         player = playScreen.getGameMap().getPlayers().get(myId);
                         game.setScreen(playScreen);
                         playScreen.setMyID(myId);
@@ -94,6 +95,10 @@ public class GameClient {
                 }
 
                 if(object instanceof Packets.PacketServerRequiersMoves) {
+                    //System.out.println("Player : " + myId);
+                    //System.out.println("HandChosen : " + player.getHandChosen() );
+                    //System.out.println("Number of cards chosen : " + player.getPlayerDeck().handSize());
+
                     if (player!= null && player.getHandChosen() && player.getPlayerDeck().handSize() == 5) {
                         Packets.PacketListOfMoves listOfMoves = new Packets.PacketListOfMoves();
                         System.out.println("listsizeInClientBeforeItsSentToServer: " + player.getPlayerDeck().handSize());

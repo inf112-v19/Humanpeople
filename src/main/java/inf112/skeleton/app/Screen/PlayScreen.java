@@ -47,9 +47,12 @@ public class PlayScreen implements Screen {
         this.gameMap = new GameMap("assets/map3.tmx", nPlayers);
         this.map = gameMap.getMap();
         this.renderer = new OrthogonalTiledMapRenderer(map);
-        this.ui = new UserInterface(width, height, gameMap.getPlayers().get(myID));
-
     }
+
+    public void initializeUI(int myID) {
+        this.ui = new UserInterface(width, height, gameMap.getPlayers().get(myID));
+    }
+
     public void setMyID(int id ) {
         myID = id;
     }
