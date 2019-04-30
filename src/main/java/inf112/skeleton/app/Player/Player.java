@@ -110,7 +110,7 @@ public class Player {
 
         health = health - howMuchDamage;
 
-        if(health == 0) {
+        if(health <= 0) {
             System.out.println("DESTROYED");
             this.destroy();
         }

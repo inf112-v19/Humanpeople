@@ -454,8 +454,10 @@ public class UserInterface {
 
     public void prepareNextRound() {
         chosenCards = new ProgramCard[5];
+        //chosenCards = getLockedCards();
         cardMap.clear();
         imageMap.clear();
+        //clearStage();
         stage.clear();
         stage.addActor(leftBar);
         stage.addActor(rightBar);
@@ -467,6 +469,41 @@ public class UserInterface {
         getDamageTokenOfPlayer();
         getLifeTokenOfPlayer();
         getFlagInfo();
+    }
+
+    public ProgramCard[] getLockedCards() {
+        ProgramCard[] newChosenCards = new ProgramCard[chosenCards.length];
+        int health = player.getHealth();
+        int healthConstraint = 5;
+        for (int i = 0; i < chosenCards.length; i++) {
+            if (health < (healthConstraint-i))
+                newChosenCards[i] = chosenCards[i];
+            else
+                newChosenCards[i] = null;
+
+        }
+        return newChosenCards;
+    }
+
+    public void clearStage() {
+        for (Actor actor : stage.getActors()) {
+            if (equalsChosenCards(actor)) {
+                actor.remove();
+                /*ProgramCard programCard = cardMap.get(actor);
+                imageMap.remove(actor);
+                cardMap.remove(programCard);*/
+            }
+        }
+    }
+
+    public boolean equalsChosenCards(Actor actor) {
+        for (ProgramCard programCard : chosenCards) {
+            Image cardImage = imageMap.get(programCard);
+
+            if (actor.equals(cardImage))
+                return true;
+        }
+        return false;
     }
 
     public int getSavedHealth() {

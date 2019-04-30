@@ -64,28 +64,28 @@ public class PlayerTest {
 
     @Test
     public void restoreDamageTokens() {
-        assertEquals(player.getHealth(), 9);
-        player.damagePlayer(4);
+        assertEquals(player.getHealth(), 10);
+        player.damagePlayer(5);
         assertEquals(player.getHealth(), 5);
         player.fix();
-        assertEquals(player.getHealth(), 9);
+        assertEquals(player.getHealth(), 8);
     }
 
     @Test
     public void damagePlayerTest() {
-        assertEquals(player.getHealth(), 9);
+        assertEquals(player.getHealth(), 10);
         player.damagePlayer(2);
-        assertEquals(player.getHealth(), 7);
+        assertEquals(player.getHealth(), 8);
         player.damagePlayer(3);
-        assertEquals(player.getHealth(), 4);
-        player.damagePlayer(4);
+        assertEquals(player.getHealth(), 5);
+        player.damagePlayer(5);
         assertEquals(player.getHealth(), 0);
     }
 
     @Test
     public void lostAllDamageTokens() {
         assertFalse(player.lostAllHealth());
-        player.damagePlayer(9);
+        player.damagePlayer(10);
         assertTrue(player.lostAllHealth());
     }
 
@@ -94,14 +94,17 @@ public class PlayerTest {
         Player player1 = new Player(2);
         assertTrue(player1.isAlive());
 
-        player1.damagePlayer(9);
+        player1.damagePlayer(10);
         player1.lostAllHealth();
+        player1.fix();
 
-        player1.damagePlayer(9);
+        player1.damagePlayer(10);
         player1.lostAllHealth();
+        player1.fix();
 
-        player1.damagePlayer(9);
+        player1.damagePlayer(10);
         player1.lostAllHealth();
+        player1.fix();
 
         assertFalse(player1.isAlive());
     }

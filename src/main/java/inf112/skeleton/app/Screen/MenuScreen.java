@@ -17,6 +17,10 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import inf112.skeleton.app.Game.RoboRally;
 import inf112.skeleton.app.Screen.Test.TestScreen;
 
+import javax.sound.midi.*;
+import java.io.File;
+import java.io.IOException;
+
 /**
  * Menu screen for RoboRally
  *
@@ -52,22 +56,21 @@ public class MenuScreen implements Screen {
 
     @Override
     public void show() {
-
-//
-//        try {
-//            Sequence sequence = null;
-//            sequence = MidiSystem.getSequence(new File("assets/music.mid"));
-//            Sequencer sequencer = MidiSystem.getSequencer();
-//            sequencer.open();
-//            sequencer.setSequence(sequence);
-//            sequencer.start();
-//        } catch (InvalidMidiDataException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (MidiUnavailableException e) {
-//            e.printStackTrace();
-//        }
+        // Music for game
+        try {
+            Sequence sequence = null;
+            sequence = MidiSystem.getSequence(new File("assets/music.mid"));
+            Sequencer sequencer = MidiSystem.getSequencer();
+            sequencer.open();
+            sequencer.setSequence(sequence);
+            sequencer.start();
+        } catch (InvalidMidiDataException e) {
+            e.printStackTrace();
+            } catch (IOException e) {
+            e.printStackTrace();
+        } catch (MidiUnavailableException e) {
+            e.printStackTrace();
+        }
 
         stage = new Stage();
 
