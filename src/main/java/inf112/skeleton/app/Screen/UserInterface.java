@@ -77,10 +77,24 @@ public class UserInterface {
 
     private void initializeChosenCards() {
         int lC = player.getPlayerDeck().NUMBER_OF_LOCKED_CARDS;
-        chosenCards = new ProgramCard[5-lC];
+        chosenCards = new ProgramCard[5];
         for (int i = 0; i < lC; i++) {
-            chosenCards[i] = player.getPlayerDeck().getHandFromLastRound().get(i);
+            chosenCards[i] = lockedCards[i];
+            placeLockedCards(lockedCards[i], i);
         }
+    }
+
+    private void placeLockedCards(ProgramCard card, int i) {
+        Sprite picture = new Sprite(new Texture(card.getFilename()));
+        final Image cardImage = new Image(new SpriteDrawable(picture));
+        float pWidth = (picture.getWidth() / 8) * 0.8f;
+        float pHeight = (picture.getHeight() / 8) * 0.8f;
+        float cardX = pos[i].getX();
+        float cardY = pos[i].getY();
+        cardImage.setWidth(pWidth);
+        cardImage.setHeight(pHeight);
+        cardImage.setPosition(cardX, cardY);
+        stage.addActor(cardImage);
     }
 
     public Player getPlayer() {
@@ -268,26 +282,12 @@ public class UserInterface {
 
                 if (!player.getHandChosen()) {
                     System.out.println("Cards selected");
-
-                    ProgramCard finishedHand[] = finishHand();
-
-                    ArrayList<ProgramCard> list = new ArrayList<>(Arrays.asList(finishedHand));
+                    ArrayList<ProgramCard> list = new ArrayList<>(Arrays.asList(chosenCards));
                     player.getPlayerDeck().setPlayerHand(list);
                     player.setHandChosen(true);
                 }
             }
         });
-    }
-
-    private ProgramCard[] finishHand() {
-        ProgramCard finishedHand[] = new ProgramCard[5];
-        for (int i = 0; i < 5; i++)
-            if (i < lockedCards.length) {
-                finishedHand[i] = lockedCards[i];
-            } else {
-                finishedHand[i] = chosenCards[i];
-            }
-        return finishedHand;
     }
 
     private void initializePowerDownButton() {
@@ -387,7 +387,7 @@ public class UserInterface {
             chosenCards[index] = null;
         }
 
-        for (int i = 0; i < pos.length; i++) {
+        for (int i = player.getPlayerDeck().NUMBER_OF_LOCKED_CARDS; i < pos.length; i++) {
             //If inside the zone
             if (x > pos[i].getX() - cardImage.getWidth() / 2 && x < pos[i].getX() + cardImage.getWidth()
                     && y < yLimitTop && y > yLimitBottom) {
