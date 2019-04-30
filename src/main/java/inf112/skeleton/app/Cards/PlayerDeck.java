@@ -25,6 +25,8 @@ public class PlayerDeck {
      */
     private ArrayList<ProgramCard> hand;
 
+    private ArrayList<ProgramCard> handFromLastRound;
+
     public PlayerDeck() {
         deck = new ArrayList<>(MAX_NUMBER_CARDS_IN_DECK);
         hand = new ArrayList<>(MAX_NUMBER_CARDS_ON_HAND);
@@ -64,6 +66,15 @@ public class PlayerDeck {
         return programCard;
     }
 
+    public ProgramCard getCardFromHand(int i) {
+        if (handSize() < 1)
+            throw new NoSuchElementException("No cards in the deck");
+
+        ProgramCard programCard = hand.get(i);
+        hand.remove(i);
+        return programCard;
+    }
+
     /**
      * Set the deck of a player
      *
@@ -72,7 +83,6 @@ public class PlayerDeck {
     public void setDeck(ArrayList<ProgramCard> newDeck) {
         if (newDeck.size() > MAX_NUMBER_CARDS_IN_DECK)
             throw new IllegalArgumentException("The deck needs to be size 9. Size was: " + newDeck.size());
-
         this.deck = newDeck;
     }
 
@@ -137,7 +147,12 @@ public class PlayerDeck {
     }
 
     public void setPlayerHand(ArrayList<ProgramCard> hand) {
+        handFromLastRound = this.hand;
         this.hand = hand;
+    }
+
+    public ArrayList<ProgramCard> getHandFromLastRound() {
+        return handFromLastRound;
     }
 
     public ProgramCard getCard(int i) {

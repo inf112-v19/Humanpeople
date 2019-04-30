@@ -34,7 +34,8 @@ public class UserInterface {
 
 
     Position pos[] = new Position[5];
-    ProgramCard chosenCards[] = new ProgramCard[5];
+    ProgramCard chosenCards[];
+    ProgramCard lockedCards[];
     HashMap<Image, ProgramCard> cardMap = new HashMap<>();
     HashMap<ProgramCard, Image> imageMap = new HashMap<>();
 
@@ -58,6 +59,7 @@ public class UserInterface {
 
         stage = new Stage();
 
+        initializeLockedCards();
         initializeChosenCards();
         initializeSideBars();
         initializePlayButton();
@@ -65,13 +67,19 @@ public class UserInterface {
         initializeCardSlots();
     }
 
+    private void initializeLockedCards() {
+        int lC = player.getPlayerDeck().NUMBER_OF_LOCKED_CARDS;
+        lockedCards = new ProgramCard[lC];
+        for (int i = 0; i < lC; i++) {
+            lockedCards[i] = player.getPlayerDeck().getHandFromLastRound().get(i);
+        }
+    }
+
     private void initializeChosenCards() {
-        if (chosenCards == null) {
-            chosenCards = new ProgramCard[5];
-        } else {
-            for (int i = player.getPlayerDeck().NUMBER_OF_LOCKED_CARDS; i < 5; i++) {
-                chosenCards[i] = null;
-            }
+        int lC = player.getPlayerDeck().NUMBER_OF_LOCKED_CARDS;
+        chosenCards = new ProgramCard[5-lC];
+        for (int i = 0; i < lC; i++) {
+            chosenCards[i] = player.getPlayerDeck().getHandFromLastRound().get(i);
         }
     }
 
@@ -260,7 +268,16 @@ public class UserInterface {
 
                 if (!player.getHandChosen()) {
                     System.out.println("Cards selected");
-                    ArrayList<ProgramCard> list = new ArrayList<ProgramCard>(Arrays.asList(chosenCards));
+
+                    ProgramCard finishedHand[] = new ProgramCard[5];
+                    for (int i = 0; i < 5; i++)
+                        if (i<lockedCards.length) {
+                            finishedHand[i] = lockedCards[i];
+                        } else {
+                            finishedHand[i] = chosenCards[i];
+                        }
+
+                    ArrayList<ProgramCard> list = new ArrayList<>(Arrays.asList(finishedHand));
                     player.getPlayerDeck().setPlayerHand(list);
                     player.setHandChosen(true);
                 }
@@ -361,6 +378,7 @@ public class UserInterface {
         //If card is already in the selected list, reset its position
         if (programCard.isMarked()) {
             index = getIndex(programCard);
+            if (index != -1)
             chosenCards[index] = null;
         }
 
@@ -456,7 +474,7 @@ public class UserInterface {
      * @return true if all 5 cards are selected
      */
     public boolean hasChosenCards() {
-        for (int i = 0; i < chosenCards.length; i++) {
+        for (int i = 0; i < chosenCards.length-lockedCards.length; i++) {
             if (chosenCards[i] == null)
                 return false;
         }
