@@ -486,6 +486,7 @@ public class GameMap {
                     checkBoardLasers();
                 }
             } else {
+                fixPlayers();
                 if (!cardsDealt) {
                     dealCards();
                     cardsDealt = true;
@@ -523,7 +524,7 @@ public class GameMap {
      * Checks all players for end of round actions
      */
     public void endOfRoundChecks() {
-        fixPlayers();
+//        fixPlayers();
         activatePlayers();
         drawPlayers();
     }

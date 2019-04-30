@@ -80,20 +80,18 @@ public class PlayerDeck {
         this.deck = newDeck;
     }
 
-    public void changedHealth(int hP) {
-        if (hP > 9) {
+    public void changedHealth(int health) {
+        if (health > 9) {
             NUMBER_OF_NEW_CARDS_TO_DECK = MAX_NUMBER_CARDS_IN_DECK;
         }
-        if (hP <= 9 && hP > 0) {
-            NUMBER_OF_NEW_CARDS_TO_DECK = hP-1;
+        if (health <= 9 && health > 0) {
+            NUMBER_OF_NEW_CARDS_TO_DECK = health-1;
         }
-        if (hP == 0)
-            NUMBER_OF_NEW_CARDS_TO_DECK = 0;
-        burnCardsToHand(hP);
+        burnCardsToHand(health);
     }
 
     private void burnCardsToHand(int hP) {
-        if (hP > 6) {
+        if (hP > 5) {
             NUMBER_OF_LOCKED_CARDS = 0;
             NUMBER_OF_NEW_CARDS_TO_HAND = MAX_NUMBER_CARDS_ON_HAND;
         }
