@@ -269,13 +269,7 @@ public class UserInterface {
                 if (!player.getHandChosen()) {
                     System.out.println("Cards selected");
 
-                    ProgramCard finishedHand[] = new ProgramCard[5];
-                    for (int i = 0; i < 5; i++)
-                        if (i<lockedCards.length) {
-                            finishedHand[i] = lockedCards[i];
-                        } else {
-                            finishedHand[i] = chosenCards[i];
-                        }
+                    ProgramCard finishedHand[] = finishHand();
 
                     ArrayList<ProgramCard> list = new ArrayList<>(Arrays.asList(finishedHand));
                     player.getPlayerDeck().setPlayerHand(list);
@@ -283,6 +277,17 @@ public class UserInterface {
                 }
             }
         });
+    }
+
+    private ProgramCard[] finishHand() {
+        ProgramCard finishedHand[] = new ProgramCard[5];
+        for (int i = 0; i < 5; i++)
+            if (i < lockedCards.length) {
+                finishedHand[i] = lockedCards[i];
+            } else {
+                finishedHand[i] = chosenCards[i];
+            }
+        return finishedHand;
     }
 
     private void initializePowerDownButton() {
