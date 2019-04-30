@@ -49,6 +49,8 @@ public class UserInterface {
     private int lifeTokens;
     private int lastFlagVisited;
 
+    private ArrayList<ProgramCard> handFromLastRound;
+
     public UserInterface(float width, float height, Player player) {
         this.height = height;
         this.width = width;
@@ -56,6 +58,7 @@ public class UserInterface {
         this.health = player.getHealth();
         this.lifeTokens = player.getLifeTokens();
         this.lastFlagVisited = player.getLastFlagVisited();
+        this.handFromLastRound = new ArrayList<>();
 
         stage = new Stage();
 
@@ -68,10 +71,11 @@ public class UserInterface {
     }
 
     private void initializeLockedCards() {
-        int lC = player.getPlayerDeck().NUMBER_OF_LOCKED_CARDS;
-        lockedCards = new ProgramCard[lC];
-        for (int i = 0; i < lC; i++) {
-            lockedCards[i] = player.getPlayerDeck().getHandFromLastRound().get(i);
+        ArrayList<ProgramCard> lastHand = player.getPlayerDeck().getHandFromLastRound();
+        int lCs = player.getPlayerDeck().NUMBER_OF_LOCKED_CARDS;
+        lockedCards = new ProgramCard[lCs];
+        for (int i = 0; i < lCs; i++) {
+            lockedCards[i] = lastHand.get(i);
         }
     }
 
@@ -283,6 +287,7 @@ public class UserInterface {
                 if (!player.getHandChosen()) {
                     System.out.println("Cards selected");
                     ArrayList<ProgramCard> list = new ArrayList<>(Arrays.asList(chosenCards));
+                    handFromLastRound = new ArrayList<>(Arrays.asList(chosenCards));
                     player.getPlayerDeck().setPlayerHand(list);
                     player.setHandChosen(true);
                 }
@@ -420,7 +425,7 @@ public class UserInterface {
 
         cardImage.setPosition(cardImage.getOriginX(), cardImage.getOriginY());
         programCard.setMarked(false);
-        for (int k = 0; k < chosenCards.length; k++) {
+        for (int k = player.getPlayerDeck().NUMBER_OF_LOCKED_CARDS; k < chosenCards.length; k++) {
             if (chosenCards[k] != null && chosenCards[k].equals(programCard)) {
                 chosenCards[k] = null;
                 return;
@@ -479,7 +484,7 @@ public class UserInterface {
      * @return true if all 5 cards are selected
      */
     public boolean hasChosenCards() {
-        for (int i = 0; i < chosenCards.length-lockedCards.length; i++) {
+        for (int i = 0; i < chosenCards.length; i++) {
             if (chosenCards[i] == null)
                 return false;
         }
@@ -501,6 +506,8 @@ public class UserInterface {
         getDamageTokenOfPlayer();
         getLifeTokenOfPlayer();
         getFlagInfo();
+        initializeLockedCards();
+        initializeChosenCards();
     }
 
     public int getSavedHealth() {

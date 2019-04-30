@@ -1,6 +1,7 @@
 package inf112.skeleton.app.Cards;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -28,8 +29,9 @@ public class PlayerDeck {
     private ArrayList<ProgramCard> handFromLastRound;
 
     public PlayerDeck() {
-        deck = new ArrayList<>(MAX_NUMBER_CARDS_IN_DECK);
-        hand = new ArrayList<>(MAX_NUMBER_CARDS_ON_HAND);
+        deck = new ArrayList<>();
+        hand = new ArrayList<>();
+        handFromLastRound = new ArrayList<>();
     }
 
     /**
@@ -146,8 +148,12 @@ public class PlayerDeck {
         return hand.size();
     }
 
+    /**
+     * Trenger nye kort om det ikke finnes kort fra forrige runde
+     * @param hand
+     */
     public void setPlayerHand(ArrayList<ProgramCard> hand) {
-        handFromLastRound = this.hand;
+        handFromLastRound = new ArrayList<>(hand);
         this.hand = hand;
     }
 
