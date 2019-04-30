@@ -70,7 +70,6 @@ public class ProgramCardDeck {
 
         ProgramCard card = programCardDeck.get(index);
         programCardDeck.remove(index);
-        addToInactiveCardDeck(card);
         return card;
     }
 

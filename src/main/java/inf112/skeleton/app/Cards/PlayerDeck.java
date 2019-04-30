@@ -145,6 +145,7 @@ public class PlayerDeck {
     public void setPlayerHand(ArrayList<ProgramCard> hand) {
         handFromLastRound = new ArrayList<>(hand);
         this.hand = hand;
+        discardCards();
     }
 
     public ArrayList<ProgramCard> getHandFromLastRound() {
@@ -155,5 +156,36 @@ public class PlayerDeck {
         return deck.get(i);
     }
 
+    public void discardCards() {
+        discardRestOfDeck();
+        discardOldHand();
+    }
 
+    private void discardOldHand() {
+        for (int i = 0; i < hand.size(); i++) {
+            if (!(hand.contains(handFromLastRound.get(i))))
+                discardCard(handFromLastRound.get(i));
+        }
+    }
+
+    public void discardRestOfDeck() {
+        if (deck.isEmpty())
+            return;
+        ArrayList<ProgramCard> list = new ArrayList<>();
+        for (int i = 0; i < deck.size(); i++) {
+            if (!(hand.contains(deck.get(i))))
+                list.add(deck.get(i));
+        }
+        discardCardArraylist(list);
+    }
+
+    public void discardCardArraylist(ArrayList<ProgramCard> cards) {
+        for (int i = 0; i < cards.size(); i++)
+            discardCard(cards.get(i));
+    }
+
+    public void discardCard(ProgramCard card) {
+        ProgramCardDeck pCD = ProgramCardDeck.getProgramCardDeckSingleton();
+        pCD.addToInactiveCardDeck(card);
+    }
 }
