@@ -289,11 +289,7 @@ public class Grid {
         int x = pos.getX();
         int y = pos.getY();
 
-        if (laserLayer.getCell(x, y) != null) {
-            TiledMapTile tileAtPosition = laserLayer.getCell(x, y).getTile();
-            return tileAtPosition.getId() == horizontalLaserId || tileAtPosition.getId() == verticalLaserId;
-        }
-        return false;
+       return staticBoardLasers[x][y] == horizontalLaserId || staticBoardLasers[x][y] == verticalLaserId;
     }
 
     /**
