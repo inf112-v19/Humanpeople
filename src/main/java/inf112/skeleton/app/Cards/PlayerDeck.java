@@ -11,6 +11,9 @@ public class PlayerDeck {
 
     public static final int MAX_NUMBER_CARDS_ON_HAND = 5;
     public static final int MAX_NUMBER_CARDS_IN_DECK = 9;
+    public int NUMBER_OF_LOCKED_CARDS;
+    public int NUMBER_OF_NEW_CARDS_TO_DECK;
+    public int NUMBER_OF_NEW_CARDS_TO_HAND;
 
     /**
      * Deck of cards for the player to choose from
@@ -71,6 +74,33 @@ public class PlayerDeck {
             throw new IllegalArgumentException("The deck needs to be size 9. Size was: " + newDeck.size());
 
         this.deck = newDeck;
+    }
+
+    public void changedHealth(int hP) {
+        if (hP > 9) {
+            NUMBER_OF_NEW_CARDS_TO_DECK = MAX_NUMBER_CARDS_IN_DECK;
+        }
+        if (hP <= 9 && hP > 0) {
+            NUMBER_OF_NEW_CARDS_TO_DECK = hP-1;
+        }
+        if (hP == 0)
+            NUMBER_OF_NEW_CARDS_TO_DECK = 0;
+        burnCardsToHand(hP);
+    }
+
+    private void burnCardsToHand(int hP) {
+        if (hP > 6) {
+            NUMBER_OF_LOCKED_CARDS = 0;
+            NUMBER_OF_NEW_CARDS_TO_HAND = MAX_NUMBER_CARDS_ON_HAND;
+        }
+        if (hP <= 5 && hP >= 1) {
+            NUMBER_OF_LOCKED_CARDS = (6 - hP);
+            NUMBER_OF_NEW_CARDS_TO_HAND = MAX_NUMBER_CARDS_ON_HAND - NUMBER_OF_LOCKED_CARDS;
+        }
+        if (hP < 1) {
+            NUMBER_OF_NEW_CARDS_TO_HAND = 0;
+            NUMBER_OF_LOCKED_CARDS = 5;
+        }
     }
 
     /**
