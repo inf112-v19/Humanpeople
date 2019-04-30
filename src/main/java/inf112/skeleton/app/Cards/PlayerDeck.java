@@ -176,10 +176,10 @@ public class PlayerDeck {
             if (!(hand.contains(deck.get(i))))
                 list.add(deck.get(i));
         }
-        discardCardArraylist(list);
+        discardCardArrayList(list);
     }
 
-    public void discardCardArraylist(ArrayList<ProgramCard> cards) {
+    public void discardCardArrayList(ArrayList<ProgramCard> cards) {
         for (int i = 0; i < cards.size(); i++)
             discardCard(cards.get(i));
     }
