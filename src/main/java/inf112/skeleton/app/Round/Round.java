@@ -38,6 +38,7 @@ public class Round {
     }
 
     public Phase getCurrentPhase(){
+
         return phasesInTheRound.get(currentPhase);
     }
 

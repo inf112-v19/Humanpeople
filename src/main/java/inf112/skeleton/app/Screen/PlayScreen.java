@@ -56,6 +56,7 @@ public class PlayScreen implements Screen {
     Position pos[] = new Position[5];
     ProgramCard chosenCards[] = new ProgramCard[5];
     HashMap<Image, ProgramCard> cardMap = new HashMap<>();
+    private int myID;
 
 
     public PlayScreen(RoboRally game, int nPlayers) {
@@ -70,6 +71,9 @@ public class PlayScreen implements Screen {
         this.renderer = new OrthogonalTiledMapRenderer(map);
 
     }
+    public void setMyID(int id ) {
+        myID = id;
+    }
 
     public GameMap getGameMap() {
         return gameMap;
@@ -80,10 +84,10 @@ public class PlayScreen implements Screen {
         if (gameMap.getCardsDealt()) {
             gameMap.setCardsDealt(false);
             prepareNextRound();
-            Player player = gameMap.getPlayers().get(0);
+            Player player = gameMap.getPlayers().get(myID);
             initializeCardSelection(player);
         }
-        if (gameMap.getPlayers().get(0).getHandChosen())
+        if (gameMap.hasAllPlayersChosenHands())
             gameMap.addPlayerHandToNewRound();
 
         updateMap();
@@ -122,8 +126,8 @@ public class PlayScreen implements Screen {
                         return;
                     }
                 }
-
-                Player player = gameMap.getPlayers().get(0);
+                //CHANGEED HERE
+                Player player = gameMap.getPlayers().get(myID);
                 if (!player.getHandChosen()) {
                     System.out.println("Cards selected");
                     ArrayList<ProgramCard> list = new ArrayList<ProgramCard>(Arrays.asList(chosenCards));

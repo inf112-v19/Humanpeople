@@ -84,35 +84,40 @@ public class GameClient {
                 if(object instanceof Packets.PacketStartGame) {
                     final int howManyPlayers = ((Packets.PacketStartGame) object).howManyPlayers;
                     Gdx.app.postRunnable(new Runnable() {
+
                         public void run() {
 
                         playScreen = new PlayScreen(game, howManyPlayers);
-                        game.setScreen(playScreen);
                         myId = ((Packets.PacketStartGame) object).yourID;
                         player = playScreen.getGameMap().getPlayers().get(myId);
+                        game.setScreen(playScreen);
+                        playScreen.setMyID(myId);
                         }
                     });
-
                 }
 
                 if(object instanceof Packets.PacketServerRequiersMoves) {
-                    if (player.getHandChosen()) {
+                    if (player!= null && player.getHandChosen() && player.getPlayerDeck().handSize() == 5) {
                         Packets.PacketListOfMoves listOfMoves = new Packets.PacketListOfMoves();
-                        for (int i = 0; i < player.getPlayerDeck().handSize(); i++) {
+                        System.out.println("listsizeInClientBeforeItsSentToServer: " + player.getPlayerDeck().handSize());
+                        for (int i = 0; i < 5; i++) {
                             listOfMoves.movesToSend.add(player.getPlayerDeck().getCardFromHand());
-                            listOfMoves.movesToSend.clear();
                             listOfMoves.id = myId;
-                            connection.sendTCP(listOfMoves);
                         }
+                        System.out.println("listsizeInClientBeforeItsSentToServer: " + listOfMoves.movesToSend.size());
+                        connection.sendTCP(listOfMoves);
+                        listOfMoves.movesToSend.clear();
                     }
                 }
 
                 if(object instanceof Packets.PacketListOfMovesFromServer) {
+
                     final int id = ((Packets.PacketListOfMovesFromServer) object).id;
                     final ArrayList<ProgramCard> list = ((Packets.PacketListOfMovesFromServer) object).allMoves;
+                    System.out.println("Array size in client from server: " + list.size());
                     Gdx.app.postRunnable(new Runnable() {
                         public void run() {
-                        playScreen.getGameMap().getHandsFromServer(list, id);
+                            playScreen.getGameMap().getHandsFromServer(list, id);
                         }
                     });
                 }

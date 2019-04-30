@@ -117,12 +117,12 @@ public class GameMap {
 
         backupLayer.setCell(pos.getX(), pos.getY(), avatar);
     }
+
     public void getHandsFromServer(ArrayList<ProgramCard> listOfMovesFromServer, int id) {
-        for (int i = 0; i <players.size() ; i++) {
-            if(players.get(i).getId() == id) {
-                players.get(i).getPlayerDeck().setPlayerHand(listOfMovesFromServer);
-            }
-        }
+        players.get(id).getPlayerDeck().setPlayerHand(listOfMovesFromServer);
+
+        System.out.println("handdsize: " + players.get(id).getPlayerDeck().handSize() + "id: " + id);
+        players.get(id).setHandChosen(true);
     }
     public void addPlayerHandToNewRound() {
         if (!round.allPhasesAddedToRound()) {
@@ -131,21 +131,32 @@ public class GameMap {
             int amountOfPhases = 5;
             for (int i = 0; i < amountOfPhases; i++) {
                 ArrayList<ProgramCard> cardsToAddInPhaseI = new ArrayList<>();
+
                 for (Player player : players) {
-                    // If the players hand is empty then give out 9 new cards and select 5 cards for hand
-                    // Temporary solution. Card selection system is coming.
-                    if (player.getPlayerDeck().handIsEmpty()) {
-                        giveOutCardsToPlayer(player);
+                    if(player.getHandChosen()) {
+                        // If the players hand is empty then give out 9 new cards and select 5 cards for hand
+                        // Temporary solution. Card selection system is coming.
+                        if (player.getPlayerDeck().handIsEmpty()) {
+                            giveOutCardsToPlayer(player);
+                        }
+
+                        ProgramCard tempCard = player.getPlayerDeck().getCardFromHand();
+                        tempCard.setPlayerThatPlayedTheCard(player.getId());
+                        cardsToAddInPhaseI.add(tempCard);
                     }
-                    ProgramCard tempCard = player.getPlayerDeck().getCardFromHand();
-                    tempCard.setPlayerThatPlayedTheCard(player.getId());
-                    cardsToAddInPhaseI.add(tempCard);
                 }
                 round.addPhases(new Phase(cardsToAddInPhaseI));
             }
         }
     }
 
+    public boolean hasAllPlayersChosenHands() {
+        for (Player player: players) {
+            if(!player.getHandChosen())
+                return false;
+        }
+        return true;
+    }
     public void setAllPlayerHandsChosen(boolean handsChosen) {
         for (Player player : players) {
             player.setHandChosen(handsChosen);
@@ -350,7 +361,7 @@ public class GameMap {
      */
     public void giveOutCardsToPlayer(Player player) {
         programCardDeck.giveOutCardsToPlayer(player);
-        player.select5FirstCards();
+//        player.select5FirstCards();
     }
 
     public ProgramCardDeck getDeck() {
