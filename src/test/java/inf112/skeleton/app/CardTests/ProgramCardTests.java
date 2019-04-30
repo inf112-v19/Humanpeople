@@ -16,7 +16,7 @@ public class ProgramCardTests {
 
     @Before
     public void setUp() {
-        deck = new ProgramCardDeck();
+        deck = ProgramCardDeck.getProgramCardDeckSingleton();
         card1 = new ProgramCard(ProgramType.MOVE1, 420, "filename420");
         card2 = new ProgramCard(ProgramType.MOVE1, 69, "filename2");
         card3 = new ProgramCard(ProgramType.UTURN, 52, "filename42");

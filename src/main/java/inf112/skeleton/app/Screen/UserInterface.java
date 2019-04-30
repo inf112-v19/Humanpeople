@@ -64,6 +64,16 @@ public class UserInterface {
         initializeCardSlots();
     }
 
+    private void initializeChosenCards() {
+        if (chosenCards == null) {
+            chosenCards = new ProgramCard[5];
+        } else {
+            for (int i = player.getPlayerDeck().NUMBER_OF_LOCKED_CARDS; i < 5; i++) {
+                chosenCards[i] = null;
+            }
+        }
+    }
+
     public Player getPlayer() {
         return player;
     }

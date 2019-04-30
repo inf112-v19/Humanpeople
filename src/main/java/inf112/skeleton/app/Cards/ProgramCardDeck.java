@@ -15,6 +15,7 @@ public class ProgramCardDeck {
 
     private ProgramCardDeck() {
         programCardDeck = new ArrayList<>();
+        inActiveCardDeck = new ArrayList<>();
         newProgramCardDeck();
     }
 
@@ -157,6 +158,12 @@ public class ProgramCardDeck {
             singleInstance = new ProgramCardDeck();
         }
         return singleInstance;
+    }
+
+    public void resetProgramCardDeckSingleton() {
+        programCardDeck.clear();
+        inActiveCardDeck.clear();
+        newProgramCardDeck();
     }
 
 }
