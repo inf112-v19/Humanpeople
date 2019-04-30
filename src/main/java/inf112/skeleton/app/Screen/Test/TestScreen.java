@@ -7,7 +7,10 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import inf112.skeleton.app.Cards.ProgramCard;
 import inf112.skeleton.app.Cards.ProgramType;
@@ -15,6 +18,9 @@ import inf112.skeleton.app.Game.GameMap;
 import inf112.skeleton.app.Directions.Direction;
 import inf112.skeleton.app.Player.Player;
 import inf112.skeleton.app.Game.RoboRally;
+import inf112.skeleton.app.Screen.MenuScreen;
+import inf112.skeleton.app.Screen.UserInterface;
+import inf112.skeleton.app.Screen.VictoryScreen;
 
 import java.util.ArrayList;
 
@@ -23,6 +29,7 @@ public class TestScreen implements Screen {
     private RoboRally game;
     private OrthographicCamera gameCam;
     private Viewport gamePort;
+    private Stage stage;
 
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
@@ -41,17 +48,25 @@ public class TestScreen implements Screen {
     ArrayList<ProgramCard> cardsForPlayer;
 
     private boolean infoShowed;
+    float width;
+    float height;
+
+    private UserInterface ui;
 
 
     public TestScreen(RoboRally game) {
         cardsForPlayer = new ArrayList<>();
         this.game = game;
         this.gameCam = new OrthographicCamera();
-        this.gamePort = new FitViewport(RoboRally.width, RoboRally.height, gameCam);
+        gamePort = new StretchViewport(RoboRally.width * 2, RoboRally.height, gameCam);
+        gameCam.translate(RoboRally.width, RoboRally.height / 2);
+        width = gamePort.getWorldWidth();
+        height = gamePort.getWorldHeight();
         this.gameMap = new GameMap("assets/testMap.tmx", 4);
         this.map = gameMap.getMap();
         this.renderer = new OrthogonalTiledMapRenderer(map);
-        gameCam.position.set(gamePort.getWorldWidth() / 2, (gamePort.getWorldHeight() / 2), 0);
+        gameCam.position.set(width / 2, (height / 2), 0);
+        this.ui = new UserInterface(width, height, gameMap.getPlayers().get(0));
 
 
         //Every program card type
@@ -79,16 +94,48 @@ public class TestScreen implements Screen {
     }
 
     public void update(float deltaTime) {
-        handleInput();
-        updateMap();
+        // Display winner if there is a winner
+        if (gameMap.getWinner() != null)
+            displayWinner(gameMap.getWinner());
 
+        handleInput();
         tickTime += deltaTime;
-        if (tickTime > 0.2) {
+        if (gameMap.getCardsDealt()) {
+            gameMap.setCardsDealt(false);
+            ui.prepareNextRound();
+            ui.initializeCardSelection();
+        }
+        if (gameMap.getPlayers().get(0).getHandChosen())
+            gameMap.addPlayerHandToNewRound();
+
+        updateMap();
+        if (tickTime > 0.4) {
             tickTime = 0;
             gameMap.preformNextMovement();
-            //TODO få getInfo til å virke på en fornuftig måte
-//            getInfo();
         }
+        //Update ui
+        if(tickTime > 0.2){
+            // Update only if there is a change in the variables
+            if (ui.getPlayer().getHealth() != ui.getSavedHealth()) {
+                ui.getDamageTokenOfPlayer();
+                ui.setSavedHealth(ui.getPlayer().getHealth());
+            }
+            if (ui.getPlayer().getLifeTokens() != ui.getSavedLifeTokens()) {
+                ui.getLifeTokenOfPlayer();
+                ui.setSavedLifeTokens(ui.getPlayer().getLifeTokens());
+            }
+            if (ui.getPlayer().getLastFlagVisited() != ui.getSavedFlag()) {
+                ui.getFlagInfo();
+                ui.setSavedFlag(ui.getPlayer().getLastFlagVisited());
+            }
+        }
+    }
+    public void displayWinner(Player winner) {
+        VictoryScreen victoryScreen = new VictoryScreen(winner);
+        Table winScreen = victoryScreen.getTable();
+        stage.addActor(winScreen);
+        winner.kill();
+        gameMap.removeDeadPlayers();
     }
 
 
@@ -138,6 +185,13 @@ public class TestScreen implements Screen {
                     player.printStatus();
                     System.out.println();
                 }
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
+                game.setScreen(new MenuScreen(game));
+            }
+
+            if (Gdx.input.isKeyJustPressed(Input.Keys.T)) {
+                gameMap.toggleLaser();
             }
         }
         //Test of movement according to program cards (using movePlayer() for testing
@@ -207,7 +261,8 @@ public class TestScreen implements Screen {
 
     @Override
     public void show() {
-
+        stage = ui.getStage();
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
@@ -219,11 +274,13 @@ public class TestScreen implements Screen {
 
         renderer.setView(gameCam);
         renderer.render();
+        stage.draw();
     }
 
     @Override
     public void resize(int width, int height) {
         gamePort.update(width, height);
+        stage.setViewport(gamePort);
     }
 
     @Override
