@@ -39,9 +39,6 @@ public class GameClient {
     public GameClient(final RoboRally game) {
         playScreen = null;
         this.game = game;
-//
-//
-//
         connected = false;
         client = new Client();
 
@@ -102,8 +99,8 @@ public class GameClient {
                         System.out.println("listsizeInClientBeforeItsSentToServer: " + player.getPlayerDeck().handSize());
                         for (int i = 0; i < 5; i++) {
                             listOfMoves.movesToSend.add(player.getPlayerDeck().getCardFromHand());
-                            listOfMoves.id = myId;
                         }
+                        listOfMoves.id = myId;
                         System.out.println("listsizeInClientBeforeItsSentToServer: " + listOfMoves.movesToSend.size());
                         connection.sendTCP(listOfMoves);
                         listOfMoves.movesToSend.clear();
@@ -123,10 +120,5 @@ public class GameClient {
                 }
             }
         });
-    }
-
-    public static void main(String[]args) {
-        GameClient gameClient = new GameClient(new RoboRally());
-
     }
 }

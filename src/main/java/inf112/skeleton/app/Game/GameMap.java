@@ -33,6 +33,8 @@ public class GameMap {
     private Round round;
     private boolean cardsDealt;
 
+
+
     public GameMap(String filename, int nPlayers) {
         this.mapLoader = new TmxMapLoader();
         this.map = mapLoader.load(filename);
@@ -119,31 +121,39 @@ public class GameMap {
     }
 
     public void getHandsFromServer(ArrayList<ProgramCard> listOfMovesFromServer, int id) {
+
         players.get(id).getPlayerDeck().setPlayerHand(listOfMovesFromServer);
 
         System.out.println("handdsize: " + players.get(id).getPlayerDeck().handSize() + "id: " + id);
+        for (int i = 0; i < 5; i++) {
+            System.out.println(listOfMovesFromServer.get(i).getFilename());
+        }
         players.get(id).setHandChosen(true);
+
     }
     public void addPlayerHandToNewRound() {
+        System.out.println(players.get(0).getPlayerDeck().handSize());
+        System.out.println(players.get(1).getPlayerDeck().handSize());
         if (!round.allPhasesAddedToRound()) {
             round = new Round();
             cardsDealt = false;
             int amountOfPhases = 5;
+
             for (int i = 0; i < amountOfPhases; i++) {
                 ArrayList<ProgramCard> cardsToAddInPhaseI = new ArrayList<>();
 
                 for (Player player : players) {
-                    if(player.getHandChosen()) {
+
                         // If the players hand is empty then give out 9 new cards and select 5 cards for hand
                         // Temporary solution. Card selection system is coming.
                         if (player.getPlayerDeck().handIsEmpty()) {
                             giveOutCardsToPlayer(player);
                         }
 
-                        ProgramCard tempCard = player.getPlayerDeck().getCardFromHand();
+                        ProgramCard tempCard;
+                        tempCard = player.getPlayerDeck().getCardFromHand();
                         tempCard.setPlayerThatPlayedTheCard(player.getId());
                         cardsToAddInPhaseI.add(tempCard);
-                    }
                 }
                 round.addPhases(new Phase(cardsToAddInPhaseI));
             }

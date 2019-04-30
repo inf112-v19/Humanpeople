@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 
 public class GameServer {
 
-    private static final Logger LOGGER = Logger.getLogger( GameServer.class.getName() );
+    private static final Logger LOGGER = Logger.getLogger(GameServer.class.getName());
     private int portNumber = 25135;
     Server server;
     GameMap gameMap;
@@ -29,6 +29,7 @@ public class GameServer {
     private int howManyConnected;
     RoboRally game;
     private boolean isGameStarted = false;
+    private int listsReceived = 0;
 
     public GameServer(final RoboRally game) {
         this.game = game;
@@ -70,30 +71,52 @@ public class GameServer {
                     howManyConnected++;
                 }
 
-                if(howManyConnected == howManyClients && !isGameStarted) {
+                if (howManyConnected == howManyClients && !isGameStarted) {
                     isGameStarted = true;
                     Packets.PacketStartGame startGame = new Packets.PacketStartGame();
-                    startGame.howManyPlayers = howManyClients+1;
+                    startGame.howManyPlayers = howManyClients + 1;
                     startGame.yourID = connection.getID();
                     connection.sendTCP(startGame);
                     Gdx.app.postRunnable(new Runnable() {
                         public void run() {
-                        game.setScreen(playScreen);
+                            game.setScreen(playScreen);
 
                         }
                     });
 
                 }
 
-
-                    Packets.PacketServerRequiersMoves newMoves = new Packets.PacketServerRequiersMoves();
-                    connection.sendTCP(newMoves);
-
-
+                Packets.PacketServerRequiersMoves newMoves = new Packets.PacketServerRequiersMoves();
+                connection.sendTCP(newMoves);
 
                 if (object instanceof Packets.PacketListOfMoves) {
                     //TODO Update positions and send back updated positions
 
+                    final Packets.PacketListOfMovesFromServer listOfMovesFromServer = new Packets.PacketListOfMovesFromServer();
+
+
+                    ArrayList<ProgramCard> movesFromClient = ((Packets.PacketListOfMoves) object).movesToSend;
+
+                    if (movesFromClient.size() == 5) {
+                        listOfMovesFromServer.allMoves.addAll(movesFromClient);
+                        listOfMovesFromServer.id = ((Packets.PacketListOfMoves) object).id;
+//                        Gdx.app.postRunnable(new Runnable() {
+//                            public void run() {
+                        System.out.println("listSize in server:; " + listOfMovesFromServer.allMoves.size());
+
+                        ArrayList<ProgramCard> pg = new ArrayList<>();
+                        pg.addAll(listOfMovesFromServer.allMoves);
+                        gameMap.getHandsFromServer(pg, listOfMovesFromServer.id);
+                        connection.sendTCP(listOfMovesFromServer);
+                        listsReceived++;
+                        listOfMovesFromServer.allMoves.clear();
+//                            }
+//                        });
+                    }
+                }
+
+
+                if (listsReceived == howManyClients) {
                     final Packets.PacketListOfMovesFromServer listOfMovesFromServer = new Packets.PacketListOfMovesFromServer();
                     if (player.getHandChosen() && player.getPlayerDeck().handSize() == 5) {
                         for (int i = 0; i < 5; i++) {
@@ -105,42 +128,18 @@ public class GameServer {
                         listOfMovesFromServer.id = 0;
                         connection.sendTCP(listOfMovesFromServer);
                         listOfMovesFromServer.allMoves.clear();
+                        System.out.println("#: " + listOfServerMoves.size());
+                        gameMap.getHandsFromServer(listOfServerMoves, 0);
                     }
+                    listsReceived = 0;
 
-                    ArrayList<ProgramCard> movesFromClient = ((Packets.PacketListOfMoves) object).movesToSend;
-                    if (movesFromClient.size() == 5) {
-                        if (((Packets.PacketListOfMoves) object).id == 1) {
-                            listOfMovesFromServer.allMoves.addAll(movesFromClient);
-                            listOfMovesFromServer.id = 1;
-
-                        } else if (((Packets.PacketListOfMoves) object).id == 2) {
-                            listOfMovesFromServer.allMoves.addAll(movesFromClient);
-                            listOfMovesFromServer.id = 2;
-                        } else {
-                            listOfMovesFromServer.allMoves.addAll(movesFromClient);
-                            listOfMovesFromServer.id = 3;
-                        }
-
-                        Gdx.app.postRunnable(new Runnable() {
-                            public void run() {
-                                System.out.println("listSize in server:; " + listOfMovesFromServer.allMoves.size());
-                                gameMap.getHandsFromServer(listOfMovesFromServer.allMoves, listOfMovesFromServer.id);
-                                connection.sendTCP(listOfMovesFromServer);
-                                gameMap.getHandsFromServer(listOfServerMoves, 0);
-                                listOfServerMoves.clear();
-                                listOfMovesFromServer.allMoves.clear();
-                            }
-                        });
-                    }
                 }
             }
+
 
         });
     }
 
-    public static void main(String[]args) {
-        GameServer server = new GameServer(new RoboRally());
-    }
 }
 
 

@@ -75,10 +75,11 @@ public class MenuScreen implements Screen {
 
             if (playButton.checkIfClicked(inputX, inputY)) {
                 GameServer gameServer = new GameServer(game);
-                game.setScreen(playScreen);
+//                game.setScreen(playScreen);
             }
 
             else if(testButton.checkIfClicked(inputX,inputY)) {
+
                 GameClient client = new GameClient(game);
 //                game.setScreen(playScreen);
 

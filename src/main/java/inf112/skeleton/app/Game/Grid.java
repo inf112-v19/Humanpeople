@@ -111,6 +111,7 @@ public class Grid {
         TiledMapTile backupTile = playerLayerObject.getBackup().getAvatar();
         gameLogicGrid[x][y].remove(backupIndex);
         gameLogicGrid[x][y].add(backupIndex, backupTile);
+
     }
 
     public void removeBackupPosition(Position position) {

@@ -87,8 +87,11 @@ public class PlayScreen implements Screen {
             Player player = gameMap.getPlayers().get(myID);
             initializeCardSelection(player);
         }
-        if (gameMap.hasAllPlayersChosenHands())
+        if (gameMap.hasAllPlayersChosenHands()) {
+            System.out.println("Size from playScreen0: " + gameMap.getPlayers().get(0).getPlayerDeck().handSize());
+            System.out.println("Size from playscreen1:" + gameMap.getPlayers().get(1).getPlayerDeck().handSize());
             gameMap.addPlayerHandToNewRound();
+        }
 
         updateMap();
         if (tickTime > 0.4) {
