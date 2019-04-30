@@ -19,11 +19,6 @@ public class RoundTest {
     }
 
     @Test
-    public void cannotAddMoreThanFivePhases() {
-
-    }
-
-    @Test
     public void isSet() {
         assertFalse(round.allPhasesAddedToRound());
         ArrayList<ProgramCard> programCards0 = new ArrayList<>();

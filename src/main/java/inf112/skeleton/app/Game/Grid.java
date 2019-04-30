@@ -133,13 +133,14 @@ public class Grid {
         }
     }
 
-    public int getBoardLaserId(int x, int y){
+    public int getBoardLaserId(int x, int y) {
         return staticBoardLasers[x][y];
     }
 
-    public boolean isBoardLaser(int x, int y){
+    public boolean isBoardLaser(int x, int y) {
         return staticBoardLasers[x][y] == 81 || staticBoardLasers[x][y] == 82;
     }
+
     public void setPlayerPosition(PlayerLayerObject playerLayerObject) {
         Position currentPosition = playerLayerObject.getPosition();
         int x = currentPosition.getX();
@@ -283,7 +284,7 @@ public class Grid {
         return false;
     }
 
-    public boolean isLaser(Position pos){
+    public boolean isLaser(Position pos) {
         int horizontalLaserId = 81;
         int verticalLaserId = 82;
         int x = pos.getX();
@@ -384,7 +385,7 @@ public class Grid {
         int wrenchTileId = 73;
         int x = position.getX();
         int y = position.getY();
-        if (specialLayer.getCell(x,y) != null) {
+        if (specialLayer.getCell(x, y) != null) {
             TiledMapTile tileAtPosition = specialLayer.getCell(x, y).getTile();
             return tileAtPosition.getId() == wrenchTileId;
         }
@@ -415,22 +416,20 @@ public class Grid {
     }
 
     /**
-     *
      * @param pos
      * @param dir
      * @return true if the laser can travel one tile from position pos in direction dir
      */
-    public boolean canFire(Position pos, Direction dir){
+    public boolean canFire(Position pos, Direction dir) {
         GameObject groundLayerObject = (GameObject) gameLogicGrid[pos.getX()][pos.getY()].get(groundIndex);
         return groundLayerObject.canGo(dir) && pos.getX() < getWidth() && pos.getY() < getHeight();
     }
 
     /**
-     *
      * @param pos
      * @return true if there is a player in the position
      */
-    public boolean hasPlayer(Position pos){
+    public boolean hasPlayer(Position pos) {
         GameObject playerLayerObject = (GameObject) gameLogicGrid[pos.getX()][pos.getY()].get(playerIndex);
         return playerLayerObject instanceof PlayerLayerObject;
     }

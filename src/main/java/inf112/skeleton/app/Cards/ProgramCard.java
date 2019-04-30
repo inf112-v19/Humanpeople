@@ -9,6 +9,10 @@ public class ProgramCard implements ICard {
 
     private boolean marked;
 
+    //Need empty constructor for it to be serializable. Used for networking
+    public ProgramCard() {
+
+    }
 
     public ProgramCard(ProgramType programType, int priority, String filename) {
         this.programType = programType;

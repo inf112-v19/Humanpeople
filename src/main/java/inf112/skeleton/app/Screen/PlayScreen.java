@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import inf112.skeleton.app.Game.GameMap;
 import inf112.skeleton.app.Game.RoboRally;
+import inf112.skeleton.app.Networking.GameServer;
 import inf112.skeleton.app.Player.Player;
 
 /**
@@ -33,18 +34,28 @@ public class PlayScreen implements Screen {
     private float height;
     private UserInterface ui;
 
+    private int myID;
 
-    public PlayScreen(RoboRally game) {
+
+    public PlayScreen(RoboRally game, int nPlayers) {
         this.game = game;
         this.gameCam = new OrthographicCamera();
         gamePort = new StretchViewport(RoboRally.width * 2, RoboRally.height, gameCam);
         gameCam.translate(RoboRally.width, RoboRally.height / 2);
         width = gamePort.getWorldWidth();
         height = gamePort.getWorldHeight();
-        this.gameMap = new GameMap("assets/map3.tmx", 4);
+        this.gameMap = new GameMap("assets/map3.tmx", nPlayers);
         this.map = gameMap.getMap();
         this.renderer = new OrthogonalTiledMapRenderer(map);
-        this.ui = new UserInterface(width, height, gameMap.getPlayers().get(0));
+        this.ui = new UserInterface(width, height, gameMap.getPlayers().get(myID));
+
+    }
+    public void setMyID(int id ) {
+        myID = id;
+    }
+
+    public GameMap getGameMap() {
+        return gameMap;
     }
 
     public void update(float deltaTime) {
@@ -59,8 +70,11 @@ public class PlayScreen implements Screen {
             ui.prepareNextRound();
             ui.initializeCardSelection();
         }
-        if (gameMap.getPlayers().get(0).getHandChosen())
+        if (gameMap.hasAllPlayersChosenHands()) {
+            System.out.println("Size from playScreen0: " + gameMap.getPlayers().get(0).getPlayerDeck().handSize());
+            System.out.println("Size from playscreen1:" + gameMap.getPlayers().get(1).getPlayerDeck().handSize());
             gameMap.addPlayerHandToNewRound();
+        }
 
         updateMap();
         if (tickTime > 0.4) {
@@ -94,6 +108,7 @@ public class PlayScreen implements Screen {
         stage = ui.getStage();
         Gdx.input.setInputProcessor(stage);
     }
+
 
     @Override
     public void render(float v) {

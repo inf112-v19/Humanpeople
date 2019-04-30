@@ -204,8 +204,8 @@ Test:
 Resultat:
 
 	Spiller(Grønn) dytter spiller(Mørkeblå) til flagg nr.2. Backup for spiller(Mørkeblå)
-	blir oppdatert. Spiller(Grønn) dytter spiller(Mørkelå) ned i hull. Begge spillere
-	returneres til backup.
+	blir oppdatert. Spiller(Grønn) dytter spiller(Mørkelå) ned i hull. 
+	Grønn returneres til backup, blå spawner tilfeldig rundt sin backup, ettersom grønn står på dens backup mens den dør.
 	
 ---
 

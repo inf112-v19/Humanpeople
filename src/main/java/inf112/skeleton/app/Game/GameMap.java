@@ -64,6 +64,7 @@ public class GameMap {
         this.backupLayer4 = (TiledMapTileLayer) map.getLayers().get(7);
         this.laserLayer = (TiledMapTileLayer) map.getLayers().get(9);
         this.playerTiles = new ArrayList<>();
+
         initializePlayers();
         this.cardsDealt = true;
 
@@ -75,6 +76,7 @@ public class GameMap {
     /**
      * Creates all players and gives out cards
      */
+
     private void initializePlayers() {
         //Initializes each player and gives them a unique ID
         for (int id = 0; id < nPlayers; id++) {
@@ -92,6 +94,19 @@ public class GameMap {
         programCardDeck.giveOutCardsToAllPlayers(players);
 
         drawPlayers();
+    }
+
+    public void initializePlayer(Player player) {
+        players.add(player);
+        Position startingPosition = startingPositions.getStartingPosition(player.getId());
+        player.setPosition(startingPosition);
+        player.setBackup(startingPosition);
+        PlayerLayerObject playerTile = player.getPlayerTile();
+        playerTile.setSprite(tiles);
+        grid.setPlayerPosition(playerTile);
+        setBackup(player);
+        drawPlayer(player);
+
     }
 
     public void dealCards() {
@@ -173,6 +188,17 @@ public class GameMap {
         drawBackup(player);
     }
 
+    public void getHandsFromServer(ArrayList<ProgramCard> listOfMovesFromServer, int id) {
+
+        players.get(id).getPlayerDeck().setPlayerHand(listOfMovesFromServer);
+
+        System.out.println("handdsize: " + players.get(id).getPlayerDeck().handSize() + "id: " + id);
+        for (int i = 0; i < 5; i++) {
+            System.out.println(listOfMovesFromServer.get(i).getFilename());
+        }
+        players.get(id).setHandChosen(true);
+
+    }
     public void addPlayerHandToNewRound() {
         if (!round.allPhasesAddedToRound()) {
             round = new Round();
@@ -197,6 +223,13 @@ public class GameMap {
         }
     }
 
+    public boolean hasAllPlayersChosenHands() {
+        for (Player player: players) {
+            if(!player.getHandChosen())
+                return false;
+        }
+        return true;
+    }
     public void setAllPlayerHandsChosen(boolean handsChosen) {
         for (Player player : players) {
             player.setHandChosen(handsChosen);
@@ -569,8 +602,7 @@ public class GameMap {
      * @param player
      */
     public void giveOutCardsToPlayer(Player player) {
-        //programCardDeck.giveOutCardsToPlayer(player);
-        player.select5FirstCards();
+        programCardDeck.giveOutCardsToPlayer(player);
     }
 
     public ProgramCardDeck getDeck() {

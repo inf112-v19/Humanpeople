@@ -7,7 +7,7 @@ Download our alpha and get gaming!
 ### Team Members
 - Sondre (Teamlead)
 - Eirik (Customer contact)
-- Matias
+- Matias (Testlead)
 - Stian
 - Sjur
 
