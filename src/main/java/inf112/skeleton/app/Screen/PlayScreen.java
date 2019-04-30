@@ -8,10 +8,12 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import inf112.skeleton.app.Game.GameMap;
 import inf112.skeleton.app.Game.RoboRally;
+import inf112.skeleton.app.Player.Player;
 
 /**
  * Play screen of RoboRally
@@ -46,6 +48,10 @@ public class PlayScreen implements Screen {
     }
 
     public void update(float deltaTime) {
+        // Display winner if there is a winner
+        if (gameMap.getWinner() != null)
+            displayWinner(gameMap.getWinner());
+
         handleInput();
         tickTime += deltaTime;
         if (gameMap.getCardsDealt()) {
@@ -59,13 +65,23 @@ public class PlayScreen implements Screen {
         updateMap();
         if (tickTime > 0.4) {
             tickTime = 0;
-            gameMap.preformNextMovement();
+            gameMap.performNextMovement();
         }
         //Update ui
         if(tickTime > 0.2){
-            ui.getDamageTokenOfPlayer();
-            ui.getLifeTokenOfPlayer();
-            ui.getFlagInfo();
+            // Update only if there is a change in the variables
+            if (ui.getPlayer().getHealth() != ui.getSavedHealth()) {
+                ui.getDamageTokenOfPlayer();
+                ui.setSavedHealth(ui.getPlayer().getHealth());
+            }
+            if (ui.getPlayer().getLifeTokens() != ui.getSavedLifeTokens()) {
+                ui.getLifeTokenOfPlayer();
+                ui.setSavedLifeTokens(ui.getPlayer().getLifeTokens());
+            }
+            if (ui.getPlayer().getLastFlagVisited() != ui.getSavedFlag()) {
+                ui.getFlagInfo();
+                ui.setSavedFlag(ui.getPlayer().getLastFlagVisited());
+            }
         }
     }
 
@@ -100,6 +116,18 @@ public class PlayScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
             game.setScreen(new MenuScreen(game));
         }
+    }
+
+    /**
+     * Displays text over the board congratulating the winner
+     * The winner is removed from the board while the game continues in the background
+     * @param winner
+     */
+    public void displayWinner(Player winner) {
+        VictoryScreen victoryScreen = new VictoryScreen(winner);
+        Table winScreen = victoryScreen.getTable();
+        stage.addActor(winScreen);
+        winner.kill();
     }
 
     @Override

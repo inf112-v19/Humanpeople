@@ -4,6 +4,9 @@ import inf112.skeleton.app.Player.Player;
 
 import java.util.List;
 
+/**
+ * All actions for Players at the end of a phase
+ */
 public class EndOfRoundActions {
 
     private GameMap gameMap;

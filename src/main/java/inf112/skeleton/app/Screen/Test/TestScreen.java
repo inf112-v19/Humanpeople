@@ -86,7 +86,7 @@ public class TestScreen implements Screen {
             tickTime += deltaTime;
             if (tickTime > 0.9) {
                 tickTime = 0;
-                gameMap.preformNextMovement();
+                gameMap.performNextMovement();
                 //TODO få getInfo til å virke på en fornuftig måte
 //            getInfo();
             }

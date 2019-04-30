@@ -13,6 +13,7 @@ import inf112.skeleton.app.Cards.PlayerDeck;
 import inf112.skeleton.app.Cards.ProgramCard;
 import inf112.skeleton.app.Directions.Position;
 import inf112.skeleton.app.Player.Player;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -43,11 +44,18 @@ public class UserInterface {
     private float width;
     private float height;
     private Player player;
+    private int health;
+    private int lifeTokens;
+    private int lastFlagVisited;
 
     public UserInterface(float width, float height, Player player) {
         this.height = height;
         this.width = width;
         this.player = player;
+        this.health = player.getHealth();
+        this.lifeTokens = player.getLifeTokens();
+        this.lastFlagVisited = player.getLastFlagVisited();
+
         stage = new Stage();
 
         initializeSideBars();
@@ -109,6 +117,8 @@ public class UserInterface {
                 damageTokenTexture = new Texture("assets/userInterface/damageTokens/damageTokens0.png");
                 break;
         }
+        if (!player.isAlive())
+            damageTokenTexture = new Texture("assets/userInterface/damageTokens/damageTokens0.png");
         Sprite damageTokenSprite = new Sprite(damageTokenTexture);
         damageTokenImage = new Image(new SpriteDrawable(damageTokenSprite));
         damageTokenImage.setHeight(damageTokenImage.getHeight() / 7 + 14);
@@ -146,7 +156,7 @@ public class UserInterface {
     }
 
     public void getFlagInfo() {
-        if(stage.getActors().contains(flagCheckImage, false))
+        if (stage.getActors().contains(flagCheckImage, false))
             stage.getActors().removeValue(flagCheckImage, false);
 
         int lastFlagVisited = player.getLastFlagVisited();
@@ -167,9 +177,9 @@ public class UserInterface {
         }
         Sprite flagCheckSprite = new Sprite(flagCheckTexture);
         flagCheckImage = new Image(new SpriteDrawable(flagCheckSprite));
-        flagCheckImage.setHeight(flagCheckImage.getHeight() / 8 +11);
+        flagCheckImage.setHeight(flagCheckImage.getHeight() / 8 + 11);
         flagCheckImage.setWidth(flagCheckImage.getWidth() / 8);
-        flagCheckImage.setPosition(width/2, 43);
+        flagCheckImage.setPosition(width / 2, 43);
         flagCheckImage.toFront();
         stage.addActor(flagCheckImage);
     }
@@ -204,13 +214,13 @@ public class UserInterface {
 
     private void initializeSideBars() {
 
-        Sprite picture = new Sprite(new Texture("assets/userInterface/leftSideBar.png"));
+        Sprite picture = new Sprite(new Texture("assets/userInterface/rightSideBar.png"));
         leftBar = new Image(new SpriteDrawable(picture));
         leftBar.setWidth(leftBar.getWidth() * 2);
         leftBar.setHeight(leftBar.getHeight() / 2);
         leftBar.setPosition(width / 2, 0);
 
-        picture = new Sprite(new Texture("assets/userInterface/rightSideBar.png"));
+        picture = new Sprite(new Texture("assets/userInterface/leftSideBar.png"));
         rightBar = new Image(new SpriteDrawable(picture));
         rightBar.setWidth(rightBar.getWidth() * 2);
         rightBar.setHeight(rightBar.getHeight() / 2);
@@ -222,8 +232,8 @@ public class UserInterface {
         Sprite picture = new Sprite(new Texture("assets/userInterface/playButton.png"));
         playButton = new ImageButton(new SpriteDrawable(picture));
         playButton.setWidth(playButton.getWidth() / 7);
-        playButton.setHeight(playButton.getHeight() / 7+4);
-        playButton.setPosition(width-playButton.getWidth(), 78);
+        playButton.setHeight(playButton.getHeight() / 7 + 4);
+        playButton.setPosition(width - playButton.getWidth(), 78);
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -251,8 +261,8 @@ public class UserInterface {
         Sprite picture = new Sprite(new Texture("assets/userInterface/powerDownButton.png"));
         powerDownButton = new ImageButton(new SpriteDrawable(picture));
         powerDownButton.setWidth(powerDownButton.getWidth() / 7);
-        powerDownButton.setHeight(powerDownButton.getHeight() / 7 +4);
-        powerDownButton.setPosition(width-powerDownButton.getWidth(), 42);
+        powerDownButton.setHeight(powerDownButton.getHeight() / 7 + 4);
+        powerDownButton.setPosition(width - powerDownButton.getWidth(), 42);
         powerDownButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -264,8 +274,7 @@ public class UserInterface {
 
                     System.out.println("PLAYER " + player.getPlayerTile().getColor() + " WILL POWER DOWN NEXT ROUND");
                     hasPoweredDown = true;
-                }
-                else
+                } else
                     System.out.println("Cannot power down before all 5 cards are chosen");
             }
         });
@@ -408,20 +417,31 @@ public class UserInterface {
         int lastFlagVisited = player.getLastFlagVisited();
         Texture lifeTokenTexture = null;
         switch (lastFlagVisited) {
-            case 3: lifeTokenTexture = new Texture("assets/userInterface/flagChecks/flagCheck3.png"); break;
-            case 2: lifeTokenTexture = new Texture("assets/userInterface/flagChecks/flagCheck2.png"); break;
-            case 1: lifeTokenTexture = new Texture("assets/userInterface/flagChecks/flagCheck1.png"); break;
-            case 0: lifeTokenTexture = new Texture("assets/userInterface/flagChecks/flagCheck0.png"); break;
-            default: lifeTokenTexture = new Texture("assets/userInterface/flagChecks/flagCheck0.png"); break;
+            case 3:
+                lifeTokenTexture = new Texture("assets/userInterface/flagChecks/flagCheck3.png");
+                break;
+            case 2:
+                lifeTokenTexture = new Texture("assets/userInterface/flagChecks/flagCheck2.png");
+                break;
+            case 1:
+                lifeTokenTexture = new Texture("assets/userInterface/flagChecks/flagCheck1.png");
+                break;
+            case 0:
+                lifeTokenTexture = new Texture("assets/userInterface/flagChecks/flagCheck0.png");
+                break;
+            default:
+                lifeTokenTexture = new Texture("assets/userInterface/flagChecks/flagCheck0.png");
+                break;
         }
         Sprite lifeTokenSprite = new Sprite(lifeTokenTexture);
         Image lifeTokenImage = new Image(new SpriteDrawable(lifeTokenSprite));
-        lifeTokenImage.setPosition(1,1);
+        lifeTokenImage.setPosition(1, 1);
         return lifeTokenImage;
     }
 
     /**
      * Checks if the player has selected all 5 cards
+     *
      * @return true if all 5 cards are selected
      */
     public boolean hasChosenCards() {
@@ -434,8 +454,10 @@ public class UserInterface {
 
     public void prepareNextRound() {
         chosenCards = new ProgramCard[5];
+        //chosenCards = getLockedCards();
         cardMap.clear();
         imageMap.clear();
+        //clearStage();
         stage.clear();
         stage.addActor(leftBar);
         stage.addActor(rightBar);
@@ -449,4 +471,62 @@ public class UserInterface {
         getFlagInfo();
     }
 
+    public ProgramCard[] getLockedCards() {
+        ProgramCard[] newChosenCards = new ProgramCard[chosenCards.length];
+        int health = player.getHealth();
+        int healthConstraint = 5;
+        for (int i = 0; i < chosenCards.length; i++) {
+            if (health < (healthConstraint-i))
+                newChosenCards[i] = chosenCards[i];
+            else
+                newChosenCards[i] = null;
+
+        }
+        return newChosenCards;
+    }
+
+    public void clearStage() {
+        for (Actor actor : stage.getActors()) {
+            if (equalsChosenCards(actor)) {
+                actor.remove();
+                /*ProgramCard programCard = cardMap.get(actor);
+                imageMap.remove(actor);
+                cardMap.remove(programCard);*/
+            }
+        }
+    }
+
+    public boolean equalsChosenCards(Actor actor) {
+        for (ProgramCard programCard : chosenCards) {
+            Image cardImage = imageMap.get(programCard);
+
+            if (actor.equals(cardImage))
+                return true;
+        }
+        return false;
+    }
+
+    public int getSavedHealth() {
+        return health;
+    }
+
+    public void setSavedHealth(int health) {
+        this.health = health;
+    }
+
+    public int getSavedLifeTokens() {
+        return lifeTokens;
+    }
+
+    public void setSavedLifeTokens(int lifeTokens) {
+        this.lifeTokens = lifeTokens;
+    }
+
+    public int getSavedFlag() {
+        return lastFlagVisited;
+    }
+
+    public void setSavedFlag(int flag) {
+        this.lastFlagVisited = flag;
+    }
 }

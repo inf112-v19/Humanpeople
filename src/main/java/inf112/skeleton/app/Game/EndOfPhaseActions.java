@@ -3,17 +3,19 @@ package inf112.skeleton.app.Game;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
+import inf112.skeleton.app.Cards.ProgramCard;
 import inf112.skeleton.app.Directions.Direction;
 import inf112.skeleton.app.Directions.Position;
 import inf112.skeleton.app.GameObjects.FlagLayerObject;
 import inf112.skeleton.app.GameObjects.PlayerLayerObject;
 import inf112.skeleton.app.Player.Player;
+import inf112.skeleton.app.Round.Phase;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * All checks for Players at the end of a phase
+ * All actions for Players at the end of a phase
  */
 public class EndOfPhaseActions {
 
@@ -32,6 +34,9 @@ public class EndOfPhaseActions {
     private final TiledMapTileLayer backupLayer4;
     private final TiledMapTileLayer laserLayer;
 
+    /**
+     * Final flag to visit for players to win the game
+     */
     private int finalFlagNumber = 3;
 
     public EndOfPhaseActions(GameMap gameMap, Grid grid, TiledMap map) {
@@ -132,7 +137,7 @@ public class EndOfPhaseActions {
         int lastFlagVisited = player.getLastFlagVisited();
 
         if (lastFlagVisited == finalFlagNumber) {
-            System.out.println("Player " + player.getId() + " has won!");
+            gameMap.setWinner(player);
         }
     }
 
@@ -159,20 +164,29 @@ public class EndOfPhaseActions {
     public void movePlayersOnConveyorBelts() {
         beltList.clear();
         for (Player player : players) {
-            ConveyorBelt conveyorBelt = steppedOnConveyorBelt(player);
-            if (conveyorBelt != null) {
-                player.setCurrentConveyorBelt(conveyorBelt);
-                beltList.add(player);
-            }
+            addConveyorBeltMovement(player);
         }
         if (!beltList.isEmpty())
             moveConveyorBelts();
     }
 
     /**
+     * Checks if player is standing on conveyor belt
+     * and adds the player to the beltList for later movement
+     * @param player
+     */
+    public void addConveyorBeltMovement(Player player) {
+        ConveyorBelt conveyorBelt = steppedOnConveyorBelt(player);
+        if (conveyorBelt != null) {
+            player.setCurrentConveyorBelt(conveyorBelt);
+            beltList.add(player);
+        }
+    }
+
+    /**
      * Checks if player is standing on a conveyor belt or a gyro
      * @param player
-     * @return enum of the conveyor belt / gyro the player is standing on
+     * @return enum of the belt/gyro the player is standing on
      * return null if not standing on belt/gyro
      */
     public ConveyorBelt steppedOnConveyorBelt(Player player) {
@@ -212,6 +226,7 @@ public class EndOfPhaseActions {
             Player player = beltList.get(0);
             Direction currentDirection = player.getDirection();
             ConveyorBelt conveyorBelt = player.getCurrentConveyorBelt();
+            ProgramCard programCard = ProgramCard.move1Card();
 
             if (conveyorBelt == ConveyorBelt.NORTH) {
                 moveBeltInDirection(Direction.NORTH, player);
@@ -225,6 +240,23 @@ public class EndOfPhaseActions {
             else if (conveyorBelt == ConveyorBelt.EAST) {
                 moveBeltInDirection(Direction.EAST, player);
             }
+            else if (conveyorBelt == ConveyorBelt.DOUBLE_EAST) {
+                moveBeltInDirection(Direction.EAST, player);
+                // TODO MOVE TWICE
+            }
+            else if (conveyorBelt == ConveyorBelt.DOUBLE_WEST) {
+                moveBeltInDirection(Direction.WEST, player);
+                // TODO MOVE TWICE
+            }
+            else if (conveyorBelt == ConveyorBelt.DOUBLE_NORTH) {
+                moveBeltInDirection(Direction.NORTH, player);
+                // TODO MOVE TWICE
+
+            }
+            else if (conveyorBelt == ConveyorBelt.DOUBLE_SOUTH) {
+                moveBeltInDirection(Direction.SOUTH, player);
+                // TODO MOVE TWICE
+            }
             else if (conveyorBelt == ConveyorBelt.CLOCK_WISE) {
                 Direction newDirection = Direction.rotate(currentDirection, 1);
                 player.setDirection(newDirection);
@@ -233,10 +265,14 @@ public class EndOfPhaseActions {
                 Direction newDirection = Direction.rotate(currentDirection, -1);
                 player.setDirection(newDirection);
             }
-
         }
     }
 
+    /**
+     *
+     * @param dir
+     * @param player
+     */
     public void moveBeltInDirection(Direction dir, Player player) {
         ArrayList<PlayerLayerObject> playerTiles = gameMap.getPlayerTiles();
         Position currentPosition = player.getPosition();

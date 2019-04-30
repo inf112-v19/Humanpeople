@@ -46,6 +46,9 @@ public class Phase {
             phaseComplete = true;
         }
         return currentCard;
+    }
 
+    public void addMovementToPhase(ProgramCard programCard) {
+        movesToPerform.add(programCard);
     }
 }

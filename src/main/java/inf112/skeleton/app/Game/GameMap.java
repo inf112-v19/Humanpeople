@@ -34,8 +34,10 @@ public class GameMap {
     private ProgramCardDeck programCardDeck;
     private ArrayList<PlayerLayerObject> playerTiles;
     private ArrayList<Player> players;
+    private Player winner;
 
     private Round round;
+    private Phase currentPhase;
     private EndOfPhaseActions endOfPhaseActions;
     private EndOfRoundActions endOfRoundActions;
 
@@ -105,7 +107,6 @@ public class GameMap {
 
     public void drawPlayer(Player player) {
         Position pos = player.getPosition();
-
         TiledMapTileLayer.Cell avatar = new TiledMapTileLayer.Cell();
         // If player is destroyed then draw a grey avatar
         if (player.isDestroyed())
@@ -246,6 +247,7 @@ public class GameMap {
             player.setPosition(backup);
             grid.setPlayerPosition(player.getPlayerTile());
         }
+        player.returnToBackup();
         drawPlayers();
 
     }
@@ -298,9 +300,11 @@ public class GameMap {
      * @return
      */
     public boolean hasToReturnToBackup(Player player) {
-        if (player.hasBeenRemoveFromBoard())
+        if (steppedOnHole(player))
+            return true;
+        if (player.hasBeenRemoveFromBoard() || player.hasReturnedToBackup())
             return false;
-        if (steppedOnHole(player) || player.lostAllHealth())
+        if (player.lostAllHealth())
             return true;
         return false;
     }
@@ -320,14 +324,14 @@ public class GameMap {
         return false;
     }
 
-    public void preformNextMovement() {
+    public void performNextMovement() {
         cleanLasers();
         returnDestroyedPlayersToBackup();
 
         if (round.allPhasesAddedToRound()) {
             if (!round.isCompleted()) {
                 if (round.getCurrentPhase().getPhaseComplete()) {
-                    // If any player has stepped on a flag then set current position as backup
+                    currentPhase = round.getCurrentPhase();
                     endOfPhaseChecks();
                     System.out.println("Phase " + (round.getCurrentPhaseNumber() + 1) + " er ferdig");
                     round.nextPhase();
@@ -366,6 +370,14 @@ public class GameMap {
         drawPlayers();
     }
 
+    public Player getWinner() {
+        return winner;
+    }
+
+    public void setWinner(Player player) {
+        winner = player;
+    }
+
     private void resetHitByBoardLaser() {
         for (Player player : players)
             player.setHitByBoardLaser(false);
@@ -375,13 +387,16 @@ public class GameMap {
      * Fire both player and board lasers
      */
     public void fireLasers() {
+
         for (Player player : players) {
             if (!player.isActive() || !player.isAlive() || player.isDestroyed())
                 continue;
             Position startPos = player.getPosition();
             Direction dir = player.getDirection();
             int distance = getTargetDistance(startPos, dir);
-            drawLaser(distance, startPos, dir);
+            TiledMapTileLayer.Cell laserAvatar = new TiledMapTileLayer.Cell();
+            laserAvatar.setTile(player.getLaserAvatar());
+            drawLaser(distance, startPos, dir, laserAvatar);
         }
     }
 
@@ -407,16 +422,17 @@ public class GameMap {
      * @param startPos of the laser
      * @param dir      of the laser
      */
-    public void drawLaser(int distance, Position startPos, Direction dir) {
+    public void drawLaser(int distance, Position startPos, Direction dir, TiledMapTileLayer.Cell laserAvatar) {
         System.out.println("DISTANCE: " + distance);
         System.out.println();
         TiledMapTileLayer.Cell laser = new TiledMapTileLayer.Cell();
         TiledMapTileLayer.Cell crossLaser = new TiledMapTileLayer.Cell();
         crossLaser.setTile(tiles.getTile(83));
-
+        laserLayer.setCell(startPos.getX(), startPos.getY(), laserAvatar);
         switch (dir) {
             case NORTH:
                 for (int i = 1; i < distance + 1; i++) {
+
                     laser.setTile(tiles.getTile(82));
 
                     if (laserLayer.getCell(startPos.getX(), startPos.getY() + i) != null &&
@@ -631,5 +647,9 @@ public class GameMap {
 
     public void setCardsDealt(boolean cardsDealt) {
         this.cardsDealt = cardsDealt;
+    }
+
+    public Phase getCurrentPhase() {
+        return currentPhase;
     }
 }
