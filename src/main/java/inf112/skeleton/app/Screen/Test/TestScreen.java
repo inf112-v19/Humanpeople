@@ -118,7 +118,7 @@ public class TestScreen implements Screen {
             ui.initializeCardSelection();
         }
         if (gameMap.getPlayers().get(0).getHandChosen()) {
-            gameMap.selectCardsForBots();
+            givePlayersRotateHand();
             gameMap.addPlayerHandToNewRound();
         }
 
