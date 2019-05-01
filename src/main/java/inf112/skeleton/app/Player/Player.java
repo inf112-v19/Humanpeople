@@ -24,6 +24,7 @@ public class Player {
     private boolean active;
     private boolean isDestroyed;
     private boolean isAlive;
+    private boolean isAI;
 
     private ConveyorBelt currentConveyorBelt;
 
@@ -31,6 +32,7 @@ public class Player {
 
     private int lastFlagVisited;
     private boolean hitByBoardLaser;
+
 
 
     public Player(int id) {
@@ -44,11 +46,15 @@ public class Player {
         this.active = true;
         this.isDestroyed = false;
         this.isAlive = true;
+        this.isAI = false;
 
         this.hitByBoardLaser = false;
         this.lastFlagVisited = 0;
     }
 
+    public void setAI() {
+        this.isAI = true;
+    }
 
     public int getId() {
         return id;

@@ -108,6 +108,9 @@ public class GameMap {
         drawPlayer(player);
 
     }
+    public void setPlayerToAI(int id) {
+        players.get(id).setAI();
+    }
 
     public void dealCards() {
         getDeck().giveOutCardsToAllPlayers(players);

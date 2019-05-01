@@ -17,5 +17,8 @@ public class NetworkUtils {
         kryo.register(inf112.skeleton.app.Cards.ProgramCard.class);
         kryo.register(inf112.skeleton.app.Cards.ProgramType.class);
         kryo.register(Packets.PacketServerRequiersMoves.class);
+        kryo.register(Packets.PacketPlayerDisconnected.class);
+
+
     }
 }

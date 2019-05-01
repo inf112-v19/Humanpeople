@@ -26,4 +26,5 @@ public class Packets {
     public static class PacketStartGame { public int howManyPlayers; public int yourID;
 
     }
+    public static class PacketPlayerDisconnected { public int ID;}
 }

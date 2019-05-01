@@ -21,25 +21,18 @@ import java.util.Scanner;
 
 public class GameClient {
 
-
-    public Client client;
+    private Client client;
     private int portSocket = 25135;
-    ClientListener networkListener;
     private int timeToWaitForServerToRespond = 5000;
-
-    //J-option ping, what would you like to connect to
-    private String IPAddress = "192.168.56.1";
-    private boolean connected;
+    private String IPAddress = "localhost";
     private Player player;
-    RoboRally game;
-    PlayScreen playScreen;
     private int myId;
+    private RoboRally game;
+    private PlayScreen playScreen;
 
-    //Possibly take player as argument
     public GameClient(final RoboRally game) {
         playScreen = null;
         this.game = game;
-        connected = false;
         client = new Client();
 
         NetworkUtils networkUtils = new NetworkUtils();
@@ -50,16 +43,12 @@ public class GameClient {
 
 //        System.out.println("What port to connect to?");
 //        portSocket = in.nextInt();
-//        System.out.println("What IP?");
-//        IPAddress = in.nextLine();
 
-        //If connected
         try {
             client.connect(timeToWaitForServerToRespond, IPAddress, portSocket, 54777);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(client.getUpdateThread().getId());
 
         Packets.PacketRequest connectionRequest = new Packets.PacketRequest();
         client.sendTCP(connectionRequest);
@@ -68,23 +57,21 @@ public class GameClient {
 
             public void received(final Connection connection, final Object object) {
 
+
                 if(object instanceof Packets.PacketRequestAnswer) {
                     if(((Packets.PacketRequestAnswer) object).accepted) {
                         IPAddress = ((Packets.PacketRequestAnswer) object).IPAdress;
-                        connected = true;
-
                     }
                     else
                         connection.close();
                 }
 
                 if(object instanceof Packets.PacketStartGame) {
-                    System.out.println("conn: " + connection.getID() + " , ");
+
                     final int howManyPlayers = ((Packets.PacketStartGame) object).howManyPlayers;
                     Gdx.app.postRunnable(new Runnable() {
 
                         public void run() {
-
                         playScreen = new PlayScreen(game, howManyPlayers);
                         myId = ((Packets.PacketStartGame) object).yourID;
                         playScreen.initializeUI(myId);
@@ -94,6 +81,12 @@ public class GameClient {
                         }
                     });
                 }
+
+                if(object instanceof Packets.PacketPlayerDisconnected) {
+                    int id = ((Packets.PacketPlayerDisconnected) object).ID;
+                    playScreen.getGameMap().setPlayerToAI(id);
+                }
+
 
                 if(object instanceof Packets.PacketServerRequiersMoves) {
                     System.out.println("CLIENT" +connection.getID() + " got RequestMoves");
