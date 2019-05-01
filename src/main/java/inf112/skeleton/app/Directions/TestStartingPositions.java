@@ -10,12 +10,12 @@ public class TestStartingPositions implements IStartingPosition {
     private Position start3;
 
     public TestStartingPositions(int gameMapWidth, int gameMapHeight) {
-        int x0 = 8;
-        int y0 = 2;
+        int x0 = 1;
+        int y0 = 1;
         start0 = new Position(x0,y0);
 
-        int x1 = 8;
-        int y1 = 3;
+        int x1 = gameMapWidth-2;
+        int y1 = 1;
         start1 = new Position(x1,y1);
 
         int x2 = gameMapWidth-2;

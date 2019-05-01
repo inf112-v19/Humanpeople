@@ -142,3 +142,72 @@ Resultat:
 	Spilleren deretter tar 2 "u-turns" (ingen betydning).
 
 ---
+
+### Test av "enkel rullebånd" og "dobbel rullebånd"
+
+Del 1:
+Hensikt:
+-Sjekke at spiller flytter seg i retningen av rullebånd når spiller står på rullebånd etter endt fase
+
+1. Kjør programmet og klikk på "Test"-knappen.
+
+2. Tast inn følgende kombinasjon:
+   "U", "1", "L", "3", "3", "Space"
+3. Når spillerene slutter å bevege seg tast følgende konbinasjon:
+   "1", "L", "3", "1", "L", "Space"
+
+4. Når spillerene slutter å bevege seg, press "I"
+
+Resultat:
+
+	I slutten av 3. flytter spilleren seg på rullebelte, deretter blir spilleren dyttet en tile nord.
+	Så roterer spilleren mot venstre, deretter blir den dyttet enda en tile nord pga den fremdeles står på rullebånd.
+	Grønn skal stå på posisjon (8,6) sjekk at dette stemmer ved å trykke "I" når spillerene har sluttet å bevege seg.
+
+Del 2:
+Hensikt:
+-Sjekke at spilleren kan bevege seg i motsatt retning av rullebåndet
+
+5. Tast inn følgende kombinasjon:
+   "L", "3", "2", "L", "L", "Space"
+
+Resultat:
+
+    Grønn roterer til venstre blir dyttet 1 nord.
+    Grønn beveger seg 3 sørover og blir dyttet 1 nord.
+    Grønn beveger seg 2 sørover og er nå av rullebrettet og står i ro og roterer de 2 siste fasene.
+    Grønn skal ha posisjon (8,3) Skjekk ad dette stemmer ved å trykke "I" når spillerene har sluttet å bevege seg.
+
+Del 3:
+Hensikt:
+-Skjekke at spilleren "hopper" 2 tiles når den står på "dobbel belte etter endt fase"
+
+5. Tast inn følgende kombinasjon:
+   "R", "2", "L", "L", "L", "Space"
+
+Resultat:
+
+    Grønn roterer til høyre.
+    Grønn beveger seg 2 west, deretter hopper den 2 nordover.
+    Grønn roterer mot venstre i de gjenværende fasene(ingen betydning).
+    Grønn skal ha posisjonen (10,5) skjekk at dette stemmer ved å trykke "I" når spillerene har sluttet å bevege seg.
+
+---
+
+### Test av skiftenøkkel
+
+Hensikt:
+-Sjekke at spilleren får tilbake liv når den står på skiftenøkkel
+
+1. Kjør programmet og klikk på "Test"-knappen.
+
+2. Tast inn følgende kombinasjon:
+   "3", "L", "1", "L", "L", "Space"
+
+Resultat:
+
+    Grønn beveger seg 3 nord gjennom laseren og mister 1 liv
+    Grønn roterer "left" og beveger seg oppå skiftenøkkelen
+    Spilleren får livet tilbake da den står på en skiftenøkkel etter endt fase.
+
+---
