@@ -1,4 +1,4 @@
-# Testing ved testscreen
+﻿# Testing ved testscreen
 
 ### Skjerm og knapptest (menuScreen og testScreen, button)
 Hensikt: 
@@ -12,9 +12,12 @@ Hensikt:
 6. Gjenta alt, men velg "PLAY" i stedet for "TEST"
 Ferdig.
 
+### NB! Skru av lasere ved å trykke på "T". Kontroller at det står 
+"LaserFire = false" i konsollen
+
 ### Sjekk at spiller beveger seg ett felt om gangen
 1. Kjør programmet og trykk på "TEST"
-2. Tast inn følgenede kombinasjon: "2", "2", "2", "2", "2", "space"
+2. Tast inn følgenede kombinasjon: "3", "U", "2", "2", "B", "space"
 3. Se at grønn brikke beveger seg ett felt om gangen
 
 
@@ -47,7 +50,7 @@ Color: Green
 Direction: SOUTH
 Position: (3,8)
 
-Resterende brikker p� spillbretter er uendret.
+Resterende brikker p� spillbrett er slik de var ved start.
 
 
 ### Kollisjonstest med flere spillere
@@ -57,55 +60,52 @@ Hensikt:
 
 1. Kj�r programmet og trykk "TEST". 
 2. Tast inn f�lgende kombinasjon:
-"3", "3", "L", "1", "R" , "space"
-- Gr�nn brikke nede  til venstre for gul brikke med retning nord
+"3", "2", "3", "L", "1" , "space"
+- Gr�nn brikke nede  til venstre for gul brikke med retning vest
 3.Fortsett med f�lgende kombinasjon:
-"3", "R", "3", "3", "3", "space"
+"R", "1", "R", "B", "B", "space"
+- Grønn brikke står nå rett til venstre for gul brikke og peker øst.
+4. Fortsett med følgende kombinasjon:
+"3", "3", "3", "3", "3", "space"
 - Gr�nn brikke dytter gul brikke helt bort til lyseblå brikke, deretter dytter han begge 1 felt og blir stoppet av veggen.
-4. Fortsett med f�lgende kombinasjon:
-"L", "1", "R", "1", "L", "space".
-- Gr�nn brikke står nå nord for gul brikke, med retning nord. 
 5. Fortsett med f�lgende kombinasjon:
-"B", "B", "U", "1", "2", "space"
-- Gr�nn brikke dytter nå gul brikke 2 felt med å rygge, tar en uturn og dytter gul brikke 3 felt videre.
+"L", "1", "R", "2", "L", "space".
+- Gr�nn brikke står nå nord for lyseblå brikke, med retning nord. 
+6. Fortsett med f�lgende kombinasjon:
+"B", "B", "U", "1", "3", "space"
+- Gr�nn brikke dytter nå lyseblå brikke 2 felt med å rygge, tar en uturn og dytter lyseblå brikke 4 felt videre sørover.
 
-6. Trykk på "i", og sjekk at du får følgende informasjon:
+7. Trykk på "i", og sjekk at du får følgende informasjon:
 
 -------------------
 CONTROLLED TILE: 
 Color: Green
 Direction: SOUTH
-Position: (10,6)
+Position: (11,5)
 
 -------------------
 OTHER TILES: 
 Color: Dark blue
-Direction: NORTH
+Direction: EAST
 Position: (10,1)
 
 Color: Light blue
-Direction: NORTH
-Position: (11,10)
+Direction: EAST
+Position: (11,4)
 
 Color: Yellow
-Direction: NORTH
-Position: (10,5)
--------------------
+Direction: EAST
+Position: (10,10)
 
 
 
-
-
-
-
-
-## Test playScreen
+## Test av userInterface
 Hensikt:
 - Sjekke at alt er i orden ogs� i playScreen
 
 1. Kj�r programmet og trykk "PLAY"
 2. Du kan nå velge kort ved å dra dem fra oppe til høyre, og legge dem i slots. Fra venstre til høyre representerer programmet ditt 1-5. Når du trykker play skal en runde gjennomføres.
-3. Sjekk at draganddropen fungerer fint, og dersom du slipper et kort nærme et slot, så skal den snappe inn på plass. Du skal kunne dra kort til og fra hånden. 
+3. Sjekk at draganddropen fungerer fint, og dersom du slipper et kort nærme et slot, så skal den snappe inn på plass. Du skal kunne dra kort til og fra hånden. Du skal også kunne bytte plass på kortene du har valgt i det nedre feltet eller slippe et nytt kort over et valgt kort for å erstatte det.
 4. Sjekk at du ikke kan trykke på play uten at fem kort er valgt. Sjekk at play-knappen ikke fungerer mens en runde er i gang. 
 5. Sjekk at grønn brikke beveger seg korrekt etter programmet du har lagt frem. 
 6. Følg med på at kollisjon med andre brikker, og vegger fungerer som normalt
