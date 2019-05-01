@@ -22,7 +22,7 @@ import java.util.Scanner;
 public class GameClient {
 
     private Client client;
-    private int portSocket = 25135;
+    private int portSocket;
     private int timeToWaitForServerToRespond = 5000;
     private String IPAddress = "localhost";
     private Player player;
@@ -30,10 +30,11 @@ public class GameClient {
     private RoboRally game;
     private PlayScreen playScreen;
 
-    public GameClient(final RoboRally game) {
+    public GameClient(final RoboRally game, int port) {
         playScreen = null;
         this.game = game;
         client = new Client();
+        this.portSocket = port;
 
         NetworkUtils networkUtils = new NetworkUtils();
         networkUtils.registerPackets(client.getKryo());
