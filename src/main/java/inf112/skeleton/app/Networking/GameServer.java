@@ -1,12 +1,10 @@
 package inf112.skeleton.app.Networking;
 
 import com.badlogic.gdx.Gdx;
-import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import inf112.skeleton.app.Cards.ProgramCard;
-import inf112.skeleton.app.Cards.ProgramType;
 import inf112.skeleton.app.Game.GameMap;
 import inf112.skeleton.app.Game.RoboRally;
 import inf112.skeleton.app.Player.Player;
@@ -31,17 +29,21 @@ public class GameServer {
     private boolean isGameStarted = false;
     private int listsReceived = 0;
     boolean [] nClientConnected;
-    boolean [] haveNClientReceivedListOfMoves;
+    boolean [] haveNClientSentListOfMoves;
+    ArrayList<Integer> idIndexer;
     private Connection[] connections;
+    private ArrayList<ArrayList<ProgramCard>> movesToPlayAtServer;
+
 
     public GameServer(final RoboRally game) {
         this.game = game;
-
+        movesToPlayAtServer = new ArrayList<>();
         Scanner in = new Scanner(System.in);
         System.out.println("how many clients");
         howManyClients = in.nextInt();
         nClientConnected = new boolean[howManyClients];
-        haveNClientReceivedListOfMoves = new boolean[howManyClients];
+        haveNClientSentListOfMoves = new boolean[howManyClients];
+        idIndexer = new ArrayList<>();
 
         final PlayScreen playScreen = new PlayScreen(this.game, howManyClients + 1);
         playScreen.initializeUI(0);
@@ -97,15 +99,16 @@ public class GameServer {
                         connections = server.getConnections();
                     }
                 }
-                if(isGameStarted) {
+                if(isGameStarted&& !haveNClientSentListOfMoves[connection.getID()-1]) {
                     Packets.PacketServerRequiersMoves newMoves = new Packets.PacketServerRequiersMoves();
-                    for (int i = 0; i < connections.length; i++) {
-                        connections[i].sendTCP(newMoves);
-                    }
+                    connection.sendTCP(newMoves);
+
                 }
 
                 if (object instanceof Packets.PacketListOfMoves) {
                     //TODO Update positions and send back updated positions
+                    System.out.println("SERVER RECEIVED LIST OF MOVES FROM CLIENT " + connection.getID());
+                    haveNClientSentListOfMoves[connection.getID()-1] = true;
 
                     final Packets.PacketListOfMovesFromServer listOfMovesFromServer = new Packets.PacketListOfMovesFromServer();
 
@@ -120,20 +123,21 @@ public class GameServer {
                         listOfMovesFromServer.id = id;
 //                        Gdx.app.postRunnable(new Runnable() {
 //                            public void run() {
-                        System.out.println("listSize in server:; " + listOfMovesFromServer.allMoves.size());
 
-                            System.out.println("ClientID at server before sending moves: " +connection.getID());
+
                         for (int i = 0; i < connections.length; i++) {
+                            System.out.println("SENDING CLIENT MOVES BACK TO CLIENT" + connections[i].getID());
                             connections[i].sendTCP(listOfMovesFromServer);
                         }
 
                             ArrayList<ProgramCard> pg = new ArrayList<>();
                             pg.addAll(listOfMovesFromServer.allMoves);
-                            gameMap.getHandsFromServer(pg, listOfMovesFromServer.id);
+                            movesToPlayAtServer.add(pg);
+                            idIndexer.add(id);
+//                            pg.clear();
+//                            gameMap.getHandsFromServer(pg, listOfMovesFromServer.id);
                             listOfMovesFromServer.allMoves.clear();
                             listsReceived++;
-
-
 //                            }
 //                        });
                     }
@@ -141,25 +145,36 @@ public class GameServer {
 
 
                 if (listsReceived == howManyClients) {
-
+                    System.out.println("SERVER HAS RECEIVED ALL LISTS");
                     final Packets.PacketListOfMovesFromServer listOfMovesFromServer = new Packets.PacketListOfMovesFromServer();
+
+                    System.out.println("SERVER HANDZ: " + player.getPlayerDeck().handSize());
                     if (player.getHandChosen() && player.getPlayerDeck().handSize() == 5) {
                         for (int i = 0; i < 5; i++) {
                             listOfMovesFromServer.allMoves.add(player.getPlayerDeck().getCardFromHand());
                         }
 
                         listOfServerMoves.addAll(listOfMovesFromServer.allMoves);
-                        System.out.println("size after adding servermoves: " + listOfMovesFromServer.allMoves.size());
+                        movesToPlayAtServer.add(listOfServerMoves);
+                        idIndexer.add(0);
+//                        listOfServerMoves.clear();
+
                         listOfMovesFromServer.id = 0;
                         for (int i = 0; i < connections.length; i++) {
+                            System.out.println("SERVER SENDING OWN MOVES TO CLIENT" + connections[i].getID());
                             connections[i].sendTCP(listOfMovesFromServer);
                         }
                         listOfMovesFromServer.allMoves.clear();
-                        System.out.println("#: " + listOfServerMoves.size());
-                        gameMap.getHandsFromServer(listOfServerMoves, 0);
-                    }
-                    listsReceived = 0;
+                        System.out.println("SERVER ADDING OWN MOVES TO GAMEMAP");
 
+                        for(int i = 0; i < movesToPlayAtServer.size(); i++) {
+                            ArrayList<ProgramCard> cardsToAddToGamemap = movesToPlayAtServer.get(i);
+                            gameMap.getHandsFromServer(cardsToAddToGamemap, idIndexer.get(i));
+                        }
+                        setBooleanArrayToFalse(haveNClientSentListOfMoves);
+                        movesToPlayAtServer.clear();
+                        listsReceived = 0;
+                    }
                 }
             }
 
@@ -167,8 +182,8 @@ public class GameServer {
         });
     }
     private boolean haveEveryoneReceived() {
-        for (int i = 0; i <haveNClientReceivedListOfMoves.length; i++) {
-            if(!haveNClientReceivedListOfMoves[i])
+        for (int i = 0; i < haveNClientSentListOfMoves.length; i++) {
+            if(!haveNClientSentListOfMoves[i])
                 return false;
         }
         return true;

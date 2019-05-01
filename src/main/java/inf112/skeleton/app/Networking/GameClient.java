@@ -66,7 +66,7 @@ public class GameClient {
 
         client.addListener(new Listener() {
 
-            public void received(Connection connection, final Object object) {
+            public void received(final Connection connection, final Object object) {
 
                 if(object instanceof Packets.PacketRequestAnswer) {
                     if(((Packets.PacketRequestAnswer) object).accepted) {
@@ -96,26 +96,26 @@ public class GameClient {
                 }
 
                 if(object instanceof Packets.PacketServerRequiersMoves) {
+                    System.out.println("CLIENT" +connection.getID() + " got RequestMoves");
                     if (player!= null && player.getHandChosen() && player.getPlayerDeck().handSize() == 5) {
                         Packets.PacketListOfMoves listOfMoves = new Packets.PacketListOfMoves();
-                        System.out.println("listsizeInClientBeforeItsSentToServer: " + player.getPlayerDeck().handSize());
                         for (int i = 0; i < 5; i++) {
                             listOfMoves.movesToSend.add(player.getPlayerDeck().getCardFromHand());
                         }
                         listOfMoves.id = myId;
-                        System.out.println("listsizeInClientBeforeItsSentToServer: " + listOfMoves.movesToSend.size());
                         connection.sendTCP(listOfMoves);
                         listOfMoves.movesToSend.clear();
                     }
                 }
 
                 if(object instanceof Packets.PacketListOfMovesFromServer) {
-
+                    System.out.println("CLIENT" +connection.getID() + " got ListOfMoves from server");
                     final int id = ((Packets.PacketListOfMovesFromServer) object).id;
                     final ArrayList<ProgramCard> list = ((Packets.PacketListOfMovesFromServer) object).allMoves;
-                    System.out.println("Array size in client from server: " + list.size());
+
                     Gdx.app.postRunnable(new Runnable() {
                         public void run() {
+                            System.out.println("CLIENT " + connection.getID() + "ADDING CLIENT" + id +"s MOVES TO HIS GAMEMAP");
                             playScreen.getGameMap().getHandsFromServer(list, id);
                         }
                     });
