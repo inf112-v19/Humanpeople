@@ -28,7 +28,7 @@ public class GameClient {
     private int timeToWaitForServerToRespond = 5000;
 
     //J-option ping, what would you like to connect to
-    private String IPAddress = "129.177.104.142";
+    private String IPAddress = "192.168.56.10";
     private boolean connected;
     private Player player;
     RoboRally game;
