@@ -226,7 +226,6 @@ public class EndOfPhaseActions {
             Player player = beltList.get(0);
             Direction currentDirection = player.getDirection();
             ConveyorBelt conveyorBelt = player.getCurrentConveyorBelt();
-            ProgramCard programCard = ProgramCard.move1Card();
 
             if (conveyorBelt == ConveyorBelt.NORTH) {
                 moveBeltInDirection(Direction.NORTH, player);
@@ -242,21 +241,19 @@ public class EndOfPhaseActions {
             }
             else if (conveyorBelt == ConveyorBelt.DOUBLE_EAST) {
                 moveBeltInDirection(Direction.EAST, player);
-                // TODO MOVE TWICE
+                moveBeltInDirection(Direction.EAST, player);
             }
             else if (conveyorBelt == ConveyorBelt.DOUBLE_WEST) {
                 moveBeltInDirection(Direction.WEST, player);
-                // TODO MOVE TWICE
+                moveBeltInDirection(Direction.WEST, player);
             }
             else if (conveyorBelt == ConveyorBelt.DOUBLE_NORTH) {
                 moveBeltInDirection(Direction.NORTH, player);
                 moveBeltInDirection(Direction.NORTH, player);
-                // TODO MOVE TWICE
-
             }
             else if (conveyorBelt == ConveyorBelt.DOUBLE_SOUTH) {
                 moveBeltInDirection(Direction.SOUTH, player);
-                // TODO MOVE TWICE
+                moveBeltInDirection(Direction.SOUTH, player);
             }
             else if (conveyorBelt == ConveyorBelt.CLOCK_WISE) {
                 Direction newDirection = Direction.rotate(currentDirection, 1);

@@ -56,12 +56,12 @@ public class MultiplayerScreen implements Screen {
         stage.addActor(menuBackground);
 
         int buttonWidth = 150;
-        int buttonHeight = 150;
+        int buttonHeight = 150*2;
 
         picture = new Sprite(new Texture("assets/mainMenu/hostButton.png"));
         hostButton = new ImageButton(new SpriteDrawable(picture));
         hostButton.setWidth(buttonWidth);
-        hostButton.setHeight(buttonHeight * 2);
+        hostButton.setHeight(buttonHeight);
         hostButton.setPosition(0, 0);
         hostButton.addListener(new ClickListener() {
             @Override
@@ -75,7 +75,7 @@ public class MultiplayerScreen implements Screen {
         picture = new Sprite(new Texture("assets/mainMenu/clientButton.png"));
         clientButton = new ImageButton(new SpriteDrawable(picture));
         clientButton.setWidth(buttonWidth);
-        clientButton.setHeight(buttonHeight * 2);
+        clientButton.setHeight(buttonHeight);
         clientButton.setPosition(width - clientButton.getWidth(), 0);
 
         clientButton.addListener(new ClickListener() {

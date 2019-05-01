@@ -82,7 +82,7 @@ public class MenuScreen implements Screen {
         stage.addActor(menuBackground);
 
         int buttonWidth = 150;
-        int buttonHeight = 150;
+        int buttonHeight = (int) (150*1.7);
 
         picture = new Sprite(new Texture("assets/mainMenu/singlePlayerButton.png"));
         singlePlayerButton = new ImageButton(new SpriteDrawable(picture));
