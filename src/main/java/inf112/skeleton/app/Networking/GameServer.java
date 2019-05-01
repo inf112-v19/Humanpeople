@@ -38,9 +38,8 @@ public class GameServer {
 
     private final int SERVER_ID = 0;
 
-    public GameServer(final RoboRally game, int nPlayers) {
-        Scanner in = new Scanner(System.in);
-        System.out.println("how many clients");
+    public GameServer(final RoboRally game, int port, int nPlayers) {
+        this.portNumber = port;
         howManyClients = nPlayers;
 
         //Server has 0 as id

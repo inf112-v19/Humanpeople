@@ -9,10 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -56,23 +53,36 @@ public class HostScreen implements Screen {
         menuBackground.setPosition(0, 0);
         stage.addActor(menuBackground);
 
-        final TextField nPlayersField = new TextField("1", skin);
+        final Label portLabel = new Label("Enter Port", skin);
+        portLabel.setPosition(400, 190);
+        stage.addActor(portLabel);
+
+        final TextField portField = new TextField("25135", skin);
+        portField.setPosition(400, 160);
+        portField.setWidth(100);
+        stage.addActor(portField);
+
+        final Label nPlayerLabel = new Label("Enter nPlayers", skin);
+        nPlayerLabel.setPosition(260, 190);
+        stage.addActor(nPlayerLabel);
+
+        final TextField nPlayersField = new TextField("3", skin);
+        nPlayersField.setPosition(260, 160);
+        nPlayersField.setWidth(100);
         stage.addActor(nPlayersField);
-
-
-        int buttonWidth = 150;
-        int buttonHeight = 150*2;
 
         picture = new Sprite(new Texture("assets/mainMenu/selectButton.png"));
         selectButton = new ImageButton(new SpriteDrawable(picture));
-        selectButton.setWidth(buttonWidth);
-        selectButton.setHeight(buttonHeight);
-        selectButton.setPosition(0, 0);
+        selectButton.setWidth(picture.getWidth()/ 2);
+        selectButton.setHeight(picture.getHeight() / 2);
+        selectButton.setPosition((int)(width / 2.75), (height / 10));
         selectButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (!nPlayersField.getText().equals(""))
-                    new GameServer(game, Integer.parseInt(nPlayersField.getText()));
+                if (isInteger(nPlayersField.getText()) && isInteger(portField.getText()))
+                    new GameServer(game, Integer.parseInt(portField.getText()), Integer.parseInt(nPlayersField.getText()));
+                else
+                    System.out.println("Invalid input. Try again.");
             }
         });
 
@@ -120,5 +130,14 @@ public class HostScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
+    }
+
+    public boolean isInteger(String string) {
+        try {
+            Integer.parseInt(string);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 }

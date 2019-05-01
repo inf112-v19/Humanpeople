@@ -24,16 +24,17 @@ public class GameClient {
     private Client client;
     private int portSocket;
     private int timeToWaitForServerToRespond = 5000;
-    private String IPAddress = "localhost";
+    private String IPAddress;
     private Player player;
     private int myId;
     private RoboRally game;
     private PlayScreen playScreen;
 
-    public GameClient(final RoboRally game, int port) {
+    public GameClient(final RoboRally game, String IPAdress, int port) {
         playScreen = null;
         this.game = game;
         client = new Client();
+        this.IPAddress = IPAdress;
         this.portSocket = port;
 
         NetworkUtils networkUtils = new NetworkUtils();
