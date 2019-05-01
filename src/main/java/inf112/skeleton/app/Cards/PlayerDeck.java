@@ -46,7 +46,7 @@ public class PlayerDeck {
             throw new IndexOutOfBoundsException("You only have " + NUMBER_OF_NEW_CARDS_TO_DECK +
                     " cards to choose from. No such " + cardInDeckNumber + "th programCard");
 
-        if (handSize() >= MAX_NUMBER_CARDS_ON_HAND)
+        if (handSize() >= NUMBER_OF_NEW_CARDS_TO_DECK)
             throw new IndexOutOfBoundsException("The players hand is already full (size: " + MAX_NUMBER_CARDS_ON_HAND + ")");
 
         ProgramCard programCard = deck.get(cardInDeckNumber);
