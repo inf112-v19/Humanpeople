@@ -109,9 +109,7 @@ public class GameServer {
                     //TODO Update positions and send back updated positions
                     System.out.println("SERVER RECEIVED LIST OF MOVES FROM CLIENT " + connection.getID());
                     haveNClientSentListOfMoves[connection.getID()-1] = true;
-
                     final Packets.PacketListOfMovesFromServer listOfMovesFromServer = new Packets.PacketListOfMovesFromServer();
-
 
                     ArrayList<ProgramCard> movesFromClient = ((Packets.PacketListOfMoves) object).movesToSend;
                     int id = ((Packets.PacketListOfMoves) object).id;

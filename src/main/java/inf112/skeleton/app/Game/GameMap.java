@@ -199,10 +199,6 @@ public class GameMap {
             round = new Round();
             cardsDealt = false;
             int amountOfPhases = 5;
-            System.out.println(players.get(0).getPlayerDeck().handSize());
-            System.out.println(players.get(1).getPlayerDeck().handSize());
-            System.out.println(players.get(2).getPlayerDeck().handSize());
-
             for (int i = 0; i < amountOfPhases; i++) {
                 ArrayList<ProgramCard> cardsToAddInPhaseI = new ArrayList<>();
                 for (Player player : players) {
@@ -213,7 +209,6 @@ public class GameMap {
                             giveOutCardsToPlayer(player);
                         }
 
-                        System.out.println("PlayerID when crash: " + player.getId());
                         ProgramCard tempCard = player.getPlayerDeck().getCardFromHand();
                         tempCard.setPlayerThatPlayedTheCard(player.getId());
                         cardsToAddInPhaseI.add(tempCard);
