@@ -79,7 +79,7 @@ public class PlayScreen implements Screen {
         if (isMultiPlayer) {
             if (gameMap.hasAllPlayersChosenHands()) {
                 gameMap.addPlayerHandToNewRound();
-                gameMap.getPlayers().get(0).setHandChosen(false);
+                gameMap.getPlayers().get(myID).setHandChosen(false);
             }
         }
         // If game is singlePlayer wait for player 0 to choose cards
@@ -88,7 +88,6 @@ public class PlayScreen implements Screen {
             gameMap.addPlayerHandToNewRound();
             gameMap.getPlayers().get(0).setHandChosen(false);
         }
-
 
         updateMap();
         if (tickTime > 0.4) {

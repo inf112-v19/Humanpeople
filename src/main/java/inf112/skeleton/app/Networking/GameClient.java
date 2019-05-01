@@ -21,25 +21,18 @@ import java.util.Scanner;
 
 public class GameClient {
 
-
-    public Client client;
-    private int portSocket;
-    ClientListener networkListener;
+    private Client client;
+    private int portSocket = 25135;
     private int timeToWaitForServerToRespond = 5000;
-
-    //J-option ping, what would you like to connect to
-    private String IPAddress = "10.111.48.145";
-    private boolean connected;
+    private String IPAddress = "localhost";
     private Player player;
-    RoboRally game;
-    PlayScreen playScreen;
     private int myId;
+    private RoboRally game;
+    private PlayScreen playScreen;
 
-    //Possibly take player as argument
     public GameClient(final RoboRally game) {
         playScreen = null;
         this.game = game;
-        connected = false;
         client = new Client();
 
         NetworkUtils networkUtils = new NetworkUtils();
@@ -48,42 +41,37 @@ public class GameClient {
 
         Scanner in = new Scanner(System.in);
 
-        System.out.println("What port to connect to?");
-        portSocket = in.nextInt();
-//        System.out.println("What IP?");
-//        IPAddress = in.nextLine();
+//        System.out.println("What port to connect to?");
+//        portSocket = in.nextInt();
 
-        //If connected
         try {
             client.connect(timeToWaitForServerToRespond, IPAddress, portSocket, 54777);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(client.getUpdateThread().getId());
 
         Packets.PacketRequest connectionRequest = new Packets.PacketRequest();
         client.sendTCP(connectionRequest);
 
         client.addListener(new Listener() {
 
-            public void received(Connection connection, final Object object) {
+            public void received(final Connection connection, final Object object) {
+
 
                 if(object instanceof Packets.PacketRequestAnswer) {
                     if(((Packets.PacketRequestAnswer) object).accepted) {
                         IPAddress = ((Packets.PacketRequestAnswer) object).IPAdress;
-                        connected = true;
-
                     }
                     else
                         connection.close();
                 }
 
                 if(object instanceof Packets.PacketStartGame) {
+
                     final int howManyPlayers = ((Packets.PacketStartGame) object).howManyPlayers;
                     Gdx.app.postRunnable(new Runnable() {
 
                         public void run() {
-
                         playScreen = new PlayScreen(game, howManyPlayers, true);
                         myId = ((Packets.PacketStartGame) object).yourID;
                         playScreen.initializeUI(myId);
@@ -94,31 +82,37 @@ public class GameClient {
                     });
                 }
 
+                if(object instanceof Packets.PacketPlayerDisconnected) {
+                    int id = ((Packets.PacketPlayerDisconnected) object).ID;
+                    playScreen.getGameMap().setPlayerToAI(id);
+                }
+
+
                 if(object instanceof Packets.PacketServerRequiersMoves) {
                     //System.out.println("Player : " + myId);
                     //System.out.println("HandChosen : " + player.getHandChosen() );
                     //System.out.println("Number of cards chosen : " + player.getPlayerDeck().handSize());
 
+                    System.out.println("CLIENT" +connection.getID() + " got RequestMoves");
                     if (player!= null && player.getHandChosen() && player.getPlayerDeck().handSize() == 5) {
                         Packets.PacketListOfMoves listOfMoves = new Packets.PacketListOfMoves();
-                        System.out.println("listsizeInClientBeforeItsSentToServer: " + player.getPlayerDeck().handSize());
                         for (int i = 0; i < 5; i++) {
                             listOfMoves.movesToSend.add(player.getPlayerDeck().getCardFromHand());
                         }
                         listOfMoves.id = myId;
-                        System.out.println("listsizeInClientBeforeItsSentToServer: " + listOfMoves.movesToSend.size());
                         connection.sendTCP(listOfMoves);
                         listOfMoves.movesToSend.clear();
                     }
                 }
 
                 if(object instanceof Packets.PacketListOfMovesFromServer) {
-
+                    System.out.println("CLIENT" +connection.getID() + " got ListOfMoves from server");
                     final int id = ((Packets.PacketListOfMovesFromServer) object).id;
                     final ArrayList<ProgramCard> list = ((Packets.PacketListOfMovesFromServer) object).allMoves;
-                    System.out.println("Array size in client from server: " + list.size());
+
                     Gdx.app.postRunnable(new Runnable() {
                         public void run() {
+                            System.out.println("CLIENT " + connection.getID() + "ADDING CLIENT" + id +"s MOVES TO HIS GAMEMAP");
                             playScreen.getGameMap().getHandsFromServer(list, id);
                         }
                     });

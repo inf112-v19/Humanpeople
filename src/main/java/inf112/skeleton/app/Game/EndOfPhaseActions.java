@@ -138,6 +138,8 @@ public class EndOfPhaseActions {
 
         if (lastFlagVisited == finalFlagNumber) {
             gameMap.setWinner(player);
+            //Needed to play on!
+            gameMap.getPlayers().remove(player);
         }
     }
 

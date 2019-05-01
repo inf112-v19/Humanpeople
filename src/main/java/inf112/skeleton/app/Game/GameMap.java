@@ -111,6 +111,10 @@ public class GameMap {
 
     }
 
+    public void setPlayerToAI(int id) {
+        players.get(id).setAI();
+    }
+
     public void dealCards() {
         getDeck().giveOutCardsToAllPlayers(players);
     }
@@ -193,14 +197,10 @@ public class GameMap {
     public void getHandsFromServer(ArrayList<ProgramCard> listOfMovesFromServer, int id) {
 
         players.get(id).getPlayerDeck().setPlayerHand(listOfMovesFromServer);
-
         System.out.println("handdsize: " + players.get(id).getPlayerDeck().handSize() + "id: " + id);
-        for (int i = 0; i < 5; i++) {
-            System.out.println(listOfMovesFromServer.get(i).getFilename());
-        }
         players.get(id).setHandChosen(true);
-
     }
+
     public void addPlayerHandToNewRound() {
         if (!round.allPhasesAddedToRound()) {
             round = new Round();
@@ -215,6 +215,7 @@ public class GameMap {
                         if (player.getPlayerDeck().handIsEmpty()) {
                             giveOutCardsToPlayer(player);
                         }
+
                         ProgramCard tempCard = player.getPlayerDeck().getCardFromHand();
                         tempCard.setPlayerThatPlayedTheCard(player.getId());
                         cardsToAddInPhaseI.add(tempCard);
@@ -226,12 +227,13 @@ public class GameMap {
     }
 
     public boolean hasAllPlayersChosenHands() {
-        for (Player player: players) {
-            if(!player.getHandChosen())
+        for (Player player : players) {
+            if (!player.getHandChosen())
                 return false;
         }
         return true;
     }
+
     public void setAllPlayerHandsChosen(boolean handsChosen) {
         for (Player player : players) {
             player.setHandChosen(handsChosen);
@@ -414,6 +416,7 @@ public class GameMap {
 
     public void setWinner(Player player) {
         winner = player;
+
     }
 
     private void resetHitByBoardLaser() {
@@ -425,7 +428,7 @@ public class GameMap {
      * Fire both player and board lasers
      */
     public void fireLasers() {
-        if(!laserFire)
+        if (!laserFire)
             return;
         for (Player player : players) {
             if (!player.isActive() || !player.isAlive() || player.isDestroyed())
@@ -439,7 +442,7 @@ public class GameMap {
         }
     }
 
-    public void toggleLaser(){
+    public void toggleLaser() {
         laserFire = !laserFire;
         System.out.println("Laserfire = " + laserFire);
     }
@@ -451,12 +454,13 @@ public class GameMap {
     public void checkBoardLasers(int playerId) {
         Player player = players.get(playerId);
 //        for (Player player : players) {
-            Position pos = player.getPosition();
-            if (grid.isLaser(pos) && player.isHitByBoardLaser() == false) {
-                System.out.println("DAMAGE BOARD LASER " + player.getPlayerTile().getColor());
-                player.damagePlayer(1);
-                player.setHitByBoardLaser(true);
-//            }
+        Position pos = player.getPosition();
+            /*if (grid.isLaser(pos) && player.isHitByBoardLaser() == false) {
+                System.out.println("DAMAGE BOARD LASER " + player.getPlayerTile().getColor());*/
+        if (grid.isLaser(pos) && !player.isHitByBoardLaser()) {
+//                System.out.println("DAMAGE BOARD LASER " + player.getPlayerTile().getColor());
+            player.damagePlayer(1);
+            player.setHitByBoardLaser(true);
         }
     }
 
@@ -468,7 +472,9 @@ public class GameMap {
      * @param dir      of the laser
      */
     public void drawLaser(int distance, Position startPos, Direction dir, TiledMapTileLayer.Cell laserAvatar) {
-        System.out.println();
+//        System.out.println();
+//        System.out.println("DISTANCE: " + distance);
+//        System.out.println();
         TiledMapTileLayer.Cell laser = new TiledMapTileLayer.Cell();
         TiledMapTileLayer.Cell crossLaser = new TiledMapTileLayer.Cell();
         crossLaser.setTile(tiles.getTile(83));
@@ -573,17 +579,18 @@ public class GameMap {
             }
 
             if (grid.hasPlayer(pos)) {
-                System.out.println("TRYING TO HIT PLAYER");
+//                System.out.println("TRYING TO HIT PLAYER");
                 try {
                     getPlayerFromPosition(pos).damagePlayer(1);
-                    System.out.println("PLAYER " + getPlayerFromPosition(pos).getPlayerTile().getColor() + " GOT BLASTED");
+//                    System.out.println("PLAYER " + getPlayerFromPosition(pos).getPlayerTile().getColor() + " GOT BLASTED");
                 } catch (IllegalArgumentException e) {
-                    System.out.println("THE PLAYER IS DESTROYED");
+//                    System.out.println("THE PLAYER IS DESTROYED");
                 }
                 return distance;
             }
             distance++;
         }
+//        System.out.println("WALL");
         return distance;
     }
 
