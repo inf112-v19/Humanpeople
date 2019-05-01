@@ -63,6 +63,7 @@ public class MenuScreen implements Screen {
             Sequencer sequencer = MidiSystem.getSequencer();
             sequencer.open();
             sequencer.setSequence(sequence);
+            sequencer.setLoopCount(100);
             sequencer.start();
         } catch (InvalidMidiDataException e) {
             e.printStackTrace();
