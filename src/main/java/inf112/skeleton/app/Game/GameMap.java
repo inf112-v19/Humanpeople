@@ -405,6 +405,7 @@ public class GameMap {
 
     public void setWinner(Player player) {
         winner = player;
+
     }
 
     private void resetHitByBoardLaser() {
