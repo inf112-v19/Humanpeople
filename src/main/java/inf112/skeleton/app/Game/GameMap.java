@@ -43,6 +43,7 @@ public class GameMap {
     private Phase currentPhase;
     private EndOfPhaseActions endOfPhaseActions;
     private EndOfRoundActions endOfRoundActions;
+    private boolean hasServerSentCards;
 
     private boolean cardsDealt;
 
@@ -77,6 +78,13 @@ public class GameMap {
         this.endOfRoundActions = new EndOfRoundActions(this);
     }
 
+    public void setHasServerSentCards(boolean hasServerSentCards) {
+        this.hasServerSentCards = hasServerSentCards;
+    }
+
+    public boolean getHasServerSentCards() {
+        return hasServerSentCards;
+    }
     /**
      * Creates all players and gives out cards
      */
@@ -716,5 +724,12 @@ public class GameMap {
 
     public Round getCurrentRound() {
         return round;
+    }
+    public boolean isReadyForRound() {
+        for (Player player : players) {
+            if (player.getPlayerDeck().handIsEmpty() && (player.isActive() && player.isAlive()))
+                return false;
+        }
+        return true;
     }
 }

@@ -30,6 +30,7 @@ public class GameServer {
     private int howManyConnected;
     private boolean isGameStarted = false;
     private int listsReceived;
+    private boolean sentPoweredDown;
 
     private boolean [] nClientConnected;
     private boolean [] haveNClientSentListOfMoves;
@@ -101,29 +102,23 @@ public class GameServer {
                         connections = server.getConnections();
                     }
                 }
+                if(isGameStarted) {
 
-                if(!player.isActive()) {
-                    Packets.PacketIAmPoweredDown iAmPoweredDown = new Packets.PacketIAmPoweredDown();
-                    iAmPoweredDown.ID = SERVER_ID;
-                    server.sendToAllTCP(iAmPoweredDown);
+                    if (!player.isActive()) {
+                        Packets.PacketIAmPoweredDown iAmPoweredDown = new Packets.PacketIAmPoweredDown();
+                        iAmPoweredDown.ID = SERVER_ID;
+                        server.sendToAllTCP(iAmPoweredDown);
+                    }
+
+                    if (object instanceof Packets.PacketIAmPoweredDown) {
+                        int id = ((Packets.PacketIAmPoweredDown) object).ID;
+                        gameMap.getPlayers().get(id).powerDown();
+                        server.sendToAllTCP(object);
+                        listsReceived++;
+                    }
                 }
 
-                if (object instanceof Packets.PacketIAmPoweredDown) {
-                    int id = ((Packets.PacketIAmPoweredDown) object).ID;
-                    gameMap.getPlayers().get(id).powerDown();
-                }
-
-                if(!player.isAlive()) {
-                    Packets.PacketIamDead iamDead = new Packets.PacketIamDead();
-                    iamDead.ID = SERVER_ID;
-                    server.sendToAllTCP(iamDead);
-                }
-                if(object instanceof Packets.PacketIamDead) {
-                    int id = ((Packets.PacketIamDead) object).ID;
-                    gameMap.getPlayers().get(id).kill();
-                }
-
-                if(isGameStarted&& !haveNClientSentListOfMoves[connection.getID()-1]) {
+                if(isGameStarted && !haveNClientSentListOfMoves[connection.getID()-1]) {
                     Packets.PacketServerRequiersMoves newMoves = new Packets.PacketServerRequiersMoves();
                     connection.sendTCP(newMoves);
                 }
@@ -154,11 +149,15 @@ public class GameServer {
                     }
                 }
 
-                if (listsReceived == howManyConnected) {
+                if (listsReceived == howManyConnected && player.isAlive()) {
                     System.out.println("SERVER HAS RECEIVED ALL LISTS");
                     final Packets.PacketListOfMovesFromServer listOfMovesFromServer = new Packets.PacketListOfMovesFromServer();
 
-                    if (player.getHandChosen()) {
+                    System.out.println("handchosen, handsize;");
+                    System.out.println(player.getHandChosen());
+                    System.out.println(player.getPlayerDeck().handSize());
+
+                    if (player.getHandChosen() && player.getPlayerDeck().handSize() == 5 && player.isActive()) {
                         for (int i = 0; i < 5; i++) {
                             listOfMovesFromServer.allMoves.add(player.getPlayerDeck().getCardFromHand());
                         }
@@ -167,12 +166,11 @@ public class GameServer {
                         movesToPlayAtServer.add(listOfServerMoves);
 
                         idIndexer.add(SERVER_ID);
-
                         listOfMovesFromServer.id = SERVER_ID;
-                        for (int i = 0; i < connections.length; i++) {
-                            System.out.println("SERVER SENDING OWN MOVES TO CLIENT" + connections[i].getID());
-                            connections[i].sendTCP(listOfMovesFromServer);
-                        }
+                        System.out.println("SERVER SENDING MOVES");
+                        server.sendToAllTCP(listOfMovesFromServer);
+
+
                         listOfMovesFromServer.allMoves.clear();
                         System.out.println("SERVER ADDING OWN MOVES TO GAMEMAP");
 
@@ -180,12 +178,17 @@ public class GameServer {
                             ArrayList<ProgramCard> cardsToAddToGamemap = movesToPlayAtServer.get(i);
                             gameMap.getHandsFromServer(cardsToAddToGamemap, idIndexer.get(i));
                         }
+
+                        gameMap.setHasServerSentCards(true);
                         setBooleanArrayToFalse(haveNClientSentListOfMoves);
                         movesToPlayAtServer.clear();
                         idIndexer.clear();
                         listsReceived = 0;
                     }
                 }
+                if(!player.isActive())
+                    gameMap.setHasServerSentCards(true);
+
             }
         });
 
