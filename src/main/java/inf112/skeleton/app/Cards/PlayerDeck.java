@@ -156,9 +156,12 @@ public class PlayerDeck {
      * @param hand
      */
     public void setPlayerHand(ArrayList<ProgramCard> hand) {
-        if (!(hand.isEmpty()))
-        handFromLastRound = new ArrayList<>(this.hand);
-        this.hand = new ArrayList<>(hand);
+        if(hand.isEmpty())
+            return;
+
+            this.hand = new ArrayList<>(hand);
+            handFromLastRound = new ArrayList<>(this.hand);
+
 //        discardCards();
     }
 

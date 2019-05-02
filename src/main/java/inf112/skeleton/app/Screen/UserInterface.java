@@ -61,8 +61,8 @@ public class UserInterface {
 
         stage = new Stage();
 
-        initializeLockedCards();
-        initializeChosenCards();
+//        initializeLockedCards();
+//        initializeChosenCards();
         initializeSideBars();
         initializePlayButton();
         initializePowerDownButton();
