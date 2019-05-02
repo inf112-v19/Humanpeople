@@ -62,7 +62,7 @@ public class PlayerDeck {
 
     private void setPlayerHandForAi(ArrayList<ProgramCard> newHand) {
         if (!(newHand.isEmpty()))
-        handFromLastRound = new ArrayList<>(this.hand);
+        handFromLastRound = new ArrayList<>(newHand);
         this.hand = new ArrayList<>(newHand);
 //        discardCardArrayList(deck);
 //        discardOldHand();
