@@ -76,7 +76,7 @@ public class ProgramCardDeckTests {
 
     @Test
     public void someCardsNotEqualTest() {
-        deck1.resetProgramCardDeckSingleton();
+        deck1.resetSingleInstance();
         for (int i = 1; i < 84; i++) {
             assertNotEquals(deck1.getDeck().get(0), deck1.getDeck().get(i));
         }
@@ -92,22 +92,24 @@ public class ProgramCardDeckTests {
     }
 
 
-//    @Test
-//    public void changedByShuffleTest() {
-//        for (int i = 0; i < 84; i++) {
-//            assertEquals(deck1.getDeck().get(i).getPriority(), deck2.getDeck().get(i).getPriority());
-//        }
-//        boolean shuffled = false;
-//        deck1.shuffleDeck();
-//
-//        for (int i = 0; i < 84; i++) {
-//            if (!(deck1.getDeck().get(i).getPriority() == deck2.getDeck().get(i).getPriority())) {
-//                shuffled = true;
-//                break;
-//            }
-//        }
-//        assertTrue(shuffled);
-//    }
+    @Test
+    public void changedByShuffleTest() {
+        ArrayList<ProgramCard> deck2 = new ArrayList<>();
+        for (int i = 0; i < 84; i++) {
+            deck2.add(deck1.takeCard(0));
+        }
+        boolean shuffled = false;
+        deck1.resetSingleInstance();
+        deck1.shuffleDeck();
+
+        for (int i = 0; i < 84; i++) {
+            if (!(deck1.getDeck().get(i).getPriority() == deck2.get(i).getPriority())) {
+                shuffled = true;
+                break;
+            }
+        }
+        assertTrue(shuffled);
+    }
 
     @Test
     public void uniquePrioritiesTest() {
@@ -137,7 +139,7 @@ public class ProgramCardDeckTests {
 
     @Test
     public void rightAmountOfSpecificTypeCardsTest() {
-        deck1.resetProgramCardDeckSingleton();
+        deck1.resetSingleInstance();
         ArrayList<ProgramType> types = new ArrayList<ProgramType>();
         ProgramType type;
 

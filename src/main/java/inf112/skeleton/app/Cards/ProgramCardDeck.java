@@ -161,10 +161,6 @@ public class ProgramCardDeck {
         return singleInstance;
     }
 
-    public void resetProgramCardDeckSingleton() {
-        singleInstance = new ProgramCardDeck();
-    }
-
     public void resetSingleInstance() {
         inActiveCardDeck.clear();
         programCardDeck.clear();
