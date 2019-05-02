@@ -63,7 +63,7 @@ public class TestScreen implements Screen {
         gameCam.translate(RoboRally.width, RoboRally.height / 2);
         width = gamePort.getWorldWidth();
         height = gamePort.getWorldHeight();
-        this.gameMap = new GameMap("assets/testMap.tmx", 4);
+        this.gameMap = new GameMap("assets/testMap.tmx", 4, false);
         this.map = gameMap.getMap();
         this.renderer = new OrthogonalTiledMapRenderer(map);
         gameCam.position.set(width / 2, (height / 2), 0);

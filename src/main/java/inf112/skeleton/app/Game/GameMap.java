@@ -15,6 +15,8 @@ import java.util.ArrayList;
 
 public class GameMap {
 
+    private boolean isMultiplayer;
+
     private TmxMapLoader mapLoader;
     private TiledMap map;
     private Grid grid;
@@ -45,7 +47,7 @@ public class GameMap {
 
     private boolean cardsDealt;
 
-    public GameMap(String filename, int nPlayers) {
+    public GameMap(String filename, int nPlayers, boolean isMultiplayer) {
         this.mapLoader = new TmxMapLoader();
         this.map = mapLoader.load(filename);
         this.grid = new Grid(map);
@@ -56,6 +58,7 @@ public class GameMap {
             this.startingPositions = new TestStartingPositions(grid.getWidth(), grid.getHeight());
         else
             this.startingPositions = new StartingPositions(grid.getWidth(), grid.getHeight(), nPlayers);
+        this.isMultiplayer = isMultiplayer;
         this.programCardDeck = new ProgramCardDeck();
         this.playerLayer = (TiledMapTileLayer) map.getLayers().get(8);
         this.specialLayer = (TiledMapTileLayer) map.getLayers().get(1);
@@ -91,6 +94,8 @@ public class GameMap {
             playerTile.setSprite(tiles);
             grid.setPlayerPosition(playerTile);
             setBackup(player);
+            if (!isMultiplayer && id > 0)
+                player.setAI();
         }
         // Give out cards to players
         programCardDeck.giveOutCardsToAllPlayers(players);
@@ -236,7 +241,10 @@ public class GameMap {
 
     public void setAllPlayerHandsChosen(boolean handsChosen) {
         for (Player player : players) {
-            player.setHandChosen(handsChosen);
+            if (player.isAlive())
+                player.setHandChosen(handsChosen);
+            else
+                player.setHandChosen(true);
         }
     }
 
@@ -628,7 +636,7 @@ public class GameMap {
      */
     public void selectCardsForBots() {
         for (Player player : players) {
-            if(player.getisAI() && player.getHandChosen()) {
+            if(player.getisAI() && !player.getHandChosen()) {
                 player.select5FirstCards();
                 player.setHandChosen(true);
             }

@@ -45,7 +45,10 @@ public class PlayScreen implements Screen {
         gameCam.translate(RoboRally.width, RoboRally.height / 2);
         width = gamePort.getWorldWidth();
         height = gamePort.getWorldHeight();
-        this.gameMap = new GameMap("assets/map3.tmx", nPlayers);
+        if (isMultiPlayer)
+            this.gameMap = new GameMap("assets/map3.tmx", nPlayers, true);
+        else
+            this.gameMap = new GameMap("assets/map3.tmx", nPlayers, false);
         this.map = gameMap.getMap();
         this.renderer = new OrthogonalTiledMapRenderer(map);
         this.isMultiPlayer = isMultiPlayer;
