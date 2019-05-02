@@ -50,7 +50,6 @@ public class UserInterface {
     private int lifeTokens;
     private int lastFlagVisited;
 
-    private ArrayList<ProgramCard> handFromLastRound;
 
     public UserInterface(float width, float height, Player player) {
         this.height = height;
@@ -59,7 +58,6 @@ public class UserInterface {
         this.health = player.getHealth();
         this.lifeTokens = player.getLifeTokens();
         this.lastFlagVisited = player.getLastFlagVisited();
-        this.handFromLastRound = new ArrayList<>();
 
         stage = new Stage();
 
@@ -72,19 +70,18 @@ public class UserInterface {
     }
 
     private void initializeLockedCards() {
-        ArrayList<ProgramCard> lastHand = player.getPlayerDeck().getHandFromLastRound();
+        ArrayList<ProgramCard> lastHand = new ArrayList<>(player.getPlayerDeck().getHandFromLastRound());
         int lCs = player.getPlayerDeck().NUMBER_OF_LOCKED_CARDS;
         lockedCards = new ProgramCard[lCs];
-        if (lastHand.size() < lCs) {
             ProgramCardDeck pcg = ProgramCardDeck.getProgramCardDeckSingleton();
             for (int i = 0; i < lCs; i++) {
-                lockedCards[i] = pcg.takeRandomCard();
+                if (lastHand.isEmpty()) {
+                    lockedCards[i] = pcg.takeRandomCard();
+                } else {
+                    lockedCards[i] = lastHand.get(i);
+                    System.out.println("Lasthand has cards");
+                }
             }
-            return;
-        }
-        for (int i = 0; i < lCs; i++) {
-            lockedCards[i] = lastHand.get(i);
-        }
     }
 
     private void initializeChosenCards() {
@@ -295,7 +292,6 @@ public class UserInterface {
                 if (!player.getHandChosen()) {
                     System.out.println("Cards selected");
                     ArrayList<ProgramCard> list = new ArrayList<>(Arrays.asList(chosenCards));
-                    handFromLastRound = new ArrayList<>(Arrays.asList(chosenCards));
                     player.getPlayerDeck().setPlayerHand(list);
                     player.setHandChosen(true);
                 }

@@ -153,7 +153,7 @@ public class GameMap {
                 ArrayList<ProgramCard> cardsToAddInPhaseI = new ArrayList<>();
                 for (Player player : players) {
                     if (player.isActive()) {
-                        ProgramCard tempCard = player.getPlayerDeck().getCardFromHand();
+                        ProgramCard tempCard = player.getPlayerDeck().getCardFromHand(i);
                         tempCard.setPlayerThatPlayedTheCard(player.getId());
                         cardsToAddInPhaseI.add(tempCard);
                     }

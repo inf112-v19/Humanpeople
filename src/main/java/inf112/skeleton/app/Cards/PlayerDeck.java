@@ -61,10 +61,11 @@ public class PlayerDeck {
     }
 
     private void setPlayerHandForAi(ArrayList<ProgramCard> newHand) {
+        if (!(newHand.isEmpty()))
         handFromLastRound = new ArrayList<>(this.hand);
         this.hand = new ArrayList<>(newHand);
-        discardCardArrayList(deck);
-        discardOldHand();
+//        discardCardArrayList(deck);
+//        discardOldHand();
     }
 
     /**
@@ -73,12 +74,11 @@ public class PlayerDeck {
      *
      * @return card
      */
-    public ProgramCard getCardFromHand() {
+    public ProgramCard getCardFromHand(int i) {
         if (handSize() < 1)
             throw new NoSuchElementException("No cards in the deck");
 
-        ProgramCard programCard = hand.get(0);
-        hand.remove(0);
+        ProgramCard programCard = hand.get(i);
         return programCard;
     }
 
@@ -156,9 +156,10 @@ public class PlayerDeck {
      * @param hand
      */
     public void setPlayerHand(ArrayList<ProgramCard> hand) {
+        if (!(hand.isEmpty()))
         handFromLastRound = new ArrayList<>(this.hand);
         this.hand = new ArrayList<>(hand);
-        discardCards();
+//        discardCards();
     }
 
     public ArrayList<ProgramCard> getHandFromLastRound() {
