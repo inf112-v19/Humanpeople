@@ -64,8 +64,6 @@ public class PlayerDeck {
         if (!(newHand.isEmpty()))
         handFromLastRound = new ArrayList<>(newHand);
         this.hand = new ArrayList<>(newHand);
-//        discardCardArrayList(deck);
-//        discardOldHand();
     }
 
     /**
@@ -158,11 +156,9 @@ public class PlayerDeck {
     public void setPlayerHand(ArrayList<ProgramCard> hand) {
         if(hand.isEmpty())
             return;
-
+        
             this.hand = new ArrayList<>(hand);
             handFromLastRound = new ArrayList<>(this.hand);
-
-//        discardCards();
     }
 
     public ArrayList<ProgramCard> getHandFromLastRound() {
@@ -171,38 +167,5 @@ public class PlayerDeck {
 
     public ProgramCard getCard(int i) {
         return deck.get(i);
-    }
-
-    public void discardCards() {
-        discardRestOfDeck();
-        discardOldHand();
-    }
-
-    private void discardOldHand() {
-        for (int i = NUMBER_OF_LOCKED_CARDS; i < hand.size(); i++) {
-            discardCard(hand.get(i));
-        }
-    }
-
-    public void discardRestOfDeck() {
-        if (deck.isEmpty())
-            return;
-        ArrayList<ProgramCard> list = new ArrayList<>();
-        for (int i = 0; i < deck.size(); i++) {
-            if (!(hand.contains(deck.get(i))))
-                list.add(deck.get(i));
-        }
-        deck.clear();
-        discardCardArrayList(list);
-    }
-
-    public void discardCardArrayList(ArrayList<ProgramCard> cards) {
-        for (int i = 0; i < cards.size(); i++)
-            discardCard(cards.get(i));
-    }
-
-    public void discardCard(ProgramCard card) {
-        ProgramCardDeck pCD = ProgramCardDeck.getProgramCardDeckSingleton();
-//        pCD.addToInactiveCardDeck(card);
     }
 }
