@@ -63,7 +63,7 @@ public class Player {
      * Restores the amount of health to be the max amount of damage tokens -2 and set isDestroyed to false
      */
     public void fix() {
-        if(!isAlive)
+        if (!isAlive)
             return;
 
         returnedToBackup = false;
@@ -105,16 +105,17 @@ public class Player {
     public void damagePlayer(int howMuchDamage) {
         if (howMuchDamage < 1)
             throw new IllegalArgumentException("Damage much be greater than 0");
-        if(!isAlive || isDestroyed)
+        if (!isAlive || isDestroyed)
             throw new IllegalArgumentException("Player must be alive and not destroyed to take damage");
 
         health = health - howMuchDamage;
 
-        if(health == 0) {
+        if (health == 0) {
             System.out.println("DESTROYED");
             this.destroy();
         }
     }
+
     /**
      * Removes one life token, sets isDestroyed to true and sets health = 0
      * If all life tokens are lost then set isAlive to false
@@ -219,7 +220,9 @@ public class Player {
         return playerTile.getAvatar();
     }
 
-    public TiledMapTile getDestroyedAvatar() { return playerTile.getDestroyedAvatar(); }
+    public TiledMapTile getDestroyedAvatar() {
+        return playerTile.getDestroyedAvatar();
+    }
 
     public TiledMapTile getLaserAvatar() {
         return playerTile.getLaserAvatar();
@@ -231,10 +234,11 @@ public class Player {
 
     public void printStatus() {
         String status = "ALIVE";
-        if(!isAlive)
+        if (!isAlive)
             status = "DEAD";
 
-        System.out.printf("##COLOR: %-10s ##HP: %d ##LIFETOKENS: %s ##FLAG: %s ##STATUS: %s", this.getPlayerTile().getColor(), getHealth(), getLifeTokens(), getLastFlagVisited(), status);
+        System.out.printf("##COLOR: %-10s ##DAMAGE TOKENS: %-2d ##LIFETOKENS: %s ##FLAG: %s ##STATUS: %s",
+                this.getPlayerTile().getColor(), getHealth(), getLifeTokens(), getLastFlagVisited(), status);
     }
 
     public int getHealth() {
@@ -263,11 +267,11 @@ public class Player {
         return id == ((Player) obj).getId();
     }
 
-    public boolean isHitByBoardLaser(){
+    public boolean isHitByBoardLaser() {
         return hitByBoardLaser;
     }
 
-    public void setHitByBoardLaser(boolean b){
+    public void setHitByBoardLaser(boolean b) {
         hitByBoardLaser = b;
     }
 
