@@ -214,7 +214,7 @@ public class GameMap {
             for (int i = 0; i < amountOfPhases; i++) {
                 ArrayList<ProgramCard> cardsToAddInPhaseI = new ArrayList<>();
                 for (Player player : players) {
-                    if (player.isActive()) {
+                    if (player.isActive() && player.isAlive()) {
                         // If the players hand is empty then give out 9 new cards and select 5 cards for hand
                         // Temporary solution. Card selection system is coming.
                         if (player.getPlayerDeck().handIsEmpty()) {
@@ -629,11 +629,11 @@ public class GameMap {
     }
 
     /**
-     * Select 5 first cards in playerDeck for all bots (not player 0)
+     * Select 5 first cards in playerDeck for all bots
      */
     public void selectCardsForBots() {
         for (Player player : players) {
-            if(player.getisAI() && !player.getHandChosen()) {
+            if(player.getisAI() && player.getPlayerDeck().handIsEmpty()) {
                 player.select5FirstCards();
                 player.setHandChosen(true);
             }
