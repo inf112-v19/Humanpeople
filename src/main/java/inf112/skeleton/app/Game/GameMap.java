@@ -241,10 +241,7 @@ public class GameMap {
 
     public void setAllPlayerHandsChosen(boolean handsChosen) {
         for (Player player : players) {
-            if (player.isAlive())
-                player.setHandChosen(handsChosen);
-            else
-                player.setHandChosen(true);
+            player.setHandChosen(handsChosen);
         }
     }
 

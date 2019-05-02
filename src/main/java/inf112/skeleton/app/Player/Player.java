@@ -149,6 +149,7 @@ public class Player {
         health = 0;
         lifeTokens = 0;
         isAlive = false;
+        isAI = true;
     }
 
     public boolean hasReturnedToBackup() {
