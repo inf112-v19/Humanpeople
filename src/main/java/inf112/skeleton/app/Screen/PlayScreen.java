@@ -80,10 +80,10 @@ public class PlayScreen implements Screen {
         }
          // If game is multiplayer then wait for all players to choose cards
         if (isMultiPlayer) {
-            if (gameMap.hasAllPlayersChosenHands()) {
+            if (gameMap.getCurrentRound().isCompleted() && gameMap.hasAllPlayersChosenHands()) {
                 System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
                 gameMap.addPlayerHandToNewRound();
-                gameMap.getPlayers().get(myID).setHandChosen(false);
+                //gameMap.getPlayers().get(myID).setHandChosen(false);
             }
         }
         // If game is singlePlayer wait for player 0 to choose cards

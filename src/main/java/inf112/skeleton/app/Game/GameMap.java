@@ -199,7 +199,6 @@ public class GameMap {
     }
 
     public void getHandsFromServer(ArrayList<ProgramCard> listOfMovesFromServer, int id) {
-
         players.get(id).getPlayerDeck().setPlayerHand(listOfMovesFromServer);
         System.out.println("handdsize: " + players.get(id).getPlayerDeck().handSize() + "id: " + id);
         players.get(id).setHandChosen(true);
@@ -715,7 +714,7 @@ public class GameMap {
         this.cardsDealt = cardsDealt;
     }
 
-    public Phase getCurrentPhase() {
-        return currentPhase;
+    public Round getCurrentRound() {
+        return round;
     }
 }
