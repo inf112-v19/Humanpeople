@@ -11,11 +11,15 @@ public class ProgramCardDeck {
     private ArrayList<ProgramCard> programCardDeck;
     private static ProgramCardDeck singleInstance;
     private ArrayList<ProgramCard> inActiveCardDeck;
+    private int numberOfDiscardedCards;
+    private int timesDiscardedCardsShuffledInn;
 
 
     private ProgramCardDeck() {
         programCardDeck = new ArrayList<>();
         inActiveCardDeck = new ArrayList<>();
+        numberOfDiscardedCards = 0;
+        timesDiscardedCardsShuffledInn = 0;
         newProgramCardDeck();
     }
 
@@ -99,16 +103,8 @@ public class ProgramCardDeck {
      * @param players
      */
     public void giveOutCardsToAllPlayers(ArrayList<Player> players) {
-        shuffleInnInactiveCards();
-        for (int i = 0; i < players.size(); i++) {
-            Player player = players.get(i);
-            ArrayList<ProgramCard> playerDeck = new ArrayList<>();
-
-            for (int j = 0; j < player.getPlayerDeck().NUMBER_OF_NEW_CARDS_TO_DECK; j++)
-                playerDeck.add(takeRandomCard());
-
-            player.getPlayerDeck().setDeck(playerDeck);
-        }
+        for (Player player : players)
+            giveOutCardsToPlayer(player);
     }
 
     /**
@@ -117,9 +113,10 @@ public class ProgramCardDeck {
      * @param player
      */
     public void giveOutCardsToPlayer(Player player) {
-        shuffleInnInactiveCards();
+        if (programCardDeck.size() < 10)
+            shuffleInnInactiveCards();
         ArrayList<ProgramCard> playerDeck = new ArrayList<>();
-        for (int i = 0; i < PlayerDeck.MAX_NUMBER_CARDS_IN_DECK; i++)
+        for (int i = 0; i < player.getPlayerDeck().NUMBER_OF_NEW_CARDS_TO_DECK; i++)
             playerDeck.add(takeRandomCard());
 
         player.getPlayerDeck().setDeck(playerDeck);
@@ -134,9 +131,11 @@ public class ProgramCardDeck {
     }
 
     public void addToInactiveCardDeck(ProgramCard card) {
-        if (inActiveCardDeck.contains(card))
+        if (inActiveCardDeck.contains(card)) {
             throw new IllegalArgumentException("Cannot have duplicates of ProgramCards");
+        }
         inActiveCardDeck.add(card);
+        numberOfDiscardedCards++;
     }
 
     public void shuffleInnInactiveCards() {
@@ -150,6 +149,7 @@ public class ProgramCardDeck {
             throw new IllegalArgumentException("Cannot have duplicates of ProgramCards. " + duplicates + " duplicates.");
         shuffleDeck();
         inActiveCardDeck.clear();
+        timesDiscardedCardsShuffledInn++;
     }
 
     public static ProgramCardDeck getProgramCardDeckSingleton() {
@@ -160,9 +160,18 @@ public class ProgramCardDeck {
     }
 
     public void resetProgramCardDeckSingleton() {
-        programCardDeck.clear();
-        inActiveCardDeck.clear();
-        newProgramCardDeck();
+        singleInstance = new ProgramCardDeck();
     }
 
+    public int getNumberOfDiscardedCards() {
+        return numberOfDiscardedCards;
+    }
+
+    public int getTimesDiscardedCardsShuffledInn() {
+        return timesDiscardedCardsShuffledInn;
+    }
+
+    public int getInactiveCardDeckSize() {
+        return inActiveCardDeck.size();
+    }
 }

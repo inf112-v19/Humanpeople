@@ -41,6 +41,7 @@ public class GameMap {
     private boolean cardsDealt;
 
     public GameMap(String filename, int nPlayers) {
+        this.cardsDealt = false;
         this.mapLoader = new TmxMapLoader();
         this.map = mapLoader.load(filename);
         this.grid = new Grid(map);
@@ -62,7 +63,6 @@ public class GameMap {
         this.laserLayer = (TiledMapTileLayer) map.getLayers().get(9);
         this.playerTiles = new ArrayList<>();
         initializePlayers();
-        this.cardsDealt = true;
 
         this.round = new Round();
     }
@@ -84,13 +84,16 @@ public class GameMap {
             setBackup(player);
         }
         // Give out cards to players
-        programCardDeck.giveOutCardsToAllPlayers(players);
+            dealCards();
 
         drawPlayers();
     }
 
     public void dealCards() {
-        getDeck().giveOutCardsToAllPlayers(players);
+        if (cardsDealt == false) {
+            getDeck().giveOutCardsToAllPlayers(players);
+            cardsDealt = true;
+        }
     }
 
     public void drawPlayers() {
@@ -139,19 +142,18 @@ public class GameMap {
     }
 
     public void addPlayerHandToNewRound() {
+        for (Player player : players) {
+            if (player.getPlayerDeck().handSize() < 5) {
+                giveOutCardsToPlayer(player);
+            }
+        }
         if (!round.allPhasesAddedToRound()) {
             round = new Round();
-            cardsDealt = false;
             int amountOfPhases = 5;
             for (int i = 0; i < amountOfPhases; i++) {
                 ArrayList<ProgramCard> cardsToAddInPhaseI = new ArrayList<>();
                 for (Player player : players) {
                     if (player.isActive()) {
-                        // If the players hand is empty then give out 9 new cards and select 5 cards for hand
-                        // Temporary solution. Card selection system is coming.
-                        if (player.getPlayerDeck().handIsEmpty()) {
-                            giveOutCardsToPlayer(player);
-                        }
                         ProgramCard tempCard = player.getPlayerDeck().getCardFromHand();
                         tempCard.setPlayerThatPlayedTheCard(player.getId());
                         cardsToAddInPhaseI.add(tempCard);
@@ -160,6 +162,7 @@ public class GameMap {
                 round.addPhases(new Phase(cardsToAddInPhaseI));
             }
         }
+        cardsDealt = false;
     }
 
     public void setAllPlayerHandsChosen(boolean handsChosen) {
@@ -565,7 +568,6 @@ public class GameMap {
      * Fire both player and board lasers
      */
     public void fireLasers() {
-
         for (Player player : players) {
             if (!player.isActive() || !player.isAlive() || player.isDestroyed())
                 continue;
@@ -771,7 +773,7 @@ public class GameMap {
      * @param player
      */
     public void giveOutCardsToPlayer(Player player) {
-        //programCardDeck.giveOutCardsToPlayer(player);
+        dealCards();
         player.select5FirstCards();
     }
 

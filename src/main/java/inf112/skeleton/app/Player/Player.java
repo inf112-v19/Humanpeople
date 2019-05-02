@@ -55,8 +55,8 @@ public class Player {
      * Select the 5 first cards form player deck
      */
     public void select5FirstCards() {
-        for (int i = 4; i >= 0; i--)
-            playerDeck.selectCardForHand(i);
+            playerDeck.selectCardsForHand();
+
     }
 
     /**

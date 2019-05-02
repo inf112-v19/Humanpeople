@@ -30,6 +30,7 @@ public class PlayerDeck {
 
     public PlayerDeck() {
         NUMBER_OF_NEW_CARDS_TO_DECK = MAX_NUMBER_CARDS_IN_DECK;
+        NUMBER_OF_NEW_CARDS_TO_HAND = MAX_NUMBER_CARDS_ON_HAND;
         deck = new ArrayList<>();
         hand = new ArrayList<>();
         handFromLastRound = new ArrayList<>();
@@ -39,19 +40,31 @@ public class PlayerDeck {
      * Takes card from deck at given index and puts it in players hand.
      * Throws exception if cardIndex is out of bounds or hand is already full (size: 5)
      *
-     * @param cardInDeckNumber
+     * @param
      */
-    public void selectCardForHand(int cardInDeckNumber) {
-        if (cardInDeckNumber < 0 || cardInDeckNumber > deckSize())
-            throw new IndexOutOfBoundsException("You only have " + NUMBER_OF_NEW_CARDS_TO_DECK +
-                    " cards to choose from. No such " + cardInDeckNumber + "th programCard");
+    public void selectCardsForHand() {
+        if (deck.size() < 0)
+            throw new IndexOutOfBoundsException("The deck is too small, size is: " + deck.size() + " should be: " + NUMBER_OF_NEW_CARDS_TO_DECK);
+        ArrayList<ProgramCard> newHand = new ArrayList<>();
+        if(NUMBER_OF_LOCKED_CARDS > 0)
+            for (int i = 0; i < NUMBER_OF_LOCKED_CARDS; i++)
+                if (handFromLastRound.isEmpty()) {
+                    newHand.add(ProgramCardDeck.getProgramCardDeckSingleton().takeRandomCard());
+                } else {
+                    newHand.add(handFromLastRound.get(i));
+                }
+        for (int i = 0; i < NUMBER_OF_NEW_CARDS_TO_HAND; i++) {
+            newHand.add(deck.get(0));
+            deck.remove(0);
+        }
+        setPlayerHandForAi(newHand);
+    }
 
-        if (handSize() >= NUMBER_OF_NEW_CARDS_TO_DECK)
-            throw new IndexOutOfBoundsException("The players hand is already full (size: " + MAX_NUMBER_CARDS_ON_HAND + ")");
-
-        ProgramCard programCard = deck.get(cardInDeckNumber);
-        deck.remove(cardInDeckNumber);
-        hand.add(programCard);
+    private void setPlayerHandForAi(ArrayList<ProgramCard> newHand) {
+        handFromLastRound = new ArrayList<>(this.hand);
+        this.hand = new ArrayList<>(newHand);
+        discardCardArrayList(deck);
+        discardOldHand();
     }
 
     /**
@@ -77,7 +90,7 @@ public class PlayerDeck {
     public void setDeck(ArrayList<ProgramCard> newDeck) {
         if (newDeck.size() > NUMBER_OF_NEW_CARDS_TO_DECK)
             throw new IllegalArgumentException("The deck needs to be size 9. Size was: " + newDeck.size());
-        this.deck = newDeck;
+        this.deck = new ArrayList<>(newDeck);
     }
 
     public void changedHealth(int health) {
@@ -143,8 +156,8 @@ public class PlayerDeck {
      * @param hand
      */
     public void setPlayerHand(ArrayList<ProgramCard> hand) {
-        handFromLastRound = new ArrayList<>(hand);
-        this.hand = hand;
+        handFromLastRound = new ArrayList<>(this.hand);
+        this.hand = new ArrayList<>(hand);
         discardCards();
     }
 
@@ -162,9 +175,8 @@ public class PlayerDeck {
     }
 
     private void discardOldHand() {
-        for (int i = 0; i < hand.size(); i++) {
-            if (!(hand.contains(handFromLastRound.get(i))))
-                discardCard(handFromLastRound.get(i));
+        for (int i = NUMBER_OF_LOCKED_CARDS; i < hand.size(); i++) {
+            discardCard(hand.get(i));
         }
     }
 
@@ -176,6 +188,7 @@ public class PlayerDeck {
             if (!(hand.contains(deck.get(i))))
                 list.add(deck.get(i));
         }
+        deck.clear();
         discardCardArrayList(list);
     }
 
@@ -186,6 +199,12 @@ public class PlayerDeck {
 
     public void discardCard(ProgramCard card) {
         ProgramCardDeck pCD = ProgramCardDeck.getProgramCardDeckSingleton();
+        int i = 0;
+        i += pCD.getSizeOfDeck();
+        i += pCD.getInactiveCardDeckSize();
+        System.out.println("Discarded cards: " + pCD.getNumberOfDiscardedCards() + ". pCD.size: " + pCD.getSizeOfDeck()
+                + ". discardedCardDeck.size: " + pCD.getInactiveCardDeckSize() + ". Total cards: " + i
+        + ". nrInnshuffles: " + pCD.getTimesDiscardedCardsShuffledInn());
         pCD.addToInactiveCardDeck(card);
     }
 }
