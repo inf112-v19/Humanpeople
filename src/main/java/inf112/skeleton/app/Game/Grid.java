@@ -289,7 +289,8 @@ public class Grid {
         int x = pos.getX();
         int y = pos.getY();
 
-        return staticBoardLasers[x][y] == horizontalLaserId || staticBoardLasers[x][y] == verticalLaserId;
+       return staticBoardLasers[x][y] == horizontalLaserId || staticBoardLasers[x][y] == verticalLaserId;
+
     }
 
     /**
