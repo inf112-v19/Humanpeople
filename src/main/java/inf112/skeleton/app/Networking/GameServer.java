@@ -160,7 +160,7 @@ public class GameServer {
 
                     if (player.getHandChosen()) {
                         for (int i = 0; i < 5; i++) {
-                            listOfMovesFromServer.allMoves.add(player.getPlayerDeck().getCardFromHand());
+                            listOfMovesFromServer.allMoves.add(player.getPlayerDeck().getCardFromHand(i));
                         }
 
                         listOfServerMoves.addAll(listOfMovesFromServer.allMoves);

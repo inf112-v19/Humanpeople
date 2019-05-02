@@ -1,6 +1,7 @@
 package inf112.skeleton.app.Cards;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -11,6 +12,9 @@ public class PlayerDeck {
 
     public static final int MAX_NUMBER_CARDS_ON_HAND = 5;
     public static final int MAX_NUMBER_CARDS_IN_DECK = 9;
+    public int NUMBER_OF_LOCKED_CARDS;
+    public int NUMBER_OF_NEW_CARDS_TO_DECK;
+    public int NUMBER_OF_NEW_CARDS_TO_HAND;
 
     /**
      * Deck of cards for the player to choose from
@@ -22,28 +26,46 @@ public class PlayerDeck {
      */
     private ArrayList<ProgramCard> hand;
 
+    private ArrayList<ProgramCard> handFromLastRound;
+
     public PlayerDeck() {
-        deck = new ArrayList<>(MAX_NUMBER_CARDS_IN_DECK);
-        hand = new ArrayList<>(MAX_NUMBER_CARDS_ON_HAND);
+        NUMBER_OF_NEW_CARDS_TO_DECK = MAX_NUMBER_CARDS_IN_DECK;
+        NUMBER_OF_NEW_CARDS_TO_HAND = MAX_NUMBER_CARDS_ON_HAND;
+        deck = new ArrayList<>();
+        hand = new ArrayList<>();
+        handFromLastRound = new ArrayList<>();
     }
 
     /**
      * Takes card from deck at given index and puts it in players hand.
      * Throws exception if cardIndex is out of bounds or hand is already full (size: 5)
      *
-     * @param cardInDeckNumber
+     * @param
      */
-    public void selectCardForHand(int cardInDeckNumber) {
-        if (cardInDeckNumber < 0 || cardInDeckNumber > deckSize())
-            throw new IndexOutOfBoundsException("You only have " + MAX_NUMBER_CARDS_IN_DECK +
-                    " cards to choose from. No such " + cardInDeckNumber + "th programCard");
+    public void selectCardsForHand() {
+        if (deck.size() < 0)
+            throw new IndexOutOfBoundsException("The deck is too small, size is: " + deck.size() + " should be: " + NUMBER_OF_NEW_CARDS_TO_DECK);
+        ArrayList<ProgramCard> newHand = new ArrayList<>();
+        if(NUMBER_OF_LOCKED_CARDS > 0)
+            for (int i = 0; i < NUMBER_OF_LOCKED_CARDS; i++)
+                if (handFromLastRound.isEmpty()) {
+                    newHand.add(ProgramCardDeck.getProgramCardDeckSingleton().takeRandomCard());
+                } else {
+                    newHand.add(handFromLastRound.get(i));
+                }
+        for (int i = 0; i < NUMBER_OF_NEW_CARDS_TO_HAND; i++) {
+            newHand.add(deck.get(0));
+            deck.remove(0);
+        }
+        setPlayerHandForAi(newHand);
+    }
 
-        if (handSize() >= MAX_NUMBER_CARDS_ON_HAND)
-            throw new IndexOutOfBoundsException("The players hand is already full (size: " + MAX_NUMBER_CARDS_ON_HAND + ")");
-
-        ProgramCard programCard = deck.get(cardInDeckNumber);
-        deck.remove(cardInDeckNumber);
-        hand.add(programCard);
+    private void setPlayerHandForAi(ArrayList<ProgramCard> newHand) {
+        if (!(newHand.isEmpty()))
+        handFromLastRound = new ArrayList<>(newHand);
+        this.hand = new ArrayList<>(newHand);
+//        discardCardArrayList(deck);
+//        discardOldHand();
     }
 
     /**
@@ -52,12 +74,11 @@ public class PlayerDeck {
      *
      * @return card
      */
-    public ProgramCard getCardFromHand() {
+    public ProgramCard getCardFromHand(int i) {
         if (handSize() < 1)
             throw new NoSuchElementException("No cards in the hand: " + handSize());
 
-        ProgramCard programCard = hand.get(0);
-        hand.remove(0);
+        ProgramCard programCard = hand.get(i);
         return programCard;
     }
 
@@ -67,10 +88,34 @@ public class PlayerDeck {
      * @param newDeck
      */
     public void setDeck(ArrayList<ProgramCard> newDeck) {
-        if (newDeck.size() > MAX_NUMBER_CARDS_IN_DECK)
+        if (newDeck.size() > NUMBER_OF_NEW_CARDS_TO_DECK)
             throw new IllegalArgumentException("The deck needs to be size 9. Size was: " + newDeck.size());
+        this.deck = new ArrayList<>(newDeck);
+    }
 
-        this.deck = newDeck;
+    public void changedHealth(int health) {
+        if (health > 9) {
+            NUMBER_OF_NEW_CARDS_TO_DECK = MAX_NUMBER_CARDS_IN_DECK;
+        }
+        if (health <= 9 && health > 0) {
+            NUMBER_OF_NEW_CARDS_TO_DECK = health-1;
+        }
+        burnCardsToHand(health);
+    }
+
+    private void burnCardsToHand(int hP) {
+        if (hP > 5) {
+            NUMBER_OF_LOCKED_CARDS = 0;
+            NUMBER_OF_NEW_CARDS_TO_HAND = MAX_NUMBER_CARDS_ON_HAND;
+        }
+        if (hP <= 5 && hP >= 1) {
+            NUMBER_OF_LOCKED_CARDS = (6 - hP);
+            NUMBER_OF_NEW_CARDS_TO_HAND = MAX_NUMBER_CARDS_ON_HAND - NUMBER_OF_LOCKED_CARDS;
+        }
+        if (hP < 1) {
+            NUMBER_OF_NEW_CARDS_TO_HAND = 0;
+            NUMBER_OF_LOCKED_CARDS = 5;
+        }
     }
 
     /**
@@ -106,13 +151,58 @@ public class PlayerDeck {
         return hand.size();
     }
 
+    /**
+     * Trenger nye kort om det ikke finnes kort fra forrige runde
+     * @param hand
+     */
     public void setPlayerHand(ArrayList<ProgramCard> hand) {
-        this.hand = hand;
+        if(hand.isEmpty())
+            return;
+
+            this.hand = new ArrayList<>(hand);
+            handFromLastRound = new ArrayList<>(this.hand);
+
+//        discardCards();
+    }
+
+    public ArrayList<ProgramCard> getHandFromLastRound() {
+        return handFromLastRound;
     }
 
     public ProgramCard getCard(int i) {
         return deck.get(i);
     }
 
+    public void discardCards() {
+        discardRestOfDeck();
+        discardOldHand();
+    }
 
+    private void discardOldHand() {
+        for (int i = NUMBER_OF_LOCKED_CARDS; i < hand.size(); i++) {
+            discardCard(hand.get(i));
+        }
+    }
+
+    public void discardRestOfDeck() {
+        if (deck.isEmpty())
+            return;
+        ArrayList<ProgramCard> list = new ArrayList<>();
+        for (int i = 0; i < deck.size(); i++) {
+            if (!(hand.contains(deck.get(i))))
+                list.add(deck.get(i));
+        }
+        deck.clear();
+        discardCardArrayList(list);
+    }
+
+    public void discardCardArrayList(ArrayList<ProgramCard> cards) {
+        for (int i = 0; i < cards.size(); i++)
+            discardCard(cards.get(i));
+    }
+
+    public void discardCard(ProgramCard card) {
+        ProgramCardDeck pCD = ProgramCardDeck.getProgramCardDeckSingleton();
+        pCD.addToInactiveCardDeck(card);
+    }
 }

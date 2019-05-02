@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import inf112.skeleton.app.Cards.PlayerDeck;
 import inf112.skeleton.app.Cards.ProgramCard;
+import inf112.skeleton.app.Cards.ProgramCardDeck;
 import inf112.skeleton.app.Directions.Position;
 import inf112.skeleton.app.Player.Player;
 
@@ -32,9 +33,11 @@ public class UserInterface {
     private Image leftBar;
     private Image rightBar;
 
+    private boolean cardSelection = false;
 
     Position pos[] = new Position[5];
-    ProgramCard chosenCards[] = new ProgramCard[5];
+    ProgramCard chosenCards[];
+    ProgramCard lockedCards[];
     HashMap<Image, ProgramCard> cardMap = new HashMap<>();
     HashMap<ProgramCard, Image> imageMap = new HashMap<>();
 
@@ -48,6 +51,7 @@ public class UserInterface {
     private int lifeTokens;
     private int lastFlagVisited;
 
+
     public UserInterface(float width, float height, Player player) {
         this.height = height;
         this.width = width;
@@ -58,10 +62,49 @@ public class UserInterface {
 
         stage = new Stage();
 
+//        initializeLockedCards();
+//        initializeChosenCards();
         initializeSideBars();
         initializePlayButton();
         initializePowerDownButton();
         initializeCardSlots();
+    }
+
+    private void initializeLockedCards() {
+        ArrayList<ProgramCard> lastHand = new ArrayList<>(player.getPlayerDeck().getHandFromLastRound());
+        int lCs = player.getPlayerDeck().NUMBER_OF_LOCKED_CARDS;
+        lockedCards = new ProgramCard[lCs];
+            ProgramCardDeck pcg = ProgramCardDeck.getProgramCardDeckSingleton();
+            for (int i = 0; i < lCs; i++) {
+                if (lastHand.isEmpty()) {
+                    lockedCards[i] = pcg.takeRandomCard();
+                } else {
+                    lockedCards[i] = lastHand.get(i);
+                    System.out.println("Lasthand has cards");
+                }
+            }
+    }
+
+    private void initializeChosenCards() {
+        int lC = player.getPlayerDeck().NUMBER_OF_LOCKED_CARDS;
+        chosenCards = new ProgramCard[5];
+        for (int i = 0; i < lC; i++) {
+            chosenCards[i] = lockedCards[i];
+            placeLockedCards(lockedCards[i], i);
+        }
+    }
+
+    private void placeLockedCards(ProgramCard card, int i) {
+        Sprite picture = new Sprite(new Texture(card.getFilename()));
+        final Image cardImage = new Image(new SpriteDrawable(picture));
+        float pWidth = (picture.getWidth() / 8) * 0.8f;
+        float pHeight = (picture.getHeight() / 8) * 0.8f;
+        float cardX = pos[i].getX();
+        float cardY = pos[i].getY();
+        cardImage.setWidth(pWidth);
+        cardImage.setHeight(pHeight);
+        cardImage.setPosition(cardX, cardY);
+        stage.addActor(cardImage);
     }
 
     public Player getPlayer() {
@@ -249,7 +292,7 @@ public class UserInterface {
 
                 if (!player.getHandChosen()) {
                     System.out.println("Cards selected");
-                    ArrayList<ProgramCard> list = new ArrayList<ProgramCard>(Arrays.asList(chosenCards));
+                    ArrayList<ProgramCard> list = new ArrayList<>(Arrays.asList(chosenCards));
                     player.getPlayerDeck().setPlayerHand(list);
                     player.setHandChosen(true);
                 }
@@ -281,6 +324,8 @@ public class UserInterface {
     }
 
     public void initializeCardSelection() {
+        if(!cardSelection)
+            return;
         // If player has selected powerdown, then do not distribute new cards. PowerDown
         if (hasPoweredDown || !player.isAlive()) {
             player.powerDown();
@@ -350,10 +395,11 @@ public class UserInterface {
         //If card is already in the selected list, reset its position
         if (programCard.isMarked()) {
             index = getIndex(programCard);
+            if (index != -1)
             chosenCards[index] = null;
         }
 
-        for (int i = 0; i < pos.length; i++) {
+        for (int i = player.getPlayerDeck().NUMBER_OF_LOCKED_CARDS; i < pos.length; i++) {
             //If inside the zone
             if (x > pos[i].getX() - cardImage.getWidth() / 2 && x < pos[i].getX() + cardImage.getWidth()
                     && y < yLimitTop && y > yLimitBottom) {
@@ -386,7 +432,7 @@ public class UserInterface {
 
         cardImage.setPosition(cardImage.getOriginX(), cardImage.getOriginY());
         programCard.setMarked(false);
-        for (int k = 0; k < chosenCards.length; k++) {
+        for (int k = player.getPlayerDeck().NUMBER_OF_LOCKED_CARDS; k < chosenCards.length; k++) {
             if (chosenCards[k] != null && chosenCards[k].equals(programCard)) {
                 chosenCards[k] = null;
                 return;
@@ -453,6 +499,7 @@ public class UserInterface {
     }
 
     public void prepareNextRound() {
+
         chosenCards = new ProgramCard[5];
         //chosenCards = getLockedCards();
         cardMap.clear();
@@ -469,6 +516,12 @@ public class UserInterface {
         getDamageTokenOfPlayer();
         getLifeTokenOfPlayer();
         getFlagInfo();
+
+        if(!cardSelection)
+            return;
+
+        initializeLockedCards();
+        initializeChosenCards();
     }
 
     public ProgramCard[] getLockedCards() {
@@ -528,5 +581,14 @@ public class UserInterface {
 
     public void setSavedFlag(int flag) {
         this.lastFlagVisited = flag;
+    }
+
+    public void toggleCardSelection (){
+        cardSelection = !cardSelection;
+
+        if(cardSelection)
+            this.initializeCardSelection();
+
+        System.out.println("Card selection = " + cardSelection);
     }
 }

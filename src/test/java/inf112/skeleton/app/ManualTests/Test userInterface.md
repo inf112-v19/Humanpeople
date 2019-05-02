@@ -13,7 +13,7 @@ Hensikt:
 - Sjekke at en kan velge kort ved drag and drop og kjøre spillet basert på disse.
 - Sjekke at "PLAY" og "POWER DOWN" fungerer
 
-1. Kjør programmet og trykk "TEST"
+1. Kjør programmet og trykk "TEST". Trykk på "C" for aktivere grafisk kortseleksjon.
 2. Du kan nå velge kort ved å dra dem fra oppe til høyre, og legge dem i vilkårlige slots. Fra venstre til høyre representerer programmet ditt 1-5. Når du trykker play skal en runde gjennomføres.
 3. Sjekk at draganddropen fungerer fint, og dersom du slipper et kort nærme et slot, så skal den snappe inn på plass. Du skal kunne dra kort til og fra hånden. Du skal også kunne bytte plass på kortene du har valgt i det nedre feltet eller slippe et nytt kort over et valgt kort for å erstatte det.
 4. Sjekk at du ikke kan trykke på play uten at fem kort er valgt. Sjekk at play-knappen ikke fungerer mens en runde er i gang. 
@@ -45,7 +45,7 @@ Hensikt:
 - Sjekke at damage tokens oppdateres grafisk ved skade
 
 1. Kjør programmet og trykk "TEST"
-2. Klikk på "T" for å skru av laserskyting (laser på brett blir ikke skrudd av)
+2. Klikk på "T" for å skru av laserskyting (stasjonerte lasere på brett blir ikke skrudd av)
 3. Tast inn følgende kombinasjon:
 "1", "1", "1", "1", "1", "space"
 4. Kontroller at du har 9 gule og 1 grå damage token

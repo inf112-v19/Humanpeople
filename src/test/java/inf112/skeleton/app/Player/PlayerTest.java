@@ -55,11 +55,11 @@ public class PlayerTest {
         player.select5FirstCards();
 
         assertEquals(player.getPlayerDeck().handSize(), 5);
-        assertEquals(programCard4, player.getPlayerDeck().getCardFromHand());
-        assertEquals(programCard3, player.getPlayerDeck().getCardFromHand());
-        assertEquals(programCard2, player.getPlayerDeck().getCardFromHand());
-        assertEquals(programCard1, player.getPlayerDeck().getCardFromHand());
-        assertEquals(programCard0, player.getPlayerDeck().getCardFromHand());
+        assertEquals(programCard4, player.getPlayerDeck().getCardFromHand(4));
+        assertEquals(programCard3, player.getPlayerDeck().getCardFromHand(3));
+        assertEquals(programCard2, player.getPlayerDeck().getCardFromHand(2));
+        assertEquals(programCard1, player.getPlayerDeck().getCardFromHand(1));
+        assertEquals(programCard0, player.getPlayerDeck().getCardFromHand(0));
     }
 
     @Test

@@ -58,7 +58,7 @@ public class GameMap {
         else
             this.startingPositions = new StartingPositions(grid.getWidth(), grid.getHeight(), nPlayers);
         this.isMultiplayer = isMultiplayer;
-        this.programCardDeck = new ProgramCardDeck();
+        this.programCardDeck = ProgramCardDeck.getProgramCardDeckSingleton();
         this.playerLayer = (TiledMapTileLayer) map.getLayers().get(8);
         this.specialLayer = (TiledMapTileLayer) map.getLayers().get(1);
         this.flagLayer = (TiledMapTileLayer) map.getLayers().get(2);
@@ -97,6 +97,7 @@ public class GameMap {
                 player.setAI();
         }
         // Give out cards to players
+        dealCards();
         programCardDeck.giveOutCardsToAllPlayers(players);
 
         drawPlayers();
@@ -205,6 +206,11 @@ public class GameMap {
     }
 
     public void addPlayerHandToNewRound() {
+        for (Player player : players) {
+            if (player.getPlayerDeck().handSize() < 5) {
+                giveOutCardsToPlayer(player);
+            }
+        }
         if (!round.allPhasesAddedToRound()) {
             round = new Round();
             cardsDealt = false;
@@ -219,7 +225,7 @@ public class GameMap {
                             giveOutCardsToPlayer(player);
                         }
 
-                        ProgramCard tempCard = player.getPlayerDeck().getCardFromHand();
+                        ProgramCard tempCard = player.getPlayerDeck().getCardFromHand(i);
                         tempCard.setPlayerThatPlayedTheCard(player.getId());
                         cardsToAddInPhaseI.add(tempCard);
                     }
@@ -382,6 +388,7 @@ public class GameMap {
                     checkBoardLasers(playerId);
                 }
             } else {
+                endOfRoundActions.performAllChecks();
                 if (!cardsDealt) {
                     dealCards();
                     cardsDealt = true;
@@ -398,7 +405,6 @@ public class GameMap {
      */
     public void endOfPhaseChecks() {
         endOfPhaseActions.performAllChecks();
-        fireLasers();
         resetHitByBoardLaser();
         drawPlayers();
         resetHitByBoardLaser();
@@ -431,8 +437,9 @@ public class GameMap {
      * Fire both player and board lasers
      */
     public void fireLasers() {
-        if (!laserFire)
+        if(!laserFire)
             return;
+      
         for (Player player : players) {
             if (!player.isActive() || !player.isAlive() || player.isDestroyed())
                 continue;

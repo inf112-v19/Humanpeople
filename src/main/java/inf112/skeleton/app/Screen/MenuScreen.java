@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -87,8 +88,6 @@ public class MenuScreen implements Screen {
 
         picture = new Sprite(new Texture("assets/mainMenu/singlePlayerButton.png"));
         singlePlayerButton = new ImageButton(new SpriteDrawable(picture));
-        singlePlayerButton.setWidth(buttonWidth);
-        singlePlayerButton.setHeight(buttonHeight);
         singlePlayerButton.setPosition(0, 0);
         singlePlayerButton.addListener(new ClickListener() {
             @Override
@@ -97,13 +96,10 @@ public class MenuScreen implements Screen {
                 game.setScreen(playScreen);
             }
         });
-
         stage.addActor(singlePlayerButton);
 
         picture = new Sprite(new Texture("assets/mainMenu/multiPlayerButton.png"));
         multiPlayerButton = new ImageButton(new SpriteDrawable(picture));
-        multiPlayerButton.setWidth(buttonWidth);
-        multiPlayerButton.setHeight(buttonHeight);
         multiPlayerButton.setPosition((width / (float)(2.5)), 0);
         multiPlayerButton.addListener(new ClickListener() {
             @Override
@@ -112,15 +108,11 @@ public class MenuScreen implements Screen {
                 game.setScreen(new MultiplayerScreen(game));
             }
         });
-
         stage.addActor(multiPlayerButton);
 
         picture = new Sprite(new Texture("assets/mainMenu/testButton.png"));
         testButton = new ImageButton(new SpriteDrawable(picture));
-        testButton.setWidth(buttonWidth);
-        testButton.setHeight(buttonHeight);
-        testButton.setPosition(width-testButton.getWidth(), 0);
-
+        testButton.setPosition(width-buttonWidth, 0);
         testButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -129,6 +121,15 @@ public class MenuScreen implements Screen {
             }
         });
         stage.addActor(testButton);
+
+        //Set size of every button in stage
+        for(Actor actor : stage.getActors()){
+            if(actor.equals(menuBackground))
+                continue;
+            actor.setWidth(buttonWidth);
+            actor.setHeight(buttonHeight);
+        }
+
         Gdx.input.setInputProcessor(stage);
     }
 

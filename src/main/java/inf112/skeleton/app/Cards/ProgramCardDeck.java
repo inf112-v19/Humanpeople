@@ -9,10 +9,17 @@ import java.util.Random;
 
 public class ProgramCardDeck {
     private ArrayList<ProgramCard> programCardDeck;
+    private static ProgramCardDeck singleInstance;
+    private ArrayList<ProgramCard> inActiveCardDeck;
+    private int numberOfDiscardedCards;
+    private int timesDiscardedCardsShuffledInn;
 
 
-    public ProgramCardDeck() {
+    private ProgramCardDeck() {
         programCardDeck = new ArrayList<>();
+        inActiveCardDeck = new ArrayList<>();
+        numberOfDiscardedCards = 0;
+        timesDiscardedCardsShuffledInn = 0;
         newProgramCardDeck();
     }
 
@@ -96,18 +103,8 @@ public class ProgramCardDeck {
      * @param players
      */
     public void giveOutCardsToAllPlayers(ArrayList<Player> players) {
-        if (getSizeOfDeck() < 70)
-            newProgramCardDeck();
-
-        for (int i = 0; i < players.size(); i++) {
-            Player player = players.get(i);
-            ArrayList<ProgramCard> playerDeck = new ArrayList<>();
-
-            for (int j = 0; j < PlayerDeck.MAX_NUMBER_CARDS_IN_DECK; j++)
-                playerDeck.add(takeRandomCard());
-
-            player.getPlayerDeck().setDeck(playerDeck);
-        }
+        for (Player player : players)
+            giveOutCardsToPlayer(player);
     }
 
     /**
@@ -116,11 +113,12 @@ public class ProgramCardDeck {
      * @param player
      */
     public void giveOutCardsToPlayer(Player player) {
-        if (getSizeOfDeck() < 70)
-            newProgramCardDeck();
-
+        if (programCardDeck.size() < 10) {
+            resetSingleInstance();
+            shuffleDeck();
+        }
         ArrayList<ProgramCard> playerDeck = new ArrayList<>();
-        for (int i = 0; i < PlayerDeck.MAX_NUMBER_CARDS_IN_DECK; i++)
+        for (int i = 0; i < player.getPlayerDeck().NUMBER_OF_NEW_CARDS_TO_DECK; i++)
             playerDeck.add(takeRandomCard());
 
         player.getPlayerDeck().setDeck(playerDeck);
@@ -132,5 +130,56 @@ public class ProgramCardDeck {
 
     public ArrayList<ProgramCard> getDeck() {
         return this.programCardDeck;
+    }
+
+    public void addToInactiveCardDeck(ProgramCard card) {
+//        if (inActiveCardDeck.contains(card)) {
+//            throw new IllegalArgumentException("Cannot have duplicates of ProgramCards");
+//        }
+        inActiveCardDeck.add(card);
+        numberOfDiscardedCards++;
+    }
+
+    public void shuffleInnInactiveCards() {
+        int duplicates = 0;
+        for (int i=0; i<inActiveCardDeck.size(); i++) {
+            if (programCardDeck.contains(inActiveCardDeck.get(i)))
+                duplicates++;
+            programCardDeck.add(inActiveCardDeck.get(i));
+        }
+        if (duplicates>0)
+            throw new IllegalArgumentException("Cannot have duplicates of ProgramCards. " + duplicates + " duplicates.");
+        shuffleDeck();
+        inActiveCardDeck.clear();
+        timesDiscardedCardsShuffledInn++;
+    }
+
+    public static ProgramCardDeck getProgramCardDeckSingleton() {
+        if (singleInstance == null) {
+            singleInstance = new ProgramCardDeck();
+        }
+        return singleInstance;
+    }
+
+    public void resetProgramCardDeckSingleton() {
+        singleInstance = new ProgramCardDeck();
+    }
+
+    public void resetSingleInstance() {
+        inActiveCardDeck.clear();
+        programCardDeck.clear();
+        newProgramCardDeck();
+    }
+
+    public int getNumberOfDiscardedCards() {
+        return numberOfDiscardedCards;
+    }
+
+    public int getTimesDiscardedCardsShuffledInn() {
+        return timesDiscardedCardsShuffledInn;
+    }
+
+    public int getInactiveCardDeckSize() {
+        return inActiveCardDeck.size();
     }
 }

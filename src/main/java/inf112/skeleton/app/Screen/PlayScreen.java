@@ -56,6 +56,7 @@ public class PlayScreen implements Screen {
 
     public void initializeUI(int myID) {
         this.ui = new UserInterface(width, height, gameMap.getPlayers().get(myID));
+        ui.toggleCardSelection();
     }
 
     public void setMyID(int id ) {

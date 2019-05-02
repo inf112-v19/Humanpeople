@@ -71,15 +71,15 @@ public class TestScreen implements Screen {
 
 
         //Every program card type
-        move1 = new ProgramCard(ProgramType.MOVE1, 1, "");
-        move2 = new ProgramCard(ProgramType.MOVE2, 2, "");
-        move3 = new ProgramCard(ProgramType.MOVE3, 3, "");
+        move1 = new ProgramCard(ProgramType.MOVE1, 1, "assets/cards/programCards/Move1/move1p490.png");
+        move2 = new ProgramCard(ProgramType.MOVE2, 2, "assets/cards/programCards/Move2/move2p670.png");
+        move3 = new ProgramCard(ProgramType.MOVE3, 3, "assets/cards/programCards/Move3/move3p790.png");
 
 
-        right = new ProgramCard(ProgramType.ROTATERIGHT, 4, "");
-        left = new ProgramCard(ProgramType.ROTATELEFT, 5, "");
-        backUp = new ProgramCard(ProgramType.BACKWARD, 6, "");
-        uTurn = new ProgramCard(ProgramType.UTURN, 7, "");
+        right = new ProgramCard(ProgramType.ROTATERIGHT, 4, "assets/cards/programCards/rotateRight/rotateRightp80.png");
+        left = new ProgramCard(ProgramType.ROTATELEFT, 5, "assets/cards/programCards/rotateLeft/rotateLeftp70.png");
+        backUp = new ProgramCard(ProgramType.BACKWARD, 6, "assets/cards/programCards/backup/backUp1p430.png");
+        uTurn = new ProgramCard(ProgramType.UTURN, 7, "assets/cards/programCards/uturn/uTurnp10.png");
 
 
         //setter id-en til 0 for å flytte spilleren med id 0
@@ -207,6 +207,9 @@ public class TestScreen implements Screen {
             if (Gdx.input.isKeyJustPressed(Input.Keys.T)) {
                 gameMap.toggleLaser();
             }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
+                ui.toggleCardSelection();
+            }
         }
         //Test of movement according to program cards (using movePlayer() for testing
         else if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
@@ -220,6 +223,10 @@ public class TestScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
             getInfo();
         }
+    }
+
+    private void toggleCardSelection() {
+
     }
 
     public void givePlayersRotateHand() {
