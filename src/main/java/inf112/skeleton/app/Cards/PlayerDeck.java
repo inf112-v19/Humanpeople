@@ -203,6 +203,6 @@ public class PlayerDeck {
 
     public void discardCard(ProgramCard card) {
         ProgramCardDeck pCD = ProgramCardDeck.getProgramCardDeckSingleton();
-        pCD.addToInactiveCardDeck(card);
+//        pCD.addToInactiveCardDeck(card);
     }
 }

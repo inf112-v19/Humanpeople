@@ -10,16 +10,10 @@ import java.util.Random;
 public class ProgramCardDeck {
     private ArrayList<ProgramCard> programCardDeck;
     private static ProgramCardDeck singleInstance;
-    private ArrayList<ProgramCard> inActiveCardDeck;
-    private int numberOfDiscardedCards;
-    private int timesDiscardedCardsShuffledInn;
 
 
     private ProgramCardDeck() {
         programCardDeck = new ArrayList<>();
-        inActiveCardDeck = new ArrayList<>();
-        numberOfDiscardedCards = 0;
-        timesDiscardedCardsShuffledInn = 0;
         newProgramCardDeck();
     }
 
@@ -132,28 +126,6 @@ public class ProgramCardDeck {
         return this.programCardDeck;
     }
 
-    public void addToInactiveCardDeck(ProgramCard card) {
-//        if (inActiveCardDeck.contains(card)) {
-//            throw new IllegalArgumentException("Cannot have duplicates of ProgramCards");
-//        }
-        inActiveCardDeck.add(card);
-        numberOfDiscardedCards++;
-    }
-
-    public void shuffleInnInactiveCards() {
-        int duplicates = 0;
-        for (int i=0; i<inActiveCardDeck.size(); i++) {
-            if (programCardDeck.contains(inActiveCardDeck.get(i)))
-                duplicates++;
-            programCardDeck.add(inActiveCardDeck.get(i));
-        }
-        if (duplicates>0)
-            throw new IllegalArgumentException("Cannot have duplicates of ProgramCards. " + duplicates + " duplicates.");
-        shuffleDeck();
-        inActiveCardDeck.clear();
-        timesDiscardedCardsShuffledInn++;
-    }
-
     public static ProgramCardDeck getProgramCardDeckSingleton() {
         if (singleInstance == null) {
             singleInstance = new ProgramCardDeck();
@@ -162,20 +134,7 @@ public class ProgramCardDeck {
     }
 
     public void resetSingleInstance() {
-        inActiveCardDeck.clear();
         programCardDeck.clear();
         newProgramCardDeck();
-    }
-
-    public int getNumberOfDiscardedCards() {
-        return numberOfDiscardedCards;
-    }
-
-    public int getTimesDiscardedCardsShuffledInn() {
-        return timesDiscardedCardsShuffledInn;
-    }
-
-    public int getInactiveCardDeckSize() {
-        return inActiveCardDeck.size();
     }
 }
