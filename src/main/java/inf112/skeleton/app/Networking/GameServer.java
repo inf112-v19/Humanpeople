@@ -115,6 +115,7 @@ public class GameServer {
                     ArrayList<ProgramCard> movesFromClient = ((Packets.PacketListOfMoves) object).movesToSend;
                     int id = ((Packets.PacketListOfMoves) object).id;
 
+
                     if (movesFromClient.size() == 5) {
                         listOfMovesFromServer.allMoves.addAll(movesFromClient);
                         listOfMovesFromServer.id = id;
@@ -160,6 +161,7 @@ public class GameServer {
                         }
                         setBooleanArrayToFalse(haveNClientSentListOfMoves);
                         movesToPlayAtServer.clear();
+                        idIndexer.clear();
                         listsReceived = 0;
                     }
                 }
