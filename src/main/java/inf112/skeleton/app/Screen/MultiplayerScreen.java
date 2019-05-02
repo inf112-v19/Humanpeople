@@ -90,11 +90,6 @@ public class MultiplayerScreen implements Screen {
         });
         stage.addActor(clientButton);
 
-        TextField hostField = new TextField("Enter how many players", skin);
-
-
-        //stage.addActor(clientField);
-        //stage.addActor(hostField);
         Gdx.input.setInputProcessor(stage);
     }
 
