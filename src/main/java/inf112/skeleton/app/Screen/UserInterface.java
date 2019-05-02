@@ -33,6 +33,7 @@ public class UserInterface {
     private Image leftBar;
     private Image rightBar;
 
+    private boolean cardSelection = false;
 
     Position pos[] = new Position[5];
     ProgramCard chosenCards[];
@@ -323,6 +324,8 @@ public class UserInterface {
     }
 
     public void initializeCardSelection() {
+        if(!cardSelection)
+            return;
         // If player has selected powerdown, then do not distribute new cards. PowerDown
         if (hasPoweredDown || !player.isAlive()) {
             player.powerDown();
@@ -496,6 +499,7 @@ public class UserInterface {
     }
 
     public void prepareNextRound() {
+
         chosenCards = new ProgramCard[5];
         cardMap.clear();
         imageMap.clear();
@@ -510,6 +514,10 @@ public class UserInterface {
         getDamageTokenOfPlayer();
         getLifeTokenOfPlayer();
         getFlagInfo();
+
+        if(!cardSelection)
+            return;
+
         initializeLockedCards();
         initializeChosenCards();
     }
@@ -536,5 +544,14 @@ public class UserInterface {
 
     public void setSavedFlag(int flag) {
         this.lastFlagVisited = flag;
+    }
+
+    public void toggleCardSelection (){
+        cardSelection = !cardSelection;
+
+        if(cardSelection)
+            this.initializeCardSelection();
+
+        System.out.println("Card selection = " + cardSelection);
     }
 }
