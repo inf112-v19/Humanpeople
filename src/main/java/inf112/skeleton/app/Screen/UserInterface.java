@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import inf112.skeleton.app.Cards.PlayerDeck;
 import inf112.skeleton.app.Cards.ProgramCard;
+import inf112.skeleton.app.Cards.ProgramCardDeck;
 import inf112.skeleton.app.Directions.Position;
 import inf112.skeleton.app.Player.Player;
 
@@ -73,6 +74,13 @@ public class UserInterface {
     private void initializeLockedCards() {
         ArrayList<ProgramCard> lastHand = player.getPlayerDeck().getHandFromLastRound();
         int lCs = player.getPlayerDeck().NUMBER_OF_LOCKED_CARDS;
+        if (lastHand.size() < 5) {
+            ProgramCardDeck pcg = ProgramCardDeck.getProgramCardDeckSingleton();
+            for (int i = 0; i < lCs; i++) {
+                lockedCards[i] = pcg.takeRandomCard();
+            }
+            return;
+        }
         lockedCards = new ProgramCard[lCs];
         for (int i = 0; i < lCs; i++) {
             lockedCards[i] = lastHand.get(i);

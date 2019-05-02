@@ -41,7 +41,6 @@ public class GameMap {
     private boolean cardsDealt;
 
     public GameMap(String filename, int nPlayers) {
-        this.cardsDealt = false;
         this.mapLoader = new TmxMapLoader();
         this.map = mapLoader.load(filename);
         this.grid = new Grid(map);
@@ -63,6 +62,7 @@ public class GameMap {
         this.laserLayer = (TiledMapTileLayer) map.getLayers().get(9);
         this.playerTiles = new ArrayList<>();
         initializePlayers();
+        this.cardsDealt = true;
 
         this.round = new Round();
     }
@@ -84,16 +84,14 @@ public class GameMap {
             setBackup(player);
         }
         // Give out cards to players
-            dealCards();
+        dealCards();
+        programCardDeck.giveOutCardsToAllPlayers(players);
 
         drawPlayers();
     }
 
     public void dealCards() {
-        if (cardsDealt == false) {
-            getDeck().giveOutCardsToAllPlayers(players);
-            cardsDealt = true;
-        }
+        getDeck().giveOutCardsToAllPlayers(players);
     }
 
     public void drawPlayers() {
@@ -149,6 +147,7 @@ public class GameMap {
         }
         if (!round.allPhasesAddedToRound()) {
             round = new Round();
+            cardsDealt = false;
             int amountOfPhases = 5;
             for (int i = 0; i < amountOfPhases; i++) {
                 ArrayList<ProgramCard> cardsToAddInPhaseI = new ArrayList<>();
@@ -162,7 +161,6 @@ public class GameMap {
                 round.addPhases(new Phase(cardsToAddInPhaseI));
             }
         }
-        cardsDealt = false;
     }
 
     public void setAllPlayerHandsChosen(boolean handsChosen) {
@@ -773,7 +771,7 @@ public class GameMap {
      * @param player
      */
     public void giveOutCardsToPlayer(Player player) {
-        dealCards();
+        programCardDeck.giveOutCardsToPlayer(player);
         player.select5FirstCards();
     }
 

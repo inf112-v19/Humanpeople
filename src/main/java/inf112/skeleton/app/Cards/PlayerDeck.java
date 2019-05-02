@@ -199,12 +199,6 @@ public class PlayerDeck {
 
     public void discardCard(ProgramCard card) {
         ProgramCardDeck pCD = ProgramCardDeck.getProgramCardDeckSingleton();
-        int i = 0;
-        i += pCD.getSizeOfDeck();
-        i += pCD.getInactiveCardDeckSize();
-        System.out.println("Discarded cards: " + pCD.getNumberOfDiscardedCards() + ". pCD.size: " + pCD.getSizeOfDeck()
-                + ". discardedCardDeck.size: " + pCD.getInactiveCardDeckSize() + ". Total cards: " + i
-        + ". nrInnshuffles: " + pCD.getTimesDiscardedCardsShuffledInn());
         pCD.addToInactiveCardDeck(card);
     }
 }
