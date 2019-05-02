@@ -83,14 +83,6 @@ public class GameServer {
                     howManyConnected++;
                 }
 
-                if(object instanceof Packets.PacketIDisconnected) {
-                    int id = ((Packets.PacketIDisconnected) object).ID;
-                    Packets.PacketPlayerDisconnected playerDisconnected = new Packets.PacketPlayerDisconnected();
-                    playerDisconnected.ID = id;
-                    gameMap.setPlayerToAI(id);
-                    server.sendToAllTCP(playerDisconnected);
-                }
-
                 if (howManyConnected == howManyClients && !isGameStarted) {
                     Packets.PacketStartGame startGame = new Packets.PacketStartGame();
                     startGame.howManyPlayers = howManyClients + 1;
@@ -101,7 +93,7 @@ public class GameServer {
                         connection.sendTCP(startGame);
                     }
 
-                    if(isEveryoneConnected()) {
+                    if(isEveryoneConnected() && !isGameStarted) {
                         Gdx.app.postRunnable(new Runnable() {
                             public void run() {
                                 game.setScreen(playScreen);

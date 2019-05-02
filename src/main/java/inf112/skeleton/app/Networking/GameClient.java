@@ -73,7 +73,6 @@ public class GameClient {
                         player = playScreen.getGameMap().getPlayers().get(myId);
                         game.setScreen(playScreen);
                         playScreen.setMyID(myId);
-                        client.close();
                         }
                     });
                 }
