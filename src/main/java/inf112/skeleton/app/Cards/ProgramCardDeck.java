@@ -96,7 +96,7 @@ public class ProgramCardDeck {
      * @param players
      */
     public void giveOutCardsToAllPlayers(ArrayList<Player> players) {
-        if (getSizeOfDeck() < 50)
+        if (getSizeOfDeck() < 70)
             newProgramCardDeck();
 
         for (int i = 0; i < players.size(); i++) {
