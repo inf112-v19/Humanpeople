@@ -19,6 +19,10 @@ public class NetworkUtils {
         kryo.register(Packets.PacketServerRequiersMoves.class);
         kryo.register(Packets.PacketPlayerDisconnected.class);
         kryo.register(Packets.PacketIDisconnected.class);
+        kryo.register(Packets.PacketIamDead.class);
+        kryo.register(Packets.PacketIAmPoweredDown.class);
+
+
 
 
     }

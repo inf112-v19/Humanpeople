@@ -102,6 +102,27 @@ public class GameServer {
                     }
                 }
 
+                if(!player.isActive()) {
+                    Packets.PacketIAmPoweredDown iAmPoweredDown = new Packets.PacketIAmPoweredDown();
+                    iAmPoweredDown.ID = SERVER_ID;
+                    server.sendToAllTCP(iAmPoweredDown);
+                }
+
+                if (object instanceof Packets.PacketIAmPoweredDown) {
+                    int id = ((Packets.PacketIAmPoweredDown) object).ID;
+                    gameMap.getPlayers().get(id).powerDown();
+                }
+
+                if(!player.isAlive()) {
+                    Packets.PacketIamDead iamDead = new Packets.PacketIamDead();
+                    iamDead.ID = SERVER_ID;
+                    server.sendToAllTCP(iamDead);
+                }
+                if(object instanceof Packets.PacketIamDead) {
+                    int id = ((Packets.PacketIamDead) object).ID;
+                    gameMap.getPlayers().get(id).kill();
+                }
+
                 if(isGameStarted&& !haveNClientSentListOfMoves[connection.getID()-1]) {
                     Packets.PacketServerRequiersMoves newMoves = new Packets.PacketServerRequiersMoves();
                     connection.sendTCP(newMoves);

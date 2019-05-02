@@ -79,6 +79,26 @@ public class GameClient {
                     });
                 }
 
+                if(!player.isActive()) {
+                    Packets.PacketIAmPoweredDown iAmPoweredDown = new Packets.PacketIAmPoweredDown();
+                    iAmPoweredDown.ID = myId;
+                    connection.sendTCP(iAmPoweredDown);
+                }
+
+                if (object instanceof Packets.PacketIAmPoweredDown) {
+                    int id = ((Packets.PacketIAmPoweredDown) object).ID;
+                    playScreen.getGameMap().getPlayers().get(id).powerDown();
+                }
+
+                if(!player.isAlive()) {
+                    Packets.PacketIamDead iamDead = new Packets.PacketIamDead();
+                    iamDead.ID = myId;
+                    connection.sendTCP(iamDead);
+                }
+                if(object instanceof Packets.PacketIamDead) {
+                    int id = ((Packets.PacketIamDead) object).ID;
+                    playScreen.getGameMap().getPlayers().get(id).kill();
+                }
 
 
                 if(object instanceof Packets.PacketServerRequiersMoves) {
