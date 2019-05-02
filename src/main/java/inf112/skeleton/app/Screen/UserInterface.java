@@ -74,7 +74,7 @@ public class UserInterface {
     private void initializeLockedCards() {
         ArrayList<ProgramCard> lastHand = player.getPlayerDeck().getHandFromLastRound();
         int lCs = player.getPlayerDeck().NUMBER_OF_LOCKED_CARDS;
-        if (lastHand.size() < 5) {
+        if (lastHand.size() < lCs) {
             ProgramCardDeck pcg = ProgramCardDeck.getProgramCardDeckSingleton();
             for (int i = 0; i < lCs; i++) {
                 lockedCards[i] = pcg.takeRandomCard();
