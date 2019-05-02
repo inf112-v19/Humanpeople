@@ -27,4 +27,6 @@ public class Packets {
 
     }
     public static class PacketPlayerDisconnected { public int ID;}
+
+    public static class PacketIDisconnected{ public int ID;}
 }
