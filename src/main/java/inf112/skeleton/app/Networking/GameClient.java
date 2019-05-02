@@ -29,6 +29,7 @@ public class GameClient {
     private int myId;
     private RoboRally game;
     private PlayScreen playScreen;
+    private boolean isGameStarted;
 
     public GameClient(final RoboRally game, String IPAdress, int port) {
         playScreen = null;
@@ -75,11 +76,12 @@ public class GameClient {
                         player = playScreen.getGameMap().getPlayers().get(myId);
                         game.setScreen(playScreen);
                         playScreen.setMyID(myId);
+                        isGameStarted = true;
                         }
                     });
                 }
 
-                if(!player.isActive()) {
+                if(!player.isActive() && isGameStarted) {
                     Packets.PacketIAmPoweredDown iAmPoweredDown = new Packets.PacketIAmPoweredDown();
                     iAmPoweredDown.ID = myId;
                     connection.sendTCP(iAmPoweredDown);
@@ -90,7 +92,7 @@ public class GameClient {
                     playScreen.getGameMap().getPlayers().get(id).powerDown();
                 }
 
-                if(!player.isAlive()) {
+                if(!player.isAlive() && isGameStarted) {
                     Packets.PacketIamDead iamDead = new Packets.PacketIamDead();
                     iamDead.ID = myId;
                     connection.sendTCP(iamDead);
