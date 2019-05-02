@@ -170,8 +170,8 @@ public class Grid {
         int x = position.getX();
         int y = position.getY();
         int backupLayerIndex = backup1Index + playerId;
-        gameLogicGrid[x][y].remove(backup1Index);
-        gameLogicGrid[x][y].add(backup1Index, new NothingSpecial());
+        gameLogicGrid[x][y].remove(backupLayerIndex);
+        gameLogicGrid[x][y].add(backupLayerIndex, new NothingSpecial());
     }
 
 

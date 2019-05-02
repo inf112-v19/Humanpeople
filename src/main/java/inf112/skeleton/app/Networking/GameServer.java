@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 public class GameServer {
 
     private static final Logger LOGGER = Logger.getLogger(GameServer.class.getName());
-    private int portNumber = 25135;
+    private int portNumber;
     private Server server;
     private GameMap gameMap;
     private Player player;
