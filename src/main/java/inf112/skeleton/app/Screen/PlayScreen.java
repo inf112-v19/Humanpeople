@@ -81,6 +81,7 @@ public class PlayScreen implements Screen {
          // If game is multiplayer then wait for all players to choose cards
         if (isMultiPlayer) {
             if (gameMap.hasAllPlayersChosenHands()) {
+                System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
                 gameMap.addPlayerHandToNewRound();
                 gameMap.getPlayers().get(myID).setHandChosen(false);
             }
@@ -158,7 +159,6 @@ public class PlayScreen implements Screen {
         VictoryScreen victoryScreen = new VictoryScreen(winner);
         Table winScreen = victoryScreen.getTable();
         stage.addActor(winScreen);
-        winner.kill();
     }
 
     @Override

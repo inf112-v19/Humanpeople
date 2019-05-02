@@ -38,7 +38,6 @@ public class GameMap {
     private ArrayList<Player> players;
     private Player winner;
 
-
     private boolean laserFire = true;
     private Round round;
     private Phase currentPhase;
@@ -214,7 +213,7 @@ public class GameMap {
             for (int i = 0; i < amountOfPhases; i++) {
                 ArrayList<ProgramCard> cardsToAddInPhaseI = new ArrayList<>();
                 for (Player player : players) {
-                    if (player.isActive() && player.isAlive()) {
+                    if (player.isActive()) {
                         // If the players hand is empty then give out 9 new cards and select 5 cards for hand
                         // Temporary solution. Card selection system is coming.
                         if (player.getPlayerDeck().handIsEmpty()) {

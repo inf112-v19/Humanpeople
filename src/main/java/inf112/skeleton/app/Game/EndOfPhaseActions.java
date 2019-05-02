@@ -125,6 +125,8 @@ public class EndOfPhaseActions {
      * Checks if any players have won, i.e. has visited all flags
      */
     public void hasWon() {
+        if (gameMap.getWinner() != null)
+            return;
         for (Player player : players) {
             hasWon(player);
         }
@@ -138,8 +140,7 @@ public class EndOfPhaseActions {
 
         if (lastFlagVisited == finalFlagNumber) {
             gameMap.setWinner(player);
-            //Needed to play on!
-            //gameMap.getPlayers().remove(player);
+            player.kill();
         }
     }
 
