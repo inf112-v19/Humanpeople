@@ -627,9 +627,8 @@ public class GameMap {
      * Select 5 first cards in playerDeck for all bots (not player 0)
      */
     public void selectCardsForBots() {
-        for (int i = 1; i < players.size(); i++) {
-            Player player = players.get(i);
-            if (!player.getHandChosen()) {
+        for (Player player : players) {
+            if(player.getisAI() && player.getHandChosen()) {
                 player.select5FirstCards();
                 player.setHandChosen(true);
             }

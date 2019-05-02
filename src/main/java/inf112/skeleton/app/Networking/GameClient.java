@@ -40,10 +40,6 @@ public class GameClient {
         new Thread(client).start();
 
         Scanner in = new Scanner(System.in);
-
-//        System.out.println("What port to connect to?");
-//        portSocket = in.nextInt();
-
         try {
             client.connect(timeToWaitForServerToRespond, IPAddress, portSocket, 54777);
         } catch (IOException e) {
@@ -56,7 +52,6 @@ public class GameClient {
         client.addListener(new Listener() {
 
             public void received(final Connection connection, final Object object) {
-
 
                 if(object instanceof Packets.PacketRequestAnswer) {
                     if(((Packets.PacketRequestAnswer) object).accepted) {
@@ -78,21 +73,14 @@ public class GameClient {
                         player = playScreen.getGameMap().getPlayers().get(myId);
                         game.setScreen(playScreen);
                         playScreen.setMyID(myId);
+                        client.close();
                         }
                     });
                 }
 
-                if(object instanceof Packets.PacketPlayerDisconnected) {
-                    int id = ((Packets.PacketPlayerDisconnected) object).ID;
-                    playScreen.getGameMap().setPlayerToAI(id);
-                }
 
 
                 if(object instanceof Packets.PacketServerRequiersMoves) {
-                    //System.out.println("Player : " + myId);
-                    //System.out.println("HandChosen : " + player.getHandChosen() );
-                    //System.out.println("Number of cards chosen : " + player.getPlayerDeck().handSize());
-
                     System.out.println("CLIENT" +connection.getID() + " got RequestMoves");
                     if (player!= null && player.getHandChosen() && player.getPlayerDeck().handSize() == 5) {
                         Packets.PacketListOfMoves listOfMoves = new Packets.PacketListOfMoves();

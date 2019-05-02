@@ -14,6 +14,7 @@ import inf112.skeleton.app.Screen.PlayScreen;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Timer;
 import java.util.logging.Logger;
 
 public class GameServer {
@@ -60,7 +61,6 @@ public class GameServer {
 
         server = new Server(55555, 55555);
 
-
         try {
             server.bind(portNumber, 54777);
         } catch (IOException e) {
@@ -75,25 +75,20 @@ public class GameServer {
         server.addListener(new Listener() {
             public void received(final Connection connection, Object object) {
 
-                if(connections != null) {
-                    for (int i = 0; i < connections.length; i++) {
-                        if (!connections[i].isConnected()) {
-                            Packets.PacketPlayerDisconnected playerDisconnected = new Packets.PacketPlayerDisconnected();
-                            playerDisconnected.ID = connections[i].getID();
-                            gameMap.setPlayerToAI(connections[i].getID());
-                            connections[i].close();
-                            server.sendToAllTCP(playerDisconnected);
-                        }
-
-                    }
-                }
-
                 if (object instanceof Packets.PacketRequest) {
                     Packets.PacketRequestAnswer answer = new Packets.PacketRequestAnswer();
                     answer.IPAdress = "localhost";
                     answer.accepted = true;
                     connection.sendTCP(answer);
                     howManyConnected++;
+                }
+
+                if(object instanceof Packets.PacketIDisconnected) {
+                    int id = ((Packets.PacketIDisconnected) object).ID;
+                    Packets.PacketPlayerDisconnected playerDisconnected = new Packets.PacketPlayerDisconnected();
+                    playerDisconnected.ID = id;
+                    gameMap.setPlayerToAI(id);
+                    server.sendToAllTCP(playerDisconnected);
                 }
 
                 if (howManyConnected == howManyClients && !isGameStarted) {
@@ -147,7 +142,7 @@ public class GameServer {
                     }
                 }
 
-                if (listsReceived == howManyClients) {
+                if (listsReceived == howManyConnected) {
                     System.out.println("SERVER HAS RECEIVED ALL LISTS");
                     final Packets.PacketListOfMovesFromServer listOfMovesFromServer = new Packets.PacketListOfMovesFromServer();
 
@@ -180,6 +175,7 @@ public class GameServer {
                 }
             }
         });
+
     }
 
     private boolean haveEveryoneReceived() {

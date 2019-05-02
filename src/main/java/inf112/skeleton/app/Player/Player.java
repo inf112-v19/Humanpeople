@@ -56,6 +56,11 @@ public class Player {
         this.isAI = true;
     }
 
+    public boolean getisAI() {
+        return isAI;
+    }
+
+
     public int getId() {
         return id;
     }
