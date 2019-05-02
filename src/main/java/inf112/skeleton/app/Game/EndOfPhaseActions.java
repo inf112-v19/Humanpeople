@@ -226,7 +226,6 @@ public class EndOfPhaseActions {
                 break;
             }
             Player player = beltList.get(0);
-            Direction currentDirection = player.getDirection();
             ConveyorBelt conveyorBelt = player.getCurrentConveyorBelt();
 
             if (conveyorBelt == ConveyorBelt.NORTH) {
@@ -258,12 +257,16 @@ public class EndOfPhaseActions {
                 moveBeltInDirection(Direction.SOUTH, player);
             }
             else if (conveyorBelt == ConveyorBelt.CLOCK_WISE) {
+                Direction currentDirection = player.getDirection();
                 Direction newDirection = Direction.rotate(currentDirection, 1);
                 player.setDirection(newDirection);
+                beltList.remove(0);
             }
             else if (conveyorBelt == ConveyorBelt.COUNTER_CLOCK_WISE) {
+                Direction currentDirection = player.getDirection();
                 Direction newDirection = Direction.rotate(currentDirection, -1);
                 player.setDirection(newDirection);
+                beltList.remove(0);
             }
         }
     }
