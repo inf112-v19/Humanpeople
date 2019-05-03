@@ -61,9 +61,6 @@ public class UserInterface {
         this.lastFlagVisited = player.getLastFlagVisited();
 
         stage = new Stage();
-
-//        initializeLockedCards();
-//        initializeChosenCards();
         initializeSideBars();
         initializePlayButton();
         initializePowerDownButton();
@@ -80,7 +77,6 @@ public class UserInterface {
                     lockedCards[i] = pcg.takeRandomCard();
                 } else {
                     lockedCards[i] = lastHand.get(i);
-                    System.out.println("Lasthand has cards");
                 }
             }
     }
@@ -448,48 +444,6 @@ public class UserInterface {
         return -1;
     }
 
-    private Position getPosition(ProgramCard card) {
-        for (int i = 0; i < chosenCards.length; i++) {
-            if (chosenCards[i].equals(card))
-                return pos[i];
-        }
-        return null;
-    }
-
-    /**
-     * @return graphic for how many flags the player has visited
-     */
-    public Image getFlagVisitedImage() {
-        int lastFlagVisited = player.getLastFlagVisited();
-        Texture lifeTokenTexture = null;
-        switch (lastFlagVisited) {
-            case 3:
-                lifeTokenTexture = new Texture("assets/userInterface/flagChecks/flagCheck3.png");
-                break;
-            case 2:
-                lifeTokenTexture = new Texture("assets/userInterface/flagChecks/flagCheck2.png");
-                break;
-            case 1:
-                lifeTokenTexture = new Texture("assets/userInterface/flagChecks/flagCheck1.png");
-                break;
-            case 0:
-                lifeTokenTexture = new Texture("assets/userInterface/flagChecks/flagCheck0.png");
-                break;
-            default:
-                lifeTokenTexture = new Texture("assets/userInterface/flagChecks/flagCheck0.png");
-                break;
-        }
-        Sprite lifeTokenSprite = new Sprite(lifeTokenTexture);
-        Image lifeTokenImage = new Image(new SpriteDrawable(lifeTokenSprite));
-        lifeTokenImage.setPosition(1, 1);
-        return lifeTokenImage;
-    }
-
-    /**
-     * Checks if the player has selected all 5 cards
-     *
-     * @return true if all 5 cards are selected
-     */
     public boolean hasChosenCards() {
         for (int i = 0; i < chosenCards.length; i++) {
             if (chosenCards[i] == null)
@@ -501,10 +455,8 @@ public class UserInterface {
     public void prepareNextRound() {
 
         chosenCards = new ProgramCard[5];
-        //chosenCards = getLockedCards();
         cardMap.clear();
         imageMap.clear();
-        //clearStage();
         stage.clear();
         stage.addActor(leftBar);
         stage.addActor(rightBar);
@@ -522,41 +474,6 @@ public class UserInterface {
 
         initializeLockedCards();
         initializeChosenCards();
-    }
-
-    public ProgramCard[] getLockedCards() {
-        ProgramCard[] newChosenCards = new ProgramCard[chosenCards.length];
-        int health = player.getHealth();
-        int healthConstraint = 5;
-        for (int i = 0; i < chosenCards.length; i++) {
-            if (health < (healthConstraint-i))
-                newChosenCards[i] = chosenCards[i];
-            else
-                newChosenCards[i] = null;
-
-        }
-        return newChosenCards;
-    }
-
-    public void clearStage() {
-        for (Actor actor : stage.getActors()) {
-            if (equalsChosenCards(actor)) {
-                actor.remove();
-                /*ProgramCard programCard = cardMap.get(actor);
-                imageMap.remove(actor);
-                cardMap.remove(programCard);*/
-            }
-        }
-    }
-
-    public boolean equalsChosenCards(Actor actor) {
-        for (ProgramCard programCard : chosenCards) {
-            Image cardImage = imageMap.get(programCard);
-
-            if (actor.equals(cardImage))
-                return true;
-        }
-        return false;
     }
 
     public int getSavedHealth() {
@@ -585,10 +502,8 @@ public class UserInterface {
 
     public void toggleCardSelection (){
         cardSelection = !cardSelection;
-
         if(cardSelection)
             this.initializeCardSelection();
-
         System.out.println("Card selection = " + cardSelection);
     }
 }
