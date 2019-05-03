@@ -370,6 +370,8 @@ public class GameMap {
                     round.nextPhase();
                 } else {
                     ProgramCard currentCard = round.getNextMovementCard();
+                    if (currentCard == null)
+                        return;
                     int playerId = currentCard.getPlayerThatPlayedTheCard();
                     movePlayer(currentCard.getPlayerThatPlayedTheCard(), currentCard);
                     endOfPhaseActions.getLaser().checkBoardLasers(playerId);

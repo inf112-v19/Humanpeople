@@ -58,7 +58,7 @@ public class GameServer {
         try {
             server.bind(portNumber, 54777);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Server already in use");
         }
 
         final NetworkUtils networkUtils = new NetworkUtils();

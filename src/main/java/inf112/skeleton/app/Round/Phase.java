@@ -28,6 +28,8 @@ public class Phase {
      * @return ProgramCard
      */
     public ProgramCard nextMovement(){
+        if (movesToPerform.isEmpty())
+            return null;
         ProgramCard currentCard = movesToPerform.get(0);
         if(currentCard.getProgramType().isMoveCard()){
             if(movesLeftOnCurrentCard == -1){
