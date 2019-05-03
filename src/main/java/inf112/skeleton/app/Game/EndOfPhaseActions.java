@@ -24,15 +24,10 @@ public class EndOfPhaseActions {
     private List<Player> players;
     private List<Player> beltList;
 
-    private TiledMapTileSet tiles;
     private final TiledMapTileLayer playerLayer;
-    private final TiledMapTileLayer specialLayer;
     private final TiledMapTileLayer flagLayer;
-    private final TiledMapTileLayer backupLayer1;
-    private final TiledMapTileLayer backupLayer2;
-    private final TiledMapTileLayer backupLayer3;
-    private final TiledMapTileLayer backupLayer4;
-    private final TiledMapTileLayer laserLayer;
+
+    private Laser laser;
 
     /**
      * Final flag to visit for players to win the game
@@ -45,15 +40,10 @@ public class EndOfPhaseActions {
         this.players = gameMap.getPlayers();
         this.beltList = new ArrayList<>();
 
-        this.tiles = map.getTileSets().getTileSet("testTileset");
         this.playerLayer = (TiledMapTileLayer) map.getLayers().get(8);
-        this.specialLayer = (TiledMapTileLayer) map.getLayers().get(1);
         this.flagLayer = (TiledMapTileLayer) map.getLayers().get(2);
-        this.backupLayer1 = (TiledMapTileLayer) map.getLayers().get(4);
-        this.backupLayer2 = (TiledMapTileLayer) map.getLayers().get(5);
-        this.backupLayer3 = (TiledMapTileLayer) map.getLayers().get(6);
-        this.backupLayer4 = (TiledMapTileLayer) map.getLayers().get(7);
-        this.laserLayer = (TiledMapTileLayer) map.getLayers().get(9);
+
+        this.laser = gameMap.getLaser();
     }
 
     /**
@@ -61,6 +51,9 @@ public class EndOfPhaseActions {
      */
     public void performAllChecks() {
         movePlayersOnConveyorBelts();
+        laser.resetHitByBoardLaser();
+        gameMap.drawPlayers();
+        laser.fireLasers();
         steppedOnFlag();
         steppedOnWrench();
         hasWon();
@@ -219,6 +212,9 @@ public class EndOfPhaseActions {
         }
     }
 
+    /**
+     * Iterates through
+     */
     public void moveConveyorBelts() {
         int i = 0;
         while (beltList.size() > 0) {
@@ -297,6 +293,10 @@ public class EndOfPhaseActions {
         } else {
             beltList.remove(player);
         }
+    }
+
+    public Laser getLaser() {
+        return laser;
     }
 
 }
