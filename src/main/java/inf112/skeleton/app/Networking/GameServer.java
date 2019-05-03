@@ -35,7 +35,7 @@ public class GameServer {
     private ArrayList<ProgramCard> listOfServerMoves;
 
     private final int SERVER_ID = 0;
-    
+
     public GameServer(final RoboRally game, int port, int nPlayers) {
         this.portNumber = port;
         howManyClients = nPlayers - 1;
@@ -111,9 +111,11 @@ public class GameServer {
                 }
 
                 //Pinging clients that hasnt sent moves
-                if (isGameStarted && !haveNClientSentListOfMoves[connection.getID() - 1]) {
-                    Packets.PacketServerRequiersMoves newMoves = new Packets.PacketServerRequiersMoves();
-                    connection.sendTCP(newMoves);
+                if (isGameStarted) {
+                    if (!haveNClientSentListOfMoves[connection.getID() - 1]) {
+                        Packets.PacketServerRequiersMoves newMoves = new Packets.PacketServerRequiersMoves();
+                        connection.sendTCP(newMoves);
+                    }
                 }
 
                 //Receiving Packet with moves from a client. Adds them to own arrayList to be used later
