@@ -15,6 +15,8 @@ import inf112.skeleton.app.Game.GameMap;
 import inf112.skeleton.app.Game.RoboRally;
 import inf112.skeleton.app.Player.Player;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * Play screen of RoboRally
  */
@@ -87,10 +89,13 @@ public class PlayScreen implements Screen {
         }
          // If game is multiplayer then wait for all players to choose cards
         if (isMultiPlayer) {
-            if (gameMap.isReadyForRound()) {
+            if (gameMap.isReadyForRound()&& gameMap.getStartRound()) {
+                System.out.println("!!!!!!!!!!!!!!!!!!!!");
                 gameMap.addPlayerHandToNewRound();
-                //gameMap.getPlayers().get(myID).setHandChosen(false);
+                gameMap.getPlayers().get(myID).setHandChosen(false);
+                gameMap.setStartRound(false);
             }
+
         }
         // If game is singlePlayer wait for player 0 to choose cards
         else if (gameMap.getPlayers().get(0).getHandChosen()) {

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
+import com.jcraft.jogg.Packet;
 import inf112.skeleton.app.Cards.ProgramCard;
 import inf112.skeleton.app.Game.GameMap;
 import inf112.skeleton.app.Game.RoboRally;
@@ -13,8 +14,6 @@ import inf112.skeleton.app.Screen.PlayScreen;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.Timer;
 import java.util.logging.Logger;
 
 public class GameServer {
@@ -30,22 +29,25 @@ public class GameServer {
     private int howManyConnected;
     private boolean isGameStarted = false;
     private int listsReceived;
+    private boolean sentPoweredDown;
+    private boolean haveRoundStarted;
 
-    private boolean [] nClientConnected;
-    private boolean [] haveNClientSentListOfMoves;
+    private boolean[] nClientConnected;
+    private boolean[] haveNClientSentListOfMoves;
     private ArrayList<Integer> idIndexer;
     private Connection[] connections;
     private ArrayList<ArrayList<ProgramCard>> movesToPlayAtServer;
 
     private final int SERVER_ID = 0;
 
+
     public GameServer(final RoboRally game, int port, int nPlayers) {
         this.portNumber = port;
-        howManyClients = nPlayers;
+        howManyClients = nPlayers-1;
 
         //Server has 0 as id
         this.game = game;
-        final PlayScreen playScreen = new PlayScreen(game, 4, true, "assets/map3.tmx");
+        final PlayScreen playScreen = new PlayScreen(this.game, howManyClients + 1, true, "assets/map3.tmx");
         playScreen.setMyID(SERVER_ID);
         playScreen.initializeUI(SERVER_ID);
         gameMap = playScreen.getGameMap();
@@ -56,6 +58,7 @@ public class GameServer {
         idIndexer = new ArrayList<>();
         movesToPlayAtServer = new ArrayList<>();
         final ArrayList<ProgramCard> listOfServerMoves = new ArrayList<>();
+
 
         server = new Server(55555, 55555);
 
@@ -81,17 +84,19 @@ public class GameServer {
                     howManyConnected++;
                 }
 
+                //When all the players have connected it lets the clients know that they should start the game
+                //Also starting its own game
                 if (howManyConnected == howManyClients && !isGameStarted) {
                     Packets.PacketStartGame startGame = new Packets.PacketStartGame();
                     startGame.howManyPlayers = howManyClients + 1;
                     startGame.yourID = connection.getID();
 
-                    if(!nClientConnected[startGame.yourID-1]) {
-                        nClientConnected[startGame.yourID-1] = true;
+                    if (!nClientConnected[startGame.yourID - 1]) {
+                        nClientConnected[startGame.yourID - 1] = true;
                         connection.sendTCP(startGame);
                     }
 
-                    if(isEveryoneConnected() && !isGameStarted) {
+                    if ((isEveryoneConnected())&& !isGameStarted) {
                         Gdx.app.postRunnable(new Runnable() {
                             public void run() {
                                 game.setScreen(playScreen);
@@ -102,35 +107,37 @@ public class GameServer {
                     }
                 }
 
-                if(!player.isActive()) {
-                    Packets.PacketIAmPoweredDown iAmPoweredDown = new Packets.PacketIAmPoweredDown();
-                    iAmPoweredDown.ID = SERVER_ID;
-                    server.sendToAllTCP(iAmPoweredDown);
-                }
+                if (isGameStarted) {
+                    if (!player.isActive()) {
+                        Packets.PacketIAmPoweredDown iAmPoweredDown = new Packets.PacketIAmPoweredDown();
+                        iAmPoweredDown.ID = SERVER_ID;
+                        server.sendToAllTCP(iAmPoweredDown);
+                    }
 
-                if (object instanceof Packets.PacketIAmPoweredDown) {
-                    int id = ((Packets.PacketIAmPoweredDown) object).ID;
-                    gameMap.getPlayers().get(id).powerDown();
-                }
-
-                if(!player.isAlive()) {
-                    Packets.PacketIamDead iamDead = new Packets.PacketIamDead();
-                    iamDead.ID = SERVER_ID;
-                    server.sendToAllTCP(iamDead);
+                    if (object instanceof Packets.PacketIAmPoweredDown) {
+                        int id = ((Packets.PacketIAmPoweredDown) object).ID;
+                        gameMap.getPlayers().get(id).powerDown();
+                        server.sendToAllTCP(object);
+                        listsReceived++;
+                    }
                 }
                 if(object instanceof Packets.PacketIamDead) {
-                    int id = ((Packets.PacketIamDead) object).ID;
-                    gameMap.getPlayers().get(id).kill();
+                    System.out.println("IAMDEAD");
+                    howManyConnected--;
                 }
 
-                if(isGameStarted&& !haveNClientSentListOfMoves[connection.getID()-1]) {
+                //Pinging clients that hasnt sent moves
+                if (isGameStarted && !haveNClientSentListOfMoves[connection.getID() - 1]) {
                     Packets.PacketServerRequiersMoves newMoves = new Packets.PacketServerRequiersMoves();
                     connection.sendTCP(newMoves);
                 }
 
+                //Receiving Packet with moves from a client. Adds them to own arrayList to be used later
+                //and sends out the lists to all clients
                 if (object instanceof Packets.PacketListOfMoves) {
                     System.out.println("SERVER RECEIVED LIST OF MOVES FROM CLIENT " + connection.getID());
-                    haveNClientSentListOfMoves[connection.getID()-1] = true;
+                    haveNClientSentListOfMoves[connection.getID() - 1] = true;
+
                     final Packets.PacketListOfMovesFromServer listOfMovesFromServer = new Packets.PacketListOfMovesFromServer();
 
                     ArrayList<ProgramCard> movesFromClient = ((Packets.PacketListOfMoves) object).movesToSend;
@@ -145,12 +152,13 @@ public class GameServer {
                             System.out.println("SENDING CLIENT MOVES BACK TO CLIENT" + connections[i].getID());
                             connections[i].sendTCP(listOfMovesFromServer);
                         }
-                            ArrayList<ProgramCard> pg = new ArrayList<>();
-                            pg.addAll(listOfMovesFromServer.allMoves);
-                            movesToPlayAtServer.add(pg);
-                            idIndexer.add(id);
-                            listOfMovesFromServer.allMoves.clear();
-                            listsReceived++;
+
+                        ArrayList<ProgramCard> pg = new ArrayList<>();
+                        pg.addAll(listOfMovesFromServer.allMoves);
+                        movesToPlayAtServer.add(pg);
+                        idIndexer.add(id);
+                        listOfMovesFromServer.allMoves.clear();
+                        listsReceived++;
                     }
                 }
 
@@ -158,28 +166,36 @@ public class GameServer {
                     System.out.println("SERVER HAS RECEIVED ALL LISTS");
                     final Packets.PacketListOfMovesFromServer listOfMovesFromServer = new Packets.PacketListOfMovesFromServer();
 
-                    if (player.getHandChosen()) {
-                        for (int i = 0; i < 5; i++) {
-                            listOfMovesFromServer.allMoves.add(player.getPlayerDeck().getCardFromHand(i));
+                    System.out.println("handchosen, handsize;");
+                    System.out.println(player.getHandChosen());
+                    System.out.println(player.getPlayerDeck().handSize());
+
+                    if (player.getHandChosen() || !player.getPlayerDeck().handIsEmpty()) {
+                        //adding servers hands to packet to be sent out to all clients
+                        if(player.isActive() && player.isAlive()) {
+                            for (int i = 0; i < 5; i++) {
+                                listOfMovesFromServer.allMoves.add(player.getPlayerDeck().getCardFromHand(i));
+
+                            }
+
+                            listOfServerMoves.addAll(listOfMovesFromServer.allMoves);
+                            movesToPlayAtServer.add(listOfServerMoves);
+                            idIndexer.add(SERVER_ID);
+                            listOfMovesFromServer.id = SERVER_ID;
+                            server.sendToAllTCP(listOfMovesFromServer);
+                            listOfMovesFromServer.allMoves.clear();
                         }
 
-                        listOfServerMoves.addAll(listOfMovesFromServer.allMoves);
-                        movesToPlayAtServer.add(listOfServerMoves);
-
-                        idIndexer.add(SERVER_ID);
-
-                        listOfMovesFromServer.id = SERVER_ID;
-                        for (int i = 0; i < connections.length; i++) {
-                            System.out.println("SERVER SENDING OWN MOVES TO CLIENT" + connections[i].getID());
-                            connections[i].sendTCP(listOfMovesFromServer);
-                        }
-                        listOfMovesFromServer.allMoves.clear();
-                        System.out.println("SERVER ADDING OWN MOVES TO GAMEMAP");
-
-                        for(int i = 0; i < movesToPlayAtServer.size(); i++) {
+                        //Adding all moves to servers game-map
+                        for (int i = 0; i < movesToPlayAtServer.size(); i++) {
                             ArrayList<ProgramCard> cardsToAddToGamemap = movesToPlayAtServer.get(i);
                             gameMap.getHandsFromServer(cardsToAddToGamemap, idIndexer.get(i));
                         }
+
+                        listOfServerMoves.clear();
+                        Packets.PacketStartRound startRound = new Packets.PacketStartRound();
+                        server.sendToAllTCP(startRound);
+                        gameMap.setStartRound(true);
                         setBooleanArrayToFalse(haveNClientSentListOfMoves);
                         movesToPlayAtServer.clear();
                         idIndexer.clear();
@@ -187,25 +203,27 @@ public class GameServer {
                     }
                 }
             }
+
         });
 
     }
 
     private boolean haveEveryoneReceived() {
         for (int i = 0; i < haveNClientSentListOfMoves.length; i++) {
-            if(!haveNClientSentListOfMoves[i])
+            if (!haveNClientSentListOfMoves[i])
                 return false;
         }
         return true;
     }
 
     private boolean isEveryoneConnected() {
-        for (int i = 0; i <nClientConnected.length ; i++) {
-            if(!nClientConnected[i])
-                return  false;
+        for (int i = 0; i < nClientConnected.length; i++) {
+            if (!nClientConnected[i])
+                return false;
         }
         return true;
     }
+
     private void setBooleanArrayToFalse(boolean[] array) {
         for (int i = 0; i < array.length; i++) {
             array[i] = false;
@@ -213,7 +231,6 @@ public class GameServer {
     }
 
 }
-
 
 
 

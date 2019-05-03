@@ -21,6 +21,7 @@ public class NetworkUtils {
         kryo.register(Packets.PacketIDisconnected.class);
         kryo.register(Packets.PacketIamDead.class);
         kryo.register(Packets.PacketIAmPoweredDown.class);
+        kryo.register(Packets.PacketStartRound.class);
 
 
 

@@ -33,4 +33,6 @@ public class Packets {
     public static class PacketIamDead{public int ID;}
 
     public static class PacketIAmPoweredDown { public int ID;}
+
+    public static class PacketStartRound {}
 }
