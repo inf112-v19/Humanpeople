@@ -192,7 +192,7 @@ public class TestScreen implements Screen {
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.H)) {
                 System.out.println("LASER");
-                gameMap.fireLasers();
+                gameMap.getLaser().fireLasers();
             }
             if(Gdx.input.isKeyJustPressed(Input.Keys.J)) {
                 for (Player player : gameMap.getPlayers()) {
@@ -205,7 +205,7 @@ public class TestScreen implements Screen {
             }
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.T)) {
-                gameMap.toggleLaser();
+                gameMap.getLaser().toggleLaser();
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
                 ui.toggleCardSelection();
