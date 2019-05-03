@@ -24,16 +24,18 @@ public class Player {
     private boolean active;
     private boolean isDestroyed;
     private boolean isAlive;
+    /**
+     * Variable to distinguish between human players and bots
+     */
     private boolean isAI;
-
+    /**
+     * The current conveyor belt the player is standing on.
+     * If null then player is not standing on a conveyor belt
+     */
     private ConveyorBelt currentConveyorBelt;
-
     private boolean handChosen;
-
     private int lastFlagVisited;
     private boolean hitByBoardLaser;
-
-
 
     public Player(int id) {
         this.id = id;
@@ -56,10 +58,9 @@ public class Player {
         this.isAI = true;
     }
 
-    public boolean getisAI() {
+    public boolean isAi() {
         return isAI;
     }
-
 
     public int getId() {
         return id;
@@ -69,7 +70,7 @@ public class Player {
      * Select the 5 first cards form player deck
      */
     public void select5FirstCards() {
-            playerDeck.selectCardsForHand();
+        playerDeck.selectCardsForHand();
     }
 
     /**
@@ -85,12 +86,6 @@ public class Player {
         playerDeck.changedHealth(health);
     }
 
-    public void restoreHealth() {
-        isDestroyed = false;
-        health = MAX_HEALTH;
-        playerDeck.changedHealth(health);
-    }
-
     /**
      * Increase the health of the player by one.
      * Does not increase if player has max health
@@ -102,8 +97,7 @@ public class Player {
     }
 
     /**
-     * If health is less than 1 player is destroyed
-     *
+     * If health is less than 1, then player is destroyed
      * @return true if player has no health
      */
     public boolean lostAllHealth() {
@@ -112,10 +106,6 @@ public class Player {
             return true;
         }
         return false;
-    }
-
-    public void revive() {
-        isAlive = true;
     }
 
     public void damagePlayer(int howMuchDamage) {
@@ -194,7 +184,6 @@ public class Player {
      * A powered down player is now active
      */
     public void activate() {
-//        restoreHealth();
         active = true;
     }
 
@@ -251,19 +240,7 @@ public class Player {
     }
 
     public void printStatus() {
-        String status = "ACTIVE";
-
-        if(lastFlagVisited == 3)
-            status = "WINNER";
-        else if(!isAlive)
-            status = "DEAD";
-        else if(isDestroyed)
-            status = "DESTROYED";
-        else if(!isActive())
-            status = "POWER DOWN";
-
-        System.out.printf("##COLOR: %-10s ##DAMAGE TOKENS: %-2d ##LIFETOKENS: %s ##FLAG: %s ##STATUS: %s",
-                this.getPlayerTile().getColor(), getHealth(), getLifeTokens(), getLastFlagVisited(), status);
+        System.out.println(getStatus());
     }
 
     public String getStatus(){
@@ -276,7 +253,7 @@ public class Player {
             status = "POWER DOWN";
 
         return String.format("COLOR: %-10s\n" +
-                        "DAMAGE TOKENS: %-2d\n" +
+                        "HEALTH POINTS: %-2d\n" +
                         "LIFE TOKENS: %s\n" +
                         "FLAG: %s\n" +
                         "STATUS: %s \n\n",

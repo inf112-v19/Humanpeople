@@ -20,7 +20,7 @@ public class DisplayMessageOnScreen {
     }
 
     /**
-     * Sets up victory table
+     * Create table displaying the given message
      */
     public void createTable() {
         Label.LabelStyle labelStyle = new Label.LabelStyle();

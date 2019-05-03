@@ -34,8 +34,6 @@ public class UserInterface {
     private Image leftBar;
     private Image rightBar;
 
-    private Table playerColorTable;
-
     private boolean cardSelection = false;
 
     Position pos[] = new Position[5];
@@ -48,15 +46,12 @@ public class UserInterface {
 
     private Stage stage;
     private float width;
-    private float height;
     private Player player;
     private int health;
     private int lifeTokens;
     private int lastFlagVisited;
 
-
-    public UserInterface(float width, float height, Player player) {
-        this.height = height;
+    public UserInterface(float width, Player player) {
         this.width = width;
         this.player = player;
         this.health = player.getHealth();
@@ -68,7 +63,6 @@ public class UserInterface {
         initializePlayButton();
         initializePowerDownButton();
         initializeCardSlots();
-        initializePlayerColor();
     }
 
     private void initializeLockedCards() {
@@ -94,13 +88,6 @@ public class UserInterface {
         }
     }
 
-    public void initializePlayerColor() {
-        String message = player.getPlayerTile().getColor();
-        DisplayMessageOnScreen messageScreen = new DisplayMessageOnScreen(message, 305, 30);
-        playerColorTable = messageScreen.getTable();
-        playerColorTable.rotateBy(90);
-    }
-
     private void placeLockedCards(ProgramCard card, int i) {
         Sprite picture = new Sprite(new Texture(card.getFilename()));
         final Image cardImage = new Image(new SpriteDrawable(picture));
@@ -122,10 +109,12 @@ public class UserInterface {
         return stage;
     }
 
+    /**
+     * Checks the number of damageTokens of the player and updates the graphic displaying it
+     */
     public void getDamageTokenOfPlayer() {
         if (stage.getActors().contains(damageTokenImage, false))
             stage.getActors().removeValue(damageTokenImage, false);
-
 
         int damageTokens = player.getHealth();
         Texture damageTokenTexture;
@@ -177,6 +166,9 @@ public class UserInterface {
         stage.addActor(damageTokenImage);
     }
 
+    /**
+     * Checks the number of lifeTokens of the player and updates the graphic displaying it
+     */
     public void getLifeTokenOfPlayer() {
         int lifeTokens = player.getLifeTokens();
         Texture lifeTokenTexture;
@@ -263,7 +255,6 @@ public class UserInterface {
     }
 
     private void initializeSideBars() {
-
         Sprite picture = new Sprite(new Texture("assets/userInterface/rightSideBar.png"));
         leftBar = new Image(new SpriteDrawable(picture));
         leftBar.setWidth(leftBar.getWidth() * 2);
@@ -275,7 +266,6 @@ public class UserInterface {
         rightBar.setWidth(rightBar.getWidth() * 2);
         rightBar.setHeight(rightBar.getHeight() / 2);
         rightBar.setPosition(width - rightBar.getWidth(), 0);
-
     }
 
     private void initializePlayButton() {
@@ -291,7 +281,6 @@ public class UserInterface {
                 for (int i = 0; i < chosenCards.length; i++)
                     if (chosenCards[i] == null)
                         count++;
-
                 if (count > 0) {
                     System.out.println("Choose " + (count) + " more cards");
                     return;
@@ -337,7 +326,6 @@ public class UserInterface {
         if (hasPoweredDown || !player.isAlive()) {
             player.powerDown();
             player.setHandChosen(true);
-            System.out.println("POWER DOWN FOR PLAYER " + player.getPlayerTile().getColor());
             hasPoweredDown = false;
             return;
         }
@@ -436,7 +424,6 @@ public class UserInterface {
                 return;
             }
         }
-
         cardImage.setPosition(cardImage.getOriginX(), cardImage.getOriginY());
         programCard.setMarked(false);
         for (int k = player.getPlayerDeck().numberOfLockedCards; k < chosenCards.length; k++) {
@@ -475,7 +462,6 @@ public class UserInterface {
         stage.addActor(cardSlotsBottom);
         stage.addActor(playButton);
         stage.addActor(powerDownButton);
-        stage.addActor(playerColorTable);
         getDamageTokenOfPlayer();
         getLifeTokenOfPlayer();
         getFlagInfo();
@@ -515,6 +501,5 @@ public class UserInterface {
         cardSelection = !cardSelection;
         if(cardSelection)
             this.initializeCardSelection();
-        System.out.println("Card selection = " + cardSelection);
     }
 }

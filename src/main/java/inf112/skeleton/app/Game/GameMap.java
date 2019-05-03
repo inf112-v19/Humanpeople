@@ -419,7 +419,7 @@ public class GameMap {
      */
     public void selectCardsForBots() {
         for (Player player : players) {
-            if (player.getisAI() && player.getPlayerDeck().handIsEmpty()) {
+            if (player.isAi() && player.getPlayerDeck().handIsEmpty()) {
                 player.select5FirstCards();
                 player.setHandChosen(true);
             }

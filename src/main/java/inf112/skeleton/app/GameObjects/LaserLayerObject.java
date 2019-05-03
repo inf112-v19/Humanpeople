@@ -14,7 +14,6 @@ public class LaserLayerObject implements GameObject {
         tile = tiles.getTile(id);
     }
 
-
     @Override
     public boolean canGo(Direction dir) {
         return true;

@@ -55,10 +55,7 @@ public class MenuScreen implements Screen {
         this.game = game;
     }
 
-
-    @Override
-    public void show() {
-        // Music for game
+    public void enableMusic() {
         try {
             Sequence sequence = null;
             sequence = MidiSystem.getSequence(new File("assets/music.mid"));
@@ -74,7 +71,10 @@ public class MenuScreen implements Screen {
         } catch (MidiUnavailableException e) {
             e.printStackTrace();
         }
+    }
 
+    @Override
+    public void show() {
         stage = new Stage();
 
         Sprite picture = new Sprite(new Texture("assets/mainMenu/background.png"));

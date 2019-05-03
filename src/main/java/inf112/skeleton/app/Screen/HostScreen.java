@@ -87,8 +87,6 @@ public class HostScreen implements Screen {
         });
 
         stage.addActor(selectButton);
-        //stage.addActor(clientField);
-        //stage.addActor(hostField);
         Gdx.input.setInputProcessor(stage);
     }
 

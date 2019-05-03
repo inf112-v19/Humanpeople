@@ -12,7 +12,9 @@ public class RoboRally extends Game {
     @Override
     public void create() {
         batch = new SpriteBatch();
-        setScreen(new MenuScreen(this));
+        MenuScreen menuScreen = new MenuScreen(this);
+        menuScreen.enableMusic();
+        setScreen(menuScreen);
     }
 
     @Override

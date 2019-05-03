@@ -24,7 +24,6 @@ public class ChooseMapScreen implements Screen {
     private Stage stage;
 
     private ImageButton map1Button;
-    private ImageButton multiPlayerButton;
     private ImageButton map2Button;
     private Image menuBackground;
     private Skin skin;

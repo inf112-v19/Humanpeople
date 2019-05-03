@@ -43,7 +43,6 @@ public class InfoScreen {
     public void createStatusTable() {
         int counter = 0;
 
-
         Label.LabelStyle labelStyle = new Label.LabelStyle();
         BitmapFont myFont = new BitmapFont();
         labelStyle.font = myFont;

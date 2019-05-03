@@ -15,8 +15,6 @@ import inf112.skeleton.app.Game.GameMap;
 import inf112.skeleton.app.Game.RoboRally;
 import inf112.skeleton.app.Player.Player;
 
-import java.util.concurrent.TimeUnit;
-
 /**
  * Play screen of RoboRally
  */
@@ -38,10 +36,7 @@ public class PlayScreen implements Screen {
     private InfoScreen infoScreen;
 
     private int myID;
-
-    private boolean hasWon;
     private boolean isMultiPlayer;
-
 
     public PlayScreen(RoboRally game, int nPlayers, boolean isMultiPlayer, String mapFilename) {
         this.game = game;
@@ -57,7 +52,7 @@ public class PlayScreen implements Screen {
     }
 
     public void initializeUI(int myID) {
-        this.ui = new UserInterface(width, height, gameMap.getPlayers().get(myID));
+        this.ui = new UserInterface(width, gameMap.getPlayers().get(myID));
         ui.toggleCardSelection();
     }
 
@@ -73,15 +68,7 @@ public class PlayScreen implements Screen {
         // Display winner if there is a winner
         if (gameMap.getWinner() != null)
             displayWinner(gameMap.getWinner());
-
-        Player player = gameMap.getPlayers().get(myID);
-        if (!player.isAlive()) {
-            Player winner = gameMap.getWinner();
-            if (winner == null)
-                displayDeathOfPlayer(player);
-            else if (!gameMap.getWinner().equals(player))
-                displayDeathOfPlayer(player);
-        }
+        checkForDeadPlayer();
 
         handleInput();
         tickTime += deltaTime;
@@ -93,7 +80,6 @@ public class PlayScreen implements Screen {
         // If game is multiplayer then wait for all players to choose cards
         if (isMultiPlayer) {
             if (gameMap.isReadyForRound()&& gameMap.getStartRound()) {
-                System.out.println("!!!!!!!!!!!!!!!!!!!!");
                 gameMap.addPlayerHandToNewRound();
                 gameMap.getPlayers().get(myID).setHandChosen(false);
                 gameMap.setStartRound(false);
@@ -116,21 +102,25 @@ public class PlayScreen implements Screen {
         }
         //Update ui
         if (tickTime > 0.2) {
-            // Update only if there is a change in the variables
-            if (ui.getPlayer().getHealth() != ui.getSavedHealth()) {
-                ui.getDamageTokenOfPlayer();
-                ui.setSavedHealth(ui.getPlayer().getHealth());
+            updateUI();
+        }
+    }
 
-            }
-            if (ui.getPlayer().getLifeTokens() != ui.getSavedLifeTokens()) {
-                ui.getLifeTokenOfPlayer();
-                ui.setSavedLifeTokens(ui.getPlayer().getLifeTokens());
-
-            }
-            if (ui.getPlayer().getLastFlagVisited() != ui.getSavedFlag()) {
-                ui.getFlagInfo();
-                ui.setSavedFlag(ui.getPlayer().getLastFlagVisited());
-            }
+    /**
+     * Updates UI only if there is a change in the variables
+     */
+    public void updateUI() {
+        if (ui.getPlayer().getHealth() != ui.getSavedHealth()) {
+            ui.getDamageTokenOfPlayer();
+            ui.setSavedHealth(ui.getPlayer().getHealth());
+        }
+        if (ui.getPlayer().getLifeTokens() != ui.getSavedLifeTokens()) {
+            ui.getLifeTokenOfPlayer();
+            ui.setSavedLifeTokens(ui.getPlayer().getLifeTokens());
+        }
+        if (ui.getPlayer().getLastFlagVisited() != ui.getSavedFlag()) {
+            ui.getFlagInfo();
+            ui.setSavedFlag(ui.getPlayer().getLastFlagVisited());
         }
     }
 
@@ -181,7 +171,6 @@ public class PlayScreen implements Screen {
     /**
      * Displays text over the board congratulating the winner
      * The winner is removed from the board while the game continues in the background
-     *
      * @param winner
      */
     public void displayWinner(Player winner) {
@@ -189,14 +178,24 @@ public class PlayScreen implements Screen {
         DisplayMessageOnScreen victoryScreen = new DisplayMessageOnScreen(victoryMessage, 150, 150);
         Table victoryTable = victoryScreen.getTable();
         stage.addActor(victoryTable);
-        hasWon = true;
     }
 
-    public void displayDeathOfPlayer(Player player) {
+    public void displayDeathOfPlayer() {
         String message = "GAME OVER\nYOU HAVE DIED";
         DisplayMessageOnScreen messageScreen = new DisplayMessageOnScreen(message, 200, 150);
         Table table = messageScreen.getTable();
         stage.addActor(table);
+    }
+
+    public void checkForDeadPlayer() {
+        Player player = gameMap.getPlayers().get(myID);
+        if (!player.isAlive()) {
+            Player winner = gameMap.getWinner();
+            if (winner == null)
+                displayDeathOfPlayer();
+            else if (!gameMap.getWinner().equals(player))
+                displayDeathOfPlayer();
+        }
     }
 
     @Override

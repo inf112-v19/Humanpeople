@@ -69,23 +69,20 @@ public class TestScreen implements Screen {
         this.renderer = new OrthogonalTiledMapRenderer(map);
         gameCam.position.set(width / 2, (height / 2), 0);
 
-        this.ui = new UserInterface(width, height, gameMap.getPlayers().get(0));
+        this.ui = new UserInterface(width, gameMap.getPlayers().get(0));
         this.infoScreen = new InfoScreen(gameMap.getPlayers(), width, height);
-
 
         //Every program card type
         move1 = new ProgramCard(ProgramType.MOVE1, 1, "assets/cards/programCards/Move1/move1p490.png");
         move2 = new ProgramCard(ProgramType.MOVE2, 2, "assets/cards/programCards/Move2/move2p670.png");
         move3 = new ProgramCard(ProgramType.MOVE3, 3, "assets/cards/programCards/Move3/move3p790.png");
 
-
         right = new ProgramCard(ProgramType.ROTATERIGHT, 4, "assets/cards/programCards/rotateRight/rotateRightp80.png");
         left = new ProgramCard(ProgramType.ROTATELEFT, 5, "assets/cards/programCards/rotateLeft/rotateLeftp70.png");
         backUp = new ProgramCard(ProgramType.BACKWARD, 6, "assets/cards/programCards/backup/backUp1p430.png");
         uTurn = new ProgramCard(ProgramType.UTURN, 7, "assets/cards/programCards/uturn/uTurnp10.png");
 
-
-        //setter id-en til 0 for å flytte spilleren med id 0
+        // Setter id-en til 0 for å flytte spilleren med id 0
         move1.setPlayerThatPlayedTheCard(0);
         move2.setPlayerThatPlayedTheCard(0);
         move3.setPlayerThatPlayedTheCard(0);
@@ -98,17 +95,6 @@ public class TestScreen implements Screen {
     }
 
     public void update(float deltaTime) {
-        //handleInput();
-        //updateMap();
-        if (!pause) {
-            tickTime += deltaTime;
-            if (tickTime > 0.9) {
-                tickTime = 0;
-                gameMap.performNextMovement();
-                //TODO få getInfo til å virke på en fornuftig måte
-//            getInfo();
-            }
-        }
         // Display winner if there is a winner
         if (gameMap.getWinner() != null)
             displayWinner(gameMap.getWinner());
@@ -158,7 +144,6 @@ public class TestScreen implements Screen {
 
 
     public void handleInput() {
-
         if (!infoShowed) {
             infoShowed = true;
             System.out.println("\nSelect 5:\n1 = move1\n2 = move2\n3 = move3\nr = rotateRight\nl = rotateLeft\nu = uTurn\nb = backup\n\nSpace = Confirm");
@@ -180,17 +165,14 @@ public class TestScreen implements Screen {
                 cardsForPlayer.add(right);
                 System.out.println("selected: " + cardsForPlayer.size() + "/" + 5);
             }
-
             if (Gdx.input.isKeyJustPressed(Input.Keys.L)) {
                 cardsForPlayer.add(left);
                 System.out.println("selected: " + cardsForPlayer.size() + "/" + 5);
             }
-
             if (Gdx.input.isKeyJustPressed(Input.Keys.U)) {
                 cardsForPlayer.add(uTurn);
                 System.out.println("selected: " + cardsForPlayer.size() + "/" + 5);
             }
-
             if (Gdx.input.isKeyJustPressed(Input.Keys.B)) {
                 cardsForPlayer.add(backUp);
                 System.out.println("selected: " + cardsForPlayer.size() + "/" + 5);
@@ -202,20 +184,17 @@ public class TestScreen implements Screen {
             if (Gdx.input.isKeyJustPressed(Input.Keys.J)) {
                 for (Player player : gameMap.getPlayers()) {
                     player.printStatus();
-                    System.out.println();
                 }
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
                 game.setScreen(new MenuScreen(game));
             }
-
             if (Gdx.input.isKeyJustPressed(Input.Keys.T)) {
                 gameMap.getLaser().toggleLaser();
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
                 ui.toggleCardSelection();
             }
-
             if (Gdx.input.isKeyPressed(Input.Keys.TAB)) {
                 stage = infoScreen.getStage();
                 stage.setViewport(gamePort);
@@ -233,14 +212,9 @@ public class TestScreen implements Screen {
             cardsForPlayer.clear();
             infoShowed = false;
         }
-
         if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
             getInfo();
         }
-    }
-
-    private void toggleCardSelection() {
-
     }
 
     public void givePlayersRotateHand() {
