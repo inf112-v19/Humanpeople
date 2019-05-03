@@ -32,7 +32,7 @@ public class EndOfPhaseActions {
     /**
      * Final flag to visit for players to win the game
      */
-    private int finalFlagNumber = 3;
+    private int finalFlagNumber = 1;
 
     public EndOfPhaseActions(GameMap gameMap, Grid grid, TiledMap map) {
         this.gameMap = gameMap;

@@ -3,15 +3,10 @@ package inf112.skeleton.app.Game;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
-import inf112.skeleton.app.Cards.ProgramCard;
 import inf112.skeleton.app.Directions.Direction;
 import inf112.skeleton.app.Directions.Position;
-import inf112.skeleton.app.GameObjects.FlagLayerObject;
-import inf112.skeleton.app.GameObjects.PlayerLayerObject;
 import inf112.skeleton.app.Player.Player;
-import inf112.skeleton.app.Round.Phase;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,7 +24,7 @@ public class Laser {
     /**
      * Variable to toggle laser. If false, then do not fire laser
      */
-    private boolean laserFire = true;
+    private boolean laserEnabled = true;
 
     public Laser(GameMap gameMap, Grid grid, TiledMap map) {
         this.gameMap = gameMap;
@@ -50,7 +45,7 @@ public class Laser {
      * Fire both player and board lasers
      */
     public void fireLasers() {
-        if(!laserFire)
+        if(!laserEnabled)
             return;
 
         for (Player player : players) {
@@ -66,8 +61,8 @@ public class Laser {
     }
 
     public void toggleLaser() {
-        laserFire = !laserFire;
-        System.out.println("Laserfire = " + laserFire);
+        laserEnabled = !laserEnabled;
+        System.out.println("Laserfire = " + laserEnabled);
     }
 
     /**

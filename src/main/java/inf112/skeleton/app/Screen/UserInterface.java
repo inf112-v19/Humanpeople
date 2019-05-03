@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
@@ -32,6 +33,8 @@ public class UserInterface {
     private Image cardSlotsBottom;
     private Image leftBar;
     private Image rightBar;
+
+    private Table playerColorTable;
 
     private boolean cardSelection = false;
 
@@ -65,6 +68,7 @@ public class UserInterface {
         initializePlayButton();
         initializePowerDownButton();
         initializeCardSlots();
+        initializePlayerColor();
     }
 
     private void initializeLockedCards() {
@@ -88,6 +92,13 @@ public class UserInterface {
             chosenCards[i] = lockedCards[i];
             placeLockedCards(lockedCards[i], i);
         }
+    }
+
+    public void initializePlayerColor() {
+        String message = player.getPlayerTile().getColor();
+        DisplayMessageOnScreen messageScreen = new DisplayMessageOnScreen(message, 305, 30);
+        playerColorTable = messageScreen.getTable();
+        playerColorTable.rotateBy(90);
     }
 
     private void placeLockedCards(ProgramCard card, int i) {
@@ -465,6 +476,7 @@ public class UserInterface {
         stage.addActor(cardSlotsBottom);
         stage.addActor(playButton);
         stage.addActor(powerDownButton);
+        stage.addActor(playerColorTable);
         getDamageTokenOfPlayer();
         getLifeTokenOfPlayer();
         getFlagInfo();

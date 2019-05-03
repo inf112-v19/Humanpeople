@@ -527,6 +527,13 @@ public class GameMap {
         return currentDir;
     }
 
+    public boolean isReadyForRound() {
+        for (Player player : players) {
+            if (player.getPlayerDeck().handSize() != 5 && player.isAlive() && player.isActive())
+                return false;
+        }
+        return true;
+    }
 
     public boolean getCardsDealt() {
         return cardsDealt;

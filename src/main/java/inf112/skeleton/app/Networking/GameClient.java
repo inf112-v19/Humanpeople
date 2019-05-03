@@ -56,56 +56,55 @@ public class GameClient {
 
             public void received(final Connection connection, final Object object) {
 
-                if(object instanceof Packets.PacketRequestAnswer) {
-                    if(((Packets.PacketRequestAnswer) object).accepted) {
+                if (object instanceof Packets.PacketRequestAnswer) {
+                    if (((Packets.PacketRequestAnswer) object).accepted) {
                         IPAddress = ((Packets.PacketRequestAnswer) object).IPAdress;
-                    }
-                    else
+                    } else
                         connection.close();
                 }
 
-                if(object instanceof Packets.PacketStartGame) {
+                if (object instanceof Packets.PacketStartGame) {
 
                     final int howManyPlayers = ((Packets.PacketStartGame) object).howManyPlayers;
                     Gdx.app.postRunnable(new Runnable() {
 
                         public void run() {
-                        playScreen = new PlayScreen(game, howManyPlayers, true);
-                        myId = ((Packets.PacketStartGame) object).yourID;
-                        playScreen.initializeUI(myId);
-                        player = playScreen.getGameMap().getPlayers().get(myId);
-                        game.setScreen(playScreen);
-                        playScreen.setMyID(myId);
-                        isGameStarted = true;
+                            playScreen = new PlayScreen(game, howManyPlayers, true);
+                            myId = ((Packets.PacketStartGame) object).yourID;
+                            playScreen.initializeUI(myId);
+                            player = playScreen.getGameMap().getPlayers().get(myId);
+                            game.setScreen(playScreen);
+                            playScreen.setMyID(myId);
+                            isGameStarted = true;
                         }
                     });
                 }
+                if (isGameStarted) {
+                    if (!player.isActive()) {
+                        Packets.PacketIAmPoweredDown iAmPoweredDown = new Packets.PacketIAmPoweredDown();
+                        iAmPoweredDown.ID = myId;
+                        connection.sendTCP(iAmPoweredDown);
+                    }
 
-                if(!player.isActive() && isGameStarted) {
-                    Packets.PacketIAmPoweredDown iAmPoweredDown = new Packets.PacketIAmPoweredDown();
-                    iAmPoweredDown.ID = myId;
-                    connection.sendTCP(iAmPoweredDown);
+                    if (object instanceof Packets.PacketIAmPoweredDown) {
+                        int id = ((Packets.PacketIAmPoweredDown) object).ID;
+                        playScreen.getGameMap().getPlayers().get(id).powerDown();
+                    }
+
+                    if (!player.isAlive() && isGameStarted) {
+                        Packets.PacketIamDead iamDead = new Packets.PacketIamDead();
+                        iamDead.ID = myId;
+                        connection.sendTCP(iamDead);
+                    }
+                    if (object instanceof Packets.PacketIamDead) {
+                        int id = ((Packets.PacketIamDead) object).ID;
+                        playScreen.getGameMap().getPlayers().get(id).kill();
+                    }
                 }
 
-                if (object instanceof Packets.PacketIAmPoweredDown) {
-                    int id = ((Packets.PacketIAmPoweredDown) object).ID;
-                    playScreen.getGameMap().getPlayers().get(id).powerDown();
-                }
-
-                if(!player.isAlive() && isGameStarted) {
-                    Packets.PacketIamDead iamDead = new Packets.PacketIamDead();
-                    iamDead.ID = myId;
-                    connection.sendTCP(iamDead);
-                }
-                if(object instanceof Packets.PacketIamDead) {
-                    int id = ((Packets.PacketIamDead) object).ID;
-                    playScreen.getGameMap().getPlayers().get(id).kill();
-                }
-
-
-                if(object instanceof Packets.PacketServerRequiersMoves) {
-                    System.out.println("CLIENT" +connection.getID() + " got RequestMoves");
-                    if (player!= null && player.getHandChosen() && player.getPlayerDeck().handSize() == 5) {
+                if (object instanceof Packets.PacketServerRequiersMoves) {
+                    System.out.println("CLIENT" + connection.getID() + " got RequestMoves");
+                    if (player != null && player.getHandChosen() && player.getPlayerDeck().handSize() == 5) {
                         Packets.PacketListOfMoves listOfMoves = new Packets.PacketListOfMoves();
                         for (int i = 0; i < 5; i++) {
                             listOfMoves.movesToSend.add(player.getPlayerDeck().getCardFromHand(i));
@@ -116,14 +115,14 @@ public class GameClient {
                     }
                 }
 
-                if(object instanceof Packets.PacketListOfMovesFromServer) {
-                    System.out.println("CLIENT" +connection.getID() + " got ListOfMoves from server");
+                if (object instanceof Packets.PacketListOfMovesFromServer) {
+                    System.out.println("CLIENT" + connection.getID() + " got ListOfMoves from server");
                     final int id = ((Packets.PacketListOfMovesFromServer) object).id;
                     final ArrayList<ProgramCard> list = ((Packets.PacketListOfMovesFromServer) object).allMoves;
 
                     Gdx.app.postRunnable(new Runnable() {
                         public void run() {
-                            System.out.println("CLIENT " + connection.getID() + "ADDING CLIENT" + id +"s MOVES TO HIS GAMEMAP");
+                            System.out.println("CLIENT " + connection.getID() + "ADDING CLIENT" + id + "s MOVES TO HIS GAMEMAP");
                             playScreen.getGameMap().getHandsFromServer(list, id);
                         }
                     });

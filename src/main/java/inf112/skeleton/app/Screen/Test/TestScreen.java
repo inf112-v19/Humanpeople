@@ -9,7 +9,6 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import inf112.skeleton.app.Cards.ProgramCard;
@@ -20,7 +19,7 @@ import inf112.skeleton.app.Player.Player;
 import inf112.skeleton.app.Game.RoboRally;
 import inf112.skeleton.app.Screen.MenuScreen;
 import inf112.skeleton.app.Screen.UserInterface;
-import inf112.skeleton.app.Screen.VictoryScreen;
+import inf112.skeleton.app.Screen.DisplayMessageOnScreen;
 
 import java.util.ArrayList;
 
@@ -145,10 +144,10 @@ public class TestScreen implements Screen {
         }
     }
     public void displayWinner(Player winner) {
-        VictoryScreen victoryScreen = new VictoryScreen(winner);
-        Table winScreen = victoryScreen.getTable();
-        stage.addActor(winScreen);
-        winner.kill();
+        String victoryMessage = "Congratulations! Player " + winner.getPlayerTile().getColor() + " has won!";
+        DisplayMessageOnScreen victoryScreen = new DisplayMessageOnScreen(victoryMessage, 150, 150);
+        Table victoryTable = victoryScreen.getTable();
+        stage.addActor(victoryTable);
     }
 
 

@@ -72,6 +72,15 @@ public class PlayScreen implements Screen {
         if (gameMap.getWinner() != null)
             displayWinner(gameMap.getWinner());
 
+        Player player = gameMap.getPlayers().get(myID);
+        if (!player.isAlive()) {
+            Player winner = gameMap.getWinner();
+            if (winner == null)
+                displayDeathOfPlayer(player);
+            else if (!gameMap.getWinner().equals(player))
+                displayDeathOfPlayer(player);
+        }
+
         handleInput();
         tickTime += deltaTime;
         if (gameMap.getCardsDealt()) {
@@ -81,9 +90,9 @@ public class PlayScreen implements Screen {
         }
          // If game is multiplayer then wait for all players to choose cards
         if (isMultiPlayer) {
-            if (gameMap.hasAllPlayersChosenHands()) {
+            if (gameMap.isReadyForRound()) {
                 gameMap.addPlayerHandToNewRound();
-                gameMap.getPlayers().get(myID).setHandChosen(false);
+                //gameMap.getPlayers().get(myID).setHandChosen(false);
             }
         }
         // If game is singlePlayer wait for player 0 to choose cards
@@ -156,9 +165,17 @@ public class PlayScreen implements Screen {
      * @param winner
      */
     public void displayWinner(Player winner) {
-        VictoryScreen victoryScreen = new VictoryScreen(winner);
-        Table winScreen = victoryScreen.getTable();
-        stage.addActor(winScreen);
+        String victoryMessage = "Congratulations! Player " + winner.getPlayerTile().getColor() + " has won!";
+        DisplayMessageOnScreen victoryScreen = new DisplayMessageOnScreen(victoryMessage, 150, 150);
+        Table victoryTable = victoryScreen.getTable();
+        stage.addActor(victoryTable);
+    }
+
+    public void displayDeathOfPlayer(Player player) {
+        String message = "GAME OVER\nYOU HAVE DIED";
+        DisplayMessageOnScreen messageScreen = new DisplayMessageOnScreen(message, 200, 150);
+        Table table = messageScreen.getTable();
+        stage.addActor(table);
     }
 
     @Override
