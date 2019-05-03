@@ -164,3 +164,10 @@
  - Diskusjon om hvordan vi gjør LAN
  - Diskusjon om gjennværende arbeidsoppgaver for iterasjon 5
  - Neste møte: 26.04.2019
+ 
+### Referat møte 30.04.2019
+ * Oppmøte: alle
+ * Diskutert de endelige målene for å komme i mål med MVP og gjøre ferdig Oblig5
+ * Status på multiplayer og eventuelle løsninger
+ * Satt opp workshop for hver dag frem mot innlevering (03.05.2019)
+
