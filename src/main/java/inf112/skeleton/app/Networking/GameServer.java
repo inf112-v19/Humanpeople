@@ -35,14 +35,13 @@ public class GameServer {
     private ArrayList<ProgramCard> listOfServerMoves;
 
     private final int SERVER_ID = 0;
-
-
+    
     public GameServer(final RoboRally game, int port, int nPlayers) {
         this.portNumber = port;
         howManyClients = nPlayers - 1;
 
         this.game = game;
-        playScreen = new PlayScreen(this.game, howManyClients + 1, true, "assets/map3.tmx");
+        playScreen = new PlayScreen(this.game, howManyClients + 1, true, "assets/riskyExchange.tmx");
         playScreen.setMyID(SERVER_ID);
         playScreen.initializeUI(SERVER_ID);
         gameMap = playScreen.getGameMap();
