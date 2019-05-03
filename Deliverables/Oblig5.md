@@ -73,6 +73,9 @@
  * Hvis man skal bygge et hus så har det ingenting å si hvor fin stuen ser ut om grunnmuren er bygget med fyrstikker. Gjør en jevn jobb med grunnmuren av programmet for å så bygge videre. Aldri sprinte, skriv tester, dokumenter godt.
  * Alltid snakk med de du jobber med. Anta at de ikke har en anelse om hva som gjøres og reiterer hva du har sagt for å ikke komme i konflikter hvor flere jobber med det samme
 
+### Prosjektmetodikk
+ * Se Porsjektmetodikk-avsnittet under "Er det noen erfaringer enten team-messig eller mtp prosjektmetodikk som er verdt å nevne?"
+ 
 ## Deloppgave 2: Krav 
 
 ### Leveransen kommer til å vurderes på kompletthet av implementerte krav, samt at applikasjonen vil testes. Legg derfor ved liste over alle krav dere har ferdigstilt.
