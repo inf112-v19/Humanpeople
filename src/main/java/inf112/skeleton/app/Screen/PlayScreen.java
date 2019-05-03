@@ -99,7 +99,8 @@ public class PlayScreen implements Screen {
         if (tickTime > 0.4) {
             tickTime = 0;
             gameMap.performNextMovement();
-            infoScreen.update(gameMap.getPlayers());
+            infoScreen.update(gameMap.getPlayers(), myID);
+
         }
         //Update ui
         if (tickTime > 0.2) {

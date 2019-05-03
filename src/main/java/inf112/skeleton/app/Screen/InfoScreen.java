@@ -17,16 +17,24 @@ public class InfoScreen {
     private float height;
     private Table table;
     private Stage stage;
+    private int id;
+    private String currentPlayer;
+    private Color currentColor;
 
     public InfoScreen(ArrayList<Player> players, float width, float height){
-        stage = new Stage();
+        this.stage = new Stage();
         this.players = players;
         this.width = width;
         this.height = height;
         this.table = new Table();
+
+        //Set green as default
+        this.id = 0;
+        this.currentPlayer = "Green";
+
         table.setWidth(width);
         table.setHeight(height);
-        table.setPosition(35, 50);
+        table.setPosition(45, 50);
         stage.addActor(table);
 
         createStatusTable();
@@ -34,9 +42,13 @@ public class InfoScreen {
 
     public void createStatusTable() {
         int counter = 0;
+
+
         Label.LabelStyle labelStyle = new Label.LabelStyle();
         BitmapFont myFont = new BitmapFont();
         labelStyle.font = myFont;
+
+        //Create a header
         String head = "STATUSBOARD\n";
         Label headLabel = new Label(head, labelStyle);
         headLabel.setWrap(true);
@@ -45,6 +57,7 @@ public class InfoScreen {
         table.add(headLabel);
         table.row();
 
+        //Create a field of information for each player
         for(Player player : players){
             if(counter == players.size()/2)
                 table.row();
@@ -62,22 +75,37 @@ public class InfoScreen {
                 case "Light blue": cl = Color.SKY;
                     break;
             }
+
+            if(player.getId() == id) {
+                currentPlayer = color;
+                currentColor = cl;
+            }
             statusLabel.setColor(cl);
             table.align(Align.topRight);
             table.add(statusLabel).width(200);
-//            table.row();
             counter++;
-//            table.align(Align.left);
 
         }
+        table.row();
+
+        //Create a label specifying which color you are playing
+        String playingAs = "You are playing as: ";
+        String player = currentPlayer;
+        Label playingAsLabel = new Label(playingAs, labelStyle);
+        Label playerLabel = new Label(player, labelStyle);
+        playerLabel.setColor(currentColor);
+        table.add(playingAsLabel).width(65);
+        table.add(playerLabel).width(0);
+        table.getCell(playerLabel).align(Align.left);
     }
 
     public Stage getStage(){
         return stage;
     }
 
-    public void update(ArrayList<Player> players){
+    public void update(ArrayList<Player> players, int id){
         this.players = players;
+        this.id = id;
         table.clear();
         createStatusTable();
     }
