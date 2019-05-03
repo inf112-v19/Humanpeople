@@ -1,15 +1,11 @@
 package inf112.skeleton.app.Networking;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
 import inf112.skeleton.app.Cards.ProgramCard;
-import inf112.skeleton.app.Cards.ProgramType;
-import inf112.skeleton.app.Game.GameMap;
 import inf112.skeleton.app.Game.RoboRally;
 import inf112.skeleton.app.Player.Player;
 import inf112.skeleton.app.Screen.PlayScreen;
@@ -31,6 +27,8 @@ public class GameClient {
     private PlayScreen playScreen;
     private boolean isGameStarted;
     private boolean playerSentPoweredDown;
+    private boolean haveRoundStarted;
+    private boolean iHaveDied;
 
     public GameClient(final RoboRally game, String IPAdress, int port) {
         playScreen = null;
@@ -84,42 +82,44 @@ public class GameClient {
                 if (isGameStarted) {
                     if (!player.isActive() && !playerSentPoweredDown) {
                         playerSentPoweredDown = true;
-                        System.out.println("CLIENT I AM POWERED DOWN, SENDING TO SERVER");
                         Packets.PacketIAmPoweredDown iAmPoweredDown = new Packets.PacketIAmPoweredDown();
                         iAmPoweredDown.ID = myId;
                         connection.sendTCP(iAmPoweredDown);
                     }
-
-                    if (object instanceof Packets.PacketIAmPoweredDown) {
-
-                        int id = ((Packets.PacketIAmPoweredDown) object).ID;
-                        playScreen.getGameMap().getPlayers().get(id).powerDown();
-                        System.out.println("RECEIVED I AM POWEREDDOWN FOR SERVER; POWERING DOWN");
-
-                    }
-
                     if (player.isActive()) {
                         playerSentPoweredDown = false;
                     }
-//                    if(playScreen.getGameMap().getCurrentRound().isCompleted())
-//                        playScreen.getGameMap().setHasServerSentCards(false);
+
+                    if (object instanceof Packets.PacketIAmPoweredDown) {
+                        int id = ((Packets.PacketIAmPoweredDown) object).ID;
+                        playScreen.getGameMap().getPlayers().get(id).powerDown();
+
+                    }
+                    if(!player.isAlive() && !iHaveDied) {
+                        iHaveDied = true;
+                        System.out.println("I HAVE DIED");
+                        Packets.PacketIamDead iamDead = new Packets.PacketIamDead();
+                        iamDead.ID = player.getId();
+                        connection.sendTCP(iamDead);
+                    }
                 }
 
+                //When client has confirmed hand it send it to server
                 if (object instanceof Packets.PacketServerRequiersMoves) {
-
                     System.out.println("CLIENT" + connection.getID() + " got RequestMoves");
                     if (player != null && player.getHandChosen() && player.getPlayerDeck().handSize() == 5) {
                         Packets.PacketListOfMoves listOfMoves = new Packets.PacketListOfMoves();
                         for (int i = 0; i < 5; i++) {
                             listOfMoves.movesToSend.add(player.getPlayerDeck().getCardFromHand());
                         }
+
                         listOfMoves.id = myId;
                         connection.sendTCP(listOfMoves);
                         listOfMoves.movesToSend.clear();
                     }
                 }
 
-
+                //Getting hands from server and adding them to gamemap
                 if (object instanceof Packets.PacketListOfMovesFromServer) {
                     System.out.println("CLIENT" + connection.getID() + " got ListOfMoves from server");
                     final int id = ((Packets.PacketListOfMovesFromServer) object).id;
@@ -133,6 +133,9 @@ public class GameClient {
                     });
                 }
 
+                if(object instanceof Packets.PacketStartRound) {
+                    playScreen.getGameMap().setStartRound(true);
+                }
 
             }
         });

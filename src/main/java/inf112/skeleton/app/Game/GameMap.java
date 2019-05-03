@@ -43,7 +43,7 @@ public class GameMap {
     private Phase currentPhase;
     private EndOfPhaseActions endOfPhaseActions;
     private EndOfRoundActions endOfRoundActions;
-    private boolean hasServerSentCards;
+    private boolean startRound;
 
     private boolean cardsDealt;
 
@@ -78,12 +78,12 @@ public class GameMap {
         this.endOfRoundActions = new EndOfRoundActions(this);
     }
 
-    public void setHasServerSentCards(boolean hasServerSentCards) {
-        this.hasServerSentCards = hasServerSentCards;
+    public void setStartRound(boolean startRound) {
+        this.startRound = startRound;
     }
 
-    public boolean getHasServerSentCards() {
-        return hasServerSentCards;
+    public boolean getStartRound() {
+        return startRound;
     }
     /**
      * Creates all players and gives out cards
@@ -220,7 +220,7 @@ public class GameMap {
             for (int i = 0; i < amountOfPhases; i++) {
                 ArrayList<ProgramCard> cardsToAddInPhaseI = new ArrayList<>();
                 for (Player player : players) {
-                    if (player.isActive()) {
+                    if (player.isActive() && player.isAlive()) {
                         // If the players hand is empty then give out 9 new cards and select 5 cards for hand
                         // Temporary solution. Card selection system is coming.
                         if (player.getPlayerDeck().handIsEmpty()) {
