@@ -83,7 +83,7 @@ public class ChooseMapScreen implements Screen {
         map2Button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                PlayScreen playScreen = new PlayScreen(game, 4, false, "assets/map3.tmx");
+                PlayScreen playScreen = new PlayScreen(game, 4, false, "assets/riskyExchange.tmx");
                 playScreen.initializeUI(0);
                 game.setScreen(playScreen);
 

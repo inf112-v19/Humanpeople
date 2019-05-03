@@ -29,7 +29,7 @@ public class PlayerDeckTest {
     public void selectCardFromDeckOverMaxAmountOfCardsOnHand() {
         PlayerDeck pd = new PlayerDeck();
         pd.setDeck(creatDeckOfNcards(9));
-        pd.NUMBER_OF_NEW_CARDS_TO_HAND = 10;
+        pd.numberOfNewCardsToHand = 10;
         pd.selectCardsForHand();
     }
 

@@ -53,10 +53,7 @@ public class GameMap {
         this.tiles = map.getTileSets().getTileSet("testTileset");
         this.players = new ArrayList<>();
         this.nPlayers = nPlayers;
-        if (filename.equals("assets/testMap.tmx"))
-            this.startingPositions = new TestStartingPositions(grid.getWidth(), grid.getHeight());
-        else
-            this.startingPositions = new StartingPositions(grid.getWidth(), grid.getHeight(), nPlayers);
+        getStartingPositions(filename);
         this.isMultiplayer = isMultiplayer;
         this.laser = new Laser(this, grid, map);
         this.programCardDeck = ProgramCardDeck.getProgramCardDeckSingleton();
@@ -76,6 +73,15 @@ public class GameMap {
         this.round = new Round();
         this.endOfPhaseActions = new EndOfPhaseActions(this, grid, map);
         this.endOfRoundActions = new EndOfRoundActions(this);
+    }
+
+    public void getStartingPositions(String filename) {
+        if (filename.equals("assets/testMap.tmx"))
+            this.startingPositions = new TestStartingPositions(grid.getWidth(), grid.getHeight());
+        else if (filename.equals("assets/riskyExchange.tmx"))
+            this.startingPositions = new StartingPositionsRE(grid.getWidth(), grid.getHeight(), nPlayers);
+        else
+            this.startingPositions = new StartingPositions(grid.getWidth(), grid.getHeight(), nPlayers);
     }
 
     /**
@@ -134,6 +140,7 @@ public class GameMap {
 
     public void drawPlayer(Player player) {
         Position pos = player.getPosition();
+        laserLayer.setCell(pos.getX(), pos.getY(), null);
         TiledMapTileLayer.Cell avatar = new TiledMapTileLayer.Cell();
         // If player is destroyed then draw a grey avatar
         if (player.isDestroyed())
@@ -406,9 +413,6 @@ public class GameMap {
      */
     public void endOfPhaseChecks() {
         endOfPhaseActions.performAllChecks();
-        //resetHitByBoardLaser();
-        drawPlayers();
-        //fireLasers();
     }
 
     /**
@@ -425,7 +429,6 @@ public class GameMap {
 
     public void setWinner(Player player) {
         winner = player;
-
     }
 
     /**

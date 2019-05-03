@@ -90,7 +90,7 @@ public class ProgramCardDeck {
             shuffleDeck();
         }
         ArrayList<ProgramCard> playerDeck = new ArrayList<>();
-        for (int i = 0; i < player.getPlayerDeck().NUMBER_OF_NEW_CARDS_TO_DECK; i++)
+        for (int i = 0; i < player.getPlayerDeck().numberOfNewCardsToDeck; i++)
             playerDeck.add(takeRandomCard());
 
         player.getPlayerDeck().setDeck(playerDeck);

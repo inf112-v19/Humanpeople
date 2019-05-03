@@ -73,7 +73,7 @@ public class UserInterface {
 
     private void initializeLockedCards() {
         ArrayList<ProgramCard> lastHand = new ArrayList<>(player.getPlayerDeck().getHandFromLastRound());
-        int lCs = player.getPlayerDeck().NUMBER_OF_LOCKED_CARDS;
+        int lCs = player.getPlayerDeck().numberOfLockedCards;
         lockedCards = new ProgramCard[lCs];
             ProgramCardDeck pcg = ProgramCardDeck.getProgramCardDeckSingleton();
             for (int i = 0; i < lCs; i++) {
@@ -86,7 +86,7 @@ public class UserInterface {
     }
 
     private void initializeChosenCards() {
-        int lC = player.getPlayerDeck().NUMBER_OF_LOCKED_CARDS;
+        int lC = player.getPlayerDeck().numberOfLockedCards;
         chosenCards = new ProgramCard[5];
         for (int i = 0; i < lC; i++) {
             chosenCards[i] = lockedCards[i];
@@ -406,7 +406,7 @@ public class UserInterface {
             chosenCards[index] = null;
         }
 
-        for (int i = player.getPlayerDeck().NUMBER_OF_LOCKED_CARDS; i < pos.length; i++) {
+        for (int i = player.getPlayerDeck().numberOfLockedCards; i < pos.length; i++) {
             //If inside the zone
             if (x > pos[i].getX() - cardImage.getWidth() / 2 && x < pos[i].getX() + cardImage.getWidth()
                     && y < yLimitTop && y > yLimitBottom) {
@@ -439,7 +439,7 @@ public class UserInterface {
 
         cardImage.setPosition(cardImage.getOriginX(), cardImage.getOriginY());
         programCard.setMarked(false);
-        for (int k = player.getPlayerDeck().NUMBER_OF_LOCKED_CARDS; k < chosenCards.length; k++) {
+        for (int k = player.getPlayerDeck().numberOfLockedCards; k < chosenCards.length; k++) {
             if (chosenCards[k] != null && chosenCards[k].equals(programCard)) {
                 chosenCards[k] = null;
                 return;
