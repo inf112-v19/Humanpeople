@@ -42,7 +42,7 @@
  * Teamet løser problemer sammen og blir enige om gode løsninger. Dialogen er løsningsorientert og i god ånd. Ingen føler at det er vanskelig å si sin mening om løsninger av arbeidsoppgavene. 
 
 ### Hvordan fungerer kommunikasjonen for dere? 
- * Kommunikasjonen har blitt bedre og bedre, nå i slutten har vi vært veldig flink til å  kommunisere hvem som som jobber med hva og hvordan vi skal løse problemer.
+ * Kommunikasjonen har blitt bedre og bedre og nå i slutten har vi vært veldig flinke til å  kommunisere hvem som jobber med hva og hvordan vi skal løse problemer.
 ### Referat fra møter siden forrige leveranse skal legges ved. 
  * Møtereferat ligger i deliverables mappen.
 ### Under denne leveransen skal teamet rotere litt på oppgavene, slik at medlemmer som har kodet masse tar del i design-arbeid, utforming/tydeliggjøring/forbedring av krav, osv. 
@@ -53,16 +53,16 @@
 ## Utfør et retrospektiv før leveranse med fokus på hele prosjektet: 
 ### Hva justerte dere underveis, og hvorfor?
  * Vi måtte flere ganger justere oss til å bli flinkere i å bruke de verktøyene og metodene som vi har hatt tilgang til. Gjennom prosjektet har gruppen stadig blitt bedre til å bruke project board. I starten hadde vi en tendens til å prøve å lage funksjoner selv istedenfor å gjøre seg kjent med LibGdx og bruke bibliotekets funksjoner.
- * Hvordan gruppen kommuniserte. Ettersom vi ble bedre kjent ble det lettere å lettere å opprettholde god kommunikasjon.
- * Tidlig i prosjektet la vi planer for hvordan programmet skulle se ut  (kodemessig). Disse planene har ettersom semesteret gikk blitt endret drastisk. Nå vi ser tilbake på planene fra de første møtene er det en enorm forskjell fra hva vi endte opp med.
+ * Hvordan gruppen kommuniserte. Ettersom vi ble bedre kjent ble det lettere og lettere å opprettholde god kommunikasjon.
+ * Tidlig i prosjektet la vi planer for hvordan programmet skulle se ut  (kodemessig). Disse planene har blitt endret betydelig i løpet av semesteret ettehvert som vi har fått bedre forståelse. Nå vi ser tilbake på planene fra de første møtene er det en stor forskjell fra hva vi endte opp med.
 
 
 ### Ble det bedre? hva har fungert best, og hvorfor? (Hva er dere mest fornøyde med?)
- * Workshops har vært en utrolig god arbeidsmetode. Porduktiviteten har vært veldig høy hver gang vi arrangerte workshops
+ * Workshops har vært en utrolig god arbeidsmetode. Produktiviteten har vært veldig høy hver gang vi har arrangert workshops
  * God kommunikasjon blant alle gruppemedlemmene
  * Gjennomtenkt planlegging av iterasjoner og god tildeling av arbeidsoppgaver
  * Har blitt mye bedre til å bruke projectboard
- * God oppbygning av møtestruktur har tilllatt gruppen å få god oversikt over hva som skal gjøres og hva som har blitt gjort
+ * God oppbygning av møtestruktur har tillatt gruppen å få god oversikt over hva som skal gjøres og hva som har blitt gjort
 
 ### Hvis dere skulle fortsatt med prosjektet, hva ville dere justert? 
  * Gjort GUI mer brukervennlig og estetisk
