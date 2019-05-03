@@ -71,7 +71,6 @@ public class Grid {
         fillGridWithArrayListsAndGameObjects();
     }
 
-
     private void fillGridWithArrayListsAndGameObjects() {
         int id;
         for (int y = 0; y < height; y++) {
@@ -102,17 +101,10 @@ public class Grid {
                     int holeLayerId = holeCell.getTile().getId();
                     gameLogicGrid[x][y].add(holeIndex, new SpecialLayerObject(tiles, holeLayerId));
                 }
-
-                // BackupLayer 1
+                // BackupLayers for all players
                 gameLogicGrid[x][y].add(backup1Index, new NothingSpecial());
-
-                // BackupLayer 2
                 gameLogicGrid[x][y].add(backup2Index, new NothingSpecial());
-
-                // BackupLayer 3
                 gameLogicGrid[x][y].add(backup3Index, new NothingSpecial());
-
-                // BackupLayer 4
                 gameLogicGrid[x][y].add(backup4Index, new NothingSpecial());
 
                 // PlayerLayer

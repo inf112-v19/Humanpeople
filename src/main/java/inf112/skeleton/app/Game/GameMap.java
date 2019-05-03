@@ -38,7 +38,6 @@ public class GameMap {
     private Laser laser;
 
     private Round round;
-//    private Phase currentPhase;
     private EndOfPhaseActions endOfPhaseActions;
     private EndOfRoundActions endOfRoundActions;
     private boolean startRound;
@@ -96,26 +95,16 @@ public class GameMap {
     private void initializePlayers() {
         //Initializes each player and gives them a unique ID
         for (int id = 0; id < nPlayers; id++) {
-            Player player = new Player(id);
-            players.add(player);
-            Position startingPosition = startingPositions.getStartingPosition(id);
-            player.setPosition(startingPosition);
-            player.setBackup(startingPosition);
-            PlayerLayerObject playerTile = player.getPlayerTile();
-            playerTile.setSprite(tiles);
-            grid.setPlayerPosition(playerTile);
-            setBackup(player);
-            if (!isMultiplayer && id > 0)
-                player.setAI();
+            initializePlayer(id);
         }
         // Give out cards to players
         dealCards();
         programCardDeck.giveOutCardsToAllPlayers(players);
-
         drawPlayers();
     }
 
-    public void initializePlayer(Player player) {
+    public void initializePlayer(int id) {
+        Player player = new Player(id);
         players.add(player);
         Position startingPosition = startingPositions.getStartingPosition(player.getId());
         player.setPosition(startingPosition);
@@ -124,12 +113,8 @@ public class GameMap {
         playerTile.setSprite(tiles);
         grid.setPlayerPosition(playerTile);
         setBackup(player);
-        drawPlayer(player);
-
-    }
-
-    public void setPlayerToAI(int id) {
-        players.get(id).setAI();
+        if (!isMultiplayer && player.getId() > 0)
+            player.setAI();
     }
 
     public void dealCards() {
@@ -183,7 +168,6 @@ public class GameMap {
 
     /**
      * Removes the given player's backup point and sets it to the player's current position
-     *
      * @param player
      */
     public void setBackup(Player player) {
@@ -205,7 +189,6 @@ public class GameMap {
                 backupLayer4.setCell(x, y, null);
                 break;
         }
-
         grid.setBackupPosition(player.getPlayerTile());
         Position currentPosition = player.getPosition();
         player.setBackup(currentPosition);
@@ -214,10 +197,14 @@ public class GameMap {
 
     public void getHandsFromServer(ArrayList<ProgramCard> listOfMovesFromServer, int id) {
         players.get(id).getPlayerDeck().setPlayerHand(listOfMovesFromServer);
-        System.out.println("handdsize: " + players.get(id).getPlayerDeck().handSize() + "id: " + id);
+        System.out.println("Hand size: " + players.get(id).getPlayerDeck().handSize() + ". ID: " + id);
         players.get(id).setHandChosen(true);
     }
 
+    /**
+     * Gives cards to all players.
+     * Tell the Round object what moves to perform
+     */
     public void addPlayerHandToNewRound() {
         for (Player player : players) {
             if (player.getPlayerDeck().handSize() < 5) {
@@ -237,7 +224,6 @@ public class GameMap {
                         if (player.getPlayerDeck().handIsEmpty()) {
                             giveOutCardsToPlayer(player);
                         }
-
                         ProgramCard tempCard = player.getPlayerDeck().getCardFromHand();
                         tempCard.setPlayerThatPlayedTheCard(player.getId());
                         cardsToAddInPhaseI.add(tempCard);
@@ -248,14 +234,6 @@ public class GameMap {
         }
     }
 
-    public boolean hasAllPlayersChosenHands() {
-        for (Player player : players) {
-            if (!player.getHandChosen())
-                return false;
-        }
-        return true;
-    }
-
     public void setAllPlayerHandsChosen(boolean handsChosen) {
         for (Player player : players) {
             player.setHandChosen(handsChosen);
@@ -264,7 +242,7 @@ public class GameMap {
 
     public void movePlayer(int playerId, ProgramCard card) {
         Player player = players.get(playerId);
-        // A player which is destroyed cannot move
+        // A player which is destroyed or dead cannot move
         if (player.isDestroyed() || !player.isAlive()) {
             return;
         }
@@ -292,7 +270,6 @@ public class GameMap {
 
     /**
      * Sets players position to backup and draws players
-     *
      * @param player
      */
     public void returnToBackup(Player player) {
@@ -308,12 +285,10 @@ public class GameMap {
         }
         player.returnToBackup();
         drawPlayers();
-
     }
 
     /**
      * Checks if there is a player already at the given player's backup
-     *
      * @param player
      * @return true if there is another player on the backup
      */
@@ -328,7 +303,6 @@ public class GameMap {
     /**
      * If someone is standing on the backup of a player when he is due to return,
      * then return player to a position adjacent to the backup
-     *
      * @param player
      */
     public void movePlayerToNearestField(Player player) {
@@ -354,7 +328,6 @@ public class GameMap {
 
     /**
      * Checks if player is in a state where he/she has to return to backup
-     *
      * @param player
      * @return
      */
@@ -370,7 +343,6 @@ public class GameMap {
 
     /**
      * Checks if player is stepping on a hole. If so, destroy player
-     *
      * @param player
      * @return true if player is in hole
      */
@@ -383,6 +355,9 @@ public class GameMap {
         return false;
     }
 
+    /**
+     * Performs one move from the phase
+     */
     public void performNextMovement() {
         endOfPhaseActions.getLaser().cleanLasers();
         returnDestroyedPlayersToBackup();
@@ -410,16 +385,10 @@ public class GameMap {
         }
     }
 
-    /**
-     * Checks all players for end of phase actions
-     */
     public void endOfPhaseChecks() {
         endOfPhaseActions.performAllChecks();
     }
 
-    /**
-     * Checks all players for end of round actions
-     */
     public void endOfRoundChecks() {
         endOfRoundActions.performAllChecks();
         drawPlayers();
@@ -433,9 +402,6 @@ public class GameMap {
         winner = player;
     }
 
-    /**
-     * If a player has to return to backup, then they are returned to backup
-     */
     public void returnDestroyedPlayersToBackup() {
         for (Player player : players) {
             if (hasToReturnToBackup(player)) {
@@ -444,11 +410,6 @@ public class GameMap {
         }
     }
 
-    /**
-     * Give out cards to player deck and player selects 5 cards
-     *
-     * @param player
-     */
     public void giveOutCardsToPlayer(Player player) {
         programCardDeck.giveOutCardsToPlayer(player);
     }
@@ -471,7 +432,6 @@ public class GameMap {
 
     /**
      * Flytter alle spillere som koliderer i direction og oppdaterer grid
-     *
      * @param direction
      */
     public void movePlayerTilesInList(Direction direction) {
@@ -493,7 +453,6 @@ public class GameMap {
 
     /**
      * Check if valid position
-     *
      * @param dir
      * @param pos
      * @return true if valid position
@@ -520,6 +479,11 @@ public class GameMap {
         return playerTiles;
     }
 
+    /**
+     * @param rotate
+     * @param currentDir
+     * @return the given direction rotated by 90 degrees clockwise or counter clockwise given its parameter
+     */
     public Direction rotate(ProgramType rotate, Direction currentDir) {
         switch (rotate) {
             case ROTATELEFT:
@@ -532,6 +496,10 @@ public class GameMap {
         return currentDir;
     }
 
+    /**
+     * Checks if every player is ready to start the next round
+     * @return true if everyone is ready for next round
+     */
     public boolean isReadyForRound() {
         for (Player player : players) {
             if (player.getPlayerDeck().handIsEmpty() && player.isAlive() && player.isActive())

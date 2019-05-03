@@ -39,6 +39,7 @@ public class PlayScreen implements Screen {
 
     private int myID;
 
+    private boolean hasWon;
     private boolean isMultiPlayer;
 
 
@@ -160,7 +161,6 @@ public class PlayScreen implements Screen {
     public void resize(int width, int height) {
         gamePort.update(width, height);
         stage.setViewport(gamePort);
-//        infoScreen.getStage().setViewport(gamePort);
     }
 
     public void handleInput() {
@@ -189,6 +189,7 @@ public class PlayScreen implements Screen {
         DisplayMessageOnScreen victoryScreen = new DisplayMessageOnScreen(victoryMessage, 150, 150);
         Table victoryTable = victoryScreen.getTable();
         stage.addActor(victoryTable);
+        hasWon = true;
     }
 
     public void displayDeathOfPlayer(Player player) {

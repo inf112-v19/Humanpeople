@@ -59,7 +59,7 @@ public class MenuScreen implements Screen {
     @Override
     public void show() {
         // Music for game
-        /*try {
+        try {
             Sequence sequence = null;
             sequence = MidiSystem.getSequence(new File("assets/music.mid"));
             Sequencer sequencer = MidiSystem.getSequencer();
@@ -73,7 +73,7 @@ public class MenuScreen implements Screen {
             e.printStackTrace();
         } catch (MidiUnavailableException e) {
             e.printStackTrace();
-        }*/
+        }
 
         stage = new Stage();
 

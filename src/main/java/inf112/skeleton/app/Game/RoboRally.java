@@ -9,9 +9,6 @@ public class RoboRally extends Game {
     public final static int width = 385;
     public final static int height = 385;
 
-    public final static float cfgWidth = 800;
-    public final static float cfgHeight = 480;
-
     @Override
     public void create() {
         batch = new SpriteBatch();
