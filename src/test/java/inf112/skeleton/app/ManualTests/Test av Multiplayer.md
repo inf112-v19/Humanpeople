@@ -1,30 +1,30 @@
 # Testing av multiplayer
 
-### Tilkoblingssjekk og kjøre test
+### Tilkoblingssjekk og kjï¿½re test
 Hensikt:
-- Sjekke at alle spillerne klarer å koble seg til spillet.
-- Sjekke at alle spillerne beveger seg likt på alle skjermene.
+- Sjekke at alle spillerne klarer ï¿½ koble seg til spillet.
+- Sjekke at alle spillerne beveger seg likt pï¿½ alle skjermene.
 - Sjekke at alle spillerne beveger seg etter valgte kort.
 
-1. Kjør programmet.
+1. Kjï¿½r programmet.
 
-2. Klikk på "Multiplayer" knappen.
+2. Klikk pï¿½ "Multiplayer" knappen.
 
 3. Den personen som er Host velger knappen "Host".
 
-4. Personen som velger "Host" må velge antall spillere til spillet.
+4. Personen som velger "Host" mï¿½ velge antall spillere til spillet.
 
-5. Personen som velger "Host" må skrive inn en port på minst 4 integers.
+5. Personen som velger "Host" mï¿½ skrive inn en port pï¿½ minst 4 siffre.
 
-6. Personene som velger "Host" må åpne command promt på computeren sin 
+6. Personene som velger "Host" mï¿½ ï¿½pne command promt pï¿½ computeren sin 
 og skrive inn "ipconfig" og dele ip addressen og den valgte porten med
 de andre spillerne.
 
 7. De andre spillerne velger knappen "Client" og skriver inn informasjonen
-som er gitt av personen som valgte "Host".
+som er gitt av personen som valgte "Host". MERK: Host mÃ¥ trykke pÃ¥ "SELECT" fÃ¸r client gjÃ¸r det samme
 
 8. Spillet starter. Spill spillet og sjekk til at alle spillerne beveger seg
-likt på alle skjermene samt at alle beveger seg etter valgte kort.
+likt pï¿½ alle skjermene samt at alle beveger seg etter valgte kort.
 
 Resultat:
 	Spillet skal i stor grad utspilles likt som i singleplayer

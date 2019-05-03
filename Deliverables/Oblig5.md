@@ -22,14 +22,15 @@
     * Bruker project board (GitHub Project Board)
 * Disse delene fra XP, Scrum og Kanban ble valgt fordi gruppen tenkte disse punktene var de mest hensiktsmessige å bruke for effektivt samarbeid når ingen av oss var vant til å jobbe med prosjekt i gruppe. Dette har tillatt oss til å ha en jevn arbeidsflyt gjennom hele prosjektet med tilfredsstillende resultater på både produkt og arbeidsmoral. Dermed i denne iterasjonen og alle andre har vi fortsatt med prosjektmetodikken som ovenfor.
 * For denne iterasjonen har hvert punkt gått som følger:
-    * Gjennomgang av kode har blitt redusert siden siste iterasjon. Ettersom dette er den siste iterasjonen har det ikke vært et like stort fokus at alle skal være 100 % oppdatert på koden, fordi de ikke skal trenge å bruke den til senere (med mindre de vil fortsette etter prosjektet er levert inn). På starten av iterasjonen planla vi nøye og hvert gruppemedlem fikk sitt ansvarsområde. Dermed, de som kun jobbet med kortlogikk hadde ikke et stort behov for å vite hvordan serveren fungerte. Likevel har alle i gruppen en grei oversikt over hva som er gjort gjennom iterasjonen, men er ikke nødvendigvis kjent med detaljer (XP) 
-    * Tilpassning av fart har vært litt annerledes denne iterasjonen. Vi har hatt en del mer å gjøre denne iterasjonen for å ha fullført MVP-kravene. Arbeidsflyten har vært jevn, men høyere enn tidligere. 
-    * I starten av iterasjonen satte vi opp alle arbeidsoppgavene vi kunne se for oss for å levere MVP-kravene. Disse oppgavene ble diskutert og planlagt i mer detalj enn tidligere iterasjoner. Dette har tillatt oss å holde arbeidsflyten gående uten å ha måtte snakke med resten av gruppen. Når man var ferdig med en arbeidsoppgave kunne man lett referer til projectboard/andre planer for nye arbeidsoppgaver, skrevet i detalj om hvordan de skal gjøres. (XP)
-    * Vi har ikke startet på senere iterasjoner fordi dette er den siste iterasjonen før innlevering av prosjektet
-    * Ingen nye planer er lagt for neste iterasjon fordi dette er den siste iterasjonen
-    * Denne iterasjonen har vi brukt parprogrammering mye mer enn før. Spesielt har kortlogikken utarbeidet seg i all hovedsak gjennom parprogrammering denne iterasjonen, i tillegg til annen funksjonalitet. (XP)
-    * Testing har blitt gjort mer fortløpende som implementasjonen ble gjort denne iterasjonen. Med ny rolle som Testleder har Matias sørget en bedre holdning til testing og har fulgt opp at de gjøres etter implementert funksjonalitet. Men testing har fortsatt ikke vært perfekt. Ved enkelte funksjoner har testingen blitt litt sen. Noen tester måtte vente til annen funksjonalitet ble implementert fordi programmet kom til å endre så mye på seg at testene ble ubrukelige (Dette omhandlet manuelle tester).
-    * Project board har blitt enda mer flittig brukt enn forrige iterasjon. Skrive hvem som tar hvilken oppgave, legge inn all oppgaver som skal gjøres, legge inn bugs som må fikses ettersom de oppstår, etc. Noe som vi ikke har vært fullt så flinke til er å oppdatere oppgaver ettersom de gjøres (flytte de til riktig kolonne til riktig tid). (Kanban)
+	* Gjennomgang av kode har blitt redusert siden siste iterasjon. Ettersom dette er den siste iterasjonen har det ikke vært et like stort fokus at alle skal være 100 % oppdatert på koden da de trolig ikke skal trenge å bruke den til senere (med mindre de vil fortsette etter prosjektet er levert inn). På starten av iterasjonen planla vi nøye og hvert gruppemedlem fikk sitt ansvarsområde. De som kun skulle jobbe med kortlogikk fikk f.eks. ikke et stort behov for å vite nøyaktig hvordan serveren fungerte. Likevel har alle i gruppen en grei oversikt over hva som er gjort gjennom iterasjonen, men de er ikke nødvendigvis kjent med alt på detaljnivå (XP) 
+ 	* Tilpassning av fart har vært litt annerledes denne iterasjonen. Vi har hatt en del mer å gjøre denne iterasjonen for å ha fullført MVP-kravene. Arbeidsflyten har vært jevn, men høyere enn tidligere. 
+ 	* I starten av iterasjonen satte vi opp alle arbeidsoppgavene vi kunne se for oss for å levere MVP-kravene. Disse oppgavene ble diskutert og planlagt i mer detalj enn tidligere iterasjoner. Dette har tillatt oss å holde arbeidsflyten gående uten å ha måtte snakke med resten av gruppen. Når man var ferdig med en arbeidsoppgave kunne man lett referer til projectboard/andre planer for nye arbeidsoppgaver, skrevet i detalj om hvordan de skal gjøres. (XP)
+ 	* Vi har ikke startet på senere iterasjoner fordi dette er den siste iterasjonen før innlevering av prosjektet
+ 	* Ingen nye planer er lagt for neste iterasjon fordi dette er den siste iterasjonen
+ 	* Denne iterasjonen har vi brukt parprogrammering mye mer enn før. Spesielt har kortlogikken utarbeidet seg i all hovedsak gjennom parprogrammering denne iterasjonen, i tillegg til annen funksjonalitet (XP). Dette fordi en etterhvert ble ferdig med tildelt oppgave og hadde overskudd til å gjøre andre ting.
+ 	* Testing har blitt gjort mer fortløpende som implementasjonen ble gjort denne iterasjonen. Med ny rolle som Testleder har Matias sørget en bedre holdning til testing og har fulgt opp at de gjøres etter implementert funksjonalitet. Men testing har fortsatt ikke vært perfekt. Ved enkelte funksjoner har testingen blitt litt sen. Noen tester måtte vente til annen funksjonalitet ble implementert fordi programmet kom til å endre så mye på seg at testene ble ubrukelige (Dette omhandlet manuelle tester).
+ 	* Project board har blitt enda mer flittig brukt enn forrige iterasjon. Skrive hvem som tar hvilken oppgave, legge inn all oppgaver som skal gjøres, legge inn bugs som må fikses ettersom de oppstår, etc. Noe som vi ikke har vært fullt så flinke til er å oppdatere oppgaver ettersom de gjøres (flytte de til riktig kolonne til riktig tid). (Kanban)
+
 
 ### Synes teamet at de valgene dere har tatt er gode? Hvis ikke, hva kan dere gjøre annerledes for å forbedre måten teamet fungerer på? 
  * Teamet synes de valgene vi har gjort har vært hensiktsmessige for situasjonen. Ofte når noen er usikker på hvordan noe skal gjøres har resten av gruppen blitt konsultert før videre jobbing. Pga. at gruppen har blitt bedre på kommunikasjon og er mer tilgjengelig har konsultasjon vært lettere gjort enn tidligere og har sikret en god arbeidsflyt.
@@ -41,7 +42,7 @@
  * Teamet løser problemer sammen og blir enige om gode løsninger. Dialogen er løsningsorientert og i god ånd. Ingen føler at det er vanskelig å si sin mening om løsninger av arbeidsoppgavene. 
 
 ### Hvordan fungerer kommunikasjonen for dere? 
- * Kommunikasjonen har blitt bedre og bedre, nå i slutten har vi vært veldig flink til å  kommunisere hvem som som jobber med hva og hvordan vi skal løse problemer.
+ * Kommunikasjonen har blitt bedre og bedre og nå i slutten har vi vært veldig flinke til å  kommunisere hvem som jobber med hva og hvordan vi skal løse problemer.
 ### Referat fra møter siden forrige leveranse skal legges ved. 
  * Møtereferat ligger i deliverables mappen.
 ### Under denne leveransen skal teamet rotere litt på oppgavene, slik at medlemmer som har kodet masse tar del i design-arbeid, utforming/tydeliggjøring/forbedring av krav, osv. 
@@ -52,16 +53,16 @@
 ## Utfør et retrospektiv før leveranse med fokus på hele prosjektet: 
 ### Hva justerte dere underveis, og hvorfor?
  * Vi måtte flere ganger justere oss til å bli flinkere i å bruke de verktøyene og metodene som vi har hatt tilgang til. Gjennom prosjektet har gruppen stadig blitt bedre til å bruke project board. I starten hadde vi en tendens til å prøve å lage funksjoner selv istedenfor å gjøre seg kjent med LibGdx og bruke bibliotekets funksjoner.
- * Hvordan gruppen kommuniserte. Ettersom vi ble bedre kjent ble det lettere å lettere å opprettholde god kommunikasjon.
- * Tidlig i prosjektet la vi planer for hvordan programmet skulle se ut  (kodemessig). Disse planene har ettersom semesteret gikk blitt endret drastisk. Nå vi ser tilbake på planene fra de første møtene er det en enorm forskjell fra hva vi endte opp med.
+ * Hvordan gruppen kommuniserte. Ettersom vi ble bedre kjent ble det lettere og lettere å opprettholde god kommunikasjon.
+ * Tidlig i prosjektet la vi planer for hvordan programmet skulle se ut  (kodemessig). Disse planene har blitt endret betydelig i løpet av semesteret ettehvert som vi har fått bedre forståelse. Nå vi ser tilbake på planene fra de første møtene er det en stor forskjell fra hva vi endte opp med.
 
 
 ### Ble det bedre? hva har fungert best, og hvorfor? (Hva er dere mest fornøyde med?)
- * Workshops har vært en utrolig god arbeidsmetode. Porduktiviteten har vært veldig høy hver gang vi arrangerte workshops
+ * Workshops har vært en utrolig god arbeidsmetode. Produktiviteten har vært veldig høy hver gang vi har arrangert workshops
  * God kommunikasjon blant alle gruppemedlemmene
  * Gjennomtenkt planlegging av iterasjoner og god tildeling av arbeidsoppgaver
  * Har blitt mye bedre til å bruke projectboard
- * God oppbygning av møtestruktur har tilllatt gruppen å få god oversikt over hva som skal gjøres og hva som har blitt gjort
+ * God oppbygning av møtestruktur har tillatt gruppen å få god oversikt over hva som skal gjøres og hva som har blitt gjort
 
 ### Hvis dere skulle fortsatt med prosjektet, hva ville dere justert? 
  * Gjort GUI mer brukervennlig og estetisk
@@ -98,13 +99,13 @@
     * Dette har vi. Og det fungerer i forhold til spilleregler.
  * Game over etter 3 tapte liv 
     * Dette har vi.
- * multiplayer over LAN eller Internet (trenger ikke gjøre noe fancy her, men må kunne spille på ulike maskiner mot hverandre) Feilhåndtering ved disconnect. (Spillet skal i hvertfall ikke kræsje) 
+ * Multiplayer over LAN eller Internet (trenger ikke gjøre noe fancy her, men må kunne spille på ulike maskiner mot hverandre) Feilhåndtering ved disconnect. (Spillet skal i hvertfall ikke kræsje) 
     * Multiplayer over kryonet. Mulig noen bugs i mp.
- * power down
+ * Power down
     * Dette har vi. Og det fungerer i forhold til spilleregler. (fungerer ikke 100 % i multiplayer)
- * samlebånd som går i dobbelt tempo 
+ * Samlebånd som går i dobbelt tempo 
     * Vi har valgt å implementere denne funksjonen slik at dobbel tempo betyr at spilleren beveger seg 2 felt i rullebåndets retning
- * spille mot AI (single-player-mode), evt spill mot random-roboter
+ * Spille mot AI (single-player-mode), evt spill mot random-roboter
     * Single player mode spilles mot random-roboter(som følger alle spilleregler).
 
 ### Etter at disse kravene er ferdig implementert, kan følgende krav vurderes. Dette er veldig grove krav som dere må gjøre mer arbeid med å finne ut av for at det skal bli bra. Velg i så fall en og en funksjonalitet og utvikle denne til den er ferdig før dere går over på neste. Det er også åpent for å definere helt egne krav, men da må dere begrunne hvorfor dere mener det er viktigere enn de listet under, samt få godkjenning for å gå i en annen retning.
@@ -130,7 +131,7 @@
     * Sikkert andre bugs også som vi ikke har oppdaget
  * lite-ingen fokus på sikkerhet
  * Vi har mange Klasser som må testes manuelt, dette er en svakhet som har oppstått på grunn av bruken av “Tiled” og mangel på erfaring.  
- * Maks 4 player pga vi ikke har fått mulighet til å lage Avatars i flere farger(photoshop 7 dagers prøve gikk ut)
+ * Maks 4 player pga. vi ikke har fått mulighet til å lage Avatars i flere farger(photoshop 7 dagers prøve gikk ut). Hadde dette vært i orden ville spillet klart flere spillere.
 
 ### Dere må dokumentere hvordan prosjektet bygger, testes og kjøres, slik at det er lett å teste koden. Under vurdering kommer koden også til å brukertestes.
  * SinglePlayer
@@ -140,6 +141,7 @@
     * Kjør Main-klassen. Trykk på “MultiPlayer”. En av spillerne velger “Host” hvor han skriver inn hvor mange spillere som skal være med og hvilken Port som skal brukes. Trykk deretter på “Select”.
     * Andre spillere trykker på “Client” hvor de skriver inn IP-adressen til Host’en og port’en som ble valgt. Trykk deretter på “Select”. MERK: Host må trykke på “Select” før klientene trykker på “Select”
     * PlayScreen vil åpnes for alle spillere. Velg kort og velg “Play”. Alle spillere må ha valgt kort og trykket på “Play” før bevegelsene utføres.
+    * For å returnere til hovedmenyen kan man trykke på "ESCAPE". Da vil spillet resette seg
 
 ### Produktet skal fungere på Linux ( Ubuntu / Debian ), Windows og OSX
 
