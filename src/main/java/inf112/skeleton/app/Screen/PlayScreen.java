@@ -31,7 +31,9 @@ public class PlayScreen implements Screen {
     private Stage stage;
     private float width;
     private float height;
+
     private UserInterface ui;
+    private InfoScreen infoScreen;
 
     private int myID;
 
@@ -59,7 +61,7 @@ public class PlayScreen implements Screen {
         ui.toggleCardSelection();
     }
 
-    public void setMyID(int id ) {
+    public void setMyID(int id) {
         myID = id;
     }
 
@@ -79,7 +81,7 @@ public class PlayScreen implements Screen {
             ui.prepareNextRound();
             ui.initializeCardSelection();
         }
-         // If game is multiplayer then wait for all players to choose cards
+        // If game is multiplayer then wait for all players to choose cards
         if (isMultiPlayer) {
             if (gameMap.hasAllPlayersChosenHands()) {
                 gameMap.addPlayerHandToNewRound();
@@ -97,17 +99,20 @@ public class PlayScreen implements Screen {
         if (tickTime > 0.4) {
             tickTime = 0;
             gameMap.performNextMovement();
+            infoScreen.update(gameMap.getPlayers());
         }
         //Update ui
-        if(tickTime > 0.2){
+        if (tickTime > 0.2) {
             // Update only if there is a change in the variables
             if (ui.getPlayer().getHealth() != ui.getSavedHealth()) {
                 ui.getDamageTokenOfPlayer();
                 ui.setSavedHealth(ui.getPlayer().getHealth());
+
             }
             if (ui.getPlayer().getLifeTokens() != ui.getSavedLifeTokens()) {
                 ui.getLifeTokenOfPlayer();
                 ui.setSavedLifeTokens(ui.getPlayer().getLifeTokens());
+
             }
             if (ui.getPlayer().getLastFlagVisited() != ui.getSavedFlag()) {
                 ui.getFlagInfo();
@@ -122,6 +127,7 @@ public class PlayScreen implements Screen {
 
     @Override
     public void show() {
+        infoScreen = new InfoScreen(gameMap.getPlayers(), width, height);
         stage = ui.getStage();
         Gdx.input.setInputProcessor(stage);
     }
@@ -148,11 +154,17 @@ public class PlayScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             game.setScreen(new MenuScreen(game));
         }
+        if (Gdx.input.isKeyPressed(Input.Keys.TAB))
+            stage = infoScreen.getStage();
+        else
+            stage = ui.getStage();
+
     }
 
     /**
      * Displays text over the board congratulating the winner
      * The winner is removed from the board while the game continues in the background
+     *
      * @param winner
      */
     public void displayWinner(Player winner) {
