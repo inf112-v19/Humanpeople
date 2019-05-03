@@ -99,13 +99,13 @@
     * Dette har vi. Og det fungerer i forhold til spilleregler.
  * Game over etter 3 tapte liv 
     * Dette har vi.
- * multiplayer over LAN eller Internet (trenger ikke gjøre noe fancy her, men må kunne spille på ulike maskiner mot hverandre) Feilhåndtering ved disconnect. (Spillet skal i hvertfall ikke kræsje) 
+ * Multiplayer over LAN eller Internet (trenger ikke gjøre noe fancy her, men må kunne spille på ulike maskiner mot hverandre) Feilhåndtering ved disconnect. (Spillet skal i hvertfall ikke kræsje) 
     * Multiplayer over kryonet. Mulig noen bugs i mp.
- * power down
+ * Power down
     * Dette har vi. Og det fungerer i forhold til spilleregler. (fungerer ikke 100 % i multiplayer)
- * samlebånd som går i dobbelt tempo 
+ * Samlebånd som går i dobbelt tempo 
     * Vi har valgt å implementere denne funksjonen slik at dobbel tempo betyr at spilleren beveger seg 2 felt i rullebåndets retning
- * spille mot AI (single-player-mode), evt spill mot random-roboter
+ * Spille mot AI (single-player-mode), evt spill mot random-roboter
     * Single player mode spilles mot random-roboter(som følger alle spilleregler).
 
 ### Etter at disse kravene er ferdig implementert, kan følgende krav vurderes. Dette er veldig grove krav som dere må gjøre mer arbeid med å finne ut av for at det skal bli bra. Velg i så fall en og en funksjonalitet og utvikle denne til den er ferdig før dere går over på neste. Det er også åpent for å definere helt egne krav, men da må dere begrunne hvorfor dere mener det er viktigere enn de listet under, samt få godkjenning for å gå i en annen retning.
@@ -131,7 +131,7 @@
     * Sikkert andre bugs også som vi ikke har oppdaget
  * lite-ingen fokus på sikkerhet
  * Vi har mange Klasser som må testes manuelt, dette er en svakhet som har oppstått på grunn av bruken av “Tiled” og mangel på erfaring.  
- * Maks 4 player pga vi ikke har fått mulighet til å lage Avatars i flere farger(photoshop 7 dagers prøve gikk ut)
+ * Maks 4 player pga. vi ikke har fått mulighet til å lage Avatars i flere farger(photoshop 7 dagers prøve gikk ut). Hadde dette vært i orden ville spillet klart flere spillere.
 
 ### Dere må dokumentere hvordan prosjektet bygger, testes og kjøres, slik at det er lett å teste koden. Under vurdering kommer koden også til å brukertestes.
  * SinglePlayer
