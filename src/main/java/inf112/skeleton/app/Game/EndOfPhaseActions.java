@@ -169,6 +169,7 @@ public class EndOfPhaseActions {
     /**
      * Checks if player is standing on conveyor belt
      * and adds the player to the beltList for later movement
+     *
      * @param player
      */
     public void addConveyorBeltMovement(Player player) {
@@ -181,6 +182,7 @@ public class EndOfPhaseActions {
 
     /**
      * Checks if player is standing on a conveyor belt or a gyro
+     *
      * @param player
      * @return enum of the belt/gyro the player is standing on
      * return null if not standing on belt/gyro
@@ -193,15 +195,15 @@ public class EndOfPhaseActions {
             return ConveyorBelt.NORTH;
         } else if (grid.isSouthBelt(position)) {
             return ConveyorBelt.SOUTH;
-        }else if (grid.isWestBelt(position)) {
+        } else if (grid.isWestBelt(position)) {
             return ConveyorBelt.WEST;
-        }else if (grid.isLeftGyro(position)) {
+        } else if (grid.isLeftGyro(position)) {
             return ConveyorBelt.COUNTER_CLOCK_WISE;
-        }else if (grid.isRightGyro(position)) {
+        } else if (grid.isRightGyro(position)) {
             return ConveyorBelt.CLOCK_WISE;
-        }else if (grid.isDoubleNorthBelt(position)) {
+        } else if (grid.isDoubleNorthBelt(position)) {
             return ConveyorBelt.DOUBLE_NORTH;
-        }else if (grid.isDoubleEastBelt(position)) {
+        } else if (grid.isDoubleEastBelt(position)) {
             return ConveyorBelt.DOUBLE_EAST;
         } else if (grid.isDoubleSouthBelt(position)) {
             return ConveyorBelt.DOUBLE_SOUTH;
@@ -227,39 +229,30 @@ public class EndOfPhaseActions {
 
             if (conveyorBelt == ConveyorBelt.NORTH) {
                 moveBeltInDirection(Direction.NORTH, player);
-            }
-            else if (conveyorBelt == ConveyorBelt.WEST) {
+            } else if (conveyorBelt == ConveyorBelt.WEST) {
                 moveBeltInDirection(Direction.WEST, player);
-            }
-            else if (conveyorBelt == ConveyorBelt.SOUTH) {
+            } else if (conveyorBelt == ConveyorBelt.SOUTH) {
                 moveBeltInDirection(Direction.SOUTH, player);
-            }
-            else if (conveyorBelt == ConveyorBelt.EAST) {
+            } else if (conveyorBelt == ConveyorBelt.EAST) {
                 moveBeltInDirection(Direction.EAST, player);
-            }
-            else if (conveyorBelt == ConveyorBelt.DOUBLE_EAST) {
+            } else if (conveyorBelt == ConveyorBelt.DOUBLE_EAST) {
                 moveBeltInDirection(Direction.EAST, player);
                 moveBeltInDirection(Direction.EAST, player);
-            }
-            else if (conveyorBelt == ConveyorBelt.DOUBLE_WEST) {
+            } else if (conveyorBelt == ConveyorBelt.DOUBLE_WEST) {
                 moveBeltInDirection(Direction.WEST, player);
                 moveBeltInDirection(Direction.WEST, player);
-            }
-            else if (conveyorBelt == ConveyorBelt.DOUBLE_NORTH) {
+            } else if (conveyorBelt == ConveyorBelt.DOUBLE_NORTH) {
                 moveBeltInDirection(Direction.NORTH, player);
                 moveBeltInDirection(Direction.NORTH, player);
-            }
-            else if (conveyorBelt == ConveyorBelt.DOUBLE_SOUTH) {
+            } else if (conveyorBelt == ConveyorBelt.DOUBLE_SOUTH) {
                 moveBeltInDirection(Direction.SOUTH, player);
                 moveBeltInDirection(Direction.SOUTH, player);
-            }
-            else if (conveyorBelt == ConveyorBelt.CLOCK_WISE) {
+            } else if (conveyorBelt == ConveyorBelt.CLOCK_WISE) {
                 Direction currentDirection = player.getDirection();
                 Direction newDirection = Direction.rotate(currentDirection, 1);
                 player.setDirection(newDirection);
                 beltList.remove(0);
-            }
-            else if (conveyorBelt == ConveyorBelt.COUNTER_CLOCK_WISE) {
+            } else if (conveyorBelt == ConveyorBelt.COUNTER_CLOCK_WISE) {
                 Direction currentDirection = player.getDirection();
                 Direction newDirection = Direction.rotate(currentDirection, -1);
                 player.setDirection(newDirection);
@@ -269,7 +262,6 @@ public class EndOfPhaseActions {
     }
 
     /**
-     *
      * @param dir
      * @param player
      */

@@ -22,6 +22,9 @@ public class PlayerDeck {
         handFromLastRound = new ArrayList<>();
     }
 
+    /**
+     * Fills hand for AI players
+     */
     public void selectCardsForHand() {
         if (deck.size() < 0)
             throw new IndexOutOfBoundsException("The deck is too small, size is: " + deck.size() + " should be: " + numberOfNewCardsToDeck);
@@ -52,6 +55,7 @@ public class PlayerDeck {
         ProgramCard programCard = hand.get(i);
         return programCard;
     }
+
     public ProgramCard getCardFromHand() {
         if (handSize() < 1)
             throw new NoSuchElementException("No cards in the hand: " + handSize());
@@ -66,6 +70,10 @@ public class PlayerDeck {
         this.deck = new ArrayList<>(newDeck);
     }
 
+    /**
+     * Updates variables in player deck according to the player's current health
+     * @param health
+     */
     public void changedHealth(int health) {
         if (health > 9) {
             numberOfNewCardsToDeck = MAX_NUMBER_CARDS_IN_DECK;
@@ -76,6 +84,10 @@ public class PlayerDeck {
         burnCardsToHand(health);
     }
 
+    /**
+     * Sets how many cards are locked
+     * @param hP
+     */
     private void burnCardsToHand(int hP) {
         if (hP > 5) {
             numberOfLockedCards = 0;

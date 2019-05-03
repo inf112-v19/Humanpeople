@@ -1,13 +1,16 @@
 package inf112.skeleton.app.Directions;
 
-public class StartingPositionsRE implements IStartingPosition {
+/**
+ * Starting positions for the map "Risky Exchange"
+ */
+public class StartingPositionsRiskyExchange implements IStartingPosition {
 
     private Position start0;
     private Position start1;
     private Position start2;
     private Position start3;
 
-    public StartingPositionsRE(int gameMapWidth, int gameMapHeight, int nPlayers) {
+    public StartingPositionsRiskyExchange(int gameMapWidth) {
         int middleOfBoardX = (gameMapWidth / 2) - 1;
         int x0 = middleOfBoardX-1;
         int y0 = 0;

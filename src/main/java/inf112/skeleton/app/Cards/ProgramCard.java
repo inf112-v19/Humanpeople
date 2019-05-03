@@ -61,49 +61,17 @@ public class ProgramCard implements ICard {
     }
 
     /**
-     * helper for Graphical card selection
+     * Helper for graphical card selection
      */
     public boolean isMarked() {
         return marked;
     }
 
+    /**
+     * Helper for graphical card selection
+     */
     public void setMarked(boolean marked) {
         this.marked = marked;
-    }
-
-    public static ProgramCard move1Card() {
-        return new ProgramCard(ProgramType.MOVE1, 490,
-                "assets/cards/ProgramCards/Move1/move1p" + 490 + ".png");
-    }
-
-    public static ProgramCard move2Card() {
-        return new ProgramCard(ProgramType.MOVE2, 670,
-                "assets/cards/ProgramCards/Move2/move2p" + 670 + ".png");
-    }
-
-    public static ProgramCard move3Card() {
-        return new ProgramCard(ProgramType.MOVE3, 790,
-                "assets/cards/ProgramCards/Move3/move3p" + 790 + ".png");
-    }
-
-    public static ProgramCard moveLeftCard() {
-        return new ProgramCard(ProgramType.ROTATELEFT, 70,
-                "assets/cards/ProgramCards/rotateLeft/rotateLeftp" + 70 + ".png");
-    }
-
-    public static ProgramCard moveRightCard() {
-        return new ProgramCard(ProgramType.ROTATERIGHT, 80,
-                "assets/cards/ProgramCards/rotateRight/rotateRightp" + 80 + ".png");
-    }
-
-    public static ProgramCard uTurnCard() {
-        return new ProgramCard(ProgramType.UTURN, 10,
-                "assets/cards/ProgramCards/uTurn/uTurnp" + 10 + ".png");
-    }
-
-    public static ProgramCard moveBackCard() {
-        return new ProgramCard(ProgramType.BACKWARD, 430,
-                "assets/cards/ProgramCards/backUp/backUp1p" + 430 + ".png");
     }
 
     @Override
@@ -111,5 +79,4 @@ public class ProgramCard implements ICard {
         String string = "Type : " + programType + ", Priority:" + priority;
         return string;
     }
-
 }

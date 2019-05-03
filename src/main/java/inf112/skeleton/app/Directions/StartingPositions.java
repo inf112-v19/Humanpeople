@@ -1,5 +1,8 @@
 package inf112.skeleton.app.Directions;
 
+/**
+ * Used for placing the player tiles on the board
+ */
 public class StartingPositions implements IStartingPosition {
 
     private Position start0;
@@ -7,7 +10,7 @@ public class StartingPositions implements IStartingPosition {
     private Position start2;
     private Position start3;
 
-    public StartingPositions(int gameMapWidth, int gameMapHeight, int nPlayers) {
+    public StartingPositions(int gameMapWidth) {
         int middleOfBoardX = (gameMapWidth / 2) - 1;
         int x0 = middleOfBoardX;
         int y0 = 0;

@@ -9,11 +9,10 @@ import java.util.List;
  */
 public class EndOfRoundActions {
 
-    private GameMap gameMap;
+
     private List<Player> players;
 
     public EndOfRoundActions(GameMap gameMap) {
-        this.gameMap = gameMap;
         this.players = gameMap.getPlayers();
     }
 

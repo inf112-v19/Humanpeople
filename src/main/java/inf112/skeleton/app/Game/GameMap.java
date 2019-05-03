@@ -22,8 +22,6 @@ public class GameMap {
     private Grid grid;
 
     private final TiledMapTileLayer playerLayer;
-    private final TiledMapTileLayer specialLayer;
-    private final TiledMapTileLayer flagLayer;
     private final TiledMapTileLayer backupLayer1;
     private final TiledMapTileLayer backupLayer2;
     private final TiledMapTileLayer backupLayer3;
@@ -40,7 +38,7 @@ public class GameMap {
     private Laser laser;
 
     private Round round;
-    private Phase currentPhase;
+//    private Phase currentPhase;
     private EndOfPhaseActions endOfPhaseActions;
     private EndOfRoundActions endOfRoundActions;
     private boolean startRound;
@@ -59,8 +57,6 @@ public class GameMap {
         this.laser = new Laser(this, grid, map);
         this.programCardDeck = ProgramCardDeck.getProgramCardDeckSingleton();
         this.playerLayer = (TiledMapTileLayer) map.getLayers().get(8);
-        this.specialLayer = (TiledMapTileLayer) map.getLayers().get(1);
-        this.flagLayer = (TiledMapTileLayer) map.getLayers().get(2);
         this.backupLayer1 = (TiledMapTileLayer) map.getLayers().get(4);
         this.backupLayer2 = (TiledMapTileLayer) map.getLayers().get(5);
         this.backupLayer3 = (TiledMapTileLayer) map.getLayers().get(6);
@@ -80,9 +76,9 @@ public class GameMap {
         if (filename.equals("assets/testMap.tmx"))
             this.startingPositions = new TestStartingPositions(grid.getWidth(), grid.getHeight());
         else if (filename.equals("assets/riskyExchange.tmx"))
-            this.startingPositions = new StartingPositionsRE(grid.getWidth(), grid.getHeight(), nPlayers);
+            this.startingPositions = new StartingPositionsRiskyExchange(grid.getWidth());
         else
-            this.startingPositions = new StartingPositions(grid.getWidth(), grid.getHeight(), nPlayers);
+            this.startingPositions = new StartingPositions(grid.getWidth());
     }
 
     public void setStartRound(boolean startRound) {
@@ -92,6 +88,7 @@ public class GameMap {
     public boolean getStartRound() {
         return startRound;
     }
+
     /**
      * Creates all players and gives out cards
      */
@@ -393,7 +390,6 @@ public class GameMap {
         if (round.allPhasesAddedToRound()) {
             if (!round.isCompleted()) {
                 if (round.getCurrentPhase().getPhaseComplete()) {
-                    currentPhase = round.getCurrentPhase();
                     endOfPhaseChecks();
                     System.out.println("Phase " + (round.getCurrentPhaseNumber() + 1) + " er ferdig");
                     round.nextPhase();
@@ -462,7 +458,7 @@ public class GameMap {
      */
     public void selectCardsForBots() {
         for (Player player : players) {
-            if(player.getisAI() && player.getPlayerDeck().handIsEmpty()) {
+            if (player.getisAI() && player.getPlayerDeck().handIsEmpty()) {
                 player.select5FirstCards();
                 player.setHandChosen(true);
             }

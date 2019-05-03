@@ -1,7 +1,8 @@
 package inf112.skeleton.app.Directions;
 
-import inf112.skeleton.app.Directions.Position;
-
+/**
+ * Starting positions for test map
+ */
 public class TestStartingPositions implements IStartingPosition {
 
     private Position start0;

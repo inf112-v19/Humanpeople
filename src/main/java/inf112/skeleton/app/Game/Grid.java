@@ -119,8 +119,6 @@ public class Grid {
                 gameLogicGrid[x][y].add(playerIndex, new NotAPlayer());
 
                 // Laser layer
-//                gameLogicGrid[x][y].add(laserIndex, new NothingSpecial());
-
                 TiledMapTileLayer.Cell laserCell = laserLayer.getCell(x, y);
                 if (laserCell == null)
                     gameLogicGrid[x][y].add(laserIndex, new NothingSpecial());
@@ -235,20 +233,6 @@ public class Grid {
         return listOfPlayerTilesToMove;
     }
 
-    /**
-     * Checks if tile at given position is a backup
-     *
-     * @param position
-     * @return true if tile has backup
-     */
-    public boolean isBackup(Position position) {
-        int backupId0 = 35;
-        int backupId1 = 45;
-        int backupId2 = 55;
-        int backupId3 = 65;
-
-        return isBackupItem(position, backupId0) || isBackupItem(position, backupId1) || isBackupItem(position, backupId2) || isBackupItem(position, backupId3);
-    }
 
     /**
      * Checks if given backup object is located at given position

@@ -252,7 +252,10 @@ public class Player {
 
     public void printStatus() {
         String status = "ACTIVE";
-        if (!isAlive)
+
+        if(lastFlagVisited == 3)
+            status = "WINNER";
+        else if(!isAlive)
             status = "DEAD";
         else if(isDestroyed)
             status = "DESTROYED";
