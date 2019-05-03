@@ -67,6 +67,7 @@ public class GameServer {
         } catch (IOException e) {
             e.printStackTrace();
 
+
         }
 
         final NetworkUtils networkUtils = new NetworkUtils();
@@ -170,11 +171,11 @@ public class GameServer {
                     System.out.println(player.getHandChosen());
                     System.out.println(player.getPlayerDeck().handSize());
 
-                    if (player.getHandChosen() || !player.getPlayerDeck().handIsEmpty()) {
+                    if (player.getHandChosen()) {
                         //adding servers hands to packet to be sent out to all clients
                         if(player.isActive() && player.isAlive()) {
                             for (int i = 0; i < 5; i++) {
-                                listOfMovesFromServer.allMoves.add(player.getPlayerDeck().getCardFromHand(i));
+                                listOfMovesFromServer.allMoves.add(player.getPlayerDeck().getCardFromHand());
 
                             }
 

@@ -110,7 +110,7 @@ public class GameClient {
                     if (player != null && player.getHandChosen() && player.getPlayerDeck().handSize() == 5) {
                         Packets.PacketListOfMoves listOfMoves = new Packets.PacketListOfMoves();
                         for (int i = 0; i < 5; i++) {
-                            listOfMoves.movesToSend.add(player.getPlayerDeck().getCardFromHand(i));
+                            listOfMoves.movesToSend.add(player.getPlayerDeck().getCardFromHand());
                         }
 
                         listOfMoves.id = myId;

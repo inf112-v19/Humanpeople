@@ -52,6 +52,13 @@ public class PlayerDeck {
         ProgramCard programCard = hand.get(i);
         return programCard;
     }
+    public ProgramCard getCardFromHand() {
+        if (handSize() < 1)
+            throw new NoSuchElementException("No cards in the hand: " + handSize());
+        ProgramCard programCard = hand.get(0);
+        hand.remove(0);
+        return programCard;
+    }
 
     public void setDeck(ArrayList<ProgramCard> newDeck) {
         if (newDeck.size() > numberOfNewCardsToDeck)

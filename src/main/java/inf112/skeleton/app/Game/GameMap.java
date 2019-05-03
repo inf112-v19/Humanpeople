@@ -241,7 +241,7 @@ public class GameMap {
                             giveOutCardsToPlayer(player);
                         }
 
-                        ProgramCard tempCard = player.getPlayerDeck().getCardFromHand(i);
+                        ProgramCard tempCard = player.getPlayerDeck().getCardFromHand();
                         tempCard.setPlayerThatPlayedTheCard(player.getId());
                         cardsToAddInPhaseI.add(tempCard);
                     }
