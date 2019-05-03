@@ -404,14 +404,12 @@ public class GameMap {
                     endOfPhaseActions.getLaser().checkBoardLasers(playerId);
                 }
             } else {
-                //endOfRoundActions.performAllChecks();
+                endOfRoundChecks();
                 if (!cardsDealt) {
                     dealCards();
                     cardsDealt = true;
                     setAllPlayerHandsChosen(false);
                 }
-                // If round is complete, revive all players for further play
-                endOfRoundChecks();
             }
         }
     }

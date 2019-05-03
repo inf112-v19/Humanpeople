@@ -361,7 +361,7 @@ public class UserInterface {
                 //List of coordinates for the bottom slot row for easy access
                 pos[i] = new Position((int) (firstCardX + (i * pWidth)), (int) (firstCardY - pHeight * 2 - 26));
             }
-
+            
             //Place remaining 4 cards in row beneath
             else {
                 cardImage.setPosition(firstCardX + ((i - 5) * pWidth), firstCardY - pHeight - 13);
@@ -464,7 +464,6 @@ public class UserInterface {
     }
 
     public void prepareNextRound() {
-
         chosenCards = new ProgramCard[5];
         cardMap.clear();
         imageMap.clear();
