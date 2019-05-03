@@ -4,9 +4,7 @@ public class ProgramCard implements ICard {
     private ProgramType programType;
     private int priority;
     private String filename;
-
     private int playerThatPlayedTheCard;
-
     private boolean marked;
 
     //Need empty constructor for it to be serializable. Used for networking
@@ -18,11 +16,8 @@ public class ProgramCard implements ICard {
         this.programType = programType;
         this.priority = priority;
         this.filename = filename;
-
         playerThatPlayedTheCard = -1;
-
         this.marked = false;
-
     }
 
     public ProgramType getProgramType() {

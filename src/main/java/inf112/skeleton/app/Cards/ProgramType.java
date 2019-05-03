@@ -7,10 +7,6 @@ public enum ProgramType {
 		return this == MOVE1 || this == MOVE2 || this == MOVE3 || this == BACKWARD;
 	}
 
-	/**
-	 * How many steps the program type says to take
-	 * @return
-	 */
 	public int nSteps() {
 		switch (this) {
 			case MOVE1: return 1;

@@ -5,27 +5,14 @@ import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-/**
- * PlayerLayerObject deck for programming cards
- */
 public class PlayerDeck {
-
     public static final int MAX_NUMBER_CARDS_ON_HAND = 5;
     public static final int MAX_NUMBER_CARDS_IN_DECK = 9;
     public int NUMBER_OF_LOCKED_CARDS;
     public int NUMBER_OF_NEW_CARDS_TO_DECK;
     public int NUMBER_OF_NEW_CARDS_TO_HAND;
-
-    /**
-     * Deck of cards for the player to choose from
-     */
     private ArrayList<ProgramCard> deck;
-
-    /**
-     * Cards on the players hand
-     */
     private ArrayList<ProgramCard> hand;
-
     private ArrayList<ProgramCard> handFromLastRound;
 
     public PlayerDeck() {
@@ -36,12 +23,6 @@ public class PlayerDeck {
         handFromLastRound = new ArrayList<>();
     }
 
-    /**
-     * Takes card from deck at given index and puts it in players hand.
-     * Throws exception if cardIndex is out of bounds or hand is already full (size: 5)
-     *
-     * @param
-     */
     public void selectCardsForHand() {
         if (deck.size() < 0)
             throw new IndexOutOfBoundsException("The deck is too small, size is: " + deck.size() + " should be: " + NUMBER_OF_NEW_CARDS_TO_DECK);
@@ -64,29 +45,15 @@ public class PlayerDeck {
         if (!(newHand.isEmpty()))
         handFromLastRound = new ArrayList<>(newHand);
         this.hand = new ArrayList<>(newHand);
-//        discardCardArrayList(deck);
-//        discardOldHand();
     }
 
-    /**
-     * Get the next card form hand
-     * If no cards left on hand then throw NoSuchElementException
-     *
-     * @return card
-     */
     public ProgramCard getCardFromHand(int i) {
         if (handSize() < 1)
             throw new NoSuchElementException("No cards in the hand: " + handSize());
-
         ProgramCard programCard = hand.get(i);
         return programCard;
     }
 
-    /**
-     * Set the deck of a player
-     *
-     * @param newDeck
-     */
     public void setDeck(ArrayList<ProgramCard> newDeck) {
         if (newDeck.size() > NUMBER_OF_NEW_CARDS_TO_DECK)
             throw new IllegalArgumentException("The deck needs to be size 9. Size was: " + newDeck.size());
@@ -118,23 +85,14 @@ public class PlayerDeck {
         }
     }
 
-    /**
-     * @return true if player deck is empty
-     */
     public boolean deckIsEmpty() {
         return deckSize() == 0;
     }
 
-    /**
-     * @return true if hand is empty
-     */
     public boolean handIsEmpty() {
         return handSize() == 0;
     }
 
-    /**
-     * @return number of cards left in the player deck
-     */
     public int deckSize() {
         return deck.size();
     }
@@ -144,25 +102,15 @@ public class PlayerDeck {
         return Objects.hash(deck, hand);
     }
 
-    /**
-     * @return number of cards currently in hand
-     */
     public int handSize() {
         return hand.size();
     }
 
-    /**
-     * Trenger nye kort om det ikke finnes kort fra forrige runde
-     * @param hand
-     */
     public void setPlayerHand(ArrayList<ProgramCard> hand) {
         if(hand.isEmpty())
             return;
-
             this.hand = new ArrayList<>(hand);
             handFromLastRound = new ArrayList<>(this.hand);
-
-//        discardCards();
     }
 
     public ArrayList<ProgramCard> getHandFromLastRound() {
@@ -171,38 +119,5 @@ public class PlayerDeck {
 
     public ProgramCard getCard(int i) {
         return deck.get(i);
-    }
-
-    public void discardCards() {
-        discardRestOfDeck();
-        discardOldHand();
-    }
-
-    private void discardOldHand() {
-        for (int i = NUMBER_OF_LOCKED_CARDS; i < hand.size(); i++) {
-            discardCard(hand.get(i));
-        }
-    }
-
-    public void discardRestOfDeck() {
-        if (deck.isEmpty())
-            return;
-        ArrayList<ProgramCard> list = new ArrayList<>();
-        for (int i = 0; i < deck.size(); i++) {
-            if (!(hand.contains(deck.get(i))))
-                list.add(deck.get(i));
-        }
-        deck.clear();
-        discardCardArrayList(list);
-    }
-
-    public void discardCardArrayList(ArrayList<ProgramCard> cards) {
-        for (int i = 0; i < cards.size(); i++)
-            discardCard(cards.get(i));
-    }
-
-    public void discardCard(ProgramCard card) {
-        ProgramCardDeck pCD = ProgramCardDeck.getProgramCardDeckSingleton();
-        pCD.addToInactiveCardDeck(card);
     }
 }
