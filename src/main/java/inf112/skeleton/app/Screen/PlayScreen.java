@@ -38,17 +38,14 @@ public class PlayScreen implements Screen {
     private boolean isMultiPlayer;
 
 
-    public PlayScreen(RoboRally game, int nPlayers, boolean isMultiPlayer) {
+    public PlayScreen(RoboRally game, int nPlayers, boolean isMultiPlayer, String mapFilename) {
         this.game = game;
         this.gameCam = new OrthographicCamera();
         gamePort = new StretchViewport(RoboRally.width * 2, RoboRally.height, gameCam);
         gameCam.translate(RoboRally.width, RoboRally.height / 2);
         width = gamePort.getWorldWidth();
         height = gamePort.getWorldHeight();
-        if (isMultiPlayer)
-            this.gameMap = new GameMap("assets/map3.tmx", nPlayers, true);
-        else
-            this.gameMap = new GameMap("assets/map3.tmx", nPlayers, false);
+        this.gameMap = new GameMap(mapFilename, nPlayers, isMultiPlayer);
         this.map = gameMap.getMap();
         this.renderer = new OrthogonalTiledMapRenderer(map);
         this.isMultiPlayer = isMultiPlayer;

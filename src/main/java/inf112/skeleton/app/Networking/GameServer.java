@@ -45,7 +45,7 @@ public class GameServer {
 
         //Server has 0 as id
         this.game = game;
-        final PlayScreen playScreen = new PlayScreen(this.game, howManyClients + 1, true);
+        final PlayScreen playScreen = new PlayScreen(game, 4, true, "assets/map3.tmx");
         playScreen.setMyID(SERVER_ID);
         playScreen.initializeUI(SERVER_ID);
         gameMap = playScreen.getGameMap();

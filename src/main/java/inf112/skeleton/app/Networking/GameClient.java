@@ -69,7 +69,7 @@ public class GameClient {
                     Gdx.app.postRunnable(new Runnable() {
 
                         public void run() {
-                            playScreen = new PlayScreen(game, howManyPlayers, true);
+                            playScreen = new PlayScreen(game, 4, true, "assets/map3.tmx");
                             myId = ((Packets.PacketStartGame) object).yourID;
                             playScreen.initializeUI(myId);
                             player = playScreen.getGameMap().getPlayers().get(myId);

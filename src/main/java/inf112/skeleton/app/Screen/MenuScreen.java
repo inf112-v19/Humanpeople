@@ -50,7 +50,7 @@ public class MenuScreen implements Screen {
         this.gameCam.translate(RoboRally.width, RoboRally.height / 2);
         this.width = gamePort.getWorldWidth();
         this.height = gamePort.getWorldHeight();
-        this.playScreen = new PlayScreen(game, 4, false);
+        this.playScreen = new PlayScreen(game, 4, false, "assets/map3.tmx");
         playScreen.initializeUI(0);
         this.game = game;
     }
@@ -93,7 +93,7 @@ public class MenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 dispose();
-                game.setScreen(playScreen);
+                game.setScreen(new ChooseMapScreen(game));
             }
         });
         stage.addActor(singlePlayerButton);
