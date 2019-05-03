@@ -141,6 +141,7 @@
     * Kjør Main-klassen. Trykk på “MultiPlayer”. En av spillerne velger “Host” hvor han skriver inn hvor mange spillere som skal være med og hvilken Port som skal brukes. Trykk deretter på “Select”.
     * Andre spillere trykker på “Client” hvor de skriver inn IP-adressen til Host’en og port’en som ble valgt. Trykk deretter på “Select”. MERK: Host må trykke på “Select” før klientene trykker på “Select”
     * PlayScreen vil åpnes for alle spillere. Velg kort og velg “Play”. Alle spillere må ha valgt kort og trykket på “Play” før bevegelsene utføres.
+    * For å returnere til hovedmenyen kan man trykke på "ESCAPE". Da vil spillet resette seg
 
 ### Produktet skal fungere på Linux ( Ubuntu / Debian ), Windows og OSX
 
