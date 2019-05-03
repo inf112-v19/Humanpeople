@@ -55,7 +55,7 @@ public class InfoScreen {
         Label headLabel = new Label(head, labelStyle);
         headLabel.setWrap(true);
         headLabel.setFontScale(1.5f);
-        table.align(Align.top);
+        table.align(Align.topRight);
         table.add(headLabel);
         table.row();
 
@@ -83,10 +83,18 @@ public class InfoScreen {
                 currentColor = cl;
             }
             statusLabel.setColor(cl);
-            table.align(Align.topRight);
             table.add(statusLabel).width(200);
             counter++;
 
+        }
+        //For better formatting
+        while(counter < 3){
+            String placeHolderLabel = "";
+            Label statusLabel = new Label(placeHolderLabel, labelStyle);
+            table.add(statusLabel).width(175);
+            counter++;
+            if(counter == 2)
+                table.row();
         }
         table.row();
 
