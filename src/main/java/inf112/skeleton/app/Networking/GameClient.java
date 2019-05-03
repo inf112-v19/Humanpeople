@@ -87,7 +87,7 @@ public class GameClient {
 
                     }
                     // in case this client is dead in game
-                    if(!player.isAlive() && !iHaveDied) {
+                    if (!player.isAlive() && !iHaveDied) {
                         iHaveDied = true;
                         System.out.println("I HAVE DIED");
                         Packets.PacketIamDead iamDead = new Packets.PacketIamDead();
@@ -122,7 +122,7 @@ public class GameClient {
                 }
 
                 //When server lets client know it can start the game
-                if(object instanceof Packets.PacketStartRound) {
+                if (object instanceof Packets.PacketStartRound) {
                     gameMap.setStartRound(true);
                 }
 
@@ -134,7 +134,7 @@ public class GameClient {
         Gdx.app.postRunnable(new Runnable() {
 
             public void run() {
-                playScreen = new PlayScreen(game, howManyPlayers, true,"assets/map3.tmx");
+                playScreen = new PlayScreen(game, howManyPlayers, true, "assets/map3.tmx");
 
                 playScreen.initializeUI(myId);
                 player = playScreen.getGameMap().getPlayers().get(myId);

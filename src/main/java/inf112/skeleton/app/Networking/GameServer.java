@@ -4,17 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
-import com.jcraft.jogg.Packet;
 import inf112.skeleton.app.Cards.ProgramCard;
 import inf112.skeleton.app.Game.GameMap;
 import inf112.skeleton.app.Game.RoboRally;
 import inf112.skeleton.app.Player.Player;
 import inf112.skeleton.app.Screen.PlayScreen;
 
-
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 public class GameServer {
 
@@ -33,17 +30,16 @@ public class GameServer {
     private boolean[] nClientConnected;
     private boolean[] haveNClientSentListOfMoves;
     private ArrayList<Integer> idIndexer;
-    private Connection[] connections;
     private ArrayList<ArrayList<ProgramCard>> movesToPlayAtServer;
     private final PlayScreen playScreen;
-    private  ArrayList<ProgramCard> listOfServerMoves;
+    private ArrayList<ProgramCard> listOfServerMoves;
 
     private final int SERVER_ID = 0;
 
 
     public GameServer(final RoboRally game, int port, int nPlayers) {
         this.portNumber = port;
-        howManyClients = nPlayers-1;
+        howManyClients = nPlayers - 1;
 
         this.game = game;
         playScreen = new PlayScreen(this.game, howManyClients + 1, true, "assets/map3.tmx");
@@ -92,7 +88,7 @@ public class GameServer {
                         connection.sendTCP(startGame);
                     }
 
-                    if ((isEveryoneConnected())&& !isGameStarted) {
+                    if ((isEveryoneConnected()) && !isGameStarted) {
                         startMyGame();
 
                     }
@@ -110,7 +106,7 @@ public class GameServer {
                     }
                 }
 
-                if(object instanceof Packets.PacketIamDead) {
+                if (object instanceof Packets.PacketIamDead) {
                     System.out.println("IAMDEAD");
                     howManyConnected--;
                 }
@@ -140,7 +136,7 @@ public class GameServer {
                     if (player.getHandChosen()) {
 
                         //adding servers hands to packet to be sent out to all clients
-                        if(player.isActive() && player.isAlive()) {
+                        if (player.isActive() && player.isAlive()) {
                             broadCastServerMoves();
                         }
 
@@ -179,7 +175,6 @@ public class GameServer {
             }
         });
         isGameStarted = true;
-        connections = server.getConnections();
     }
 
     private void sendToAllServerIsPoweredDown() {
