@@ -251,11 +251,32 @@ public class Player {
     }
 
     public void printStatus() {
-        String status = "ALIVE";
+        String status = "ACTIVE";
         if (!isAlive)
             status = "DEAD";
+        else if(isDestroyed)
+            status = "DESTROYED";
+        else if(!isActive())
+            status = "POWER DOWN";
 
         System.out.printf("##COLOR: %-10s ##DAMAGE TOKENS: %-2d ##LIFETOKENS: %s ##FLAG: %s ##STATUS: %s",
+                this.getPlayerTile().getColor(), getHealth(), getLifeTokens(), getLastFlagVisited(), status);
+    }
+
+    public String getStatus(){
+        String status = "ACTIVE";
+        if (!isAlive)
+            status = "DEAD";
+        else if(isDestroyed)
+            status = "DESTROYED";
+        else if(!isActive())
+            status = "POWER DOWN";
+
+        return String.format("COLOR: %-10s\n" +
+                        "DAMAGE TOKENS: %-2d\n" +
+                        "LIFE TOKENS: %s\n" +
+                        "FLAG: %s\n" +
+                        "STATUS: %s \n\n",
                 this.getPlayerTile().getColor(), getHealth(), getLifeTokens(), getLastFlagVisited(), status);
     }
 

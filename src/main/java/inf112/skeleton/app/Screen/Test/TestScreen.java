@@ -17,6 +17,7 @@ import inf112.skeleton.app.Game.GameMap;
 import inf112.skeleton.app.Directions.Direction;
 import inf112.skeleton.app.Player.Player;
 import inf112.skeleton.app.Game.RoboRally;
+import inf112.skeleton.app.Screen.InfoScreen;
 import inf112.skeleton.app.Screen.MenuScreen;
 import inf112.skeleton.app.Screen.UserInterface;
 import inf112.skeleton.app.Screen.DisplayMessageOnScreen;
@@ -52,6 +53,7 @@ public class TestScreen implements Screen {
     float height;
 
     private UserInterface ui;
+    private InfoScreen infoScreen;
 
 
     public TestScreen(RoboRally game) {
@@ -66,7 +68,9 @@ public class TestScreen implements Screen {
         this.map = gameMap.getMap();
         this.renderer = new OrthogonalTiledMapRenderer(map);
         gameCam.position.set(width / 2, (height / 2), 0);
+
         this.ui = new UserInterface(width, height, gameMap.getPlayers().get(0));
+        this.infoScreen = new InfoScreen(gameMap.getPlayers(), width, height);
 
 
         //Every program card type
@@ -96,7 +100,7 @@ public class TestScreen implements Screen {
     public void update(float deltaTime) {
         //handleInput();
         //updateMap();
-        if(!pause){
+        if (!pause) {
             tickTime += deltaTime;
             if (tickTime > 0.9) {
                 tickTime = 0;
@@ -125,9 +129,10 @@ public class TestScreen implements Screen {
         if (tickTime > 0.4) {
             tickTime = 0;
             gameMap.performNextMovement();
+            infoScreen.update(gameMap.getPlayers(), 0);
         }
         //Update ui
-        if(tickTime > 0.2){
+        if (tickTime > 0.2) {
             // Update only if there is a change in the variables
             if (ui.getPlayer().getHealth() != ui.getSavedHealth()) {
                 ui.getDamageTokenOfPlayer();
@@ -143,6 +148,7 @@ public class TestScreen implements Screen {
             }
         }
     }
+
     public void displayWinner(Player winner) {
         String victoryMessage = "Congratulations! Player " + winner.getPlayerTile().getColor() + " has won!";
         DisplayMessageOnScreen victoryScreen = new DisplayMessageOnScreen(victoryMessage, 150, 150);
@@ -193,7 +199,7 @@ public class TestScreen implements Screen {
                 System.out.println("LASER");
                 gameMap.getLaser().fireLasers();
             }
-            if(Gdx.input.isKeyJustPressed(Input.Keys.J)) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.J)) {
                 for (Player player : gameMap.getPlayers()) {
                     player.printStatus();
                     System.out.println();
@@ -208,6 +214,15 @@ public class TestScreen implements Screen {
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
                 ui.toggleCardSelection();
+            }
+
+            if (Gdx.input.isKeyPressed(Input.Keys.TAB)) {
+                stage = infoScreen.getStage();
+                stage.setViewport(gamePort);
+            }
+            else {
+                stage = ui.getStage();
+                stage.setViewport(gamePort);
             }
         }
         //Test of movement according to program cards (using movePlayer() for testing
@@ -287,7 +302,7 @@ public class TestScreen implements Screen {
 
     @Override
     public void render(float v) {
-        if(Gdx.input.isKeyJustPressed(Input.Keys.P)){
+        if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
             pause = !pause;
         }
         Gdx.gl.glClearColor(0, 0, 0, 0);
