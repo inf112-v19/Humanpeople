@@ -4,9 +4,7 @@ import com.esotericsoftware.kryo.Kryo;
 
 public class NetworkUtils {
 
-
     public void registerPackets(Kryo kryo) {
-
         kryo.register(Packets.PacketRequest.class);
         kryo.register(Packets.PacketRequestAnswer.class);
         kryo.register(Packets.PacketListOfMoves.class);
@@ -17,14 +15,8 @@ public class NetworkUtils {
         kryo.register(inf112.skeleton.app.Cards.ProgramCard.class);
         kryo.register(inf112.skeleton.app.Cards.ProgramType.class);
         kryo.register(Packets.PacketServerRequiersMoves.class);
-        kryo.register(Packets.PacketPlayerDisconnected.class);
-        kryo.register(Packets.PacketIDisconnected.class);
         kryo.register(Packets.PacketIamDead.class);
         kryo.register(Packets.PacketIAmPoweredDown.class);
         kryo.register(Packets.PacketStartRound.class);
-
-
-
-
     }
 }
