@@ -149,16 +149,21 @@ public class PlayScreen implements Screen {
     public void resize(int width, int height) {
         gamePort.update(width, height);
         stage.setViewport(gamePort);
+//        infoScreen.getStage().setViewport(gamePort);
     }
 
     public void handleInput() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             game.setScreen(new MenuScreen(game));
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.TAB))
+        if (Gdx.input.isKeyPressed(Input.Keys.TAB)) {
             stage = infoScreen.getStage();
-        else
+            stage.setViewport(gamePort);
+        }
+        else {
             stage = ui.getStage();
+            stage.setViewport(gamePort);
+        }
 
     }
 

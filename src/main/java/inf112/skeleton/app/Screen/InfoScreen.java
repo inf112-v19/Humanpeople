@@ -34,7 +34,7 @@ public class InfoScreen {
 
         table.setWidth(width);
         table.setHeight(height);
-        table.setPosition(45, 50);
+        table.setPosition(25, 0);
         stage.addActor(table);
 
         createStatusTable();
