@@ -1,4 +1,4 @@
-#Manuelle tester for PowerDown
+# Manuelle tester for PowerDown
 
 Hensikt:
 - Sjekke at spilleren ikke mottar nye kort og ikke beveger seg etter en runde etter powerDown er valgt
